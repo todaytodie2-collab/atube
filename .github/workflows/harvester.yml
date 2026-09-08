@@ -2,8 +2,8 @@ name: A TuBe 24/7 Cloud Harvester
 
 on:
   schedule:
-    # Runs every 30 minutes in GitHub Cloud for free
-    - cron: '*/30 * * * *'
+    # Runs every 10 minutes in GitHub Cloud for free
+    - cron: '*/10 * * * *'
   workflow_dispatch: # Allows manual trigger from GitHub web UI anytime
 
 permissions:
