@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Tube - Ultra HD Media Experience</title>
+  
+  <meta name="description" content="تطبيق A Tube الترفيهي الأحترافي لمشاهدة البث المباشر والقنوات والأفلام والمسلسلات بجودة Ultra HD">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/tv-navigation.css">
+  <link rel="stylesheet" href="css/movie-details.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- HLS.js for direct .m3u8 Live Streams inside the app -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+
+  <!-- ====================================================================
+       A TUBE SMART SPLASH SCREEN & BACKGROUND INITIALIZATION HUB
+       ==================================================================== -->
+  <div id="app-splash-screen" class="app-splash-screen">
+    <div class="splash-background-image"></div>
+    <div class="splash-overlay-gradient"></div>
+    
+    <div class="splash-content-wrapper">
+      <div class="splash-branding">
+        <div class="splash-tagline">متعة المشاهدة الحقيقية</div>
+        <div class="splash-title">A <span>TuBe</span> Ultra HD</div>
+      </div>
+
+      <div class="splash-loader-container">
+        <div class="splash-progress-track">
+          <div id="splash-progress-bar" class="splash-progress-bar"></div>
+        </div>
+        <div id="splash-status-text" class="splash-status-text">جاري تهيئة النظام وقاعدة البيانات...</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="app-root">
+    
+    <!-- Mobile Drawer Overlay -->
+    <div id="mobile-overlay" class="mobile-drawer-overlay"></div>
+
+    <!-- ====================================================================
+         TOP HEADER BAR
+         ==================================================================== -->
+    <header class="app-header">
+      <!-- Left: App Title & Quick Action Icons -->
+      <div class="header-left">
+        <div class="window-title">
+          <span class="app-dot"></span>
+          <span>A Tube - Ultra HD Media Experience</span>
+        </div>
+
+        <div class="header-actions">
+          <!-- IPTV / Multi-Screen Playlist Button -->
+          <button id="open-iptv-modal-btn" class="icon-btn dpad-focusable" title="إضافة سيرفر واشتراك IPTV" aria-label="IPTV Settings">
+            <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
+          </button>
+
+          <!-- Cast Icon -->
+          <button id="cast-screen-btn" class="icon-btn dpad-focusable" title="بث الشاشة (Cast)" aria-label="Cast Screen">
+            <svg viewBox="0 0 24 24"><path d="M1 18v3h3c0-1.66-1.34-3-3-3zm0-4v2c2.76 0 5 2.24 5 5h2c0-3.87-3.13-7-7-7zm0-4v2c4.97 0 9 4.03 9 9h2c0-6.08-4.93-11-11-11zm20-7H3c-1.1 0-2 .9-2 2v3h2V5h18v14h-7v2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+          </button>
+
+          <!-- User Profile -->
+          <button id="user-profile-btn" class="icon-btn dpad-focusable" title="الملف الشخصي والإعدادات" aria-label="User Profile">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Center: Search Bar & Language Switcher -->
+      <div class="header-center">
+        <div class="search-box">
+          <span class="search-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          </span>
+          <input type="text" id="header-search-input" placeholder="البحث في القنوات والأفلام والبرامج..." aria-label="Search">
+          <button id="voice-search-btn" class="mic-btn dpad-focusable" title="بحث صوتي" aria-label="Voice Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+          </button>
+        </div>
+        <div id="search-history-dropdown" class="search-history-dropdown is-hidden"></div>
+
+        <div class="lang-switch">
+          <button class="lang-pill active dpad-focusable" data-lang="ar">AR</button>
+          <button class="lang-pill dpad-focusable" data-lang="en">EN</button>
+          <button class="lang-pill dpad-focusable" data-lang="fr">FR</button>
+        </div>
+      </div>
+
+      <!-- Right: Logo & Hamburger Menu Toggle -->
+      <div class="header-right">
+        <a href="#" class="brand-logo" id="brand-home-link">
+          <div class="brand-icon">A</div>
+          <div class="brand-text">A <span>Tube</span></div>
+        </a>
+
+        <button id="menu-toggle" class="menu-toggle-btn dpad-focusable" title="تبديل القائمة الجانبية" aria-label="Toggle Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         MAIN APP LAYOUT: SIDEBAR + CONTENT
+         ==================================================================== -->
+    <div class="main-layout">
+
+      <!-- RIGHT SIDEBAR (RTL) -->
+      <aside id="app-sidebar" class="sidebar">
+        <div class="sidebar-nav">
+          <!-- الرئيسية -->
+          <div class="nav-item active dpad-focusable" data-nav="home">
+            <span class="nav-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </span>
+            <span class="nav-label">الرئيسية</span>
+          </div>
+
+          <!-- القنوات -->
+          <div class="nav-item dpad-focusable" data-nav="channels">
+            <span class="nav-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
+            </span>
+            <span class="nav-label">القنوات</span>
+          </div>
+
+          <!-- الأفلام Group -->
+          <div class="nav-group expanded">
+            <div class="nav-group-header dpad-focusable">
+              <div class="nav-group-title">
+                <span class="nav-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>
+                </span>
+                <span class="nav-label">الأفلام</span>
+              </div>
+              <span class="nav-arrow">◀</span>
+            </div>
+            <div class="sub-menu">
+              <div class="sub-item active dpad-focusable">أفلام عربي</div>
+              <div class="sub-item dpad-focusable">أفلام أجنبي</div>
+              <div class="sub-item dpad-focusable">أفلام تركي</div>
+              <div class="sub-item dpad-focusable">أفلام هندي</div>
+              <div class="sub-item dpad-focusable">أفلام آسيوي</div>
+              <div class="sub-item dpad-focusable">مسرحيات</div>
+              <div class="sub-item dpad-focusable">أفلام وثائقية</div>
+            </div>
+          </div>
+
+          <!-- المسلسلات Group -->
+          <div class="nav-group">
+            <div class="nav-group-header dpad-focusable">
+              <div class="nav-group-title">
+                <span class="nav-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+                </span>
+                <span class="nav-label">المسلسلات</span>
+              </div>
+              <span class="nav-arrow">◀</span>
+            </div>
+            <div class="sub-menu">
+              <div class="sub-item dpad-focusable">مسلسلات عربي</div>
+              <div class="sub-item dpad-focusable">مسلسلات تركي</div>
+              <div class="sub-item dpad-focusable">مسلسلات أجنبي</div>
+              <div class="sub-item dpad-focusable">مسلسلات هندي</div>
+              <div class="sub-item dpad-focusable">مسلسلات آسيوي</div>
+              <div class="sub-item dpad-focusable">مسلسلات وثائقية</div>
+            </div>
+          </div>
+
+          <!-- الأنمي Group -->
+          <div class="nav-group">
+            <div class="nav-group-header dpad-focusable">
+              <div class="nav-group-title">
+                <span class="nav-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                </span>
+                <span class="nav-label">الأنمي</span>
+              </div>
+              <span class="nav-arrow">◀</span>
+            </div>
+            <div class="sub-menu">
+              <div class="sub-item dpad-focusable">أفلام أنمي</div>
+              <div class="sub-item dpad-focusable">مسلسلات أنمي</div>
+              <div class="sub-item dpad-focusable">كارتون</div>
+            </div>
+          </div>
+
+          <!-- البرامج والمصارعة Group -->
+          <div class="nav-group">
+            <div class="nav-group-header dpad-focusable">
+              <div class="nav-group-title">
+                <span class="nav-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
+                </span>
+                <span class="nav-label">البرامج والرياضة</span>
+              </div>
+              <span class="nav-arrow">◀</span>
+            </div>
+            <div class="sub-menu">
+              <div class="sub-item dpad-focusable">برامج وتلفزيون</div>
+              <div class="sub-item dpad-focusable">مصارعة حرة WWE</div>
+              <div class="sub-item dpad-focusable">وثائقيات</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Footer A Tube Red Shortcut -->
+        <div class="sidebar-footer">
+          <button class="atube-shortcut-btn dpad-focusable">
+            <span class="yt-play-icon"></span>
+            <span>A Tube</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- CONTENT MAIN WRAPPER -->
+      <main class="content-wrapper">
+
+        <!-- ====================================================================
+             1. HOME PAGE VIEW (الواجهة الرئيسية بجميع الأقسام والشرائط المتحركة)
+             ==================================================================== -->
+        <div id="home-page-view" class="page-view active">
+          
+          <!-- 1. HERO BILLBOARD BANNER -->
+          <section id="hero-banner" class="hero-banner">
+            <img id="hero-bg-img" class="hero-bg-img is-hidden" alt="">
+            <div class="hero-overlay"></div>
+            <div id="hero-content" class="hero-content"></div>
+          </section>
+
+          <!-- QUICK CATEGORIES FILTER PILLS -->
+          <section class="quick-pills-section is-hidden">
+            <div class="filter-tabs-bar" id="home-quick-filter-bar">
+              <button class="filter-tab active dpad-focusable" data-cat="all">عرض كافة الأقسام</button>
+              <button class="filter-tab dpad-focusable" data-cat="أفلام أجنبي">أفلام أجنبي</button>
+              <button class="filter-tab dpad-focusable" data-cat="أفلام عربي">أفلام عربي</button>
+              <button class="filter-tab dpad-focusable" data-cat="مسلسلات عربي">مسلسلات عربي</button>
+              <button class="filter-tab dpad-focusable" data-cat="مسلسلات تركي">مسلسلات تركي</button>
+              <button class="filter-tab dpad-focusable" data-cat="قنوات مباشرة">قنوات البث المباشر</button>
+              <button class="filter-tab dpad-focusable" data-cat="أنمي">الأنمي والكارتون</button>
+              <button class="filter-tab dpad-focusable" data-cat="مسرحيات">مسرحيات</button>
+              <button class="filter-tab dpad-focusable" data-cat="مصارعة حرة">مصارعة WWE</button>
+            </div>
+          </section>
+
+          <!-- DYNAMIC INDEXED CATEGORY CAROUSELS CONTAINER -->
+          <div id="home-categories-container">
+            <!-- Dynamically populated with animated carousel rows for each indexed category -->
+          </div>
+
+        </div>
+
+        <!-- ====================================================================
+             2. DEDICATED CATEGORY INTERNAL PAGE VIEW (الصفحة الداخلية لكل تصنيف)
+             ==================================================================== -->
+        <div id="category-page-view" class="page-view is-hidden">
+          
+          <!-- Top Navigation Bar with Back Button, Breadcrumb & Count -->
+          <div class="category-page-header">
+            <div class="category-page-top-row">
+              <button id="category-back-btn" class="category-back-btn dpad-focusable">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20l1.41-1.41L4.83 12l6.58-6.59L10 4l-8 8 8 8z"/></svg>
+                <span>العودة للرئيسية</span>
+              </button>
+
+              <div class="category-page-breadcrumbs">
+                <span class="crumb-home" id="crumb-home-link">الرئيسية</span>
+                <span class="crumb-separator">◀</span>
+                <span id="category-page-title" class="current-crumb">أفلام أجنبي</span>
+              </div>
+            </div>
+
+            <div class="category-page-info-row">
+              <div>
+                <h1 id="category-page-heading" class="category-heading-title">أفلام أجنبي</h1>
+                <p id="category-page-desc" class="category-heading-desc">تصفح كافة الأعمال المتوفرة في هذا القسم مع سيرفرات مشاهدة سريعة</p>
+              </div>
+              <span id="category-page-count" class="category-count-badge">0 عملاً</span>
+            </div>
+
+            <!-- In-Category Search & Sort Controls -->
+            <div class="category-controls-bar">
+              <div class="category-search-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="category-filter-input" placeholder="بحث وتصفية داخل هذا القسم..." aria-label="بحث وتصفية داخل هذا القسم">
+              </div>
+
+              <div class="category-sort-group">
+                <span class="sort-label">الترتيب:</span>
+                <button class="sort-pill active dpad-focusable" data-sort="latest">الأحدث</button>
+                <button class="sort-pill dpad-focusable" data-sort="rating">الأعلى تقييماً</button>
+                <button class="sort-pill dpad-focusable" data-sort="title">أبجدياً</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Responsive Grid of Category Cards -->
+          <div id="category-grid" class="category-grid-container">
+            <!-- Dynamic cards injected by app.js -->
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+
+    <!-- ====================================================================
+         BOTTOM MINI-PLAYER BAR
+         ==================================================================== -->
+    <footer class="bottom-player-bar is-hidden">
+      <!-- Left Controls & Title -->
+      <div class="player-left">
+        <div class="playback-controls">
+          <button id="mini-play-btn" class="play-bar-btn main-play dpad-focusable" title="تشغيل / إيقاف" aria-label="Play/Pause">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+
+        <div class="player-track-info">
+          <div id="mini-track-title" class="track-title">المسرح العربي (Gladiator II)</div>
+          <div id="mini-track-sub" class="track-subtitle">A Tube Ultra HD Stream</div>
+        </div>
+      </div>
+
+      <!-- Center Progress -->
+      <div class="player-center">
+        <span class="time-stamp">14:15</span>
+        <div class="progress-bar-container">
+          <div class="progress-fill"></div>
+        </div>
+        <span class="time-stamp">1:48:00</span>
+      </div>
+
+      <!-- Right Audio & Fullscreen -->
+      <div class="player-right">
+        <button class="play-bar-btn dpad-focusable" title="كتم / رفع الصوت" aria-label="Mute">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        </button>
+        <button class="play-bar-btn dpad-focusable" title="تكبير الشاشة" aria-label="Fullscreen">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        </button>
+      </div>
+    </footer>
+
+    <!-- ====================================================================
+         IN-APP FULLSCREEN VIDEO PLAYER MODAL
+         ==================================================================== -->
+    <div id="video-modal" class="video-player-modal">
+      <!-- Top Overlay Header -->
+      <div class="player-overlay-top">
+        <div class="player-channel-info">
+          <span id="player-badge" class="player-live-badge">مباشر HD</span>
+          <div class="player-title-col">
+            <span id="player-title" class="player-channel-title">اسم العمل</span>
+            <span id="player-sub-title" class="player-sub-title-text">سيرفر التشغيل السحابي</span>
+          </div>
+        </div>
+
+        <div class="player-top-actions">
+          <!-- Quick Server Dropdown in Header -->
+          <div class="player-dropdown-wrap">
+            <button id="player-header-server-btn" class="player-action-btn dpad-focusable" title="اختيار سيرفر البث">
+              <span>⚡ السيرفرات</span>
+            </button>
+            <div id="player-server-menu" class="player-dropdown-menu"></div>
+          </div>
+          <button id="player-close-btn" class="player-close-btn dpad-focusable" title="إغلاق والعودة" aria-label="Close Player">✕</button>
+        </div>
+      </div>
+
+      <!-- Video & Embed Canvas Container -->
+      <div id="player-canvas-container" class="video-element-container">
+        <video id="main-video" class="main-video-element"></video>
+        <iframe id="main-embed-frame" class="main-embed-element" title="A Tube Video Embed Player" aria-label="A Tube Video Embed Player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"></iframe>
+        
+        <!-- Touch & Key Gesture Ripple Feedback HUD -->
+        <div id="player-gesture-hud" class="player-gesture-feedback"></div>
+
+        <!-- Resume Playback Toast Prompt -->
+        <div id="player-resume-toast" class="player-resume-banner">
+          <span>هل ترغب في استئناف المشاهدة من حيث توقفت؟ (<span id="resume-time-label">00:00</span>)</span>
+          <div class="player-resume-actions">
+            <button id="resume-yes-btn" class="btn-primary player-resume-btn">استئناف</button>
+            <button id="resume-no-btn" class="btn-secondary player-resume-btn">من البداية</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Interactive Controls Bar -->
+      <div class="player-overlay-bottom">
+        <!-- Interactive Progress Timeline Scrubber -->
+        <div class="player-timeline-wrapper">
+          <span id="player-time-current" class="time-stamp">00:00:00</span>
+          <div class="player-scrubber-track">
+            <div id="player-buffer-bar" class="player-scrubber-buffer"></div>
+            <div id="player-progress-bar" class="player-scrubber-progress"></div>
+            <input type="range" id="player-seek-slider" class="player-seek-input dpad-focusable" min="0" max="100" value="0" step="0.1" aria-label="شريط وقت الفيديو">
+          </div>
+          <span id="player-time-remaining" class="time-stamp">-00:00:00</span>
+        </div>
+
+        <!-- Controls Row -->
+        <div class="player-controls-row">
+          <!-- Left Controls Group -->
+          <div class="player-btns-group">
+            <button id="player-toggle-play" class="player-action-btn dpad-focusable" title="تشغيل / إيقاف (مسافة)">
+              <svg class="play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="pause-icon is-hidden-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              <span id="player-play-text">تشغيل</span>
+            </button>
+
+            <button id="player-rewind-10" class="player-action-btn dpad-focusable" title="تأخير 10 ثوانٍ (←)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8zm-1.1 11h-.8l-1.3-1 .5-.6.9.7V11h.7v5zm3.7-1.8c0 .5-.1.9-.3 1.2-.2.3-.5.5-.9.5s-.7-.2-.9-.5c-.2-.3-.3-.7-.3-1.2v-1.4c0-.5.1-.9.3-1.2.2-.3.5-.5.9-.5s.7.2.9.5c.2.3.3.7.3 1.2v1.4zm-.7-1.5c0-.4 0-.7-.1-.9-.1-.2-.2-.3-.4-.3s-.3.1-.4.3c-.1.2-.1.5-.1.9v1.6c0 .4 0 .7.1.9.1.2.2.3.4.3s.3-.1.4-.3c.1-.2.1-.5.1-.9v-1.6z"/></svg>
+              <span>10- ث</span>
+            </button>
+
+            <button id="player-forward-10" class="player-action-btn dpad-focusable" title="تقديم 10 ثوانٍ (→)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8zm-1.1 11h-.8l-1.3-1 .5-.6.9.7V11h.7v5zm3.7-1.8c0 .5-.1.9-.3 1.2-.2.3-.5.5-.9.5s-.7-.2-.9-.5c-.2-.3-.3-.7-.3-1.2v-1.4c0-.5.1-.9.3-1.2.2-.3.5-.5.9-.5s.7.2.9.5c.2.3.3.7.3 1.2v1.4zm-.7-1.5c0-.4 0-.7-.1-.9-.1-.2-.2-.3-.4-.3s-.3.1-.4.3c-.1.2-.1.5-.1.9v1.6c0 .4 0 .7.1.9.1.2.2.3.4.3s.3-.1.4-.3c.1-.2.1-.5.1-.9v-1.6z"/></svg>
+              <span>10+ ث</span>
+            </button>
+
+            <!-- Volume Control Group -->
+            <div class="player-slider-group">
+              <button id="player-mute-btn" class="player-action-btn dpad-focusable" title="كتم / رفع الصوت (M)">
+                <svg id="vol-icon-high" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                <svg id="vol-icon-muted" class="is-hidden-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+              </button>
+              <input type="range" id="player-volume-slider" class="player-mini-slider dpad-focusable" min="0" max="1" step="0.05" value="1" title="مستوى الصوت">
+            </div>
+
+            <!-- Brightness Control Group -->
+            <div class="player-slider-group">
+              <button id="player-brightness-btn" class="player-action-btn dpad-focusable" title="السطوع والإضاءة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg>
+                <span id="brightness-val-text">100%</span>
+              </button>
+              <input type="range" id="player-brightness-slider" class="player-mini-slider dpad-focusable" min="0.4" max="1.6" step="0.05" value="1" title="التحكم بالسطوع">
+            </div>
+          </div>
+
+          <!-- Right Controls Group -->
+          <div class="player-btns-group">
+            <!-- Playback Speed Dropdown -->
+            <div class="player-dropdown-wrap">
+              <button id="player-speed-btn" class="player-action-btn dpad-focusable" title="سرعة التشغيل">
+                <span id="speed-label">1.0x</span>
+              </button>
+              <div id="player-speed-menu" class="player-dropdown-menu">
+                <div class="dropdown-item" data-speed="0.75">0.75x بطيء</div>
+                <div class="dropdown-item active" data-speed="1">1.0x عادي</div>
+                <div class="dropdown-item" data-speed="1.25">1.25x سريع</div>
+                <div class="dropdown-item" data-speed="1.5">1.5x أسرع</div>
+                <div class="dropdown-item" data-speed="2">2.0x مضاعف</div>
+              </div>
+            </div>
+
+            <!-- Subtitles Toggle -->
+            <button id="player-subs-btn" class="player-action-btn dpad-focusable" title="الترجمة والشرح (CC)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 7H9.5v-.5h-2v3h2V13H11v1c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1zm7 0h-1.5v-.5h-2v3h2V13H18v1c0 .55-.45 1-1 1h-3c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1z"/></svg>
+              <span>الترجمة</span>
+            </button>
+
+            <!-- Fullscreen Button -->
+            <button id="player-fullscreen-btn" class="player-action-btn dpad-focusable" title="ملء الشاشة (F)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+              <span>ملء الشاشة</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         IPTV SUBSCRIPTIONS & XTREAM SETTINGS MODAL
+         ==================================================================== -->
+    <div id="iptv-modal" class="modal-backdrop">
+      <div class="iptv-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#00e5ff"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
+            <span>إضافة اشتراك وقنوات IPTV</span>
+          </h3>
+          <button id="close-iptv-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+
+        <p class="iptv-desc">
+          يمكنك تشغيل باقاتك واشتراكاتك الخاصة مباشرة عبر رابط M3U أو سيرفر Xtream Codes:
+        </p>
+
+        <div class="iptv-form-group">
+          <label>رابط قائمة القنوات M3U Playlist URL:</label>
+          <input type="url" id="iptv-m3u-url" placeholder="https://example.com/playlist.m3u">
+        </div>
+
+        <div class="iptv-divider">— أو من خلال سيرفر اكستريم Xtream Codes —</div>
+
+        <div class="iptv-form-group">
+          <label>سيرفر الهوست Server URL:</label>
+          <input type="text" id="xtream-host" placeholder="http://domain.com:8080">
+        </div>
+
+        <div class="iptv-row">
+          <div class="iptv-form-group iptv-col">
+            <label>اسم المستخدم Username:</label>
+            <input type="text" id="xtream-user" placeholder="username">
+          </div>
+          <div class="iptv-form-group iptv-col">
+            <label>كلمة المرور Password:</label>
+            <input type="password" id="xtream-pass" placeholder="••••••••">
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="cancel-iptv-btn" class="btn-secondary dpad-focusable">إلغاء</button>
+          <button id="save-iptv-btn" class="btn-primary dpad-focusable">حفظ وتشغيل القنوات</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MOVIE DETAILS MODAL (AKWAM & MULTI-SOURCE STYLE)
+         ==================================================================== -->
+    <div id="movie-details-modal" class="movie-modal-backdrop">
+      <div class="movie-modal-container">
+        <!-- Back and Close Buttons -->
+        <div class="movie-modal-top-actions">
+          <button id="movie-modal-back-btn" class="movie-modal-back-btn dpad-focusable" title="العودة">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20l1.41-1.41L4.83 12l6.58-6.59L10 4l-8 8 8 8z"/></svg>
+            <span>العودة</span>
+          </button>
+          <button id="movie-modal-close-btn" class="movie-modal-close-btn dpad-focusable" title="إغلاق" aria-label="Close">✕</button>
+        </div>
+
+        <!-- Hero Header with Wide Backdrop & Floating Poster -->
+        <div class="movie-hero-header">
+          <img id="md-backdrop" src="assets/gladiator_hero.jpg" alt="Backdrop" class="movie-backdrop-img">
+          <div class="movie-header-overlay"></div>
+
+          <div class="movie-header-content">
+            <!-- Floating Poster Card -->
+            <div class="movie-poster-wrapper">
+              <img id="md-poster" src="assets/gladiator_hero.jpg" alt="Poster">
+            </div>
+
+            <!-- Meta Information -->
+            <div class="movie-meta-info">
+              <div class="movie-badges-row">
+                <span id="md-imdb" class="imdb-badge">★ 8.5 IMDb</span>
+                <span id="md-quality" class="movie-tag-pill quality">1080p WEB-DL</span>
+              </div>
+
+              <h2 id="md-title" class="movie-details-title">The Girl in the River</h2>
+              <div id="md-ar-title" class="movie-details-arabic-title">الفتاة في النهر</div>
+
+              <div id="md-genres" class="movie-badges-row">
+                <!-- Genre tags injected dynamically -->
+              </div>
+
+              <div id="md-attributes" class="movie-attributes-grid">
+                <!-- Attributes injected dynamically -->
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="movie-action-buttons">
+                <button id="md-trailer-btn" class="btn-trailer dpad-focusable">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  <span>الإعلان (التريلر)</span>
+                </button>
+                <button id="md-watch-btn" class="btn-watch-direct dpad-focusable">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+                  <span>سيرفرات المشاهدة</span>
+                </button>
+                <button id="md-fav-btn" class="btn-trailer dpad-focusable" title="إضافة إلى قائمتي المفضلة">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                  <span>إضافة للمفضلة</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Body Content: Synopsis, Cast, Servers, Stills -->
+        <div class="modal-body-content">
+          <!-- Story Block -->
+          <div>
+            <h3 class="details-block-title">قصة الفيلم</h3>
+            <p id="md-synopsis" class="movie-synopsis-text"></p>
+          </div>
+
+          <!-- Stills Gallery -->
+          <div>
+            <h3 class="details-block-title">لقطات من الفيلم</h3>
+            <div id="md-stills-list" class="stills-gallery-row"></div>
+          </div>
+
+          <!-- Cast & Crew Pills matching reference -->
+          <div>
+            <h3 class="details-block-title">طاقم العمل والبطولة</h3>
+            <div id="md-cast-list" class="cast-pills-row"></div>
+          </div>
+
+          <!-- Seasons & Episodes Hub (For Series, Anime & Shows) -->
+          <div id="md-series-hub" class="series-hub-container">
+            <div class="seasons-bar-header">
+              <h3 class="details-block-title">المواسم والحلقات</h3>
+              <div id="md-seasons-pills" class="seasons-pills-row"></div>
+            </div>
+            <div id="md-episodes-track" class="episodes-carousel-track"></div>
+          </div>
+
+          <!-- Multi-Source Unified Servers Grid -->
+          <div id="md-servers-section" class="servers-hub-container">
+            <div class="servers-hub-header">
+              <h3 class="servers-hub-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#00e5ff"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+                <span>سيرفرات المشاهدة السحابية فائقة السرعة - A Tube Cloud Servers</span>
+              </h3>
+            </div>
+            <div id="md-servers-list" class="servers-grid-layout"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         CAST SCREEN MODAL
+         ==================================================================== -->
+    <div id="cast-modal" class="modal-backdrop">
+      <div class="iptv-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#00e5ff"><path d="M1 18v3h3c0-1.66-1.34-3-3-3zm0-4v2c2.76 0 5 2.24 5 5h2c0-3.87-3.13-7-7-7zm0-4v2c4.97 0 9 4.03 9 9h2c0-6.08-4.93-11-11-11zm20-7H3c-1.1 0-2 .9-2 2v3h2V5h18v14h-7v2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+            <span>بث الشاشة (Screen Cast / AirPlay / DLNA)</span>
+          </h3>
+          <button id="close-cast-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <p class="iptv-desc">الأجهزة المكتشفة على نفس الشبكة المحلية Wi-Fi الجاهزة للبث المباشر:</p>
+        <div id="cast-devices-list" class="cast-devices-grid">
+          <div class="cast-device-card dpad-focusable" data-device="Samsung Smart TV">
+            <div class="cast-device-icon">📺</div>
+            <div class="cast-device-info">
+              <div class="cast-device-title">Samsung Smart TV (غرفة المعيشة)</div>
+              <div class="cast-device-sub-active">جاهز للبث • 4K UHD</div>
+            </div>
+            <span class="badge cast-badge-active">اتصال</span>
+          </div>
+          <div class="cast-device-card dpad-focusable" data-device="LG webOS TV">
+            <div class="cast-device-icon">📺</div>
+            <div class="cast-device-info">
+              <div class="cast-device-title">LG webOS TV (غرفة النوم)</div>
+              <div class="cast-device-sub-muted">جاهز للبث • AirPlay / DLNA</div>
+            </div>
+            <span class="badge cast-badge-muted">اتصال</span>
+          </div>
+          <div class="cast-device-card dpad-focusable" data-device="Chromecast Ultra">
+            <div class="cast-device-icon">📡</div>
+            <div class="cast-device-info">
+              <div class="cast-device-title">Chromecast Ultra</div>
+              <div class="cast-device-sub-muted">Google Cast Protocol</div>
+            </div>
+            <span class="badge cast-badge-muted">اتصال</span>
+          </div>
+        </div>
+        <div class="modal-actions cast-modal-actions">
+          <button id="start-native-cast-btn" class="btn-primary dpad-focusable">البحث عبر نافذة المتصفح الأصلية (Native Cast)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         USER PROFILE & SETTINGS MODAL
+         ==================================================================== -->
+    <div id="user-profile-modal" class="modal-backdrop">
+      <div class="iptv-modal-card profile-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#00e5ff"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>الملف الشخصي والإعدادات (A Tube VIP)</span>
+          </h3>
+          <button id="close-profile-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+
+        <div class="profile-tabs-bar">
+          <button class="profile-tab-btn active dpad-focusable" data-tab="favorites">قائمتي المفضلة</button>
+          <button class="profile-tab-btn dpad-focusable" data-tab="history">سجل المشاهدة</button>
+          <button class="profile-tab-btn dpad-focusable" data-tab="settings">إعدادات المشغل</button>
+        </div>
+
+        <div id="profile-tab-favorites" class="profile-tab-content">
+          <div id="favorites-list-container" class="profile-list-scroll">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+        <div id="profile-tab-history" class="profile-tab-content is-hidden">
+          <div id="history-list-container" class="profile-list-scroll">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+        <div id="profile-tab-settings" class="profile-tab-content is-hidden">
+          <div class="iptv-form-group">
+            <label for="setting-default-quality">الجودة الافتراضية عند التشغيل:</label>
+            <select id="setting-default-quality" class="profile-select-field" title="الجودة الافتراضية عند التشغيل" aria-label="الجودة الافتراضية عند التشغيل">
+              <option value="auto">تلقائي (حسب سرعة الإنترنت)</option>
+              <option value="4k">4K Ultra HD (أعلى جودة)</option>
+              <option value="1080p" selected>1080p Full HD</option>
+              <option value="720p">720p HD (موفر للبيانات)</option>
+            </select>
+          </div>
+          <div class="iptv-form-group">
+            <label for="setting-default-engine">المشغل الافتراضي:</label>
+            <select id="setting-default-engine" class="profile-select-field" title="المشغل الافتراضي" aria-label="المشغل الافتراضي">
+              <option value="native">A Tube Cloud Native Player (HLS Engine)</option>
+              <option value="hardware">مسرع العتاد Hardware Acceleration</option>
+            </select>
+          </div>
+          <div class="modal-actions profile-actions-bar">
+            <button id="clear-cache-btn" class="btn-secondary btn-cache-clear dpad-focusable">مسح الذاكرة المؤقتة (Clear Cache)</button>
+            <button id="save-settings-btn" class="btn-primary dpad-focusable">حفظ الإعدادات</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- App Scripts -->
+  <script src="js/media-catalog.js"></script>
+  <script src="js/iptv-engine.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/remote-control.js"></script>
+  <script src="js/movie-details.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

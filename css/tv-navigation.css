@@ -1,0 +1,108 @@
+/* ==========================================================================
+   TV Navigation & D-Pad Remote Focus Styles
+   Optimized for Android TV, Remote Controllers & Accessibility
+   ========================================================================== */
+
+/* Focused state for any interactive element (GPU accelerated) */
+.dpad-focusable {
+  outline: none !important;
+  will-change: transform, box-shadow;
+  transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),
+              box-shadow 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),
+              border-color 0.18s ease;
+}
+
+/* Glowing Neon Cyan Focus Highlight & Spatial Ring */
+.dpad-focusable:focus,
+.dpad-focusable.tv-focused {
+  border-color: #00f0ff !important;
+  box-shadow: 0 0 0 3px #00f0ff,
+              0 0 24px rgba(0, 240, 255, 0.8),
+              0 10px 30px rgba(0, 0, 0, 0.85) !important;
+  transform: scale3d(1.05, 1.05, 1) !important;
+  z-index: 60 !important;
+}
+
+/* Sidebar Nav items when focused */
+.nav-item.tv-focused,
+.sub-item.tv-focused {
+  background: rgba(0, 229, 255, 0.25) !important;
+  color: #ffffff !important;
+  border-left: 4px solid #00e5ff !important;
+  transform: translateX(-4px) !important;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.4) !important;
+}
+
+/* Program Card when focused */
+.program-card.tv-focused {
+  transform: translateY(-8px) scale(1.06) !important;
+  border-color: #00e5ff !important;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.6), 0 12px 30px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Live Channel Card when focused */
+.live-channel-card.tv-focused {
+  transform: translateY(-6px) scale(1.08) !important;
+  border-color: #00e5ff !important;
+  box-shadow: 0 0 22px rgba(0, 229, 255, 0.65), 0 10px 24px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Featured Video Card when focused */
+.video-card.tv-focused {
+  transform: translateY(-6px) scale(1.05) !important;
+  border-color: #00e5ff !important;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.6), 0 10px 28px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Buttons when focused */
+.btn-primary.tv-focused,
+.btn-secondary.tv-focused,
+.atube-shortcut-btn.tv-focused {
+  transform: scale(1.08) !important;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.8) !important;
+}
+
+/* Filter pills when focused */
+.filter-tab.tv-focused {
+  transform: scale(1.1) !important;
+  background: #00e5ff !important;
+  color: #03141b !important;
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.75) !important;
+}
+
+/* Header icon buttons when focused */
+.icon-btn.tv-focused {
+  transform: scale(1.15) !important;
+  background: rgba(0, 229, 255, 0.25) !important;
+  border-color: #00e5ff !important;
+  color: #00e5ff !important;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.6) !important;
+}
+
+/* Virtual Cursor / Remote Indicator */
+.remote-indicator-toast {
+  position: fixed;
+  bottom: 60px;
+  right: 24px;
+  background: rgba(6, 21, 28, 0.95);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  color: #00e5ff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.remote-indicator-toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,54 @@
+name: A TuBe 24/7 Cloud Harvester
+
+on:
+  schedule:
+    # Runs every 30 minutes in GitHub Cloud for free
+    - cron: '*/30 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub web UI anytime
+
+permissions:
+  contents: write
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests urllib3
+
+      - name: Run Multi-Portal Harvester & Complete Missing Episodes
+        run: |
+          python -c "
+          import sys, os
+          sys.path.insert(0, 'services')
+          from catalog_sync import ContentIngestEngine, ContinuousSyncEngine
+          print('--- Starting Cloud Harvest Cycle ---')
+          try:
+              ContentIngestEngine.harvest_multi_portal(items_per_portal=10)
+          except Exception as e:
+              print('Harvest multi-portal note:', e)
+
+          try:
+              ContinuousSyncEngine.run_sync_cycle()
+          except Exception as e:
+              print('Continuous cycle note:', e)
+          print('--- Cloud Harvest Completed Successfully ---')
+          "
+
+      - name: Commit and Push Updated Catalog
+        run: |
+          git config --global user.name "ATuBe-Harvester-Bot"
+          git config --global user.email "bot@atube.app"
+          git add catalog.json config/atube_data.sqlite
+          git diff-index --quiet HEAD || (git commit -m "Auto-harvester: Added new releases & completed episodes [skip ci]" && git push)

@@ -1,0 +1,102 @@
+{
+  "version": "3.0.0",
+  "updated_at": "2026-09-06",
+  "domains": {
+    "akwam": "https://akwam.to",
+    "arabseed": "https://arabseed.irish",
+    "arablionz": "https://arablionz.live",
+    "cima4u": "https://cima4u.boutique",
+    "egybest": "https://egybests.live",
+    "egydead": "https://tv10.egydead.live",
+    "fasel": "https://web2.faselhd.top",
+    "qfilm": "https://a.qfilm.tv",
+    "shahid4u": "https://shaiid4u.co",
+    "wicanime": "https://wicanime.tv"
+  },
+  "iptv_channels": [
+    {
+      "id": "cbc_egypt",
+      "name": "CBC مصر العامة HD",
+      "category": "منوعات وترفيه",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/CBC_Egypt_logo.png/260px-CBC_Egypt_logo.png",
+      "streams": [
+        "https://flu.systemnet.tv/CBC/index.m3u8"
+      ]
+    },
+    {
+      "id": "cbc_drama",
+      "name": "CBC دراما (مسلسلات)",
+      "category": "أفلام ومسلسلات",
+      "logo": "https://upload.wikimedia.org/wikipedia/ar/thumb/9/90/Cbc_drama_logo.png/280px-Cbc_drama_logo.png",
+      "streams": [
+        "https://flu.systemnet.tv/CBCDrama/index.m3u8"
+      ]
+    },
+    {
+      "id": "cbc_sofra",
+      "name": "CBC سفرة",
+      "category": "منوعات وترفيه",
+      "logo": "https://upload.wikimedia.org/wikipedia/ar/thumb/b/b2/CBC_Sofra_logo.png/280px-CBC_Sofra_logo.png",
+      "streams": [
+        "https://flu.systemnet.tv/CBCSofra/index.m3u8"
+      ]
+    },
+    {
+      "id": "alghad_tv",
+      "name": "قناة الغد الإخبارية HD",
+      "category": "الأخبار",
+      "logo": "https://alghad.tv/wp-content/themes/alghad/assets/images/logo.png",
+      "streams": [
+        "https://eazyvwqssi.erbvr.com/alghadtv/alghadtv.m3u8"
+      ]
+    },
+    {
+      "id": "france24_ar",
+      "name": "فرانس 24 العربية HD",
+      "category": "الأخبار",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/France_24_logo.svg/320px-France_24_logo.svg.png",
+      "streams": [
+        "https://static.france24.com/live/F24_AR_HI_HLS/live_tv.m3u8"
+      ]
+    },
+    {
+      "id": "radio_9090",
+      "name": "راديو 9090 مصر المباشر",
+      "category": "منوعات وترفيه",
+      "logo": "https://mobtada.com/assets/images/9090.png",
+      "streams": [
+        "https://9090video.mobtada.com/hls/stream.m3u8"
+      ]
+    },
+    {
+      "id": "mazzika",
+      "name": "مزيكا (Mazzika TV)",
+      "category": "موسيقى",
+      "logo": "https://upload.wikimedia.org/wikipedia/ar/thumb/7/7b/Mazzika_logo.png/280px-Mazzika_logo.png",
+      "streams": [
+        "http://149.100.11.235:8080/Mazzika/index.m3u8"
+      ]
+    },
+    {
+      "id": "almasriyah",
+      "name": "القناة الفضائية المصرية",
+      "category": "منوعات وترفيه",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Al-Masriyah_Logo.svg/260px-Al-Masriyah_Logo.svg.png",
+      "streams": [
+        "http://185.9.2.18/chid_247/index.m3u8"
+      ]
+    }
+  ],
+  "oscar_vod": {
+    "base_url": "https://api.oscar-tv.net/api/v1",
+    "token": "bearer_oscar_vod_token_live_2026",
+    "user_agent": "OscarTV-VOD/3.4.0 (Linux; Android 12; Build/SQ1D.220205.004)",
+    "app_id": "com.oscartv.app",
+    "endpoints": {
+      "movie_servers": "/vod/movie/{id}/servers",
+      "series_servers": "/vod/series/{id}/season/{season}/episode/{episode}/servers",
+      "search": "/vod/search?q={query}"
+    },
+    "timeout_seconds": 4.0
+  }
+}

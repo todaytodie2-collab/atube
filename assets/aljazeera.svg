@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 70" width="160" height="70">
+  <defs>
+    <linearGradient id="ajGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd54f"/>
+      <stop offset="100%" stop-color="#ffb300"/>
+    </linearGradient>
+  </defs>
+  <!-- Flame-like Al Jazeera calligraphy icon -->
+  <path d="M80 10 C75 22 66 32 68 45 C70 54 78 60 88 56 C96 52 98 42 94 34 C91 28 85 22 84 14 Z" fill="url(#ajGrad)"/>
+  <circle cx="80" cy="46" r="3" fill="#061318"/>
+  <text x="80" y="65" font-family="'Cairo', sans-serif" font-size="10" font-weight="700" fill="#ffd54f" text-anchor="middle" letter-spacing="1">ALJAZEERA</text>
+</svg>
