@@ -8516,6 +8516,14 @@
         "badge": "FaselHD ⭐",
         "quality": "1080p FHD",
         "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=V3I0cllGSXFYcUpyU1hCcm8zUjJicFFhZXg0bmQ0Nk5qb2Y2LzVQTm1TV3U1ZVhIUCtvbGFsVDhrV1ZLYTVIV2kzSXFOM0hPM09GZlUwSkdjTFkrbnhMY29Dd1F4LzhucFZOa1d4aVJCYVVLTVFLOXBKWjE1eTBOZ3ZDLzdFbHVMUEpHWjU0dXh2dG9LcjlUY3ZnZXQzczZmSys4c0pIQ3hzTnB5WjBPTVRHUWZYcWhFeDVxaFNDMkpVZ3pvVnR3YVdncUFPck5YODFoRXNBL3pwZzMxckVpNHpyS2pFRmFJaDhtK1Z0VW5TVT06OgmLYI7xHpx53t0BhnqZf8Y%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ]
   },
@@ -10629,6 +10637,95 @@
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
         "stream_url": "https://vidmoly.net/embed-hqijtiaxr93k.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      }
+    ]
+  },
+  {
+    "id": "star-trek-strange-new-worlds-الموسم-الرابع-الحلقة-8-الثامنة-2026-c91e168bf",
+    "title": "Star Trek Strange New Worlds الموسم الرابع الحلقة 8 الثامنة",
+    "arabic_title": "Star Trek Strange New Worlds الموسم الرابع الحلقة 8 الثامنة",
+    "content_type": "series",
+    "category": "foreign",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/c91e168bf-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/c91e168bf-1.jpg",
+    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة من مسلسل &quot; Star Trek Strange New Worlds الموسم الرابع&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسل...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 0,
+    "servers": [
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-7mzn95puw0qu.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/67qz49xvtl3ddk",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/2pb5zb0vdkr1",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/pyc3tdbzm0w8",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-zmzlcznh1qdk.html",
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
