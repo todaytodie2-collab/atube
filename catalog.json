@@ -9682,6 +9682,14 @@
         "badge": "FaselHD ⭐",
         "quality": "1080p FHD",
         "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=elZPTzNDNEVueTBSNzZvN0F5OFM0bjk0c2lHam05ODJ1K2Z6VnRsYU0va0pNMnV6OHRMTmI4cU82L1lXWUxITjZlR3pReHdPVGkwYlI0U1RBVVYrZjFTUnZHSlJySU9NU054TXVaeGl1V2N0Q2tDeTVTUjJXbnViM3I3cEZneFU3ZXNhMyswcDh3amZwU0NhY2xoWU1FZVVsVHhzVjQ1Q3NlRnJyZjNyNUNJdWZXZ1UvcG04QnBycFhNeWg3b0U2MS9kSmhjSGFLb3lLb1lPd0wwN1FPSm92UDE0QWNJakplVkJaL3Rtb2x1RT06OsQnnOh%2BLohI7sPfEZXrTMk%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ]
   },
@@ -19800,6 +19808,66 @@
         "badge": "FaselHD ⭐",
         "quality": "1080p FHD",
         "isEmbed": true
+      },
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-r5i40l5eoon3.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/r6w8x19jbl8one",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/4gqo49fbu8yb",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/rdruqgzhm0eo",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-w564ijnmlbem.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ]
   },
