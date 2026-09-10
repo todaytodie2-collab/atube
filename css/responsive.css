@@ -1,192 +1,423 @@
 /* ==========================================================================
-   Responsive Adaptations
-   Optimized for Android Smartphones (Portrait/Landscape) & TV 4K/1080p
+   A TuBe Responsive Engine
+   Multi-Device Harmony: Android Smartphones, 32"-55" Android TVs & 4K Displays
    ========================================================================== */
 
-/* Tablet & Smaller Screens */
-@media (max-width: 1024px) {
-  :root {
-    --sidebar-width: 200px;
-  }
-  
-  .hero-banner {
-    height: 280px;
-  }
-  
-  .hero-title {
-    font-size: 28px;
-  }
-  
-  .header-center {
-    flex: 0 1 380px;
-  }
-}
-
-/* Mobile Screens (Phones) */
+/* --------------------------------------------------------------------------
+   1. ANDROID SMARTPHONES & MOBILE SCREENS (<= 768px)
+   -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
   :root {
-    --header-height: 54px;
-    --player-bar-height: 52px;
+    --header-height: 56px;
+    --player-bar-height: 54px;
+    --mobile-nav-height: 60px;
   }
 
-  /* Sidebar becomes a slide-out drawer on mobile */
-  .sidebar {
-    position: fixed;
-    right: -280px;
-    top: 0;
-    bottom: 0;
-    width: 260px !important;
-    height: 100vh;
-    z-index: 1500;
-    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.9);
-    transition: right 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  body {
+    padding-bottom: var(--mobile-nav-height);
   }
 
-  .sidebar.mobile-open {
-    right: 0;
+  /* Compact Header for Phones */
+  .app-header {
+    height: var(--header-height);
+    padding: 0 10px;
+    gap: 8px;
   }
 
-  /* Sidebar backdrop overlay on mobile */
-  .mobile-drawer-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
-    z-index: 1400;
-    display: none;
-  }
-
-  .mobile-drawer-overlay.active {
-    display: block;
-  }
-
-  .content-wrapper {
-    margin-right: 0 !important;
-    padding: 14px 12px 30px;
-  }
-
-  /* Header adjustments */
   .window-title {
     display: none;
   }
 
+  .header-actions {
+    gap: 6px;
+  }
+
+  .header-actions .icon-btn#cast-screen-btn,
+  .header-actions .icon-btn#user-profile-btn {
+    display: none; /* Keep header clean on small phone screens */
+  }
+
+  .header-actions .icon-btn {
+    width: 32px;
+    height: 32px;
+  }
+
   .header-center {
     flex: 1;
-    margin: 0 8px;
+    margin: 0 4px;
+    min-width: 0;
+  }
+
+  .search-box {
+    width: 100%;
+    height: 36px;
+    padding: 0 10px;
   }
 
   .search-box input {
-    font-size: 12px;
-    padding: 4px 6px;
+    font-size: 13px;
+    padding: 0 6px;
   }
 
   .lang-switch {
-    display: none; /* Hide language pills in tight header, keep in settings */
+    display: none;
   }
 
-  /* Hero Banner */
+  .header-right {
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .brand-logo .brand-text {
+    font-size: 15px;
+  }
+
+  .brand-logo .brand-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .menu-toggle-btn {
+    padding: 6px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Mobile Slide-Out Drawer (Sidebar) */
+  .sidebar {
+    position: fixed;
+    right: -290px;
+    top: 0;
+    bottom: 0;
+    width: 270px !important;
+    height: 100vh;
+    z-index: 2500;
+    background: rgba(5, 12, 19, 0.98);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(0, 240, 255, 0.2);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.9);
+    transition: right 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 16px 12px 80px;
+  }
+
+  .sidebar.mobile-open {
+    right: 0 !important;
+  }
+
+  /* Backdrop Overlay for Mobile Drawer */
+  .mobile-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    z-index: 2400;
+    display: none;
+  }
+
+  .mobile-drawer-overlay.active {
+    display: block !important;
+  }
+
+  .content-wrapper {
+    margin-right: 0 !important;
+    padding: 14px 12px 100px;
+    min-width: 100%;
+    width: 100%;
+  }
+
+  /* Hero Banner on Phones */
   .hero-banner {
-    height: 210px;
+    height: 200px;
+    margin-bottom: 20px;
     border-radius: var(--radius-md);
   }
 
   .hero-content {
-    padding: 16px 20px;
+    padding: 14px 16px;
+  }
+
+  .hero-badge {
+    font-size: 10.5px;
+    margin-bottom: 6px;
   }
 
   .hero-title {
-    font-size: 22px;
+    font-size: 20px;
+    line-height: 1.25;
+    margin-bottom: 4px;
   }
 
   .hero-subtitle {
-    font-size: 14px;
+    font-size: 13px;
+    margin-bottom: 8px;
   }
 
   .hero-desc {
     display: none;
   }
 
-  .btn-primary, .btn-secondary {
-    padding: 7px 16px;
+  .hero-actions {
+    gap: 8px;
+  }
+
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    padding: 6px 14px;
     font-size: 12px;
   }
 
-  /* Program and Live Cards */
+  /* Touch-Optimized Cards & Carousels for Mobile */
+  .category-row-section {
+    margin-bottom: 22px;
+  }
+
+  .row-title {
+    font-size: 16px;
+  }
+
+  .cards-track {
+    gap: 12px;
+    padding-bottom: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
   .program-card {
-    flex: 0 0 135px;
+    flex: 0 0 125px;
+    scroll-snap-align: start;
   }
 
   .program-thumb {
-    height: 160px;
+    height: 175px;
+    border-radius: var(--radius-sm);
+  }
+
+  .program-info {
+    padding: 6px 2px;
+  }
+
+  .program-title {
+    font-size: 12.5px;
+    line-height: 1.3;
   }
 
   .live-channel-card {
     flex: 0 0 135px;
-    height: 85px;
+    height: 90px;
+    scroll-snap-align: start;
   }
 
-  .video-card {
-    flex: 0 0 200px;
+  /* Responsive Category Page Grid on Phones */
+  .category-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+    gap: 12px !important;
   }
 
-  .video-thumb-wrapper {
-    height: 115px;
+  .category-grid .program-card {
+    flex: none !important;
+    width: 100% !important;
   }
 
-  /* Bottom player bar */
-  .player-center {
-    display: none; /* Simplified player on small phones */
+  /* Mobile Bottom Navigation Bar */
+  .mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--mobile-nav-height);
+    background: rgba(6, 15, 23, 0.98);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(0, 240, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 2000;
+    padding: 0 6px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.7);
   }
 
-  .track-title {
-    font-size: 11.5px;
+  .mobile-nav-btn {
+    background: none;
+    border: none;
+    color: #8da4b4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .mobile-nav-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+  }
+
+  .mobile-nav-btn.active,
+  .mobile-nav-btn:active {
+    color: #00f0ff;
+  }
+
+  .mobile-nav-btn.active svg {
+    transform: scale(1.12);
+  }
+
+  /* Bottom Player Adjustment on Mobile */
+  .bottom-player-bar {
+    bottom: var(--mobile-nav-height) !important;
+  }
+
+  .bottom-player-bar .player-center {
+    display: none;
   }
 }
 
-/* 4K and Ultra-Wide Screens (Android TV 4K) */
-@media (min-width: 2000px) {
+/* Hide Mobile Bottom Nav on Tablet & Desktop & TV */
+@media (min-width: 769px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. ANDROID TV (32" TO 43" HD / 720p / 1080p / 1366x768)
+   Optimized for 10-foot remote navigation, crisp readable fonts, zero blur
+   -------------------------------------------------------------------------- */
+@media (min-width: 769px) and (max-width: 1400px) {
   :root {
-    --header-height: 80px;
-    --sidebar-width: 320px;
+    --header-height: 64px;
+    --sidebar-width: 220px;
+    --player-bar-height: 60px;
+  }
+
+  /* Keep sidebar visible & accessible for TV D-Pad */
+  .sidebar {
+    position: fixed !important;
+    right: 0 !important;
+    top: var(--header-height) !important;
+    bottom: var(--player-bar-height) !important;
+    width: var(--sidebar-width) !important;
+    display: flex !important;
+    z-index: 100 !important;
+  }
+
+  .content-wrapper {
+    margin-right: var(--sidebar-width) !important;
+    padding: 20px 24px 60px !important;
+    min-width: 0 !important;
+  }
+
+  .hero-banner {
+    height: 280px;
+    margin-bottom: 24px;
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+  }
+
+  .hero-desc {
+    font-size: 13.5px;
+    max-width: 600px;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* TV Optimized Card Dimensions */
+  .program-card {
+    flex: 0 0 160px;
+  }
+
+  .program-thumb {
+    height: 225px;
+  }
+
+  .live-channel-card {
+    flex: 0 0 170px;
+    height: 105px;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)) !important;
+    gap: 16px !important;
+  }
+
+  /* Extra Prominent TV Neon Focus Indicator for 32" TV Distance */
+  .dpad-focusable:focus,
+  .dpad-focusable.tv-focused {
+    outline: none !important;
+    border-color: #00f0ff !important;
+    box-shadow: 0 0 0 3.5px #00f0ff,
+                0 0 28px rgba(0, 240, 255, 0.9),
+                0 12px 30px rgba(0, 0, 0, 0.9) !important;
+    transform: scale3d(1.06, 1.06, 1) !important;
+    z-index: 80 !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. LARGE SCREENS & 4K ANDROID TV (>= 1401px)
+   -------------------------------------------------------------------------- */
+@media (min-width: 1401px) {
+  :root {
+    --header-height: 72px;
+    --sidebar-width: 260px;
     --player-bar-height: 64px;
   }
 
   .hero-banner {
-    height: 480px;
+    height: 380px;
   }
 
   .hero-title {
-    font-size: 54px;
+    font-size: 44px;
   }
 
   .hero-subtitle {
-    font-size: 26px;
+    font-size: 20px;
   }
 
   .hero-desc {
-    font-size: 18px;
-    max-width: 800px;
+    font-size: 15px;
+    max-width: 750px;
   }
 
   .program-card {
-    flex: 0 0 230px;
+    flex: 0 0 185px;
   }
 
   .program-thumb {
-    height: 270px;
+    height: 260px;
   }
 
   .live-channel-card {
-    flex: 0 0 220px;
-    height: 130px;
+    flex: 0 0 200px;
+    height: 120px;
   }
 
-  .video-card {
-    flex: 0 0 340px;
-  }
-
-  .video-thumb-wrapper {
-    height: 190px;
+  .category-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+    gap: 20px !important;
   }
 }

@@ -2,17 +2,44 @@ import os
 import json
 from typing import Dict, Any, List, Optional
 import requests
-from PySide6.QtCore import QThread, Signal
+
+try:
+    from PySide6.QtCore import QThread, Signal
+    HAS_QT = True
+except Exception:
+    HAS_QT = False
 
 
-class RemoteConfigLoaderWorker(QThread):
-    config_updated = Signal(dict)
+class RemoteConfigLoaderWorker:
+    if HAS_QT:
+        class _Worker(QThread):
+            config_updated = Signal(dict)
+            def __init__(self, remote_url: str, parent=None):
+                super().__init__(parent)
+                self.remote_url = remote_url
+            def run(self):
+                try:
+                    resp = requests.get(self.remote_url, timeout=3.5)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        if isinstance(data, dict) and "domains" in data:
+                            self.config_updated.emit(data)
+                except Exception:
+                    pass
+        Worker = _Worker
+    else:
+        Worker = None
 
     def __init__(self, remote_url: str, parent=None):
-        super().__init__(parent)
-        self.remote_url = remote_url
+        if HAS_QT:
+            super().__init__(parent)
+            self.remote_url = remote_url
+        else:
+            self.remote_url = remote_url
 
     def run(self):
+        if not HAS_QT:
+            return
         try:
             resp = requests.get(self.remote_url, timeout=3.5)
             if resp.status_code == 200:
@@ -53,10 +80,12 @@ class RemoteConfigManager:
                 self.config_data = {}
 
     def fetch_remote(self, url: str):
-        worker = RemoteConfigLoaderWorker(url)
-        worker.config_updated.connect(self._on_remote_updated)
+        if not HAS_QT or not RemoteConfigLoaderWorker.Worker:
+            return
+        worker = RemoteConfigLoaderWorker.Worker(url)
+        if hasattr(worker, 'config_updated'):
+            worker.config_updated.connect(self._on_remote_updated)
         worker.start()
-        # Keep reference to worker
         self._worker = worker
 
     def _on_remote_updated(self, new_data: dict):

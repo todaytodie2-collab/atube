@@ -29,10 +29,84 @@ const MovieDetails = (function () {
     });
   }
 
+  // Resolve whether a media object represents an episodic series
+  function isSeriesMedia(movie) {
+    const ct = (movie && movie.content_type) || '';
+    return ct === 'series' || ct === 'anime' || ct === 'tv_show'
+      || (movie && movie.total_seasons > 0)
+      || (movie && Array.isArray(movie.seasons) && movie.seasons.length > 0);
+  }
+
+  // Fetch cast/crew for a media id from /api/media/cast
+  async function fetchCastForMedia(mediaId) {
+    if (!mediaId || window.location.protocol === 'file:') return null;
+    try {
+      const res = await fetch(`/api/media/cast?id=${encodeURIComponent(mediaId)}`);
+      if (res.ok) return await res.json();
+    } catch (_) {}
+    return null;
+  }
+
+  // Fetch episodes for a season from /api/media/episodes
+  async function fetchEpisodesForMedia(mediaId, season) {
+    if (!mediaId || window.location.protocol === 'file:') return null;
+    try {
+      const res = await fetch(`/api/media/episodes?id=${encodeURIComponent(mediaId)}&season=${encodeURIComponent(season)}`);
+      if (res.ok) return await res.json();
+    } catch (_) {}
+    return null;
+  }
+
+  // Merge freshly-fetched API details into currentMovie without wiping
+  // client-side seasons/cast, and hydrate cast + episodes from dedicated endpoints.
+  async function mergeFromApi(freshData) {
+    if (!currentMovie || !freshData || !freshData.id) return;
+    const merged = { ...currentMovie, ...freshData };
+
+    // Guard against empty API arrays wiping existing client data
+    if (!Array.isArray(freshData.seasons) || freshData.seasons.length === 0) {
+      merged.seasons = currentMovie.seasons && currentMovie.seasons.length ? currentMovie.seasons : [];
+    }
+    if (!Array.isArray(freshData.cast) || freshData.cast.length === 0) {
+      merged.cast = currentMovie.cast && currentMovie.cast.length ? currentMovie.cast : [];
+    }
+
+    // Hydrate cast from /api/media/cast (single source of truth for طاقم العمل)
+    if ((!Array.isArray(merged.cast) || merged.cast.length === 0)) {
+      const castRes = await fetchCastForMedia(merged.id);
+      if (castRes && Array.isArray(castRes.cast) && castRes.cast.length > 0) {
+        merged.cast = castRes.cast;
+      }
+    }
+
+    // Hydrate episodes for series from /api/media/episodes
+    if (isSeriesMedia(merged) && (!Array.isArray(merged.seasons) || merged.seasons.length === 0)) {
+      const builtSeasons = [];
+      const totalSeasons = merged.total_seasons || 1;
+      for (let s = 1; s <= Math.max(totalSeasons, 1); s++) {
+        const epRes = await fetchEpisodesForMedia(merged.id, s);
+        if (epRes && Array.isArray(epRes.episodes) && epRes.episodes.length > 0) {
+          builtSeasons.push({
+            season_number: epRes.season_number || s,
+            title: epRes.season_title || `الموسم ${s}`,
+            episodes: epRes.episodes
+          });
+        } else {
+          break;
+        }
+      }
+      if (builtSeasons.length > 0) merged.seasons = builtSeasons;
+    }
+
+    currentMovie = merged;
+    try { renderMovieDetails(merged); } catch (err) { console.error('render err:', err); }
+    const rc = window.RemoteControl || (typeof RemoteControl !== 'undefined' ? RemoteControl : null);
+    if (rc && typeof rc.refresh === 'function') setTimeout(() => rc.refresh(), 200);
+  }
+
   // Open modal with movie data (either from object or fetched by id)
   async function open(movieOrId) {
     if (!modalEl) {
-      // Try re-init if modal not found yet
       modalEl = document.getElementById('movie-details-modal');
       if (!modalEl) return;
     }
@@ -52,31 +126,27 @@ const MovieDetails = (function () {
         fetch(`/api/media/details?id=${encodeURIComponent(movieOrId)}`)
           .then(r => r.ok ? r.json() : null)
           .then(freshData => {
-            if (freshData && freshData.id) {
-              currentMovie = freshData;
-              renderMovieDetails(currentMovie);
-            }
+            if (freshData && freshData.id) mergeFromApi(freshData);
           })
           .catch(() => {});
       }
     } else if (movieOrId && typeof movieOrId === 'object') {
-      // Instant display from preloaded memory
       currentMovie = movieOrId;
 
-      // Only fetch background enhancement if it is a series that lacks episode data
       const isFileProto = window.location.protocol === 'file:';
-      if (!isFileProto && movieOrId.id && (movieOrId.content_type === 'series' || movieOrId.content_type === 'anime')) {
-        if (!movieOrId.seasons || movieOrId.seasons.length === 0) {
-          fetch(`/api/media/details?id=${encodeURIComponent(movieOrId.id)}`)
-            .then(r => r.ok ? r.json() : null)
-            .then(freshData => {
-              if (freshData && freshData.id && freshData.seasons && freshData.seasons.length > 0) {
-                currentMovie = { ...currentMovie, ...freshData };
-                renderMovieDetails(currentMovie);
-              }
-            })
-            .catch(() => {});
-        }
+      const needsFetch = !isFileProto && movieOrId.id && (!movieOrId.servers || movieOrId.servers.length === 0);
+      const needsSeriesEnhance = !isFileProto && movieOrId.id && (movieOrId.content_type === 'series' || movieOrId.content_type === 'anime' || movieOrId.content_type === 'tv_show') && (!movieOrId.seasons || movieOrId.seasons.length === 0);
+
+      if (needsFetch || needsSeriesEnhance) {
+        fetch(`/api/media/details?id=${encodeURIComponent(movieOrId.id)}`)
+          .then(r => r.ok ? r.json() : null)
+          .then(freshData => {
+            if (freshData && freshData.id) mergeFromApi(freshData);
+          })
+          .catch(() => {});
+      } else if (!isFileProto && movieOrId.id) {
+        // Object already has servers; still hydrate cast + episodes from dedicated endpoints
+        mergeFromApi(movieOrId);
       }
     }
 
@@ -88,12 +158,26 @@ const MovieDetails = (function () {
       console.error('Error in renderMovieDetails:', err);
     }
 
-    modalEl.classList.add('active');
-    modalEl.style.display = 'flex';
+    // Hide main page views to make detail view a dedicated full in-page view
+    const homeView = document.getElementById('home-page-view');
+    const catView = document.getElementById('category-page-view');
+    if (homeView) homeView.style.display = 'none';
+    if (catView) catView.style.display = 'none';
 
-    // Scroll modal to top
-    const container = modalEl.querySelector('.movie-modal-container');
-    if (container) container.scrollTop = 0;
+    modalEl.classList.add('active');
+    modalEl.style.display = 'block';
+
+    // Update back button text based on context
+    const backBtnText = document.querySelector('#movie-modal-back-btn span');
+    if (backBtnText) {
+      if (window.currentCategoryViewName) {
+        backBtnText.textContent = `العودة إلى ${window.currentCategoryViewName}`;
+      } else {
+        backBtnText.textContent = 'العودة للرئيسية';
+      }
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // Refresh Remote Navigation elements
     const rc = window.RemoteControl || (typeof RemoteControl !== 'undefined' ? RemoteControl : null);
@@ -109,6 +193,21 @@ const MovieDetails = (function () {
     }
     modalEl.classList.remove('active');
     modalEl.style.display = 'none';
+
+    const homeView = document.getElementById('home-page-view');
+    const catView = document.getElementById('category-page-view');
+
+    // Restore previous view seamlessly
+    if (window.currentCategoryViewName && catView) {
+      catView.classList.remove('is-hidden');
+      catView.style.display = 'block';
+    } else if (homeView) {
+      homeView.classList.remove('is-hidden');
+      homeView.style.display = 'block';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     const rc = window.RemoteControl || (typeof RemoteControl !== 'undefined' ? RemoteControl : null);
     if (rc && typeof rc.refresh === 'function') {
       setTimeout(() => rc.refresh(), 100);
@@ -141,11 +240,11 @@ const MovieDetails = (function () {
     const attrsContainer = document.getElementById('md-attributes');
     if (attrsContainer) {
       attrsContainer.innerHTML = `
-        <div class="attr-item"><span class="attr-label">اللغة:</span> ${movie.language || 'الإنجليزية'}</div>
-        <div class="attr-item"><span class="attr-label">الترجمة:</span> ${movie.translation || 'مترجم للعربية'}</div>
-        <div class="attr-item"><span class="attr-label">السنة:</span> ${movie.year || '2026'}</div>
-        <div class="attr-item"><span class="attr-label">المدة:</span> ${movie.duration || '92 دقيقة'}</div>
-        <div class="attr-item"><span class="attr-label">الإنتاج:</span> ${movie.production || 'الولايات المتحدة'}</div>
+        <div class="attr-item"><span class="attr-label">اللغة:</span> ${safeHtml(movie.language || 'الإنجليزية')}</div>
+        <div class="attr-item"><span class="attr-label">الترجمة:</span> ${safeHtml(movie.translation || 'مترجم للعربية')}</div>
+        <div class="attr-item"><span class="attr-label">السنة:</span> ${safeHtml(movie.year || '2026')}</div>
+        <div class="attr-item"><span class="attr-label">المدة:</span> ${safeHtml(movie.duration || '92 دقيقة')}</div>
+        <div class="attr-item"><span class="attr-label">الإنتاج:</span> ${safeHtml(movie.production || 'الولايات المتحدة')}</div>
       `;
     }
 
@@ -156,7 +255,7 @@ const MovieDetails = (function () {
       (movie.genres || ['غموض', 'دراما', 'جريمة']).forEach(g => {
         const pill = document.createElement('span');
         pill.className = 'movie-tag-pill';
-        pill.textContent = g;
+        pill.textContent = decodeHtmlEntities(g);
         genresContainer.appendChild(pill);
       });
     }
@@ -174,7 +273,7 @@ const MovieDetails = (function () {
             player.playMedia({
               name: `إعلان: ${movie.arabic_title || movie.title}`,
               category: 'تريلر رسمي',
-              streamUrl: movie.servers[0].stream_url
+              streamUrl: movie.servers[0].stream_url || movie.servers[0].url || ''
             });
           }
         }
@@ -233,25 +332,30 @@ const MovieDetails = (function () {
     // Synopsis
     const synopsisEl = document.getElementById('md-synopsis');
     if (synopsisEl) {
-      synopsisEl.textContent = movie.synopsis || 'تفاصيل وقصة الفيلم قيد التحميل...';
+      synopsisEl.textContent = decodeHtmlEntities(movie.synopsis) || 'تفاصيل وقصة الفيلم قيد التحميل...';
     }
 
-    // Cast & Crew Pills
+    // Cast & Crew Pills - populated from /api/media/cast
     const castContainer = document.getElementById('md-cast-list');
     if (castContainer) {
       castContainer.innerHTML = '';
       const castList = movie.cast || [];
+      if (castList.length === 0) {
+        castContainer.innerHTML = '<div style="color:#94a3b8;font-size:13px;padding:8px 0;">جارٍ تحميل بيانات طاقم العمل...</div>';
+      }
       castList.forEach(actor => {
         const card = document.createElement('div');
         card.className = 'actor-pill-card dpad-focusable';
         card.tabIndex = 0;
+        const photoUrl = actor.photo ? decodeHtmlEntities(actor.photo) : '';
+        const fallbackPhoto = photoUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80';
         card.innerHTML = `
           <div class="actor-photo-circle">
-            <img src="${actor.photo}" alt="${actor.name}" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80'">
+            <img src="${escapeHtml(fallbackPhoto)}" alt="${safeHtml(actor.name)}" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80'">
           </div>
           <div class="actor-names-col">
-            <span class="actor-name-text">${actor.name}</span>
-            <span class="actor-role-text">${actor.role || actor.arabic_name || ''}</span>
+            <span class="actor-name-text">${safeHtml(actor.name || actor.arabic_name || '')}</span>
+            <span class="actor-role-text">${safeHtml(actor.character_name || actor.role || actor.arabic_name || '')}</span>
           </div>
         `;
         castContainer.appendChild(card);
@@ -282,12 +386,21 @@ const MovieDetails = (function () {
         episodesTrack.innerHTML = '';
         const episodes = activeSeason.episodes || [];
 
+        // Sort episodes in strict numerical order (Episode 1, 2, 3, 4...)
+        episodes.sort((a, b) => (parseInt(a.episode_number || 0) - parseInt(b.episode_number || 0)));
+
         function selectEpisode(ep) {
           // Highlight active episode
           const epCards = episodesTrack.querySelectorAll('.episode-card');
           epCards.forEach(c => c.classList.remove('active'));
 
-          // Render servers for this episode
+          // Update servers section heading for clarity
+          const serversTitle = document.querySelector('#md-servers-section .servers-hub-title span');
+          if (serversTitle) {
+            serversTitle.textContent = `سيرفرات مشاهدة: ${movie.arabic_title || movie.title} - ${ep.title || 'الحلقة ' + ep.episode_number}`;
+          }
+
+          // Render servers specifically for THIS selected episode ONLY
           renderServersList(ep.servers || [], `${movie.title} - ${ep.title}`);
         }
 
@@ -359,9 +472,18 @@ const MovieDetails = (function () {
         )))
       }));
 
-      // Add standardized 5-server cluster if available and not already there
+      // Check if current item is a live stream or broadcast channel
+      const isLive = !!(
+        movie.is_live || movie.isLive || String(movie.is_live).toLowerCase() === 'true' ||
+        movie.type === 'live' || movie.content_type === 'live' ||
+        movie.category === 'channels' || movie.category === 'قنوات مباشرة' || movie.category === 'قنوات البث المباشر' ||
+        (movie.id && (String(movie.id).startsWith('live_') || String(movie.id).startsWith('ch_') || String(movie.id).startsWith('iptv_'))) ||
+        (movie.badge && String(movie.badge).includes('مباشر'))
+      );
+
+      // Add standardized 5-server cluster if available and not already there (STRICTLY FOR VOD, NEVER FOR LIVE CHANNELS)
       const targetIdentifier = tmdbId || movie.imdb_id;
-      if (targetIdentifier && !hasEmbedInServers) {
+      if (!isLive && targetIdentifier && !hasEmbedInServers) {
         const isTV = movie.content_type === 'series' || movie.content_type === 'anime';
         const vidlinkEmbed = isTV 
           ? `https://vidlink.pro/tv/${targetIdentifier}/1/1?primaryColor=00e5ff&secondaryColor=ff0055`
@@ -413,7 +535,7 @@ const MovieDetails = (function () {
           badge: 'Vidmoly',
           isEmbed: true
         });
-      } else if (!targetIdentifier && !hasEmbedInServers && allServers.length === 0) {
+      } else if (!isLive && !targetIdentifier && !hasEmbedInServers && allServers.length === 0) {
         const searchTitle = encodeURIComponent(movie.title || movie.arabic_title || '');
         const isTV = movie.content_type === 'series' || movie.content_type === 'anime';
         if (searchTitle) {
@@ -447,8 +569,15 @@ const MovieDetails = (function () {
         btn.tabIndex = 0;
 
         const quality = srv.quality || '1080p';
+        const qLower = quality.toLowerCase();
+        let qClass = 'quality-default';
+        if (qLower.includes('4k') || qLower.includes('uhd')) qClass = 'quality-4k';
+        else if (qLower.includes('1080') || qLower.includes('fhd')) qClass = 'quality-1080p';
+        else if (qLower.includes('720') || qLower.includes('hd')) qClass = 'quality-720p';
+        else if (qLower.includes('web') || qLower.includes('bluray') || qLower.includes('bd')) qClass = 'quality-webdl';
+
         const serverBadge = srv.badge || (idx === 0 ? 'A Tube VIP' : 'A Tube Cloud');
-        const serverTitle = srv.name || `سيرفر A Tube فائق السرعة - ${quality} (سيرفر ${idx + 1})`;
+        const serverTitle = `تشغيل - سيرفر A Tube ${idx + 1}`;
 
         btn.innerHTML = `
           <div style="display: flex; flex-direction: column; gap: 2px;">
@@ -456,7 +585,7 @@ const MovieDetails = (function () {
             <span class="server-name-label">${serverTitle}</span>
           </div>
           <div style="display: flex; align-items: center; gap: 6px;">
-            <span class="server-quality-tag">${quality}</span>
+            <span class="server-quality-tag ${qClass}">${quality}</span>
             <span style="color: var(--primary-cyan); font-size: 16px;">▶</span>
           </div>
         `;
@@ -514,7 +643,7 @@ const MovieDetails = (function () {
               newBtn.innerHTML = `
                 <div style="display: flex; flex-direction: column; gap: 2px;">
                   <span class="server-site-badge">${srv.badge || 'بديل ذكي ⚡'}</span>
-                  <span class="server-name-label">${srv.name}</span>
+                  <span class="server-name-label">تشغيل - سيرفر A Tube ${allServers.length + 1}</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 6px;">
                   <span class="server-quality-tag">${srv.quality || '1080p'}</span>

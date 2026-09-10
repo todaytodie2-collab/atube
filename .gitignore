@@ -3,3 +3,16 @@ __pycache__/
 *.log
 scratch/
 .system_generated/
+catalog.backup.*.json
+*.sqlite-shm
+*.sqlite-wal
+config/iptv_channels.sqlite
+config/iptv_verified_cache.json
+android_app/app/src/main/assets/
+android_app/.gradle/
+android_app/build/
+android_app/app/build/
+.gradle/
+local.properties
+android_app/local.properties
+

@@ -13,6 +13,7 @@ import re
 import json
 import ssl
 import time
+import hashlib
 import urllib.request
 import urllib.parse
 from typing import Dict, List, Any, Optional
@@ -56,45 +57,9 @@ class ContentIngestEngine:
         AI-assisted taxonomic categorization:
         Routes foreign movies, arabic movies, turkish series, indian, anime, WWE, plays, documentaries
         """
-        combined = f"{title} {arabic_title} {' '.join(genres or [])}".lower()
-        combined_norm = re.sub(r'[أإآ]', 'ا', combined).replace('ة', 'ه').replace('ى', 'ي')
-
-        # 1. WWE & Wrestling
-        if any(w in combined_norm for w in ['wwe', 'raw', 'smackdown', 'wrestlemania', 'royal rumble', 'مصارع']):
-            return "wrestling"
-
-        # 2. Plays
-        if any(p in combined_norm for p in ['مسرحي', 'مسرح']):
-            return "plays"
-
-        # 3. Anime & Cartoons
-        if any(a in combined_norm for a in ['انمي', 'anime', 'animation', 'رسوم متحركه', 'كرتون', 'dragon ball', 'one piece', 'attack on titan']):
-            return "anime"
-
-        # 4. Documentaries
-        if any(d in combined_norm for d in ['وثائقي', 'documentary', 'planet earth', 'cosmos']):
-            return "documentary"
-
-        # 5. Turkish
-        if any(t in combined_norm for t in ['تركي', 'turkish', 'قيامه عثمان', 'طائر الرفراف', 'المتوحش', 'اسطنبول']):
-            return "turkish"
-
-        # 6. Indian
-        if any(i in combined_norm for i in ['هندي', 'indian', 'bollywood', 'شاروخان', 'سلمان خان']):
-            return "indian"
-
-        # 7. Arabic (Egyptian, Syrian, Gulf, etc.)
-        if any(ar in combined_norm for ar in ['مصري', 'عربي', 'ولاد رزق', 'الفيل الازرق', 'الاختيار', 'الكبير اوي', 'بيت الروبي']):
-            return "arabic"
-
-        # Check if Arabic alphabet is predominant in title with no English
-        arabic_chars = len(re.findall(r'[\u0600-\u06FF]', combined))
-        latin_chars = len(re.findall(r'[a-zA-Z]', combined))
-        if arabic_chars > latin_chars * 2 and not any(f in combined_norm for f in ['مترجم', 'مدبلج', 'subbed', 'dubbed']):
-            return "arabic"
-
-        # Default fallback is Foreign (Hollywood / Global)
-        return "foreign"
+        from categorizer import SmartCategorizer
+        result = SmartCategorizer.classify(title, arabic_title=arabic_title, content_type_hint=content_type, genres=genres)
+        return result['category']
 
     @classmethod
     def extract_servers_from_html(cls, html: str, base_url: str = "") -> List[Dict[str, Any]]:
@@ -248,24 +213,24 @@ class ContentIngestEngine:
         vid_suffix = f"-{m_vid.group(1)}" if m_vid else ""
         slug_base = re.sub(r'[^\w\u0600-\u06FF]+', '-', clean_title.lower()).strip('-')
         if not slug_base:
-            slug_base = f"item-{abs(hash(clean_title)) % 100000}"
+            slug_base = f"item-{hashlib.md5(clean_title.encode('utf-8')).hexdigest()[:8]}"
         media_id = f"{slug_base}-{year}{vid_suffix}"
 
         media_entry = {
             "id": media_id,
             "title": clean_title,
             "arabic_title": clean_title,
-            "content_type": "series" if "مسلسل" in page_title or "حلقة" in page_title else "movie",
+            "content_type": "series" if "مسلسل" in clean_title or "حلقة" in clean_title or "مسلسلات" in clean_title or category in ["indian_series", "korean_series", "turkish", "arabic_series"] else "movie",
             "category": category,
             "sub_category": "subbed",
             "year": str(year),
             "rating": "★ 8.8 IMDb",
-            "duration": "120 دقيقة" if "movie" in str(page_title).lower() else "45 دقيقة",
+            "duration": "120 دقيقة" if "movie" in clean_title.lower() else "45 دقيقة",
             "quality": "WEB-DL 1080p FHD",
-            "language": "العربية" if category in ["arabic", "arabic_series"] else ("التركية" if category == "turkish" else "الإنجليزية"),
+            "language": "العربية" if category in ["arabic", "arabic_series"] else ("التركية" if category == "turkish" else ("الهندية" if category in ["indian", "indian_series"] else ("الكورية" if category in ["korean_series", "korean"] else "الإنجليزية"))),
             "translation": "مترجم للعربية" if category not in ["arabic", "arabic_series"] else "ناطق بالعربية",
             "production": "إنتاج حقيقي حصري",
-            "country": "مصر" if category in ["arabic", "arabic_series"] else ("تركيا" if category == "turkish" else "الولايات المتحدة"),
+            "country": "مصر" if category in ["arabic", "arabic_series"] else ("تركيا" if category == "turkish" else ("الهند" if category in ["indian", "indian_series"] else ("كوريا" if category in ["korean_series", "korean"] else "الولايات المتحدة"))),
             "genres": ["أكشن", "دراما", "إثارة"],
             "poster": poster,
             "backdrop": poster,
@@ -378,7 +343,11 @@ class ContentIngestEngine:
             it_norm = cls.normalize_title_for_dedup(it.get("title", ""))
             it_year = str(it.get("year", "")).strip()
             if it_norm and new_norm and (it_norm == new_norm or it_norm in new_norm or new_norm in it_norm):
-                if not new_year or not it_year or new_year == it_year:
+                if new_year and it_year and new_year == it_year:
+                    if it.get("content_type") == new_entry.get("content_type"):
+                        existing_idx = idx
+                        break
+                elif not new_year and not it_year and it_norm == new_norm:
                     if it.get("content_type") == new_entry.get("content_type"):
                         existing_idx = idx
                         break
@@ -416,80 +385,31 @@ class ContentIngestEngine:
     @classmethod
     def seed_initial_verified_content(cls):
         """
-        Seeds genuine content with authentic 5-server streaming suites across all requested categories:
-        1. Foreign: Spider-Man: Brand New Day (2026)
-        2. Arabic Movies: Real titles from category aflam-arbe
-        3. Arabic Series: Real titles from category mslslat-arbe
-        4. Turkish Series: Real titles from category mslslat-trkeh
-        5. Anime: Real titles from category mslslat-anme
-        6. Indian Movies: Real titles from category aflam-hnde
+        Seeds genuine content from catalog.json into SQLite database if empty.
+        No fake data is generated.
         """
-        spiderman_meta = {
-            "title": "Spider-Man: Brand New Day",
-            "arabic_title": "سبايدرمان: يوم جديد كلياً",
-            "year": "2026",
-            "rating": "★ 8.8 IMDb",
-            "poster": "https://image.tmdb.org/t/p/w500/bjiS5ipwxb9JFy3XRRN4OAilSeX.jpg",
-            "servers": [
-                {
-                    "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-                    "stream_url": "https://vipserver.liiivideo.com/embed-asxesyao132v.html",
-                    "quality": "1080p FHD",
-                    "site": "Vipserver",
-                    "badge": "VIP ⭐",
-                    "isEmbed": True
-                },
-                {
-                    "name": "سيرفر Mixdrop (سحابي سريع)",
-                    "stream_url": "https://mixdrop.top/e/9wnx098lfm77j9",
-                    "quality": "1080p HD",
-                    "site": "Mixdrop",
-                    "badge": "Mixdrop",
-                    "isEmbed": True
-                },
-                {
-                    "name": "سيرفر Hgcloud (سحابي مباشر)",
-                    "stream_url": "https://hgcloud.to/e/7288k22qybqn",
-                    "quality": "1080p HD",
-                    "site": "Hgcloud",
-                    "badge": "Hgcloud ⚡",
-                    "isEmbed": True
-                },
-                {
-                    "name": "سيرفر Minochinos (بديل فائق)",
-                    "stream_url": "https://minochinos.com/embed/kuna6rw7n65p",
-                    "quality": "1080p HD",
-                    "site": "Minochinos",
-                    "badge": "Minochinos",
-                    "isEmbed": True
-                },
-                {
-                    "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-                    "stream_url": "https://vidmoly.net/embed-2aball2dvjdd.html",
-                    "quality": "1080p HD",
-                    "site": "Vidmoly",
-                    "badge": "Vidmoly",
-                    "isEmbed": True
-                }
-            ]
-        }
+        catalog_path = os.path.join(BASE_DIR, "catalog.json")
+        if not os.path.exists(catalog_path):
+            print("[ContentIngestEngine] catalog.json not found. Skipping seed.")
+            return
 
-        cls.ingest_from_play_url("https://iegybest.cimawbas.tv/play.php?vid=2e4d94871", custom_meta=spiderman_meta, override_category="foreign")
+        try:
+            with open(catalog_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if not isinstance(data, list) or not data:
+                    print("[ContentIngestEngine] catalog.json is empty. Skipping seed.")
+                    return
 
-        sections = [
-            ("https://iegybest.cimawbas.tv/category.php?cat=aflam-arbe", "arabic"),
-            ("https://iegybest.cimawbas.tv/category.php?cat=mslslat-arbe", "arabic_series"),
-            ("https://iegybest.cimawbas.tv/category.php?cat=mslslat-trkeh", "turkish"),
-            ("https://iegybest.cimawbas.tv/category.php?cat=mslslat-anme", "anime"),
-            ("https://iegybest.cimawbas.tv/category.php?cat=aflam-hnde", "indian")
-        ]
-        for url, cat in sections:
-            try:
-                cls.crawl_category(url, cat, max_items=5)
-            except Exception as e:
-                print(f"[ContentIngestEngine] Crawl error for {cat}: {e}")
+                print(f"[ContentIngestEngine] Seeding {len(data)} real items from catalog.json into SQLite...")
+                for item in data:
+                    try:
+                        VODDatabase.upsert_media(item)
+                    except Exception as e:
+                        print(f"[ContentIngestEngine] Error seeding item {item.get('id')}: {e}")
 
-        print("[ContentIngestEngine] Full verified multi-category catalog populated successfully.")
+                print("[ContentIngestEngine] Real catalog seeded successfully.")
+        except Exception as e:
+            print(f"[ContentIngestEngine] Error reading catalog.json: {e}")
 
     @classmethod
     def harvest_all_categories(cls, max_items_per_cat: int = 15, max_pages: int = 3) -> int:
@@ -502,6 +422,7 @@ class ContentIngestEngine:
             ("https://iegybest.cimawbas.tv/category.php?cat=mslslat-trkeh", "turkish"),
             ("https://iegybest.cimawbas.tv/category.php?cat=mslslat-anme", "anime"),
             ("https://iegybest.cimawbas.tv/category.php?cat=aflam-hnde", "indian"),
+            ("https://iegybest.cimawbas.tv/category.php?cat=mslslat-hnde", "indian_series"),
             ("https://iegybest.cimawbas.tv/category.php?cat=aflam-2025", "foreign"),
             ("https://iegybest.cimawbas.tv/category.php?cat=aflam-2024", "foreign")
         ]
@@ -516,34 +437,62 @@ class ContentIngestEngine:
         return total
 
     @classmethod
-    def harvest_multi_portal(cls, items_per_portal: int = 8) -> Dict[str, int]:
+    def harvest_multi_portal(cls, items_per_portal: int = 50, min_page: int = 1, max_page: int = 30) -> Dict[str, int]:
         """
-        Traverses multiple prominent portals:
-        1. iegybest / cimawbas
-        2. FaselHD (fasel-hd.co)
-        Runs deduplication and merges all mirrors into unified media cards.
+        Traverses multiple prominent portals with deep page scanning:
+        - Scans from min_page (default 1) to max_page (default 30, up to 200).
+        - Concurrently extracts and validates genuine streaming mirrors.
+        - Deduplicates and synchronizes to catalog.json & SQLite.
         """
-        from portal_crawlers import FaselHDAdapter
-        results = {"cimawbas": 0, "faselhd": 0}
+        from portal_crawlers import FaselHDAdapter, TopCinemaAdapter
+        results = {"cimawbas": 0, "faselhd": 0, "topcinema": 0}
 
-        # 1. FaselHD sections
-        print("[MultiPortal] Harvesting from FaselHD (fasel-hd.co)...")
         fasel_sections = [
             ("foreign", "movies"),
-            ("indian", "hindi"),
+            ("foreign_series", "series"),
             ("anime", "anime"),
-            ("foreign_series", "series")
+            ("indian", "hindi")
         ]
         for cat_name, sec_key in fasel_sections:
             try:
-                items = FaselHDAdapter.crawl_section(sec_key, max_items=items_per_portal)
+                items = FaselHDAdapter.crawl_section(
+                    sec_key,
+                    min_page=min_page,
+                    max_page=max_page,
+                    max_items=items_per_portal
+                )
                 for item in items:
                     cls._sync_to_catalog_json(item)
                     VODDatabase.upsert_media(item)
                 results["faselhd"] += len(items)
-                print(f"[MultiPortal] FaselHD {sec_key}: Ingested/Merged {len(items)} titles.")
+                print(f"[MultiPortal] FaselHD {sec_key} (Pages {min_page}..{min(max_page, 200)}): Ingested/Merged {len(items)} titles.", flush=True)
             except Exception as e:
-                print(f"[MultiPortal] FaselHD error for {sec_key}: {e}")
+                print(f"[MultiPortal] FaselHD error for {sec_key}: {e}", flush=True)
+
+        # 2. TopCinema - crawl /recent/ and sections
+        try:
+            # Crawl recent page for latest additions
+            recent_items = TopCinemaAdapter.fetch_recent(max_items=items_per_portal)
+            for item in recent_items:
+                cls._sync_to_catalog_json(item)
+                VODDatabase.upsert_media(item)
+            results["topcinema"] += len(recent_items)
+            print(f"[MultiPortal] TopCinema /recent/: Ingested/Merged {len(recent_items)} titles.", flush=True)
+        except Exception as e:
+            print(f"[MultiPortal] TopCinema /recent/ error: {e}", flush=True)
+
+        # 3. TopCinema sections
+        topcinema_sections = ["foreign", "turkish", "anime", "arabic", "arabic_series"]
+        for sec in topcinema_sections:
+            try:
+                items = TopCinemaAdapter.crawl_section(sec, max_items=items_per_portal)
+                for item in items:
+                    cls._sync_to_catalog_json(item)
+                    VODDatabase.upsert_media(item)
+                results["topcinema"] += len(items)
+                print(f"[MultiPortal] TopCinema {sec}: Ingested/Merged {len(items)} titles.", flush=True)
+            except Exception as e:
+                print(f"[MultiPortal] TopCinema {sec} error: {e}", flush=True)
 
         return results
 
@@ -617,7 +566,27 @@ class ContinuousSyncEngine:
         except Exception:
             pass
 
-        # 3. Episode Completer: Scan series for missing episodes
+        # 3. Real-time poll of latest added on TopCinema
+        try:
+            from portal_crawlers import TopCinemaAdapter
+            h_tc = ContentIngestEngine.fetch_html("https://topcinema.io/recent/")
+            if h_tc:
+                links = re.findall(r'href=["\'](https://topcinema\.io/(?:movies|series|anime|turkish-series|arabic-movies|arabic-series)/[^"\']+)["\']', h_tc)
+                for post_url in list(dict.fromkeys(links))[:4]:
+                    if post_url not in cls._seen_urls:
+                        cls._seen_urls.add(post_url)
+                        try:
+                            entry = TopCinemaAdapter.extract_post(post_url)
+                            if entry:
+                                ContentIngestEngine._sync_to_catalog_json(entry)
+                                VODDatabase.upsert_media(entry)
+                                print(f"[ContinuousSyncEngine] Real-time caught TopCinema release: '{entry.get('title')}'")
+                        except Exception:
+                            pass
+        except Exception:
+            pass
+
+        # 4. Episode Completer: Scan series for missing episodes
         cls.complete_missing_episodes()
 
     @classmethod

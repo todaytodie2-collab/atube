@@ -40,9 +40,9 @@ const InAppPlayer = (function () {
 
     videoEl.playsInline = true;
 
-    // Enforce anti-popup sandbox & strict security attributes on embed iframe
+    // Enforce anti-popup & strict security attributes on embed iframe
     if (iframeEl) {
-      iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
+      iframeEl.removeAttribute('sandbox'); // Removed sandbox attribute to allow Minochinos, Mixdrop & Vidmoly embeds without iframe restrictions
       iframeEl.setAttribute('referrerpolicy', 'no-referrer');
       iframeEl.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
     }
@@ -360,17 +360,22 @@ const InAppPlayer = (function () {
     if (!serverMenu) return;
 
     serverMenu.innerHTML = '';
+    const isLive = isLiveMediaItem(currentPlayingItem);
+
     candidateServers.forEach((srv, idx) => {
+      if (isLive && (srv.isEmbed || String(srv.url).includes('vidlink') || String(srv.url).includes('multiembed'))) {
+        return;
+      }
       const item = document.createElement('div');
       item.className = `dropdown-item ${idx === currentServerIndex ? 'active' : ''}`;
-      item.innerHTML = `<span>${srv.name}</span> <small style="opacity:0.75;">(${srv.quality || 'FHD'})</small>`;
+      item.innerHTML = `<span>${srv.name}</span> <small style="opacity:0.75;">(${srv.quality || (isLive ? 'بث مباشر HD' : 'FHD')})</small>`;
       item.addEventListener('click', (e) => {
         e.stopPropagation();
         serverMenu.classList.remove('active');
         if (idx !== currentServerIndex) {
           currentServerIndex = idx;
           flushDecoderBuffer();
-          loadStreamSource(candidateServers[currentServerIndex], savedPlayheadTime);
+          loadStreamSource(candidateServers[currentServerIndex], isLive ? 0 : savedPlayheadTime);
           showGestureFeedback(`⚡ تم التبديل إلى: ${srv.name}`);
         }
       });
@@ -723,22 +728,45 @@ const InAppPlayer = (function () {
     }
   }
 
+  // Detect whether an item is a live stream or broadcast channel
+  function isLiveMediaItem(item) {
+    if (!item) return false;
+    const type = String(item.type || item.content_type || '').trim().toLowerCase();
+    const cat = String(item.category || '').trim().toLowerCase();
+    const id = String(item.id || '').trim().toLowerCase();
+    const badge = String(item.badge || '').trim().toLowerCase();
+    const url = String(item.streamUrl || item.videoUrl || item.url || '').trim().toLowerCase();
+
+    if (item.is_live === true || item.isLive === true || String(item.is_live).toLowerCase() === 'true' || item.is_live === 1) return true;
+    if (type === 'live' || type === 'channel' || type === 'channels' || type === 'iptv') return true;
+    if (cat === 'channels' || cat === 'قنوات مباشرة' || cat === 'قنوات البث المباشر' || cat === 'live' || cat === 'iptv') return true;
+    if (id.startsWith('live_') || id.startsWith('ch_') || id.startsWith('iptv_')) return true;
+    if (badge.includes('مباشر') || badge.includes('live')) return true;
+    if (url.includes('.m3u8') && !item.tmdb_id && !item.imdb_id && (type === '' || type === 'live')) return true;
+    return false;
+  }
+
   // Build stateless list of candidate servers for media item
   function buildCandidateServerPool(item) {
     const pool = [];
     const selectedUrl = item.streamUrl || item.videoUrl || '';
+    const isLive = isLiveMediaItem(item);
 
     // 1. Direct item servers if provided
     if (Array.isArray(item.servers) && item.servers.length > 0) {
       item.servers.forEach(s => {
         const sUrl = s.url || s.streamUrl || s.stream_url;
         if (sUrl) {
+          // If this is a live channel, NEVER include external VOD embed servers
+          if (isLive && (s.isEmbed || sUrl.includes('vidlink') || sUrl.includes('multiembed') || sUrl.includes('vidsrc') || sUrl.includes('2embed') || sUrl.includes('/embed/'))) {
+            return;
+          }
           pool.push({
-            name: s.name || 'سيرفر تشغيل',
+            name: s.name || (isLive ? 'سيرفر بث حي' : 'سيرفر تشغيل'),
             url: sUrl,
-            quality: s.quality || '1080p FHD',
+            quality: s.quality || (isLive ? 'بث مباشر HD' : '1080p FHD'),
             is_hls: s.is_hls ?? (sUrl.includes('.m3u8')),
-            isEmbed: s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo')
+            isEmbed: isLive ? false : (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo'))
           });
         }
       });
@@ -753,17 +781,18 @@ const InAppPlayer = (function () {
         pool.unshift(chosen);
       } else if (matchIdx === -1) {
         pool.unshift({
-          name: item.name || 'السيرفر المختار',
+          name: isLive ? 'بث القناة المباشر' : (item.name || 'السيرفر المختار'),
           url: selectedUrl,
-          quality: '1080p FHD',
-          is_hls: selectedUrl.includes('.m3u8'),
-          isEmbed: item.isEmbed || selectedUrl.includes('embed') || selectedUrl.includes('/e/')
+          quality: isLive ? 'بث حي HD' : '1080p FHD',
+          is_hls: isLive ? true : selectedUrl.includes('.m3u8'),
+          isEmbed: isLive ? false : (item.isEmbed || selectedUrl.includes('embed') || selectedUrl.includes('/e/'))
         });
       }
     }
 
-    // 3. Guaranteed Procedural Fallback Mirrors if pool is minimal
-    if (pool.length < 2) {
+    // 3. Guaranteed Procedural Fallback Mirrors ONLY for VOD movies & series!
+    // NEVER EVER push external VOD embed servers for live broadcast channels!
+    if (!isLive && pool.length < 2) {
       const cleanTarget = item.tmdb_id || item.imdb_id || 'tt6263850';
       const cleanImdb = item.imdb_id || 'tt6263850';
       const isSeries = item.content_type === 'series' || item.content_type === 'anime';
@@ -787,6 +816,7 @@ const InAppPlayer = (function () {
   // Execute Deep Search Fallback across search engines when all standard servers fail
   async function executeDeepSearchFallback() {
     if (!currentPlayingItem) return null;
+    if (isLiveMediaItem(currentPlayingItem)) return null; // Prevent deep search on live broadcast channels
     const title = currentPlayingItem.title || currentPlayingItem.arabic_title || currentPlayingItem.name || '';
     const year = currentPlayingItem.year || '';
     const cType = currentPlayingItem.content_type || 'movie';
@@ -878,7 +908,7 @@ const InAppPlayer = (function () {
     // If it's an embed player, load immediately with ZERO latency (no blocking fetch!)
     if (isEmbedUrl) {
       if (iframeEl) {
-        iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
+        iframeEl.removeAttribute('sandbox'); // Removed sandbox attribute to prevent Minochinos/Vidmoly errors
         iframeEl.setAttribute('referrerpolicy', 'no-referrer');
         iframeEl.setAttribute('allowfullscreen', 'true');
         iframeEl.setAttribute('webkitallowfullscreen', 'true');
@@ -903,8 +933,7 @@ const InAppPlayer = (function () {
       try {
         const controller = new AbortController();
         const tId = setTimeout(() => controller.abort(), 1200);
-        const isMovie = currentPlayingItem?.content_type === 'movie';
-        const resp = await fetch(`/api/stream/resolve?url=${encodeURIComponent(targetUrl)}&is_movie=${isMovie}`, {
+        const resp = await fetch(`/api/stream/resolve?url=${encodeURIComponent(targetUrl)}`, {
           signal: controller.signal
         });
         clearTimeout(tId);
@@ -982,8 +1011,24 @@ const InAppPlayer = (function () {
         }
         videoEl.removeEventListener('loadedmetadata', onLoaded);
       });
-      videoEl.play().catch(e => {
-        console.log('Direct play handled:', e);
+
+      const playTimeout = setTimeout(() => {
+        if (videoEl.paused || videoEl.readyState < 2) {
+          console.warn('[A Tube Player] Direct play timeout - stream may be unavailable');
+          if (typeof showPlayerError === 'function') {
+            showPlayerError('فشل تشغيل الفيديو - قد يكون السيرفر غير متاح');
+          }
+        }
+      }, 8000);
+
+      videoEl.play().then(() => {
+        clearTimeout(playTimeout);
+      }).catch(e => {
+        clearTimeout(playTimeout);
+        console.warn('[A Tube Player] Direct play failed:', e);
+        if (typeof showPlayerError === 'function') {
+          showPlayerError('فشل تشغيل الفيديو تلقائياً - اضغط للمحاولة مرة أخرى');
+        }
       });
     }
   }
@@ -1023,15 +1068,59 @@ const InAppPlayer = (function () {
     currentServerIndex = 0;
     candidateServers = buildCandidateServerPool(item);
 
+    const isLive = isLiveMediaItem(item);
+    const serverBtn = document.getElementById('player-header-server-btn');
+    const serverWrap = serverBtn ? serverBtn.closest('.player-dropdown-wrap') : null;
+
+    // Check Player Server Button State for Live Channels vs VOD
+    if (isLive) {
+      // If live channel has no alternative live streams (<=1), hide the servers button completely!
+      // If it has multiple live stream sources, display button for live stream switching.
+      if (candidateServers.length <= 1) {
+        if (serverWrap) serverWrap.style.display = 'none';
+        else if (serverBtn) serverBtn.style.display = 'none';
+      } else {
+        if (serverWrap) serverWrap.style.display = '';
+        if (serverBtn) {
+          serverBtn.style.display = '';
+          serverBtn.title = 'اختيار سيرفر البث المباشر البديل';
+        }
+      }
+      const badgeEl = document.getElementById('player-badge');
+      if (badgeEl) {
+        badgeEl.textContent = 'مباشر HD';
+        badgeEl.style.display = 'inline-block';
+      }
+      const subTitleEl = document.getElementById('player-sub-title');
+      if (subTitleEl) subTitleEl.textContent = 'بث حي ومباشر';
+      const scrubber = document.querySelector('.player-timeline-wrapper');
+      if (scrubber) scrubber.style.opacity = '0.35';
+    } else {
+      if (serverWrap) serverWrap.style.display = '';
+      if (serverBtn) {
+        serverBtn.style.display = '';
+        serverBtn.title = 'اختيار سيرفر البث';
+      }
+      const badgeEl = document.getElementById('player-badge');
+      if (badgeEl) {
+        badgeEl.textContent = item.quality || '1080p FHD';
+        badgeEl.style.display = 'inline-block';
+      }
+      const subTitleEl = document.getElementById('player-sub-title');
+      if (subTitleEl) subTitleEl.textContent = 'سيرفر التشغيل السحابي';
+      const scrubber = document.querySelector('.player-timeline-wrapper');
+      if (scrubber) scrubber.style.opacity = '1';
+    }
+
     // Update Player UI Headers
     const titleEl = document.getElementById('player-title');
-    if (titleEl) titleEl.textContent = item.name || item.title || 'بث مباشر';
+    if (titleEl) titleEl.textContent = item.name || item.title || (isLive ? 'قناة بث مباشر' : 'عمل سينمائي');
 
     const miniTitle = document.getElementById('mini-track-title');
-    if (miniTitle) miniTitle.textContent = item.name || item.title || 'بث مباشر';
+    if (miniTitle) miniTitle.textContent = item.name || item.title || (isLive ? 'قناة بث مباشر' : 'عمل سينمائي');
 
     const miniSub = document.getElementById('mini-track-sub');
-    if (miniSub) miniSub.textContent = item.category || 'A Tube Stream';
+    if (miniSub) miniSub.textContent = item.category || (isLive ? 'قنوات مباشرة' : 'A Tube Stream');
 
     // Show Modal
     modalEl.classList.add('active');
@@ -1039,8 +1128,10 @@ const InAppPlayer = (function () {
     // Flush previous buffer
     flushDecoderBuffer();
 
-    // Check for saved resume position
-    checkResumePlayback(item);
+    // Check for saved resume position (strictly for VOD, never for live channels)
+    if (!isLive) {
+      checkResumePlayback(item);
+    }
 
     // Start with primary server
     if (candidateServers.length > 0) {
@@ -1134,7 +1225,20 @@ const InAppPlayer = (function () {
     isModalActive: () => modalEl && modalEl.classList.contains('active'),
     getCurrentPlaying: () => currentPlayingItem,
     getCandidateServers: () => candidateServers,
-    getCurrentServerIndex: () => currentServerIndex
+    getCurrentServerIndex: () => currentServerIndex,
+    showPlayerError: (msg) => {
+      if (!modalEl) return;
+      let errEl = document.getElementById('player-error-toast');
+      if (!errEl) {
+        errEl = document.createElement('div');
+        errEl.id = 'player-error-toast';
+        errEl.style.cssText = 'position:absolute;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(255,0,0,0.85);color:#fff;padding:10px 20px;border-radius:8px;font-size:14px;z-index:9999;pointer-events:none;';
+        modalEl.appendChild(errEl);
+      }
+      errEl.textContent = msg;
+      errEl.style.display = 'block';
+      setTimeout(() => { if (errEl) errEl.style.display = 'none'; }, 4000);
+    }
   };
 })();
 

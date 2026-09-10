@@ -12,6 +12,12 @@ const CATEGORY_DEFINITIONS = [
     desc: 'أحدث وأقوى إصدارات هوليوود والسينما العالمية بجودة Ultra HD 4K مع سيرفرات مشاهدة سريعة'
   },
   {
+    key: 'مسلسلات أجنبي',
+    title: 'مسلسلات أجنبي',
+    icon: '📺',
+    desc: 'أقوى المسلسلات الأجنبية والعالمية مترجمة بجميع المواسم والحلقات الكاملة'
+  },
+  {
     key: 'أفلام عربي',
     title: 'أفلام عربي',
     icon: '🎥',
@@ -24,10 +30,28 @@ const CATEGORY_DEFINITIONS = [
     desc: 'روائع الدراما المصرية والسورية والخليجية بحلقات كاملة'
   },
   {
-    key: 'مسلسلات تركي',
-    title: 'مسلسلات وأفلام تركي',
+    key: 'أفلام تركي',
+    title: 'أفلام تركي',
     icon: '🇹🇷',
-    desc: 'أضخم الأعمال التركية التاريخية والدرامية المدبلجة والمترجمة'
+    desc: 'روائع السينما التركية الرومانسية والدرامية والأكشن مترجمة ومدبلجة'
+  },
+  {
+    key: 'مسلسلات تركي',
+    title: 'مسلسلات تركي',
+    icon: '🇹🇷',
+    desc: 'أضخم المسلسلات التركية التاريخية والدرامية المدبلجة والمترجمة'
+  },
+  {
+    key: 'أفلام أنمي',
+    title: 'أفلام أنمي',
+    icon: '⛩️',
+    desc: 'أقوى أفلام الأنمي الياباني والرسوم المتحركة العالمية بجودة عالية'
+  },
+  {
+    key: 'مسلسلات أنمي',
+    title: 'مسلسلات أنمي',
+    icon: '⛩️',
+    desc: 'حلقات ومواسم مسلسلات الأنمي والكارتون الأسطورية مترجمة ومدبلجة'
   },
   {
     key: 'أفلام هندي',
@@ -36,16 +60,16 @@ const CATEGORY_DEFINITIONS = [
     desc: 'أقوى أفلام الأكشن والإثارة والدراما الهندية المترجمة بجودة فائقة'
   },
   {
+    key: 'مسلسلات هندي',
+    title: 'مسلسلات هندي',
+    icon: '🇮🇳',
+    desc: 'أشهر وأحدث المسلسلات الهندية والدراما المدبلجة'
+  },
+  {
     key: 'قنوات مباشرة',
     title: 'قنوات البث المباشر HD',
     icon: '📺',
     desc: 'بث حي ومباشر بدون تقطيع للقنوات الإخبارية والمنوعة والرياضية'
-  },
-  {
-    key: 'أنمي',
-    title: 'الأنمي والكارتون',
-    icon: '⛩️',
-    desc: 'عالم الأنمي الياباني ومسلسلات الكارتون الممتعة مترجمة ومدبلجة'
   },
   {
     key: 'مصارعة حرة',
@@ -146,6 +170,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 4. Render Hero Billboard Banner & Category Carousels
   renderHeroBillboard();
   renderHomeCarousels();
+
+  // 4b. Background-preload API feeds for every home category, then re-render
+  //     so the carousels reflect live /api/media/feed data (one card per series).
+  preloadHomeFeeds().then(() => {
+    renderHomeCarousels();
+    if (window.RemoteControl && typeof RemoteControl.refresh === 'function') {
+      setTimeout(() => RemoteControl.refresh(), 100);
+    }
+  }).catch(() => {});
 
   // 5. Setup App Navigation (Sidebar, Category Internal Pages, Quick Tabs)
   setupSidebarNavigation();
@@ -333,19 +366,31 @@ function createMediaCard(m, index = 0) {
   card.tabIndex = 0;
   card.dataset.index = index;
 
-  const subLabel = (m.content_type === 'series' || m.content_type === 'anime')
-    ? `${m.total_seasons || 1} مواسم • حلقات كاملة`
-    : `${(m.servers && m.servers.length) || m.server_count || 3} سيرفرات متاحة`;
+  const isSeries = (m.content_type === 'series' || m.content_type === 'anime' || m.content_type === 'tv_show');
+  let subLabel;
+  if (isSeries) {
+    const epCount = (m.total_episodes || m.episode_count || 0);
+    const seasonCount = m.total_seasons || 1;
+    if (epCount > 1) {
+      subLabel = `${epCount} حلقة • ${seasonCount} موسم • حلقات كاملة`;
+    } else if (epCount === 1) {
+      subLabel = `مسلسل • ${seasonCount} موسم`;
+    } else {
+      subLabel = `${seasonCount || 1} مواسم • حلقات كاملة`;
+    }
+  } else {
+    subLabel = `${(m.servers && m.servers.length) || m.server_count || 3} سيرفرات متاحة`;
+  }
 
   const fallbackSvg = (typeof MediaCatalog !== 'undefined' && MediaCatalog.generateProceduralPosterSVG)
     ? MediaCatalog.generateProceduralPosterSVG(m.title, m.arabic_title, m.year, m.category_name || m.category, m.rating)
     : 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 300\' fill=\'%2308101a\'/%3E';
 
   const posterSrc = m.poster || fallbackSvg;
-  const cleanTitle = escapeHtml(m.arabic_title || m.title || 'عمل سينمائي');
-  const cleanRating = escapeHtml(m.rating || '★ 8.5 IMDb');
-  const cleanSubLabel = escapeHtml(subLabel);
-  const cleanAlt = escapeHtml(m.title || '');
+  const cleanTitle = safeHtml(m.arabic_title || m.title || 'عمل سينمائي');
+  const cleanRating = safeHtml(m.rating || '★ 8.5 IMDb');
+  const cleanSubLabel = safeHtml(subLabel);
+  const cleanAlt = safeHtml(m.title || '');
 
   card.innerHTML = `
     <div class="program-thumb">
@@ -428,7 +473,11 @@ function createChannelCard(ch, index = 0) {
     e.stopPropagation();
     const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
     if (player && typeof player.playMedia === 'function') {
-      player.playMedia(ch);
+      player.playMedia({
+        ...ch,
+        is_live: true,
+        category: ch.category || 'قنوات مباشرة'
+      });
     }
   });
 
@@ -440,7 +489,7 @@ function getDefaultMoviesFallback(categoryKey) {
   return [];
 }
 
-// Helper: Fetch items for a category
+// Helper: Fetch items for a category (API-backed with in-memory fallback)
 function getItemsForCategory(categoryKey) {
   if (categoryKey === 'قنوات مباشرة' || categoryKey === 'channels' || categoryKey === 'قنوات البث المباشر') {
     if (window.IPTVEngine && typeof window.IPTVEngine.getDefaultChannels === 'function') {
@@ -449,9 +498,22 @@ function getItemsForCategory(categoryKey) {
   }
 
   const catalog = window.MediaCatalog || (typeof MediaCatalog !== 'undefined' ? MediaCatalog : null);
+
+  // Prefer the API-backed, cached + consolidated feed (one card per series)
+  if (catalog && typeof catalog.getCachedFeed === 'function') {
+    const cached = catalog.getCachedFeed(categoryKey, 1, 40);
+    if (cached && cached.length > 0) return cached;
+  }
+
+  // Fallback to the in-memory catalog (file:// or cache miss)
   if (catalog && typeof catalog.getFeed === 'function') {
     const items = catalog.getFeed(categoryKey) || [];
-    if (items.length > 0) return items;
+    if (items.length > 0) {
+      if (typeof catalog.consolidateSeriesItems === 'function') {
+        return catalog.consolidateSeriesItems(items);
+      }
+      return items;
+    }
   }
 
   if (categoryKey === 'قنوات مباشرة' || categoryKey === 'channels') {
@@ -461,6 +523,17 @@ function getItemsForCategory(categoryKey) {
   }
   return [];
 }
+
+// Preload API feeds for all home categories in parallel (non-blocking)
+async function preloadHomeFeeds() {
+  const catalog = window.MediaCatalog || (typeof MediaCatalog !== 'undefined' ? MediaCatalog : null);
+  if (!catalog || typeof catalog.fetchFeed !== 'function') return;
+  const keys = CATEGORY_DEFINITIONS.map(d => d.key).filter(k => k !== 'قنوات مباشرة');
+  try {
+    await Promise.all(keys.map(k => catalog.fetchFeed(k, 1, 40).catch(() => null)));
+  } catch (_) {}
+}
+
 
 // Render Hero Billboard Banner with real featured movie or keep empty if none
 function renderHeroBillboard() {
@@ -490,15 +563,15 @@ function renderHeroBillboard() {
   contentEl.innerHTML = `
     <div class="hero-badge">
       <span>★</span>
-      <span>${escapeHtml(featured.rating || '★ 8.8 IMDb')}</span>
+      <span>${safeHtml(featured.rating || '★ 8.8 IMDb')}</span>
       <span>•</span>
-      <span>${escapeHtml(featured.quality || '1080p FHD')}</span>
+      <span>${safeHtml(featured.quality || '1080p FHD')}</span>
       <span>•</span>
-      <span>${escapeHtml(featured.year || '2026')}</span>
+      <span>${safeHtml(featured.year || '2026')}</span>
     </div>
-    <h1 class="hero-title">${escapeHtml(featured.arabic_title || featured.title)}</h1>
-    <div class="hero-subtitle">${escapeHtml(featured.title !== featured.arabic_title ? featured.title : (featured.translation || 'مترجم للعربية'))}</div>
-    <p class="hero-desc">${escapeHtml(featured.synopsis || '')}</p>
+    <h1 class="hero-title">${safeHtml(featured.arabic_title || featured.title)}</h1>
+    <div class="hero-subtitle">${safeHtml(featured.title !== featured.arabic_title ? featured.title : (featured.translation || 'مترجم للعربية'))}</div>
+    <p class="hero-desc">${safeHtml(featured.synopsis || '')}</p>
     <div class="hero-actions">
       <button class="btn-primary dpad-focusable" id="hero-watch-btn">
         <span>▶</span>
@@ -719,9 +792,9 @@ function renderCategoryGrid(items, categoryKey) {
   }
 
   items.forEach((item, idx) => {
-    const isLiveChannel = categoryKey === 'قنوات مباشرة' || 
-                          item.is_live === true || 
-                          (item.category && (item.category.includes('قنوات') || item.category === 'الأخبار' || item.category === 'الوثائقيات' || item.category === 'إسلامية ودينية')) && item.streamUrl;
+    const isLiveChannel = categoryKey === 'قنوات مباشرة' ||
+                          item.is_live === true ||
+                          (item.category && item.streamUrl && (item.category.includes('قنوات') || item.category === 'الأخبار' || item.category === 'الوثائقيات' || item.category === 'إسلامية ودينية'));
     if (isLiveChannel) {
       grid.appendChild(createChannelCard(item, idx));
     } else {
@@ -786,11 +859,6 @@ function showHomeView() {
   if (window.RemoteControl) setTimeout(() => RemoteControl.refresh(), 100);
 }
 
-// Compatibility stubs
-function renderProgramsSection() {}
-function renderLiveChannelsSection() {}
-function renderFeaturedVideosSection() {}
-
 // Sidebar & App Navigation
 function setupSidebarNavigation() {
   const sidebar = document.getElementById('app-sidebar');
@@ -804,6 +872,41 @@ function setupSidebarNavigation() {
         if (drawerOverlay) drawerOverlay.classList.toggle('active');
       } else {
         sidebar.classList.toggle('collapsed');
+      }
+    });
+  }
+
+  if (drawerOverlay && sidebar) {
+    drawerOverlay.addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+      drawerOverlay.classList.remove('active');
+    });
+  }
+
+  // Mobile Bottom Navigation Bar Actions
+  const mobileNavBtns = document.querySelectorAll('.mobile-nav-btn[data-target]');
+  mobileNavBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      mobileNavBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.getAttribute('data-target');
+      if (target === 'home') {
+        showHomeView();
+      } else {
+        showCategoryView(target);
+      }
+      if (sidebar) sidebar.classList.remove('mobile-open');
+      if (drawerOverlay) drawerOverlay.classList.remove('active');
+    });
+  });
+
+  const mobileNavSearch = document.getElementById('mobile-nav-search-btn');
+  if (mobileNavSearch) {
+    mobileNavSearch.addEventListener('click', () => {
+      const searchInput = document.getElementById('header-search-input');
+      if (searchInput) {
+        searchInput.focus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
   }
@@ -1173,7 +1276,7 @@ function renderProfileFavorites() {
       document.getElementById('user-profile-modal')?.classList.remove('active');
       const ctrl = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
       if (ctrl && typeof ctrl.open === 'function') {
-        ctrl.open(item.id);
+        ctrl.open(item);
       }
     });
     container.appendChild(row);
@@ -1325,7 +1428,6 @@ function setupIPTVModal() {
         try {
           saveBtn.textContent = 'جاري الاتصال بالسيرفر...';
           await IPTVEngine.loadXtream(host, user, pass);
-          renderLiveChannelsSection();
           alert('تم تحميل اشتراك الـ Xtream بنجاح!');
           closeModal();
         } catch (e) {
@@ -1340,7 +1442,6 @@ function setupIPTVModal() {
           const txt = await res.text();
           const parsed = IPTVEngine.parseM3U(txt);
           IPTVEngine.addCustomChannels(parsed);
-          renderLiveChannelsSection();
           alert(`تم استيراد ${parsed.length} قناة بنجاح!`);
           closeModal();
         } catch (e) {

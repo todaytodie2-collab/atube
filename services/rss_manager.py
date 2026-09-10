@@ -444,101 +444,27 @@ class RSSManager:
 
     @staticmethod
     def _generate_baseline_cinema_items() -> List[Dict[str, Any]]:
-        """Guarantees instant, beautiful, non-empty catalog if offline/DNS blocked."""
-        return [
-            # Turkish Series
-            {
-                "title": "مسلسل المؤسس عثمان الموسم 6 الحلقة 1 مترجمة Kuruluş Osman",
-                "link": "https://3shq.net/series/kurulus-osman-s6",
-                "poster": "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
-                "platform": "3shq",
-                "category": "turkish",
-                "rating": "8.2 IMDb",
-                "quality": "1080p FHD",
-                "published": "2024-09-05"
-            },
-            {
-                "title": "مسلسل طائر الرفراف الموسم 3 مترجم Yalı Çapkını",
-                "link": "https://topcinema.io/series/yali-capkini-s3",
-                "poster": "https://image.tmdb.org/t/p/w500/7QMsOTMUswlwxJP0rTTZfmz2tX2.jpg",
-                "platform": "TopCinema",
-                "category": "turkish",
-                "rating": "7.9 IMDb",
-                "quality": "1080p FHD",
-                "published": "2024-09-04"
-            },
-            # Arabic Movies
-            {
-                "title": "فيلم ولاد رزق 3 القاضية 2024 كامل HD",
-                "link": "https://akwam.to/movie/welad-rizk-3",
-                "poster": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
-                "platform": "Akwam",
-                "category": "arabic",
-                "rating": "8.3 IMDb",
-                "quality": "1080p FHD",
-                "published": "2024-09-01"
-            },
-            # Arabic Series
-            {
-                "title": "مسلسل الحشاشين الحلقة 1 كاملة HD The Assassins",
-                "link": "https://shahid4u.im/series/el-hashasheen",
-                "poster": "https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg",
-                "platform": "Shahid4U",
-                "category": "arabic",
-                "rating": "8.8 IMDb",
-                "quality": "1080p FHD",
-                "published": "2024-08-28"
-            },
-            # Foreign Movies
-            {
-                "title": "فيلم Dune: Part Two 2024 مترجم كامل HD",
-                "link": "https://akwam.to/movie/123/dune-part-two",
-                "poster": "https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg",
-                "platform": "Akwam",
-                "category": "foreign",
-                "rating": "8.8 IMDb",
-                "quality": "4K UHD",
-                "published": "2024-09-01"
-            },
-            {
-                "title": "مشاهدة فيلم Gladiator II 2024 مترجم المصارع 2",
-                "link": "https://cima4u.skin/movie/gladiator-2",
-                "poster": "assets/gladiator_hero.jpg",
-                "platform": "Cima4U",
-                "category": "foreign",
-                "rating": "9.4 IMDb",
-                "quality": "4K UHD",
-                "published": "2024-09-01"
-            },
-            {
-                "title": "فيلم Oppenheimer 2023 مترجم BluRay",
-                "link": "https://arabseed.show/movie/789/oppenheimer",
-                "poster": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
-                "platform": "Arabseed",
-                "category": "foreign",
-                "rating": "8.9 IMDb",
-                "quality": "4K UHD",
-                "published": "2024-08-15"
-            },
-            # Anime
-            {
-                "title": "أنمي Solo Leveling الموسم 1 كامل مترجم",
-                "link": "https://akwam.to/anime/303/solo-leveling",
-                "poster": "https://image.tmdb.org/t/p/w500/geCRueV3ElhRTr0xtJuClJknQd7.jpg",
-                "platform": "Akwam",
-                "category": "anime",
-                "rating": "8.7 IMDb",
-                "quality": "1080p FHD",
-                "published": "2024-08-20"
-            },
-            {
-                "title": "أنمي Attack on Titan هجوم العمالقة الموسم الأخير مترجم",
-                "link": "https://egybest.media/anime/attack-on-titan",
-                "poster": "https://image.tmdb.org/t/p/w500/geCRueV3ElhRTr0xtJuClJknQd7.jpg",
-                "platform": "Egybest",
-                "category": "anime",
-                "rating": "9.1 IMDb",
-                "quality": "1080p FHD",
-                "published": "2024-08-10"
-            }
-        ]
+        """Returns real catalog items from catalog.json as baseline if RSS feeds are offline."""
+        catalog_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "catalog.json")
+        if not os.path.exists(catalog_path):
+            return []
+        try:
+            with open(catalog_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if not isinstance(data, list):
+                    return []
+                baseline = []
+                for item in data[:20]:
+                    baseline.append({
+                        "title": item.get("arabic_title") or item.get("title", ""),
+                        "link": item.get("servers", [{}])[0].get("stream_url", "") if item.get("servers") else "",
+                        "poster": item.get("poster", ""),
+                        "platform": "A TuBe Catalog",
+                        "category": item.get("category", ""),
+                        "rating": item.get("rating", ""),
+                        "quality": item.get("quality", "1080p FHD"),
+                        "published": item.get("year", "")
+                    })
+                return baseline
+        except Exception:
+            return []

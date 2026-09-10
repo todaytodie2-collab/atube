@@ -249,22 +249,39 @@ const RemoteControl = (function () {
       let startX;
       let scrollLeft;
 
-      track.addEventListener('mousedown', (e) => {
+      function getClientX(e) {
+        if (e.touches && e.touches.length > 0) return e.touches[0].clientX;
+        if (e.changedTouches && e.changedTouches.length > 0) return e.changedTouches[0].clientX;
+        return e.clientX;
+      }
+
+      function onStart(e) {
         isDown = true;
-        startX = e.pageX - track.offsetLeft;
+        startX = getClientX(e);
         scrollLeft = track.scrollLeft;
-      });
+        track.style.cursor = 'grabbing';
+      }
 
-      track.addEventListener('mouseleave', () => { isDown = false; });
-      track.addEventListener('mouseup', () => { isDown = false; });
+      function onEnd() {
+        isDown = false;
+        track.style.cursor = 'grab';
+      }
 
-      track.addEventListener('mousemove', (e) => {
+      function onMove(e) {
         if (!isDown) return;
         e.preventDefault();
-        const x = e.pageX - track.offsetLeft;
+        const x = getClientX(e);
         const walk = (x - startX) * 1.5;
         track.scrollLeft = scrollLeft - walk;
-      });
+      }
+
+      track.addEventListener('mousedown', onStart);
+      track.addEventListener('mouseleave', onEnd);
+      track.addEventListener('mouseup', onEnd);
+      track.addEventListener('mousemove', onMove);
+      track.addEventListener('touchstart', onStart, { passive: true });
+      track.addEventListener('touchend', onEnd);
+      track.addEventListener('touchmove', onMove, { passive: false });
     });
   }
 

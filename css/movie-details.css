@@ -4,38 +4,32 @@
    ========================================================================== */
 
 .movie-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(4, 10, 14, 0.95);
-  z-index: 1200;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: #04090e;
+  z-index: 100;
   display: none;
-  overflow-y: auto;
-  padding: 30px 20px;
+  padding: 0;
   direction: rtl;
   text-align: right;
-  contain: paint;
-  will-change: opacity;
 }
 
 .movie-modal-backdrop.active {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  display: block;
 }
 
 .movie-modal-container {
   background: #08171f;
   background-image: radial-gradient(circle at 50% 0%, #0e2936 0%, #07151c 60%, #040d12 100%);
-  border: 1px solid rgba(0, 229, 255, 0.2);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 229, 255, 0.15);
-  border-radius: var(--radius-lg);
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
   width: 100%;
-  max-width: 1060px;
+  max-width: 100%;
   position: relative;
   overflow: hidden;
-  margin: auto;
-  will-change: transform;
-  transform: translateZ(0);
+  margin: 0;
 }
 
 /* Close Button */
@@ -414,12 +408,47 @@
 }
 
 .server-quality-tag {
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 800;
-  background: rgba(0, 229, 255, 0.25);
-  color: var(--primary-cyan);
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Distinct Color-Coded Quality Classes */
+.server-quality-tag.quality-4k {
+  background: rgba(255, 183, 3, 0.2);
+  color: #ffb703;
+  border: 1px solid rgba(255, 183, 3, 0.45);
+  box-shadow: 0 0 10px rgba(255, 183, 3, 0.25);
+}
+
+.server-quality-tag.quality-1080p {
+  background: rgba(0, 229, 255, 0.2);
+  color: #00e5ff;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+}
+
+.server-quality-tag.quality-720p {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.server-quality-tag.quality-webdl {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+.server-quality-tag.quality-default {
+  background: rgba(148, 163, 184, 0.2);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.35);
 }
 
 /* Stills Gallery */

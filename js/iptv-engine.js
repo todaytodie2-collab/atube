@@ -107,7 +107,24 @@ const IPTVEngine = (function () {
     }
   ];
 
-  let activeChannels = [...defaultChannels];
+  function formatRawChannel(c) {
+    return {
+      id: c.id,
+      name: c.name,
+      category: c.category || 'قنوات مباشرة',
+      badge: c.badge || 'LIVE 1080p FHD',
+      quality: c.quality || '1080p FHD',
+      resolution: c.resolution || '1080p',
+      duration: 'مباشر',
+      logo: c.logo,
+      streamUrl: c.stream_url || c.streamUrl,
+      desc: c.desc || c.name
+    };
+  }
+
+  let activeChannels = (Array.isArray(window.ATUBE_STATIC_CHANNELS) && window.ATUBE_STATIC_CHANNELS.length > 0)
+    ? window.ATUBE_STATIC_CHANNELS.map(formatRawChannel)
+    : [...defaultChannels];
   let customChannels = [];
 
   // 2. High-Definition Procedural SVG Logo Generator
@@ -270,30 +287,53 @@ const IPTVEngine = (function () {
     }
   }
 
-  // 6. Fetch verified, legal channels from backend API
+  // 6. Fetch verified, legal channels from backend API or static JSON fallback
   async function fetchVerifiedChannels() {
+    // Check local storage cache first
     try {
-      const res = await fetch('/api/iptv/verified?t=' + Date.now());
-      if (res.ok) {
-        const list = await res.json();
+      const cached = localStorage.getItem('atube_channels_cache');
+      if (cached) {
+        const list = JSON.parse(cached);
         if (Array.isArray(list) && list.length > 0) {
-          activeChannels = list.map(c => ({
-            id: c.id,
-            name: c.name,
-            category: c.category || 'قنوات مباشرة',
-            badge: c.badge || 'LIVE 1080p FHD',
-            quality: c.quality || '1080p FHD',
-            resolution: c.resolution || '1080p',
-            duration: 'مباشر',
-            logo: c.logo,
-            streamUrl: c.stream_url || c.streamUrl,
-            desc: c.desc || c.name
-          }));
-          return activeChannels;
+          activeChannels = list;
         }
       }
-    } catch (err) {
-      console.warn('[IPTVEngine] Backend API unreachable, keeping curated seeds:', err);
+    } catch (_) {}
+
+    // Try API first, then relative static file fallback
+    const urls = [
+      '/api/iptv/verified?t=' + Date.now(),
+      new URL('data/verified_live_channels.json?t=' + Date.now(), window.location.href).href
+    ];
+
+    for (const u of urls) {
+      try {
+        const res = await fetch(u);
+        if (res.ok) {
+          const list = await res.json();
+          if (Array.isArray(list) && list.length > 0) {
+            activeChannels = list.map(c => ({
+              id: c.id,
+              name: c.name,
+              category: c.category || 'قنوات مباشرة',
+              badge: c.badge || 'LIVE 1080p FHD',
+              quality: c.quality || '1080p FHD',
+              resolution: c.resolution || '1080p',
+              duration: 'مباشر',
+              logo: c.logo,
+              streamUrl: c.stream_url || c.streamUrl,
+              desc: c.desc || c.name
+            }));
+            try {
+              localStorage.setItem('atube_channels_cache', JSON.stringify(activeChannels));
+            } catch (_) {}
+            return activeChannels;
+          }
+        }
+      } catch (_) {}
+    }
+    if ((!activeChannels || activeChannels.length === 0) && Array.isArray(window.ATUBE_STATIC_CHANNELS) && window.ATUBE_STATIC_CHANNELS.length > 0) {
+      activeChannels = window.ATUBE_STATIC_CHANNELS.map(formatRawChannel);
     }
     return activeChannels;
   }

@@ -16,7 +16,7 @@
         android:banner="@mipmap/ic_launcher"
         android:label="A TuBe"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+        android:theme="@style/Theme.ATube"
         android:usesCleartextTraffic="true">
 
         <activity

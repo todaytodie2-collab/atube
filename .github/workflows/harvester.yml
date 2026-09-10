@@ -33,9 +33,9 @@ jobs:
           import sys, os
           sys.path.insert(0, 'services')
           from catalog_sync import ContentIngestEngine, ContinuousSyncEngine
-          print('--- Starting Cloud Harvest Cycle ---')
+          print('--- Starting Cloud Harvest Cycle with Deep Multi-Page Crawling ---')
           try:
-              ContentIngestEngine.harvest_multi_portal(items_per_portal=10)
+              ContentIngestEngine.harvest_multi_portal(items_per_portal=40, min_page=1, max_page=30)
           except Exception as e:
               print('Harvest multi-portal note:', e)
 
@@ -43,12 +43,14 @@ jobs:
               ContinuousSyncEngine.run_sync_cycle()
           except Exception as e:
               print('Continuous cycle note:', e)
-          print('--- Cloud Harvest Completed Successfully ---')
+          print('--- Cloud Harvest Step Finished ---')
           "
+          python services/db_cleanup.py
+          echo "--- Cloud Harvest & Series Consolidation Completed Successfully ---"
 
       - name: Commit and Push Updated Catalog
         run: |
           git config --global user.name "ATuBe-Harvester-Bot"
           git config --global user.email "bot@atube.app"
-          git add catalog.json config/atube_data.sqlite
+          git add catalog.json config/atube_data.sqlite config/harvest_state.json
           git diff-index --quiet HEAD || (git commit -m "Auto-harvester: Added new releases & completed episodes [skip ci]" && git push)

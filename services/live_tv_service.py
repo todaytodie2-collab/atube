@@ -10,6 +10,7 @@ import json
 import re
 import time
 import ssl
+import hashlib
 import urllib.request
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -335,7 +336,8 @@ class LiveTVManager:
 
             elif current_meta and (line.startswith("http://") or line.startswith("https://")):
                 current_meta["stream_url"] = line
-                current_meta["id"] = f"live_{abs(hash(line)) % 1000000}"
+                h = hashlib.md5(line.encode("utf-8")).hexdigest()[:8]
+                current_meta["id"] = f"live_{h}"
                 if not current_meta.get("logo"):
                     current_meta["logo"] = "https://i.imgur.com/8apNaLP.png"
                 channels.append(current_meta)

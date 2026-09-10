@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>A Tube - Ultra HD Media Experience</title>
   
   <meta name="description" content="تطبيق A Tube الترفيهي الأحترافي لمشاهدة البث المباشر والقنوات والأفلام والمسلسلات بجودة Ultra HD">
@@ -350,6 +350,30 @@
         </button>
       </div>
     </footer>
+
+    <!-- Mobile Bottom Navigation Bar (Phones Only) -->
+    <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+      <button class="mobile-nav-btn active" data-target="home">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span>الرئيسية</span>
+      </button>
+      <button class="mobile-nav-btn" data-target="أفلام أجنبي">
+        <svg viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg>
+        <span>الأفلام</span>
+      </button>
+      <button class="mobile-nav-btn" data-target="مسلسلات أجنبي">
+        <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
+        <span>المسلسلات</span>
+      </button>
+      <button class="mobile-nav-btn" data-target="قنوات مباشرة">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+        <span>القنوات</span>
+      </button>
+      <button class="mobile-nav-btn" id="mobile-nav-search-btn">
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"/></svg>
+        <span>بحث</span>
+      </button>
+    </nav>
 
     <!-- ====================================================================
          IN-APP FULLSCREEN VIDEO PLAYER MODAL
@@ -736,6 +760,7 @@
   </div>
 
   <!-- App Scripts -->
+  <script src="js/bundled-data.js"></script>
   <script src="js/media-catalog.js"></script>
   <script src="js/iptv-engine.js"></script>
   <script src="js/player.js"></script>

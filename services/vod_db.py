@@ -11,6 +11,7 @@ Categories:
 
 import os
 import sys
+import re
 import json
 import sqlite3
 from typing import Dict, List, Any, Optional
@@ -46,8 +47,10 @@ class VODDatabase:
                 id TEXT PRIMARY KEY,
                 title TEXT NOT NULL,
                 arabic_title TEXT,
-                content_type TEXT NOT NULL DEFAULT 'movie',  -- 'movie', 'series', 'anime', 'tv_show'
-                category TEXT NOT NULL DEFAULT 'foreign',    -- 'foreign', 'arabic', 'turkish', 'asian', 'indian', 'documentary', 'wrestling'
+                content_type TEXT NOT NULL DEFAULT 'movie',  -- 'movie', 'series', 'anime', 'tv_show', 'live'
+                type TEXT,
+                is_live INTEGER NOT NULL DEFAULT 0,
+                category TEXT NOT NULL DEFAULT 'foreign',    -- 'foreign', 'arabic', 'turkish', 'asian', 'indian', 'documentary', 'wrestling', 'channels'
                 sub_category TEXT DEFAULT 'subbed',          -- 'subbed', 'dubbed'
                 year TEXT,
                 rating TEXT,
@@ -67,6 +70,12 @@ class VODDatabase:
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         """)
+
+        media_cols = [c[1] for c in cur.execute("PRAGMA table_info(vod_media)").fetchall()]
+        if "type" not in media_cols:
+            cur.execute("ALTER TABLE vod_media ADD COLUMN type TEXT")
+        if "is_live" not in media_cols:
+            cur.execute("ALTER TABLE vod_media ADD COLUMN is_live INTEGER NOT NULL DEFAULT 0")
 
         # 2. Seasons Table (For Series, Anime & Shows)
         cur.execute("""
@@ -192,17 +201,32 @@ class VODDatabase:
         genres_str = json.dumps(media.get("genres", []), ensure_ascii=False)
         media_id = media.get("id")
 
+        media_type = str(media.get("type") or media.get("content_type") or "movie").strip().lower()
+        is_live = 1 if str(media.get("is_live", "")).strip().lower() in ("1", "true", "yes", "live") else 0
+        if media_type in ("live", "iptv", "channel", "channels"):
+            is_live = 1
+
+        # Smart Matching & Sequel Safety: If exact same title & year exists, merge servers instead of duplicate
+        title = media.get("title") or media.get("arabic_title") or ""
+        year = str(media.get("year") or "").strip()
+        if title and year and not is_live:
+            matched_id = cls.find_matching_media_id(cur, title, year)
+            if matched_id:
+                media_id = matched_id
+
         cur.execute("""
             INSERT INTO vod_media (
-                id, title, arabic_title, content_type, category, sub_category,
+                id, title, arabic_title, content_type, type, is_live, category, sub_category,
                 year, rating, duration, quality, language, translation,
                 production, country, genres, poster, backdrop, synopsis,
                 trailer_youtube_id, director, total_seasons
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
                 title=excluded.title,
                 arabic_title=excluded.arabic_title,
                 content_type=excluded.content_type,
+                type=excluded.type,
+                is_live=excluded.is_live,
                 category=excluded.category,
                 sub_category=excluded.sub_category,
                 year=excluded.year,
@@ -225,7 +249,9 @@ class VODDatabase:
             media_id,
             media.get("title"),
             media.get("arabic_title"),
-            media.get("content_type", "movie"),
+            media.get("content_type", media_type),
+            media.get("type", media_type),
+            is_live,
             media.get("category", "foreign"),
             media.get("sub_category", "subbed"),
             str(media.get("year", "")),
@@ -276,11 +302,15 @@ class VODDatabase:
                 for srv in ep.get("servers", []):
                     cls._insert_server(cur, media_id, srv, season_num=s_num, ep_num=ep_num)
 
-        # Standalone Movie Servers
+        # Standalone Movie Servers (Merge new servers without duplicating existing stream URLs)
         if media.get("servers"):
-            cur.execute("DELETE FROM vod_servers WHERE media_id = ? AND season_number IS NULL", (media_id,))
+            cur.execute("SELECT stream_url FROM vod_servers WHERE media_id = ? AND season_number IS NULL", (media_id,))
+            existing_urls = {row[0] for row in cur.fetchall()}
             for srv in media.get("servers", []):
-                cls._insert_server(cur, media_id, srv, season_num=None, ep_num=None)
+                s_url = srv.get("stream_url") or srv.get("url")
+                if s_url and s_url not in existing_urls:
+                    cls._insert_server(cur, media_id, srv, season_num=None, ep_num=None)
+                    existing_urls.add(s_url)
 
         # Cast
         if "cast" in media:
@@ -307,10 +337,69 @@ class VODDatabase:
         conn.close()
 
     @classmethod
+    def find_matching_media_id(cls, cur: sqlite3.Cursor, title: str, year: str) -> Optional[str]:
+        """
+        Smart Matching & Sequel Safety:
+        Matches existing media record by:
+        1. Exact/Normalized Title match
+        2. Production / Release Year match
+        3. Sequel Safety check (Part 1 vs Part 2 are strictly distinct)
+        """
+        if not title or not year:
+            return None
+
+        def extract_part(t: str) -> str:
+            t_low = t.lower()
+            m_ar = re.search(r'(?:الجزء|الموسم)\s*(الاول|الثاني|الثالث|الرابع|الخامس|السادس|\d+)', t_low)
+            if m_ar:
+                return m_ar.group(1)
+            m_en = re.search(r'\b(?:part|chapter|vol|volume)\s*(\d+|i{1,3}|iv|v)\b', t_low)
+            if m_en:
+                return m_en.group(1)
+            m_num = re.search(r'\b([2-9]|ii|iii|iv|v)\b$', t_low.strip())
+            if m_num:
+                return m_num.group(1)
+            return "1"
+
+        part_num = extract_part(title)
+        clean_name = re.sub(r'(?:الجزء|الموسم|part|chapter|vol|volume)\s*(?:الاول|الثاني|الثالث|الرابع|\d+|i{1,3}|iv|v)', '', title, flags=re.IGNORECASE).strip()
+        clean_name = re.sub(r'\s+', ' ', clean_name).strip()
+
+        cur.execute("SELECT id, title, arabic_title, year FROM vod_media WHERE year = ?", (str(year).strip(),))
+        candidates = cur.fetchall()
+        for cand in candidates:
+            c_title = cand["title"] or cand["arabic_title"] or ""
+            c_part = extract_part(c_title)
+            if c_part != part_num:
+                continue  # Sequel safety: Part 1 != Part 2!
+
+            c_clean = re.sub(r'(?:الجزء|الموسم|part|chapter|vol|volume)\s*(?:الاول|الثاني|الثالث|الرابع|\d+|i{1,3}|iv|v)', '', c_title, flags=re.IGNORECASE).strip()
+            c_clean = re.sub(r'\s+', ' ', c_clean).strip()
+
+            try:
+                from text_sanitizer import TextSanitizer
+                if TextSanitizer.normalize_arabic(clean_name).lower() == TextSanitizer.normalize_arabic(c_clean).lower():
+                    return cand["id"]
+            except Exception:
+                if clean_name.lower() == c_clean.lower():
+                    return cand["id"]
+
+        return None
+
+    @classmethod
     def _insert_server(cls, cur: sqlite3.Cursor, media_id: str, srv: Dict[str, Any], season_num: Optional[int], ep_num: Optional[int]):
-        stream_url = srv.get("stream_url", "")
+        stream_url = srv.get("stream_url") or srv.get("url", "")
         if not stream_url:
             return
+
+        # Enforce A Tube identity & branding on all servers
+        site_name = "A Tube"
+        badge = srv.get("badge", "A Tube VIP ⭐")
+        name = srv.get("name") or srv.get("server_name", "سيرفر A Tube (سريع FHD)")
+        for leaked in ["Akwam", "أكوام", "FaselHD", "فاصل إعلاني", "EgyDead", "إيجي ديد", "TopCinema", "توب سينما", "EgyBest", "إيجي بست", "Cima4U", "سيما فور يو", "Shahid4U", "شاهد فور يو"]:
+            name = name.replace(leaked, "A Tube")
+            badge = badge.replace(leaked, "A Tube")
+
         cur.execute("""
             INSERT INTO vod_servers (media_id, season_number, episode_number, site, quality, server_name, stream_url, badge)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -318,11 +407,11 @@ class VODDatabase:
             media_id,
             season_num,
             ep_num,
-            srv.get("site", "Akwam"),
-            srv.get("quality", "1080p"),
-            srv.get("name", "سيرفر مباشر"),
+            site_name,
+            srv.get("quality", "1080p FHD"),
+            name,
             stream_url,
-            srv.get("badge", "")
+            badge
         ))
 
     @classmethod
@@ -339,7 +428,7 @@ class VODDatabase:
         cur = conn.cursor()
 
         query = """
-            SELECT m.id, m.title, m.arabic_title, m.content_type, m.category, m.sub_category,
+            SELECT m.id, m.title, m.arabic_title, m.content_type, m.type, m.is_live, m.category, m.sub_category,
                    m.year, m.rating, m.duration, m.quality, m.genres, m.poster, m.total_seasons,
                    (SELECT COUNT(*) FROM vod_servers s WHERE s.media_id = m.id) as server_count
             FROM vod_media m
@@ -386,6 +475,8 @@ class VODDatabase:
                 "title": r["title"],
                 "arabic_title": r["arabic_title"],
                 "content_type": r["content_type"],
+                "type": r["type"],
+                "is_live": bool(r["is_live"]),
                 "category": r["category"],
                 "sub_category": r["sub_category"],
                 "year": r["year"],
@@ -396,6 +487,88 @@ class VODDatabase:
                 "poster": r["poster"],
                 "total_seasons": r["total_seasons"],
                 "server_count": r["server_count"]
+            })
+
+        conn.close()
+        return feed
+
+    @classmethod
+    def get_feed_cursor(cls, content_type: Optional[str] = None, category: Optional[str] = None,
+                       last_id: Optional[str] = None, last_timestamp: Optional[str] = None,
+                       limit: int = 25) -> List[Dict[str, Any]]:
+        """
+        Cursor-based pagination for infinite scroll / load-more UI patterns.
+        More efficient than OFFSET for large datasets.
+        """
+        cls.init_schema()
+        conn = cls.get_connection()
+        cur = conn.cursor()
+
+        query = """
+            SELECT m.id, m.title, m.arabic_title, m.content_type, m.type, m.is_live, m.category, m.sub_category,
+                   m.year, m.rating, m.duration, m.quality, m.genres, m.poster, m.total_seasons,
+                   m.updated_at,
+                   (SELECT COUNT(*) FROM vod_servers s WHERE s.media_id = m.id) as server_count
+            FROM vod_media m
+            WHERE 1=1
+        """
+        params = []
+
+        if category in ["anime", "cartoon"] or content_type == "anime":
+            query += " AND (m.category = 'anime' OR m.content_type = 'anime')"
+            if content_type and content_type not in ["all", "anime"]:
+                query += " AND m.content_type = ?"
+                params.append(content_type)
+        else:
+            if content_type and content_type != "all":
+                query += " AND m.content_type = ?"
+                params.append(content_type)
+            if category and category != "all":
+                if category in ["arabic", "arabic_series"]:
+                    if content_type == "series":
+                        query += " AND m.category IN ('arabic', 'arabic_series')"
+                    else:
+                        query += " AND m.category = 'arabic'"
+                else:
+                    query += " AND m.category = ?"
+                    params.append(category)
+
+        # Cursor pagination: use WHERE with last seen values
+        if last_id and last_timestamp:
+            query += " AND (m.updated_at < ? OR (m.updated_at = ? AND m.id < ?))"
+            params.extend([last_timestamp, last_timestamp, last_id])
+
+        query += " ORDER BY m.updated_at DESC, m.id DESC LIMIT ?"
+        params.append(limit)
+
+        cur.execute(query, params)
+        rows = cur.fetchall()
+        feed = []
+        for r in rows:
+            genres = []
+            if r["genres"]:
+                try:
+                    genres = json.loads(r["genres"])
+                except Exception:
+                    pass
+            feed.append({
+                "id": r["id"],
+                "title": r["title"],
+                "arabic_title": r["arabic_title"],
+                "content_type": r["content_type"],
+                "type": r["type"],
+                "is_live": bool(r["is_live"]),
+                "category": r["category"],
+                "sub_category": r["sub_category"],
+                "year": r["year"],
+                "rating": r["rating"],
+                "duration": r["duration"],
+                "quality": r["quality"],
+                "genres": genres,
+                "poster": r["poster"],
+                "total_seasons": r["total_seasons"],
+                "server_count": r["server_count"],
+                "updated_at": r["updated_at"]
             })
 
         conn.close()
@@ -424,8 +597,17 @@ class VODDatabase:
             conn.close()
             return None
 
+        live_types = {"live", "iptv", "channel", "channels"}
+        live_categories = {"channels", "قنوات مباشرة", "قنوات البث المباشر", "live", "iptv"}
+        is_live_record = (
+            row["is_live"] not in (None, 0, False, "0", "false", "False")
+            or str(row["type"] or "").strip().lower() in live_types
+            or str(row["content_type"] or "").strip().lower() in live_types
+            or str(row["category"] or "").strip().lower() in live_categories
+        )
+
         # Fetch seasons & episodes if series or anime
-        is_episodic = row["content_type"] in ["series", "anime", "tv_show"]
+        is_episodic = not is_live_record and row["content_type"] in ["series", "anime", "tv_show"]
         seasons = []
 
         if is_episodic:
@@ -466,8 +648,10 @@ class VODDatabase:
                 })
 
         # Fetch standalone servers (for movies or series trailer/overview)
-        cur.execute("SELECT site, quality, server_name as name, stream_url, badge FROM vod_servers WHERE media_id = ? AND season_number IS NULL", (media_id,))
-        movie_servers = [dict(s) for s in cur.fetchall()]
+        movie_servers = [] if is_live_record else [dict(s) for s in cur.execute(
+            "SELECT site, quality, server_name as name, stream_url, badge FROM vod_servers WHERE media_id = ? AND season_number IS NULL",
+            (media_id,)
+        ).fetchall()]
 
         # Fetch cast
         cur.execute("SELECT name, arabic_name, role, photo FROM vod_cast WHERE media_id = ?", (media_id,))
@@ -491,6 +675,8 @@ class VODDatabase:
             "title": row["title"],
             "arabic_title": row["arabic_title"],
             "content_type": row["content_type"],
+            "type": row["type"],
+            "is_live": bool(row["is_live"]),
             "category": row["category"],
             "sub_category": row["sub_category"],
             "year": row["year"],
@@ -514,6 +700,34 @@ class VODDatabase:
             "stills": stills
         }
 
+    @classmethod
+    def is_live_media(cls, media_id: str) -> bool:
+        if not media_id:
+            return False
+        mid = str(media_id).strip().lower()
+        if mid.startswith("live_") or mid.startswith("ch_") or mid.startswith("iptv_"):
+            return True
+
+        cls.init_schema()
+        conn = cls.get_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM vod_media WHERE id = ?", (media_id,))
+        row = cur.fetchone()
+        columns = {description[0].lower() for description in cur.description}
+        conn.close()
+        if not row:
+            return False
+
+        live_types = {"live", "iptv", "channel", "channels"}
+        live_categories = {"channels", "قنوات مباشرة", "قنوات البث المباشر", "live", "iptv"}
+        if "is_live" in columns and row["is_live"] not in (None, 0, False, "0", "false", "False"):
+            return True
+        if "type" in columns and str(row["type"] or "").strip().lower() in live_types:
+            return True
+        content_type = str(row["content_type"] or "").strip().lower()
+        category = str(row["category"] or "").strip().lower()
+        return content_type in live_types or category in live_categories
+
     # Backward compatibility
     @classmethod
     def get_movie_details(cls, movie_id: str) -> Optional[Dict[str, Any]]:
@@ -530,7 +744,7 @@ class VODDatabase:
         q = f"%{query.strip()}%"
 
         sql = """
-            SELECT m.id, m.title, m.arabic_title, m.content_type, m.category, m.sub_category,
+            SELECT m.id, m.title, m.arabic_title, m.content_type, m.type, m.is_live, m.category, m.sub_category,
                    m.year, m.rating, m.duration, m.quality, m.genres, m.poster, m.total_seasons,
                    (SELECT COUNT(*) FROM vod_servers s WHERE s.media_id = m.id) as server_count
             FROM vod_media m
@@ -563,6 +777,8 @@ class VODDatabase:
                 "title": r["title"],
                 "arabic_title": r["arabic_title"],
                 "content_type": r["content_type"],
+                "type": r["type"],
+                "is_live": bool(r["is_live"]),
                 "category": r["category"],
                 "year": r["year"],
                 "rating": r["rating"],

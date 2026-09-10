@@ -72,6 +72,8 @@ try:
     from rss_manager import RSSManager
     from procedural_manifest import ProceduralManifestEngine
     from stream_sanitizer import StreamSanitizer
+    from api_controller import APIController
+    from iptv_manager import IPTVManager
     HAS_SERVICES = True
 except Exception as e:
     print(f"[A Tube Server] Note: Services loaded with fallback: {e}")
@@ -86,6 +88,13 @@ except Exception as e:
 class ATubeHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=BASE_DIR, **kwargs)
+
+    def send_cors_json(self, obj, status=200):
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(json.dumps(obj, ensure_ascii=False).encode("utf-8"))
 
     def translate_path(self, path):
         # Path Traversal Guard: ensure path stays strictly within BASE_DIR
@@ -117,8 +126,8 @@ class ATubeHandler(SimpleHTTPRequestHandler):
             path = parsed.path
             query = urllib.parse.parse_qs(parsed.query)
 
-            # 1. API: Multi-Category & Multi-Source Media Feed (Served from SQLite WAL in <3ms)
-            if path in ["/api/movies/feed", "/api/media/feed"]:
+            # 1. API: Legacy Multi-Category Feed (backward compatible alias)
+            if path == "/api/movies/feed":
                 c_type = query.get("type", [None])[0]
                 category = query.get("category", [None])[0]
 
@@ -138,9 +147,9 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     "مسلسلات أجنبي": ("series", "foreign"),
                     "مسلسلات تركي": ("series", "turkish"),
                     "مسلسلات عربي": ("series", "arabic"),
-                    "مسلسلات هندي": ("series", "indian"),
-                    "مسلسلات كورية": ("series", "asian"),
-                    "مسلسلات كورية وآسيوية": ("series", "asian"),
+                    "مسلسلات هندي": ("series", "indian_series"),
+                    "مسلسلات كورية": ("series", "korean_series"),
+                    "مسلسلات كورية وآسيوية": ("series", "korean_series"),
                     "مسلسلات آسيوي": ("series", "asian"),
                     "مسلسلات اسيوي": ("series", "asian"),
                     "مسلسلات وثائقية": ("series", "documentary"),
@@ -159,9 +168,7 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 }
                 if category:
                     norm_cat = re.sub(r'[آإأ]', 'ا', category).strip().lower()
-                    if category in category_map:
-                        c_type, category = category_map[category]
-                    elif norm_cat in category_map:
+                    if norm_cat in category_map:
                         c_type, category = category_map[norm_cat]
                     elif "مسرح" in norm_cat:
                         c_type, category = "movie", "plays"
@@ -174,8 +181,13 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     elif "اجنبي" in norm_cat:
                         c_type, category = ("movie" if "فيلم" in norm_cat else "series"), "foreign"
                     elif "هندي" in norm_cat:
-                        c_type, category = ("movie" if "فيلم" in norm_cat else "series"), "indian"
-                    elif "اسيوي" in norm_cat or "كوري" in norm_cat:
+                        if "مسلسل" in norm_cat:
+                            c_type, category = "series", "indian_series"
+                        else:
+                            c_type, category = ("movie" if "فيلم" in norm_cat else "series"), "indian"
+                    elif "كوري" in norm_cat:
+                        c_type, category = ("movie" if "فيلم" in norm_cat else "series"), "korean_series"
+                    elif "اسيوي" in norm_cat or "آسيوي" in norm_cat:
                         c_type, category = ("movie" if "فيلم" in norm_cat else "series"), "asian"
                     elif "انمي" in norm_cat or "anime" in norm_cat:
                         c_type, category = "all", "anime"
@@ -235,7 +247,14 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.send_header("Access-Control-Allow-Origin", "*")
                 self.end_headers()
 
-                channels = self.get_real_channels(category=cat)
+                channels = []
+                if HAS_SERVICES:
+                    try:
+                        channels = IPTVManager.get_instance().get_active_channels(cat)
+                    except Exception:
+                        channels = []
+                if not channels and HAS_SERVICES:
+                    channels = self.get_real_channels(category=cat)
                 self.wfile.write(json.dumps(channels, ensure_ascii=False).encode("utf-8"))
                 return
 
@@ -243,13 +262,14 @@ class ATubeHandler(SimpleHTTPRequestHandler):
             elif path == "/api/iptv/verify-stream":
                 stream_url = query.get("url", [""])[0]
                 try:
-                    from live_tv_service import LiveTVManager
-                    is_valid, badge, res, latency = LiveTVManager.verify_stream_av_quality(stream_url)
+                    health = IPTVManager.get_instance().check_stream(stream_url)
                     resp_data = {
-                        "valid": is_valid,
-                        "badge": badge,
-                        "resolution": res,
-                        "latency_ms": latency
+                        "valid": health.get("valid", False),
+                        "status_code": health.get("status_code"),
+                        "content_type": health.get("content_type", ""),
+                        "latency_ms": health.get("latency_ms", 0),
+                        "method": health.get("method", ""),
+                        "error": health.get("error", "")
                     }
                 except Exception as ex:
                     resp_data = {"valid": False, "error": str(ex)}
@@ -279,6 +299,53 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"status": "started", "message": "جاري فحص وتحديث قنوات البث المباشر في الخلفية"}, ensure_ascii=False).encode("utf-8"))
                 return
 
+            # 3d. API: Remote Config Domains & Oscar VOD Config
+            elif path == "/api/config/domains":
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                try:
+                    from remote_config import RemoteConfigManager
+                    cfg = RemoteConfigManager.get_instance()
+                    resp = {
+                        "domains": cfg.get_domain("akwam", ""),
+                        "iptv_channels": cfg.get_iptv_channels(),
+                        "oscar_vod": cfg.get_oscar_vod_config()
+                    }
+                except Exception as ex:
+                    resp = {"error": str(ex)}
+                self.wfile.write(json.dumps(resp, ensure_ascii=False).encode("utf-8"))
+                return
+
+            # 3e. API: Oscar VOD Servers Resolver
+            elif path == "/api/oscar/servers":
+                title = query.get("title", [""])[0]
+                item_id = query.get("id", [""])[0]
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                try:
+                    from remote_config import RemoteConfigManager
+                    cfg = RemoteConfigManager.get_instance()
+                    oscar = cfg.get_oscar_vod_config()
+                    base_url = oscar.get("base_url", "")
+                    token = oscar.get("token", "")
+                    headers = {
+                        "User-Agent": oscar.get("user_agent", ""),
+                        "Authorization": f"Bearer {token}",
+                        "X-App-ID": oscar.get("app_id", "")
+                    }
+                    url = f"{base_url}/vod/movie/{item_id}/servers" if item_id else f"{base_url}/vod/search?q={urllib.parse.quote(title)}"
+                    req = urllib.request.Request(url, headers=headers)
+                    with urllib.request.urlopen(req, timeout=oscar.get("timeout_seconds", 4.0)) as resp:
+                        data = json.loads(resp.read().decode("utf-8"))
+                except Exception as ex:
+                    data = {"error": str(ex)}
+                self.wfile.write(json.dumps(data, ensure_ascii=False).encode("utf-8"))
+                return
+
             # 4. API: Fast VOD Search (DB + Live Providers)
             elif path == "/api/vod/search":
                 q = query.get("q", [""])[0]
@@ -297,17 +364,91 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps(results, ensure_ascii=False).encode("utf-8"))
                 return
 
-            # 5. API: Real VOD Stream Resolver
+            # 5. API: Real VOD Stream Resolver (Strictly VOD only, never for Live Channels)
             elif path == "/api/vod/servers":
                 title = query.get("title", [""])[0]
                 item_id = query.get("id", [""])[0]
+                content_type = query.get("type", [""])[0]
+                is_live = query.get("is_live", [""])[0]
+                category = query.get("category", [""])[0]
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json; charset=utf-8")
                 self.send_header("Access-Control-Allow-Origin", "*")
                 self.end_headers()
 
-                servers = self.resolve_servers(title, item_id)
+                # Strict Check: If it is a live channel, return empty list (no VOD embed servers)
+                is_live_req = (
+                    str(is_live).strip().lower() in ("1", "true", "yes", "live")
+                    or str(content_type).strip().lower() in ("live", "channel", "channels", "iptv")
+                    or str(category).strip().lower() in ("channels", "قنوات مباشرة", "قنوات البث المباشر", "live", "iptv")
+                    or item_id.startswith("live_")
+                    or item_id.startswith("ch_")
+                    or item_id.startswith("iptv_")
+                )
+
+                if is_live_req:
+                    self.wfile.write(b"[]")
+                    return
+
+                servers = self.resolve_servers(
+                    title,
+                    item_id,
+                    content_type=content_type,
+                    is_live=is_live,
+                    category=category
+                )
                 self.wfile.write(json.dumps(servers, ensure_ascii=False).encode("utf-8"))
+                return
+
+            # 5a. API: Unified Media Servers (New API Controller)
+            elif path == "/api/media/servers":
+                APIController.handle_servers(self, query)
+                return
+
+            # 5a-1. API: Verified Live IPTV Channels & Stream Health Checker
+            elif path == "/api/iptv/channels":
+                cat = query.get("category", ["all"])[0]
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                channels_data = []
+                try:
+                    from iptv_manager import IPTVManager
+                    channels_data = IPTVManager.get_active_channels(cat if cat != "all" else None)
+                except Exception as ex:
+                    channels_data = {"error": str(ex)}
+                self.wfile.write(json.dumps(channels_data, ensure_ascii=False).encode("utf-8"))
+                return
+
+            elif path == "/api/iptv/refresh":
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                res = {"status": "started"}
+                try:
+                    from iptv_manager import IPTVManager
+                    threading.Thread(target=IPTVManager.refresh_now, daemon=True).start()
+                    res = {"status": "refresh_in_progress"}
+                except Exception as ex:
+                    res = {"error": str(ex)}
+                self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
+                return
+
+            elif path == "/api/iptv/health":
+                stream_url = query.get("url", [""])[0]
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                health_data = {"valid": False}
+                try:
+                    from iptv_manager import IPTVManager
+                    health_data = IPTVManager.check_stream(stream_url)
+                except Exception as ex:
+                    health_data = {"valid": False, "error": str(ex)}
+                self.wfile.write(json.dumps(health_data, ensure_ascii=False).encode("utf-8"))
                 return
 
             # 5b. API: Direct Stream Resolver (Zero-latency fast resolver)
@@ -336,15 +477,52 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     return
 
                 is_direct_stream = any(ext in lower_url for ext in [".m3u8", ".mp4", ".mkv"])
+                is_movie = query.get("is_movie", [""])[0]
                 out = {
                     "success": True,
                     "stream_url": stream_target,
                     "is_hls": ".m3u8" in lower_url,
                     "quality": "1080p Stream",
                     "headers": {},
-                    "is_direct": is_direct_stream
+                    "is_direct": is_direct_stream,
+                    "is_movie": is_movie == "true" or is_movie == "1"
                 }
                 self.wfile.write(json.dumps(out, ensure_ascii=False).encode("utf-8"))
+                return
+
+            # 5c. API: Unified Media Feed (New API Controller)
+            elif path == "/api/media/feed":
+                APIController.handle_feed(self, query)
+                return
+
+            # 5d. API: Unified Media Details (New API Controller)
+            elif path == "/api/media/details":
+                APIController.handle_details(self, query)
+                return
+
+            # 5e. API: Media Search (New API Controller)
+            elif path == "/api/media/search":
+                APIController.handle_search(self, query)
+                return
+
+            # 5f. API: Categories List (New API Controller)
+            elif path == "/api/media/categories":
+                APIController.handle_categories(self)
+                return
+
+            # 5g. API: Stream Resolve (New API Controller)
+            elif path == "/api/media/stream":
+                APIController.handle_stream_resolve(self, query)
+                return
+
+            # 5h. API: Episodes List (New API Controller)
+            elif path == "/api/media/episodes":
+                APIController.handle_episodes(self, query)
+                return
+
+            # 5i. API: Cast & Crew (New API Controller)
+            elif path == "/api/media/cast":
+                APIController.handle_cast_crew(self, query)
                 return
 
             # 5c. API: Universal Deep-Search Stream Discovery & Smart Failover
@@ -444,26 +622,7 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps(item or {}, ensure_ascii=False).encode("utf-8"))
                 return
 
-            # 7c. API: Multi-Source Providers Status & Registry List (All 27 Sites)
-            elif path in ["/api/providers", "/api/providers/status"]:
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json; charset=utf-8")
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.end_headers()
-
-                providers_data = {}
-                try:
-                    from scrapers.providers_registry import ProvidersRegistry
-                    providers_data = {
-                        "status": "active",
-                        "total_count": len(ProvidersRegistry.get_all()),
-                        "providers": ProvidersRegistry.get_all()
-                    }
-                except Exception as ex:
-                    providers_data = {"error": str(ex)}
-
-                self.wfile.write(json.dumps(providers_data, ensure_ascii=False).encode("utf-8"))
-                return
+            # 7c. API: Providers endpoint removed due to missing scrapers module
 
             # 8. API: In-Memory RAM Stream Sanitizer & Ad Stripper Proxy
             elif path == "/api/stream/sanitize":
@@ -570,14 +729,28 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 pass
         return []
 
-    def resolve_servers(self, title, item_id):
+    def resolve_servers(self, title, item_id, content_type=None, is_live=None, category=None):
         if not HAS_SERVICES:
             return []
+
+        item_id_str = str(item_id or "").strip()
+        if item_id_str.startswith("live_") or item_id_str.startswith("ch_") or item_id_str.startswith("iptv_"):
+            return []
+
+        live_signals = {
+            str(content_type or "").strip().lower(),
+            str(is_live or "").strip().lower(),
+            str(category or "").strip().lower()
+        }
+        if live_signals & {"live", "iptv", "channel", "channels", "1", "true", "yes", "قنوات مباشرة", "قنوات البث المباشر"}:
+            return []
+
         try:
-            from vod_db import VODDatabase
-            media = VODDatabase.get_media_by_id(item_id)
-            if media and "servers" in media:
-                return media["servers"]
+            if item_id and VODDatabase.is_live_media(item_id):
+                return []
+            media = VODDatabase.get_media_details(item_id) if item_id else None
+            if media and not media.get("is_live") and media.get("type") not in ("live", "iptv", "channel", "channels") and media.get("category") not in ("channels", "قنوات مباشرة"):
+                return media.get("servers", [])
         except Exception:
             pass
         return []
@@ -608,6 +781,13 @@ def run(port=8085):
             print("[Continuous Harvester Startup] 60s background worker active & polling.")
         except Exception as ex_sync:
             print(f"[Continuous Harvester Startup] Warning: {ex_sync}")
+
+        try:
+            from iptv_manager import IPTVManager
+            IPTVManager.start_background(interval_seconds=1800)
+            print("[IPTV Manager Startup] Stream Health Checker & M3U Harvester active.")
+        except Exception as ex_iptv:
+            print(f"[IPTV Manager Startup] Note: {ex_iptv}")
 
     server_address = ("", port)
     httpd = ThreadingHTTPServer(server_address, ATubeHandler)

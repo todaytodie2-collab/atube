@@ -92,6 +92,19 @@ class StreamHealthValidator:
     ]
 
     @classmethod
+    def _match_free_host(cls, hostname: str) -> bool:
+        host = hostname.lower()
+        for free in cls.FREE_ALLOWED_HOSTS:
+            f = free.lower()
+            if '.' in f:
+                if host == f or host.endswith('.' + f):
+                    return True
+            else:
+                if host == f or host.endswith('.' + f):
+                    return True
+        return False
+
+    @classmethod
     def is_free_server(cls, stream_url: str) -> bool:
         """
         Guarantees server is 100% free with NO subscription or payment required.
@@ -105,8 +118,19 @@ class StreamHealthValidator:
             return False
 
         # If it's a known free cloud host or direct stream, it's free
-        if any(free in lower for free in cls.FREE_ALLOWED_HOSTS):
-            return True
+        try:
+            hostname = urllib.parse.urlparse(lower).hostname or lower
+        except Exception:
+            hostname = lower
+
+        for free in cls.FREE_ALLOWED_HOSTS:
+            f = free.lower()
+            if '/' in f or '\\' in f:
+                if f in lower:
+                    return True
+            else:
+                if hostname == f or hostname.endswith('.' + f):
+                    return True
 
         if lower.endswith('.m3u8') or lower.endswith('.mp4') or lower.endswith('.mkv'):
             return True
