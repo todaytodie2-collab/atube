@@ -69,6 +69,21 @@ const InAppPlayer = (function () {
         if (currentPlayingItem && Math.floor(videoEl.currentTime) % 4 === 0) {
           savePlaybackPosition(currentPlayingItem.id, videoEl.currentTime);
         }
+
+        // Auto-mark item as WATCHED (تمت المشاهدة) after 10 minutes (600s) or 80% progress
+        if (currentPlayingItem && (videoEl.currentTime >= 600 || (videoEl.duration > 0 && videoEl.currentTime / videoEl.duration >= 0.8))) {
+          try {
+            const watchedKey = 'atube_watched_' + currentPlayingItem.id;
+            if (localStorage.getItem(watchedKey) !== 'true') {
+              localStorage.setItem(watchedKey, 'true');
+              console.log('[A Tube Player] Content auto-marked as WATCHED:', currentPlayingItem.title);
+              // Trigger Toast notification
+              if (window.AndroidBridge && typeof window.AndroidBridge.showToast === 'function') {
+                window.AndroidBridge.showToast('تم تسجيل العمل كـ (تمت المشاهدة ✓)');
+              }
+            }
+          } catch (_) {}
+        }
       }
     });
 

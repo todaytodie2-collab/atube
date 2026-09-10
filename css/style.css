@@ -1072,6 +1072,20 @@ body {
   border-radius: 4px;
 }
 
+.watched-card-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 229, 255, 0.9);
+  color: #03141b;
+  font-size: 10px;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 229, 255, 0.5);
+}
+
 .program-info {
   padding: 10px;
   background: linear-gradient(to top, rgba(7, 21, 27, 0.95), rgba(7, 21, 27, 0.7));

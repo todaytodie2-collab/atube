@@ -246,7 +246,7 @@ const MediaCatalog = (function () {
     }
 
     try {
-      const CURRENT_DATA_VER = '3.0_RELEASE';
+      const CURRENT_DATA_VER = '4.0_TAXONOMY_FIX';
       if (localStorage.getItem('atube_catalog_ver') !== CURRENT_DATA_VER) {
         localStorage.removeItem('atube_catalog_cache');
         localStorage.setItem('atube_catalog_ver', CURRENT_DATA_VER);

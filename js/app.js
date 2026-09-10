@@ -392,6 +392,9 @@ function createMediaCard(m, index = 0) {
   const cleanSubLabel = safeHtml(subLabel);
   const cleanAlt = safeHtml(m.title || '');
 
+  const isWatched = (m.id && localStorage.getItem('atube_watched_' + m.id) === 'true');
+  const watchedBadge = isWatched ? `<span class="watched-card-badge">تمت المشاهدة ✓</span>` : '';
+
   card.innerHTML = `
     <div class="program-thumb">
       <img src="${fallbackSvg}"
@@ -400,6 +403,7 @@ function createMediaCard(m, index = 0) {
            decoding="async"
            class="lazy-poster-img">
       <span class="program-card-badge">${cleanRating}</span>
+      ${watchedBadge}
     </div>
     <div class="program-info">
       <div class="program-title">${cleanTitle}</div>

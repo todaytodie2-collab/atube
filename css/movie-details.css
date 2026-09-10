@@ -4,13 +4,17 @@
    ========================================================================== */
 
 .movie-modal-backdrop {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   min-height: 100vh;
   background: #04090e;
-  z-index: 100;
+  z-index: 2000;
   display: none;
   padding: 0;
+  margin: 0;
   direction: rtl;
   text-align: right;
 }

@@ -177,7 +177,9 @@ const MovieDetails = (function () {
       }
     }
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
 
     // Refresh Remote Navigation elements
     const rc = window.RemoteControl || (typeof RemoteControl !== 'undefined' ? RemoteControl : null);
@@ -206,7 +208,9 @@ const MovieDetails = (function () {
       homeView.style.display = 'block';
     }
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
 
     const rc = window.RemoteControl || (typeof RemoteControl !== 'undefined' ? RemoteControl : null);
     if (rc && typeof rc.refresh === 'function') {
