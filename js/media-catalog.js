@@ -246,14 +246,20 @@ const MediaCatalog = (function () {
     }
 
     try {
-      const cached = localStorage.getItem('atube_catalog_cache');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          _inMemoryCatalog = parsed;
-          parsed.forEach(item => {
-            if (item && item.id) _ramCache.set(item.id, item);
-          });
+      const CURRENT_DATA_VER = '3.0_RELEASE';
+      if (localStorage.getItem('atube_catalog_ver') !== CURRENT_DATA_VER) {
+        localStorage.removeItem('atube_catalog_cache');
+        localStorage.setItem('atube_catalog_ver', CURRENT_DATA_VER);
+      } else {
+        const cached = localStorage.getItem('atube_catalog_cache');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            _inMemoryCatalog = parsed;
+            parsed.forEach(item => {
+              if (item && item.id) _ramCache.set(item.id, item);
+            });
+          }
         }
       }
     } catch (_) {}
