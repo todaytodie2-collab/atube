@@ -535,11 +535,16 @@ async function preloadHomeFeeds() {
 }
 
 
-// Render Hero Billboard Banner with real featured movie or keep empty if none
+let heroSliderTimer = null;
+let heroCurrentSlideIndex = 0;
+let heroFeaturedItems = [];
+
+// Render Hero Billboard Banner (Cinematic Dynamic Auto-Slider & Ambient Glow)
 function renderHeroBillboard() {
   const bannerEl = document.getElementById('hero-banner');
   const contentEl = document.getElementById('hero-content');
   const bgImg = document.getElementById('hero-bg-img');
+  const dotsContainer = document.getElementById('hero-slider-dots');
   if (!bannerEl || !contentEl) return;
 
   const allItems = (window.MediaCatalog && typeof MediaCatalog.getAll === 'function')
@@ -552,58 +557,125 @@ function renderHeroBillboard() {
     return;
   }
 
-  const featured = allItems[0];
+  // Pick top 6 rich featured items with backdrops/posters
+  heroFeaturedItems = allItems.filter(item => item.poster && !item.poster.includes('gladiator_hero')).slice(0, 6);
+  if (heroFeaturedItems.length === 0) heroFeaturedItems = allItems.slice(0, 6);
+
   bannerEl.style.display = 'flex';
 
-  if (bgImg) {
-    bgImg.src = featured.backdrop || featured.poster;
-    bgImg.style.display = 'block';
-  }
+  function displaySlide(idx) {
+    if (!heroFeaturedItems || heroFeaturedItems.length === 0) return;
+    heroCurrentSlideIndex = (idx + heroFeaturedItems.length) % heroFeaturedItems.length;
+    const featured = heroFeaturedItems[heroCurrentSlideIndex];
 
-  contentEl.innerHTML = `
-    <div class="hero-badge">
-      <span>★</span>
-      <span>${safeHtml(featured.rating || '★ 8.8 IMDb')}</span>
-      <span>•</span>
-      <span>${safeHtml(featured.quality || '1080p FHD')}</span>
-      <span>•</span>
-      <span>${safeHtml(featured.year || '2026')}</span>
-    </div>
-    <h1 class="hero-title">${safeHtml(featured.arabic_title || featured.title)}</h1>
-    <div class="hero-subtitle">${safeHtml(featured.title !== featured.arabic_title ? featured.title : (featured.translation || 'مترجم للعربية'))}</div>
-    <p class="hero-desc">${safeHtml(featured.synopsis || '')}</p>
-    <div class="hero-actions">
-      <button class="btn-primary dpad-focusable" id="hero-watch-btn">
-        <span>▶</span>
-        <span>مشاهدة العمل</span>
-      </button>
-      <button class="btn-secondary dpad-focusable" id="hero-details-btn">
-        <span>⚡</span>
-        <span>سيرفرات البث (${(featured.servers || []).length})</span>
-      </button>
-    </div>
-  `;
+    // Smooth transition
+    if (bgImg) {
+      bgImg.classList.add('fade-out');
+      setTimeout(() => {
+        bgImg.src = featured.backdrop || featured.poster;
+        bgImg.classList.remove('fade-out');
+      }, 200);
+      bgImg.style.display = 'block';
+    }
 
-  const watchBtn = contentEl.querySelector('#hero-watch-btn');
-  const detailsBtn = contentEl.querySelector('#hero-details-btn');
+    contentEl.classList.add('fade-anim');
+    setTimeout(() => {
+      // Dynamic promo badge
+      const promoBadges = [
+        '🔥 الأكثر مشاهدة هذا الأسبوع',
+        '⚡ حصرياً Ultra HD 4K',
+        '✨ العرض الأول والأحدث',
+        '🌟 يوصى به بشدة لك',
+        '🎬 مشاهدة فائقة السرعة'
+      ];
+      const promoText = promoBadges[heroCurrentSlideIndex % promoBadges.length];
 
-  if (watchBtn) {
-    watchBtn.addEventListener('click', () => {
-      const details = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
-      if (details && typeof details.open === 'function') {
-        details.open(featured);
+      // Dynamic ambient glow
+      const glowClasses = ['glow-cyan', 'glow-gold', 'glow-red'];
+      bannerEl.className = 'hero-banner ' + glowClasses[heroCurrentSlideIndex % glowClasses.length];
+
+      contentEl.innerHTML = `
+        <div class="hero-promo-badge">${promoText}</div>
+        <div class="hero-badge">
+          <span>★</span>
+          <span>${safeHtml(featured.rating || '★ 8.8 IMDb')}</span>
+          <span>•</span>
+          <span>${safeHtml(featured.quality || '1080p FHD')}</span>
+          <span>•</span>
+          <span>${safeHtml(featured.year || '2026')}</span>
+        </div>
+        <h1 class="hero-title">${safeHtml(featured.arabic_title || featured.title)}</h1>
+        <div class="hero-subtitle">${safeHtml(featured.title !== featured.arabic_title ? featured.title : (featured.translation || 'مترجم للعربية'))}</div>
+        <p class="hero-desc">${safeHtml(featured.synopsis || '')}</p>
+        <div class="hero-actions">
+          <button class="btn-primary dpad-focusable" id="hero-watch-btn">
+            <span>▶</span>
+            <span>تشغيل فوري ⚡</span>
+          </button>
+          <button class="btn-secondary dpad-focusable" id="hero-details-btn">
+            <span>🎬</span>
+            <span>تفاصيل والسيرفرات (${(featured.servers || []).length})</span>
+          </button>
+        </div>
+      `;
+
+      contentEl.classList.remove('fade-anim');
+
+      const watchBtn = contentEl.querySelector('#hero-watch-btn');
+      const detailsBtn = contentEl.querySelector('#hero-details-btn');
+
+      if (watchBtn) {
+        watchBtn.addEventListener('click', () => {
+          const details = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
+          if (details && typeof details.open === 'function') {
+            details.open(featured);
+          }
+        });
       }
-    });
+
+      if (detailsBtn) {
+        detailsBtn.addEventListener('click', () => {
+          const details = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
+          if (details && typeof details.open === 'function') {
+            details.open(featured);
+          }
+        });
+      }
+    }, 200);
+
+    // Update Dots UI
+    if (dotsContainer) {
+      dotsContainer.innerHTML = '';
+      heroFeaturedItems.forEach((_, dIdx) => {
+        const dot = document.createElement('button');
+        dot.className = `hero-dot dpad-focusable ${dIdx === heroCurrentSlideIndex ? 'active' : ''}`;
+        dot.title = `الشريحة ${dIdx + 1}`;
+        dot.onclick = () => {
+          resetAutoSlider();
+          displaySlide(dIdx);
+        };
+        dotsContainer.appendChild(dot);
+      });
+    }
   }
 
-  if (detailsBtn) {
-    detailsBtn.addEventListener('click', () => {
-      const details = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
-      if (details && typeof details.open === 'function') {
-        details.open(featured);
-      }
-    });
+  function startAutoSlider() {
+    if (heroSliderTimer) clearInterval(heroSliderTimer);
+    heroSliderTimer = setInterval(() => {
+      displaySlide(heroCurrentSlideIndex + 1);
+    }, 6500);
   }
+
+  function resetAutoSlider() {
+    if (heroSliderTimer) clearInterval(heroSliderTimer);
+    startAutoSlider();
+  }
+
+  bannerEl.onmouseenter = () => { if (heroSliderTimer) clearInterval(heroSliderTimer); };
+  bannerEl.onmouseleave = () => { startAutoSlider(); };
+
+  displaySlide(0);
+  startAutoSlider();
 }
 
 // Render All Home Category Carousels in animated horizontal tracks
