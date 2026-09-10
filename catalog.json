@@ -1594,11 +1594,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
@@ -1736,11 +1732,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
@@ -2209,11 +2201,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
@@ -2306,11 +2294,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
@@ -2817,11 +2801,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
@@ -2959,11 +2939,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
@@ -6205,11 +6181,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
@@ -9235,11 +9207,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -9247,11 +9215,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -9259,11 +9223,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -9271,11 +9231,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -9283,11 +9239,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -9959,11 +9911,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -9971,11 +9919,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -9983,11 +9927,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -9995,11 +9935,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -10007,11 +9943,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
@@ -10072,11 +10004,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -10084,11 +10012,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -10096,11 +10020,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -10108,11 +10028,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -10120,11 +10036,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -10161,11 +10073,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -10173,11 +10081,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -10185,11 +10089,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -10197,11 +10097,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -10209,11 +10105,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -10436,11 +10328,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -10448,11 +10336,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -10460,11 +10344,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -10472,11 +10352,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -10484,11 +10360,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
@@ -12362,11 +12234,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -12374,11 +12242,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -12386,11 +12250,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -12398,11 +12258,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -12410,11 +12266,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -12451,11 +12303,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -12463,11 +12311,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -12475,11 +12319,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -12487,11 +12327,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -12499,11 +12335,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -12662,11 +12494,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -12674,11 +12502,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -12686,11 +12510,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -12698,11 +12518,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -12710,11 +12526,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -14224,11 +14036,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -14236,11 +14044,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -14248,11 +14052,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -14260,11 +14060,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -14272,11 +14068,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -14350,11 +14142,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -14362,11 +14150,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -14374,11 +14158,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -14386,11 +14166,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -14398,11 +14174,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -15890,11 +15662,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -15902,11 +15670,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -15914,11 +15678,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -15926,11 +15686,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -15938,11 +15694,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
@@ -16024,11 +15776,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -16036,11 +15784,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -16048,11 +15792,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -16060,11 +15800,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -16072,11 +15808,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -16686,11 +16418,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -16698,11 +16426,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -16710,11 +16434,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -16722,11 +16442,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -16734,11 +16450,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -16775,11 +16487,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -16787,11 +16495,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -16799,11 +16503,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -16811,11 +16511,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -16823,11 +16519,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -16864,11 +16556,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -16876,11 +16564,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -16888,11 +16572,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -16900,11 +16580,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -16912,11 +16588,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -17353,11 +17025,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -17365,11 +17033,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -17377,11 +17041,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -17389,11 +17049,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -17401,11 +17057,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -17643,11 +17295,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -17655,11 +17303,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -17667,11 +17311,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -17679,11 +17319,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -17720,11 +17356,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -17732,11 +17364,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -17744,11 +17372,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -17756,11 +17380,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -17797,11 +17417,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -17809,11 +17425,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -17821,11 +17433,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -17833,11 +17441,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -17874,11 +17478,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -17886,11 +17486,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -17898,11 +17494,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -17910,11 +17502,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -17951,11 +17539,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -17963,11 +17547,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -17975,11 +17555,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -17987,11 +17563,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -18028,11 +17600,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -18040,11 +17608,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -18052,11 +17616,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -18064,11 +17624,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -18277,11 +17833,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -18289,11 +17841,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -18301,11 +17849,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -18313,11 +17857,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -18325,11 +17865,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -18366,11 +17902,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -18378,11 +17910,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -18390,11 +17918,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -18402,11 +17926,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -18443,11 +17963,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -18455,11 +17971,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -18467,11 +17979,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -18479,11 +17987,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -18520,11 +18024,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -18532,11 +18032,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -18544,11 +18040,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -18556,11 +18048,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -18597,11 +18085,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -18609,11 +18093,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -18621,11 +18101,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -18633,11 +18109,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -18674,11 +18146,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -18686,11 +18154,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -18698,11 +18162,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -18710,11 +18170,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -18907,11 +18363,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -18919,11 +18371,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -18931,11 +18379,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -18943,11 +18387,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -18955,11 +18395,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -18996,11 +18432,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19008,11 +18440,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -19020,11 +18448,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19032,11 +18456,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19044,11 +18464,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -19085,11 +18501,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19097,11 +18509,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -19109,11 +18517,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19121,11 +18525,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19133,11 +18533,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -19174,11 +18570,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19186,11 +18578,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -19198,11 +18586,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19210,11 +18594,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19222,11 +18602,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -19263,11 +18639,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19275,11 +18647,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -19287,11 +18655,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19299,11 +18663,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19311,11 +18671,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -19352,11 +18708,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19364,11 +18716,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -19376,11 +18724,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19388,11 +18732,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19400,11 +18740,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -19441,11 +18777,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19453,11 +18785,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -19465,11 +18793,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19477,11 +18801,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19489,11 +18809,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -19530,11 +18846,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19542,11 +18854,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -19554,11 +18862,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19566,11 +18870,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19578,11 +18878,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -19619,11 +18915,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19631,11 +18923,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19643,11 +18931,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19655,11 +18939,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -19696,11 +18976,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19708,11 +18984,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -19720,11 +18992,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19732,11 +19000,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19744,11 +19008,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -19785,11 +19045,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19797,11 +19053,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -19809,11 +19061,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19821,11 +19069,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19833,11 +19077,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   },
@@ -19874,11 +19114,7 @@
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -19886,11 +19122,7 @@
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -19898,11 +19130,7 @@
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -19910,11 +19138,7 @@
         "site": "Mixdrop",
         "badge": "Mixdrop",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -19922,11 +19146,7 @@
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "isEmbed": true
       }
     ]
   }
