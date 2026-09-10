@@ -568,9 +568,13 @@ function renderHeroBillboard() {
     heroCurrentSlideIndex = (idx + heroFeaturedItems.length) % heroFeaturedItems.length;
     const featured = heroFeaturedItems[heroCurrentSlideIndex];
 
-    // Smooth transition
+    // Smooth transition & guaranteed image display
     if (bgImg) {
+      bgImg.classList.remove('is-hidden');
       bgImg.classList.add('fade-out');
+      bgImg.onerror = () => {
+        bgImg.src = 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1000&q=80';
+      };
       setTimeout(() => {
         bgImg.src = featured.backdrop || featured.poster;
         bgImg.classList.remove('fade-out');
