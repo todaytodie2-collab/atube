@@ -16,6 +16,20 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions "device"
+    productFlavors {
+        tv {
+            dimension "device"
+            applicationIdSuffix ".tv"
+            versionNameSuffix "-tv"
+        }
+        mobile {
+            dimension "device"
+            applicationIdSuffix ".mobile"
+            versionNameSuffix "-mobile"
+        }
+    }
+
     sourceSets {
         main {
             assets.srcDirs = ['src/main/assets'] 
