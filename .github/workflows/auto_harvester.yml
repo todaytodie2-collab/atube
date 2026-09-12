@@ -2,9 +2,16 @@ name: A TuBe Smart Cloud Harvester & Aggregator
 
 on:
   schedule:
-    # Runs automatically every 6 hours (at 00:00, 06:00, 12:00, 18:00 UTC)
-    - cron: '0 */6 * * *'
+    # Runs every 6 hours but OFFSET by 3 hours from harvester.yml (which runs at 00,06,12,18)
+    # This runs at 03:00, 09:00, 15:00, 21:00 UTC to avoid concurrent catalog.json conflicts.
+    - cron: '0 3/6 * * *'
   workflow_dispatch: # Allows manual trigger anytime from GitHub Actions tab
+
+# Share the same concurrency group as harvester.yml so they can never
+# run at the same time and corrupt catalog.json simultaneously.
+concurrency:
+  group: harvester
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -36,10 +43,14 @@ jobs:
         run: |
           git config --global user.name "ATube Cloud Bot"
           git config --global user.email "bot@atube.app"
-          git add catalog.json js/bundled-data.js QA_Report.md Deep_QA_Report.md
+          # Add only files that actually exist to avoid git add errors
+          git add catalog.json || true
+          git add js/bundled-data.js || true
+          git add QA_Report.md || true
+          git add Deep_QA_Report.md || true
           if git diff --staged --quiet; then
             echo "No new updates found."
           else
-            git commit -m "⚡ [Cloud Bot] Auto-Harvest & Stream Aggregation Update"
+            git commit -m "⚡ [Cloud Bot] Auto-Harvest & Stream Aggregation Update [skip ci]"
             git push origin main
           fi
