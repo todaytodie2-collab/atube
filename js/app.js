@@ -830,6 +830,35 @@ function showCategoryView(categoryName) {
   currentCategoryItems = getItemsForCategory(def.key);
   renderCategoryGrid(currentCategoryItems, def.key);
 
+  // Render per-section animated mini-hero banner
+  const miniHeroEl = document.getElementById('category-mini-hero');
+  if (miniHeroEl) {
+    if (currentCategoryItems.length > 0) {
+      const topItem = currentCategoryItems[0];
+      miniHeroEl.classList.remove('is-hidden');
+      miniHeroEl.innerHTML = `
+        <img src="${topItem.backdrop || topItem.poster}" class="category-mini-hero-bg" alt="${safeHtml(topItem.title)}">
+        <div class="category-mini-hero-overlay"></div>
+        <div class="category-mini-hero-content">
+          <div class="hero-badge">★ ${safeHtml(topItem.rating || '★ 8.5 IMDb')} • ${safeHtml(topItem.quality || '1080p FHD')}</div>
+          <h2 style="font-size:22px;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.8);">${safeHtml(topItem.arabic_title || topItem.title)}</h2>
+          <button class="btn-primary dpad-focusable" style="padding:6px 16px;font-size:12px;width:fit-content;margin-top:4px;" id="mini-hero-play">
+            ▶ مشاهدة فورية
+          </button>
+        </div>
+      `;
+      const playBtn = miniHeroEl.querySelector('#mini-hero-play');
+      if (playBtn) {
+        playBtn.onclick = () => {
+          const details = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
+          if (details && typeof details.open === 'function') details.open(topItem);
+        };
+      }
+    } else {
+      miniHeroEl.classList.add('is-hidden');
+    }
+  }
+
   // Setup search inside category
   const filterInput = document.getElementById('category-filter-input');
   if (filterInput) {
