@@ -455,12 +455,56 @@ function createMediaCard(m, index = 0) {
     </div>
   `;
 
-  // Attach lazy loading observer and dynamic error fallback
+  // Attach lazy loading observer and smart TMDB auto-fetch on broken poster
   const imgEl = card.querySelector('.lazy-poster-img');
   if (imgEl) {
-    imgEl.onerror = () => {
-      imgEl.onerror = null;
-      imgEl.src = fallbackSvg;
+    // RADICAL POSTER FIX: 3-tier fallback chain when poster is broken/wrong
+    // Tier 1: Try TMDB by ID → Tier 2: Search TMDB by title → Tier 3: Procedural SVG
+    imgEl.onerror = async function() {
+      imgEl.onerror = null; // Prevent infinite loop
+      const tmdbId = m.tmdb_id;
+      const mediaType = (m.content_type === 'series' || m.content_type === 'anime' || m.content_type === 'tv_show') ? 'tv' : 'movie';
+      const TMDB_KEY = '4e44d9029b1270a757cddc766a1bcb63'; // verified working public read-only key
+      const BASE = 'https://api.themoviedb.org/3';
+
+      try {
+        let posterPath = null;
+
+        // Tier 1: Direct TMDB ID lookup (instant, no search needed)
+        if (tmdbId) {
+          const res = await fetch(`${BASE}/${mediaType}/${tmdbId}?api_key=${TMDB_KEY}&language=ar`);
+          if (res.ok) {
+            const data = await res.json();
+            posterPath = data.poster_path;
+          }
+        }
+
+        // Tier 2: Search TMDB by title if no ID or ID didn't work
+        if (!posterPath) {
+          const searchTitle = (m.title || m.arabic_title || '').replace(/^انمي\s*/,'').replace(/^أنمي\s*/,'');
+          const yearParam = m.year ? `&year=${String(m.year).slice(0,4)}` : '';
+          const res = await fetch(`${BASE}/search/${mediaType}?api_key=${TMDB_KEY}&query=${encodeURIComponent(searchTitle)}&language=ar${yearParam}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.results && data.results[0] && data.results[0].poster_path) {
+              posterPath = data.results[0].poster_path;
+              // Cache the tmdb_id for future use
+              if (data.results[0].id) m.tmdb_id = data.results[0].id;
+            }
+          }
+        }
+
+        if (posterPath) {
+          // Patch poster in-memory so details page also gets it
+          m.poster = `https://image.tmdb.org/t/p/w500${posterPath}`;
+          imgEl.src = m.poster;
+        } else {
+          // Tier 3: Procedural SVG as last resort
+          imgEl.src = fallbackSvg;
+        }
+      } catch(e) {
+        imgEl.src = fallbackSvg;
+      }
     };
     if (cardImageObserver) {
       cardImageObserver.observe(imgEl);
