@@ -321,6 +321,7 @@ class ContentIngestEngine:
 
     @classmethod
     def _sync_to_catalog_json(cls, new_entry: Dict[str, Any]):
+        import tempfile
         catalog_path = os.path.join(BASE_DIR, "catalog.json")
         items = []
         if os.path.exists(catalog_path):
@@ -376,11 +377,24 @@ class ContentIngestEngine:
             # New unique title: append to catalog
             items.append(new_entry)
 
+        # Atomic write: write to a temp file in the same directory, then
+        # atomically replace the real catalog.json so no partial reads occur
+        # if two processes write simultaneously (e.g. two GitHub Actions runs).
         try:
-            with open(catalog_path, "w", encoding="utf-8") as f:
-                json.dump(items, f, ensure_ascii=False, indent=2)
-        except Exception:
-            pass
+            catalog_dir = os.path.dirname(catalog_path)
+            fd, tmp_path = tempfile.mkstemp(dir=catalog_dir, suffix=".tmp", prefix="catalog_")
+            try:
+                with os.fdopen(fd, "w", encoding="utf-8") as f:
+                    json.dump(items, f, ensure_ascii=False, indent=2)
+                os.replace(tmp_path, catalog_path)   # atomic on POSIX & Windows
+            except Exception:
+                try:
+                    os.unlink(tmp_path)
+                except OSError:
+                    pass
+                raise
+        except Exception as e:
+            print(f"[catalog_sync] Warning: could not write catalog.json atomically: {e}")
 
     @classmethod
     def seed_initial_verified_content(cls):

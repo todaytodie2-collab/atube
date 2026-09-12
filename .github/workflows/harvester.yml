@@ -2,9 +2,16 @@ name: A TuBe 24/7 Cloud Harvester
 
 on:
   schedule:
-    # Runs every 10 minutes in GitHub Cloud for free
-    - cron: '*/10 * * * *'
+    # Runs every 6 hours instead of every 10 minutes.
+    # Previous schedule (*/10 * * * *) caused 144 runs/day → exhausted free
+    # GitHub Actions minutes quota and flooded the inbox with failure emails.
+    - cron: '0 */6 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub web UI anytime
+
+# Prevent concurrent runs from corrupting catalog.json simultaneously.
+concurrency:
+  group: harvester
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -52,5 +59,7 @@ jobs:
         run: |
           git config --global user.name "ATuBe-Harvester-Bot"
           git config --global user.email "bot@atube.app"
-          git add catalog.json config/atube_data.sqlite config/harvest_state.json
+          # Add only files that actually exist to avoid git add errors
+          git add catalog.json || true
+          git add config/atube_data.sqlite || true
           git diff-index --quiet HEAD || (git commit -m "Auto-harvester: Added new releases & completed episodes [skip ci]" && git push)

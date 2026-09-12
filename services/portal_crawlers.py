@@ -40,6 +40,30 @@ HEADERS = {
     'Accept-Language': 'ar,en-US;q=0.9,en;q=0.8'
 }
 
+# Regex patterns to detect known free video-host URLs embedded in page HTML.
+# Used by TopCinemaAdapter.extract_post() and any other portal adapters that
+# need to scan raw HTML for stream URLs without strict iframe structure.
+HOST_PATTERNS = [
+    r'(https?://(?:[\w.-]*mixdrop[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*hgcloud[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*minochinos[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*vidmoly[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*streamwish[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*doodstream[\w.-]*|dood\.[\w]+)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*filemoon[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*streamtape[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*mp4upload[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://multiembed\.mov/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*vidlink[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*vidsrc[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://ok\.ru/videoembed/[^\s"\'<>]+)',
+    r'(https?://(?:vkvideo|vk)\.ru/video_ext[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*liiivideo[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*anafast[\w.-]*)/[^\s"\'<>]+)',
+    r'(https?://(?:[\w.-]*uqload[\w.-]*)/[^\s"\'<>]+)',
+]
+
+
 
 class BasePortalAdapter:
     @classmethod

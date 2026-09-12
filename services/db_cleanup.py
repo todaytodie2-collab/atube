@@ -407,8 +407,21 @@ def load_catalog():
 
 
 def save_catalog(items):
-    with open(CATALOG_PATH, "w", encoding="utf-8") as f:
-        json.dump(items, f, ensure_ascii=False, indent=2)
+    """Write catalog atomically: temp file → os.replace → catalog.json.
+    Prevents partial/corrupt reads if the process is interrupted mid-write."""
+    import tempfile
+    catalog_dir = os.path.dirname(CATALOG_PATH)
+    fd, tmp_path = tempfile.mkstemp(dir=catalog_dir, suffix=".tmp", prefix="catalog_")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump(items, f, ensure_ascii=False, indent=2)
+        os.replace(tmp_path, CATALOG_PATH)  # atomic on POSIX & Windows
+    except Exception:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+        raise
 
 
 def main():
