@@ -1,0 +1,22 @@
+{
+  "strict_blacklists": {
+    "arabic_series": [
+      "game of thrones", "reacher", "tires", "breaking bad", "see",
+      "squid game", "kurulus osman", "crash landing on you", "stranger things",
+      "the boys", "house of the dragon", "succession", "the last of us"
+    ],
+    "arabic": [
+      "thor", "top gun", "spider-man", "parasite", "train to busan",
+      "fast & furious", "avengers", "john wick", "avatar", "titanic"
+    ]
+  },
+  "category_overrides": {
+    "turkish": ["تركي", "dizi", "عثمان", "طائر الرفراف", "المتوحش", "اسطنبول"],
+    "indian": ["هندي", "بوليوود", "bollywood", "rrr", "kalki", "mat kilau", "aashiqui"],
+    "asian": ["كوري", "كورية", "آسيوي", "صيني", "ياباني", "squid game", "parasite"],
+    "anime": ["انمي", "أنمي", "anime", "naruto", "one piece", "bleach", "jujutsu kaisen", "hunter x hunter"],
+    "wrestling": ["wwe", "raw", "smackdown", "wrestlemania", "royal rumble", "مصارعة"],
+    "documentary": ["وثائقي", "documentary", "our planet", "planet earth"],
+    "plays": ["مسرحية", "مسرح", "مدرسة المشاغبين", "العيال كبرت"]
+  }
+}
