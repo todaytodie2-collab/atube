@@ -2867,7 +2867,7 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://zid.eishha.com/?url=http://mkstream.servehttp.com:1940/AmouYazid/ay1/playlist.m3u8",
+    "streamUrl": "http://mkstream.servehttp.com:1940/AmouYazid/ay1/playlist.m3u8",
     "directHls": "https://zid.eishha.com/?url=http://mkstream.servehttp.com:1940/AmouYazid/ay1/playlist.m3u8",
     "embedUrl": "https://player.eishha.com/p/amo-yazed.html",
     "frequencies": [
@@ -2887,7 +2887,8 @@
     "desc": "تُعد قناة عمو يزيد من القنوات العربية الموجهة للأطفال والتي استطاعت تحقيق انتشار واسع بفضل أسلوبها المرح والمحتوى البسيط الذي يجذب الصغار. تعتمد القناة على تقديم فيديوهات وأناشيد تعليمية وترفيهية تساعد الأطفال على قضاء وقت ممتع بطريقة مناسبة للعائلة.",
     "status": "online",
     "license": "Free-to-Air Public Web Broadcast",
-    "source": "Eishha Live Network"
+    "source": "Eishha Live Network",
+    "stream_url": "http://mkstream.servehttp.com:1940/AmouYazid/ay1/playlist.m3u8"
   },
   {
     "id": "live_eishha_toyor-aljanah",
@@ -3828,7 +3829,7 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://2m.eishha.com/?url=https://cdn-globecast.akamaized.net/live/eds/2m_monde/hls_video_ts_tuhawxpiemz257adfc/2m_monde.m3u8",
+    "streamUrl": "http://185.9.2.18/chid_218/index.m3u8",
     "directHls": "https://2m.eishha.com/?url=https://cdn-globecast.akamaized.net/live/eds/2m_monde/hls_video_ts_tuhawxpiemz257adfc/2m_monde.m3u8",
     "embedUrl": "https://player.eishha.com/p/2m.html",
     "frequencies": [
@@ -3848,7 +3849,8 @@
     "desc": "تُعد قناة 2M المغربية من أبرز القنوات العامة في المغرب، وتقدم محتوى إعلامي وترفيهي متنوع يجمع بين البرامج الاجتماعية والدرامية والثقافية، مع تركيز واضح على القضايا المحلية.",
     "status": "online",
     "license": "Free-to-Air Public Web Broadcast",
-    "source": "Eishha Live Network"
+    "source": "Eishha Live Network",
+    "stream_url": "http://185.9.2.18/chid_218/index.m3u8"
   },
   {
     "id": "live_eishha_on-drama",
@@ -4138,7 +4140,7 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://otv.eishha.com/?url=https://otv.hibridcdn.net/otv/tv_abr/playlist.m3u8",
+    "streamUrl": "https://otv.hibridcdn.net/otv/tv_abr/playlist.m3u8",
     "directHls": "https://otv.eishha.com/?url=https://otv.hibridcdn.net/otv/tv_abr/playlist.m3u8",
     "embedUrl": "https://player.eishha.com/p/otv.html",
     "frequencies": [
@@ -4158,7 +4160,8 @@
     "desc": "تُعد قناة OTV اللبنانية من القنوات السياسية والاجتماعية البارزة في لبنان، حيث تقدم محتوى إعلامي يركز على الشأن المحلي اللبناني مع تغطية للأحداث الجارية بشكل مباشر وتحليلي.",
     "status": "online",
     "license": "Free-to-Air Public Web Broadcast",
-    "source": "Eishha Live Network"
+    "source": "Eishha Live Network",
+    "stream_url": "https://otv.hibridcdn.net/otv/tv_abr/playlist.m3u8"
   },
   {
     "id": "live_eishha_abu-dhabi-one",

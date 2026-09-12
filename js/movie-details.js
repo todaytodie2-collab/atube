@@ -443,6 +443,11 @@ const MovieDetails = (function () {
     function renderServersList(servers, mediaTitle) {
       if (!serversContainer) return;
       serversContainer.innerHTML = '';
+
+      const serversTitle = document.querySelector('#md-servers-section .servers-hub-title span');
+      if (serversTitle) {
+        serversTitle.textContent = `سيرفرات المشاهدة السحابية فائقة السرعة - ${mediaTitle || movie.arabic_title || movie.title || 'A Tube Cloud Servers'}`;
+      }
       
       let allServers = [...(servers || [])];
 
