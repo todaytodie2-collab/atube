@@ -108,8 +108,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/aljadeed.html",
-    "directHls": "",
+    "streamUrl": "http://185.9.2.18/chid_391/mono.m3u8",
+    "directHls": "http://185.9.2.18/chid_391/mono.m3u8",
     "embedUrl": "https://player.eishha.com/p/aljadeed.html",
     "frequencies": [
       {
@@ -356,8 +356,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/alnahar-drama.html",
-    "directHls": "",
+    "streamUrl": "https://flu.systemnet.tv/AlNaharDrama/index.m3u8",
+    "directHls": "https://flu.systemnet.tv/AlNaharDrama/index.m3u8",
     "embedUrl": "https://player.eishha.com/p/alnahar-drama.html",
     "frequencies": [
       {
@@ -449,8 +449,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/zee-alwan.html",
-    "directHls": "",
+    "streamUrl": "https://flu.systemnet.tv/ZeeAlwan/index.m3u8",
+    "directHls": "https://flu.systemnet.tv/ZeeAlwan/index.m3u8",
     "embedUrl": "https://player.eishha.com/p/zee-alwan.html",
     "frequencies": [
       {
@@ -2030,8 +2030,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/cbc-extra.html",
-    "directHls": "",
+    "streamUrl": "https://flu.systemnet.tv/CBCSofra/index.m3u8",
+    "directHls": "https://flu.systemnet.tv/CBCSofra/index.m3u8",
     "embedUrl": "https://player.eishha.com/p/cbc-extra.html",
     "frequencies": [
       {
@@ -2495,8 +2495,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/alresalah.html",
-    "directHls": "",
+    "streamUrl": "https://rotana.hibridcdn.net/rotananet/risala_net-7Y83PP5adWixDF93/playlist.m3u8",
+    "directHls": "https://rotana.hibridcdn.net/rotananet/risala_net-7Y83PP5adWixDF93/playlist.m3u8",
     "embedUrl": "https://player.eishha.com/p/alresalah.html",
     "frequencies": [
       {
@@ -3242,7 +3242,7 @@
     "duration": "بث حي ومباشر",
     "streamUrl": "https://play.arab-stream.live/p/al-kass-6.html",
     "directHls": "",
-    "embedUrl": "https://play.arab-stream.live/p/al-kass-6.html",
+    "embedUrl": "https://play.arab-stream.live/p/al-kass-7.html",
     "frequencies": [
       {
         "satellite": "نايل سات",
@@ -3302,8 +3302,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/rotana-cinema-hd.html",
-    "directHls": "",
+    "streamUrl": "https://rotana.hibridcdn.net/rotananet/cinema_net-7Y83PP5adWixDF93/playlist.m3u8",
+    "directHls": "https://rotana.hibridcdn.net/rotananet/cinema_net-7Y83PP5adWixDF93/playlist.m3u8",
     "embedUrl": "https://player.eishha.com/p/rotana-cinema-hd.html",
     "frequencies": [
       {
@@ -3333,8 +3333,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/rotana-comedy.html",
-    "directHls": "",
+    "streamUrl": "https://rotana.hibridcdn.net/rotananet/comedy_net-7Y83PP5adWixDF93/playlist.m3u8",
+    "directHls": "https://rotana.hibridcdn.net/rotananet/comedy_net-7Y83PP5adWixDF93/playlist.m3u8",
     "embedUrl": "https://player.eishha.com/p/rotana-comedy.html",
     "frequencies": [
       {
@@ -3364,8 +3364,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/rotana-classic-hd.html",
-    "directHls": "",
+    "streamUrl": "https://rotana.hibridcdn.net/rotananet/classical_net-7Y83PP5adWixDF93/playlist.m3u8",
+    "directHls": "https://rotana.hibridcdn.net/rotananet/classical_net-7Y83PP5adWixDF93/playlist.m3u8",
     "embedUrl": "https://player.eishha.com/p/rotana-classic-hd.html",
     "frequencies": [
       {
@@ -3395,8 +3395,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/rotana-drama-hd.html",
-    "directHls": "",
+    "streamUrl": "https://rotana.hibridcdn.net/rotananet/drama_net-7Y83PP5adWixDF93/playlist.m3u8",
+    "directHls": "https://rotana.hibridcdn.net/rotananet/drama_net-7Y83PP5adWixDF93/playlist.m3u8",
     "embedUrl": "https://player.eishha.com/p/rotana-drama-hd.html",
     "frequencies": [
       {
@@ -3767,8 +3767,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/cbc-drama.html",
-    "directHls": "",
+    "streamUrl": "https://flu.systemnet.tv/CBCDrama/index.m3u8",
+    "directHls": "https://flu.systemnet.tv/CBCDrama/index.m3u8",
     "embedUrl": "https://player.eishha.com/p/cbc-drama.html",
     "frequencies": [
       {
@@ -3798,8 +3798,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/cbc.html",
-    "directHls": "",
+    "streamUrl": "https://flu.systemnet.tv/CBC/index.m3u8",
+    "directHls": "https://flu.systemnet.tv/CBC/index.m3u8",
     "embedUrl": "https://player.eishha.com/p/cbc.html",
     "frequencies": [
       {
@@ -3912,7 +3912,15 @@
     "desc": "تُعد قناة ON TV من القنوات المصرية الخاصة التي تقدم محتوى إعلامي متنوع يجمع بين البرامج الحوارية والإخبارية والمواد الترفيهية، مع تركيز قوي على متابعة الأحداث الجارية داخل مصر وخارجها.",
     "status": "online",
     "license": "Free-to-Air Public Web Broadcast",
-    "source": "Eishha Live Network"
+    "source": "Eishha Live Network",
+    "servers": [
+      {
+        "name": "سيرفر بث مباشر بديل",
+        "url": "https://flu.systemnet.tv/OTV/index.m3u8",
+        "is_hls": true,
+        "isEmbed": false
+      }
+    ]
   },
   {
     "id": "live_eishha_dmc-drama",
@@ -4265,8 +4273,8 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://player.eishha.com/p/cbc-sofra.html",
-    "directHls": "",
+    "streamUrl": "https://flu.systemnet.tv/CBCSofra/index.m3u8",
+    "directHls": "https://flu.systemnet.tv/CBCSofra/index.m3u8",
     "embedUrl": "https://player.eishha.com/p/cbc-sofra.html",
     "frequencies": [
       {

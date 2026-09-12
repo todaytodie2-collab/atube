@@ -1947,18 +1947,36 @@ const InAppPlayer = (function () {
         }
       });
 
-      let hasTriedProxy = false;
+      // CORS Proxy chain: tries 3 proxies before triggering server failover
+      const CORS_PROXIES = [
+        (u) => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
+        (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+        (u) => `https://cors-anywhere.herokuapp.com/${u}`
+      ];
+      let proxyAttempt = 0;
       hlsInstance.on(window.Hls.Events.ERROR, (event, data) => {
         if (data.fatal) {
           switch (data.type) {
             case window.Hls.ErrorTypes.NETWORK_ERROR:
-              console.warn('[A Tube Player] HLS Network error, attempting recovery...');
-              if (!hasTriedProxy && !playUrl.includes('corsproxy.io')) {
-                hasTriedProxy = true;
-                const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(targetUrl)}`;
-                console.log('[A Tube Player] Retrying stream via high-speed CORS proxy:', proxyUrl);
+              console.warn('[A Tube Player] HLS Network error:', data.details);
+              if (proxyAttempt < CORS_PROXIES.length && !playUrl.includes('corsproxy.io') && !playUrl.includes('allorigins') && !playUrl.includes('cors-anywhere')) {
+                const proxyUrl = CORS_PROXIES[proxyAttempt++](targetUrl);
+                console.log(`[A Tube Player] Retrying via CORS proxy #${proxyAttempt}: ${proxyUrl.slice(0, 60)}`);
+                showFailoverHUD(`🔄 جاري المحاولة عبر بروكسي بديل (${proxyAttempt}/3)...`);
                 hlsInstance.loadSource(proxyUrl);
                 hlsInstance.startLoad();
+              } else if (proxyAttempt >= CORS_PROXIES.length) {
+                // All proxies failed — try embed fallback for live channels
+                if (currentPlayingItem && isLiveMediaItem(currentPlayingItem) && currentPlayingItem.embedUrl) {
+                  console.log('[A Tube Player] All HLS proxies failed. Falling back to embed player...');
+                  showFailoverHUD('🔄 التحويل للمشغل البديل...');
+                  flushDecoderBuffer();
+                  setTimeout(() => {
+                    loadStreamSource({ url: currentPlayingItem.embedUrl, isEmbed: true, name: 'مشغل الويب البديل' }, 0);
+                  }, 300);
+                } else {
+                  triggerStatelessFailover('خطأ شبكة - انتهت كل البروكسيات');
+                }
               } else {
                 hlsInstance.startLoad();
               }
