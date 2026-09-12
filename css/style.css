@@ -2470,25 +2470,28 @@ body {
 
 .channel-pin-btn {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  background: rgba(15, 23, 42, 0.85);
+  top: 7px;
+  left: 75px;
+  background: rgba(15, 23, 42, 0.9);
   color: #cbd5e1;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 5px;
-  padding: 2px 5px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  padding: 2px 7px;
   font-size: 11px;
   cursor: pointer;
-  z-index: 6;
+  z-index: 10;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .channel-pin-btn:hover,
 .channel-pin-btn.pinned {
-  background: rgba(0, 229, 255, 0.25);
+  background: rgba(0, 229, 255, 0.35);
   color: #00e5ff;
   border-color: #00e5ff;
-  box-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
 }
 
 /* Quick Pinned Channels Ribbon */
@@ -3712,19 +3715,23 @@ body {
    ========================================================================== */
 .stream-health-badge {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: 18px;
+  left: 80px;
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0, 0, 0, 0.65);
-  padding: 5px 12px;
+  background: rgba(10, 25, 47, 0.85);
+  padding: 6px 14px;
   border-radius: 20px;
   font-size: 11px;
+  font-weight: 700;
   color: #00e5ff;
   font-family: monospace;
-  z-index: 25;
-  border: 1px solid rgba(0, 229, 255, 0.3);
+  z-index: 30;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .health-dot {

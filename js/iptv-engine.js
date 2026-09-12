@@ -224,7 +224,10 @@ const IPTVEngine = (function () {
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
     } catch (_) {}
-    return ['ch_aljazeera', 'ch_alarabiya', 'ch_adsports1', 'ch_mbc_masr', 'ch_rotana_cinema'];
+    if (activeChannels && activeChannels.length > 0) {
+      return activeChannels.slice(0, 6).map(c => String(c.id || c.name));
+    }
+    return [];
   }
 
   function isChannelPinned(chId) {
@@ -258,9 +261,12 @@ const IPTVEngine = (function () {
   }
 
   function getPinnedChannels() {
-    const pinnedIds = getPinnedChannelIds();
     const all = activeChannels && activeChannels.length > 0 ? activeChannels : [];
-    return all.filter(c => pinnedIds.includes(String(c.id || c.name)));
+    if (all.length === 0) return [];
+    const pinnedIds = getPinnedChannelIds();
+    const filtered = all.filter(c => pinnedIds.includes(String(c.id || c.name)));
+    if (filtered.length > 0) return filtered;
+    return all.slice(0, 6);
   }
 
   // 4. Create a Professional, Accessible Live TV Channel Card
@@ -471,6 +477,9 @@ const IPTVEngine = (function () {
             try {
               localStorage.setItem('atube_channels_cache', JSON.stringify(activeChannels));
             } catch (_) {}
+            if (typeof window !== 'undefined' && typeof window.renderPinnedChannelsBar === 'function') {
+              window.renderPinnedChannelsBar();
+            }
             return activeChannels;
           }
         }

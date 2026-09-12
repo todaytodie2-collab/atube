@@ -1406,6 +1406,7 @@ const InAppPlayer = (function () {
     if (!badge) return;
 
     badge.classList.remove('is-hidden');
+    badge.style.display = 'flex';
     updateStreamHealthHUD(24, '4.8 Mbps');
 
     if (hlsInstance) {
@@ -1444,7 +1445,10 @@ const InAppPlayer = (function () {
       streamHealthInterval = null;
     }
     const badge = document.getElementById('stream-health-badge');
-    if (badge) badge.classList.add('is-hidden');
+    if (badge) {
+      badge.classList.add('is-hidden');
+      badge.style.display = 'none';
+    }
   }
 
   // ==========================================================================
@@ -2068,6 +2072,9 @@ const InAppPlayer = (function () {
     // Start with primary server
     if (candidateServers.length > 0) {
       loadStreamSource(candidateServers[0], 0);
+    }
+    if (isLive) {
+      startStreamHealthMonitoring();
     }
   }
 
