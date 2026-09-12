@@ -16,3 +16,13 @@ android_app/app/build/
 local.properties
 android_app/local.properties
 
+# APK binaries — built by build_apk.yml and uploaded as Release assets.
+# Never commit APK files directly into the repository.
+*.apk
+*.aab
+
+# SQLite DB files in project root — managed only via config/ directory.
+vod_catalog.db
+
+# Temporary catalog write files (atomic write artifacts)
+catalog_*.tmp
