@@ -2,11 +2,19 @@ name: Build Android TV & Mobile APK
 
 on:
   push:
+    branches:
+      - main
     paths:
+      - 'index.html'
+      - 'catalog.json'
+      - 'css/**'
+      - 'js/**'
+      - 'data/**'
+      - 'assets/**'
       - 'android_app/**'
       - '.github/workflows/build_apk.yml'
     tags:
-      - 'v*'        # Only create a release when a version tag is pushed (e.g. v1.0.1)
+      - 'v*'
   workflow_dispatch:
 
 # Prevent concurrent APK builds from interfering with each other.
@@ -46,7 +54,7 @@ jobs:
           cp index.html catalog.json android_app/app/src/main/assets/
           cp -r css js assets data android_app/app/src/main/assets/
 
-      - name: Build Android APK
+      - name: Build Android Dual APKs (TV & Mobile)
         working-directory: ./android_app
         run: |
           gradle assembleDebug --stacktrace
@@ -54,16 +62,23 @@ jobs:
       - name: Prepare APK Files
         run: |
           mkdir -p output_apk
-          cp android_app/app/build/outputs/apk/debug/app-debug.apk output_apk/ATuBe.apk
+          if [ -f android_app/app/build/outputs/apk/tv/debug/app-tv-debug.apk ]; then
+            cp android_app/app/build/outputs/apk/tv/debug/app-tv-debug.apk output_apk/Atube_tv.apk
+          fi
+          if [ -f android_app/app/build/outputs/apk/mobile/debug/app-mobile-debug.apk ]; then
+            cp android_app/app/build/outputs/apk/mobile/debug/app-mobile-debug.apk output_apk/Atube_mopile.apk
+          fi
+          if [ -f android_app/app/build/outputs/apk/debug/app-debug.apk ]; then
+            cp android_app/app/build/outputs/apk/debug/app-debug.apk output_apk/ATuBe_Universal.apk
+          fi
 
-      - name: Upload APK Artifact
+      - name: Upload APK Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ATuBe-UltraHD-APK
-          path: output_apk/ATuBe.apk
+          name: ATuBe-Dual-APKs
+          path: output_apk/*
 
       # Only publish a GitHub Release when a version tag (v*) is pushed.
-      # Avoids the "tag already exists" error that occurred on every main push.
       - name: Create Release and Upload APK Asset
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/v')
@@ -75,10 +90,12 @@ jobs:
             
             - **Compatible with:** Android TV, Google TV, Fire TV, and Android Phones & Tablets.
             - **Features:**
+              - 141 Live FTA Channels with EPG Guide and Nilesat/Arabsat Frequencies.
               - Full D-Pad TV Remote Control navigation.
               - Real-time cloud synchronization with zero lag.
               - Immersive 4K / 1080p video player with multi-source server failover.
           files: |
-            output_apk/ATuBe.apk
+            output_apk/Atube_tv.apk
+            output_apk/Atube_mopile.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
