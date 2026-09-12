@@ -530,6 +530,7 @@ function getItemsForCategory(categoryKey) {
 
 // Preload API feeds for all home categories in parallel (non-blocking)
 async function preloadHomeFeeds() {
+  if (window.location.protocol === 'file:') return; // Skip remote API calls on file:// protocol
   const catalog = window.MediaCatalog || (typeof MediaCatalog !== 'undefined' ? MediaCatalog : null);
   if (!catalog || typeof catalog.fetchFeed !== 'function') return;
   const keys = CATEGORY_DEFINITIONS.map(d => d.key).filter(k => k !== 'قنوات مباشرة');

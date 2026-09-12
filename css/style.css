@@ -2498,7 +2498,12 @@ body {
    ========================================================================== */
 .app-splash-screen {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: 999999;
   display: flex;
   align-items: center;
@@ -2506,19 +2511,22 @@ body {
   background: #04090e;
   overflow: hidden;
   opacity: 1;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.4s ease, transform 0.4s ease;
   will-change: opacity, transform;
 }
 
 .app-splash-screen.is-hidden {
   opacity: 0;
-  transform: scale(1.03);
+  transform: scale(1.02);
   pointer-events: none;
+  display: none !important;
 }
 
 .splash-background-image {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   background-image: url('../assets/splash_bg.jpg');
   background-size: cover;
   background-position: center;
@@ -2530,6 +2538,8 @@ body {
 .splash-overlay-gradient {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   background: radial-gradient(circle at center, rgba(4, 9, 14, 0.25) 0%, rgba(4, 9, 14, 0.75) 70%, #04090e 100%),
               linear-gradient(to top, rgba(4, 9, 14, 0.95) 0%, transparent 40%);
   pointer-events: none;
@@ -2541,9 +2551,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  height: 100%;
-  padding-bottom: 50px;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  padding: 30px 20px;
   text-align: center;
   color: #ffffff;
 }

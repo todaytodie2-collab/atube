@@ -238,54 +238,32 @@ const MediaCatalog = (function () {
   }
 
   async function loadCatalog() {
-    if (_inMemoryCatalog.length === 0 && Array.isArray(window.ATUBE_STATIC_CATALOG) && window.ATUBE_STATIC_CATALOG.length > 0) {
+    // 1. Always prioritize window.ATUBE_STATIC_CATALOG first for instant 0ms offline availability
+    if (Array.isArray(window.ATUBE_STATIC_CATALOG) && window.ATUBE_STATIC_CATALOG.length > 0) {
       _inMemoryCatalog = window.ATUBE_STATIC_CATALOG.slice();
       _inMemoryCatalog.forEach(item => {
         if (item && item.id) _ramCache.set(item.id, item);
       });
     }
 
-    try {
-      const CURRENT_DATA_VER = '4.0_TAXONOMY_FIX';
-      if (localStorage.getItem('atube_catalog_ver') !== CURRENT_DATA_VER) {
-        localStorage.removeItem('atube_catalog_cache');
-        localStorage.setItem('atube_catalog_ver', CURRENT_DATA_VER);
-      } else {
-        const cached = localStorage.getItem('atube_catalog_cache');
-        if (cached) {
-          const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            _inMemoryCatalog = parsed;
-            parsed.forEach(item => {
+    // 2. If running under HTTP/HTTPS web server, try fetching fresh catalog.json
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+      try {
+        const res = await fetch('catalog.json?t=' + Date.now());
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            _inMemoryCatalog = data;
+            data.forEach(item => {
               if (item && item.id) _ramCache.set(item.id, item);
             });
           }
         }
-      }
-    } catch (_) {}
-
-    const catalogUrl = new URL('catalog.json?t=' + Date.now(), window.location.href).href;
-    try {
-      const res = await fetch(catalogUrl);
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          _inMemoryCatalog = data;
-          data.forEach(item => {
-            if (item && item.id) _ramCache.set(item.id, item);
-          });
-          return _inMemoryCatalog;
-        }
-      }
-    } catch (e) {
-      console.warn('[MediaCatalog] Failed to load catalog.json, using bundled data:', e);
-      if (_inMemoryCatalog.length === 0 && Array.isArray(window.ATUBE_STATIC_CATALOG)) {
-        _inMemoryCatalog = window.ATUBE_STATIC_CATALOG.slice();
-        _inMemoryCatalog.forEach(item => {
-          if (item && item.id) _ramCache.set(item.id, item);
-        });
+      } catch (e) {
+        console.warn('[MediaCatalog] Remote fetch fallback to bundled static data:', e);
       }
     }
+
     return _inMemoryCatalog;
   }
 
