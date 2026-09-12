@@ -16,10 +16,11 @@ android_app/app/build/
 local.properties
 android_app/local.properties
 
-# APK binaries — built by build_apk.yml and uploaded as Release assets.
-# Never commit APK files directly into the repository.
+# APK binaries — keep root release APKs tracked as requested
 *.apk
 *.aab
+!Atube_tv.apk
+!Atube_mopile.apk
 
 # SQLite DB files in project root — managed only via config/ directory.
 vod_catalog.db

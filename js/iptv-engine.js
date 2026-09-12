@@ -213,13 +213,64 @@ const IPTVEngine = (function () {
     return generateChannelLogoSVG(ch.name, ch.category || '');
   }
 
+  // 3.5. Pinned Favorite Channels Management
+  const PINNED_STORAGE_KEY = 'atube_pinned_channels';
+
+  function getPinnedChannelIds() {
+    try {
+      const raw = localStorage.getItem(PINNED_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch (_) {}
+    return ['ch_aljazeera', 'ch_alarabiya', 'ch_adsports1', 'ch_mbc_masr', 'ch_rotana_cinema'];
+  }
+
+  function isChannelPinned(chId) {
+    const pinned = getPinnedChannelIds();
+    return pinned.includes(String(chId));
+  }
+
+  function togglePinChannel(ch) {
+    if (!ch) return false;
+    const id = String(ch.id || ch.name);
+    let pinned = getPinnedChannelIds();
+    let isNowPinned = false;
+    if (pinned.includes(id)) {
+      pinned = pinned.filter(p => p !== id);
+      isNowPinned = false;
+    } else {
+      if (pinned.length >= 8) {
+        pinned.shift(); // keep max 8 quick pinned channels
+      }
+      pinned.push(id);
+      isNowPinned = true;
+    }
+    try {
+      localStorage.setItem(PINNED_STORAGE_KEY, JSON.stringify(pinned));
+    } catch (_) {}
+
+    if (typeof window !== 'undefined' && typeof window.renderPinnedChannelsBar === 'function') {
+      window.renderPinnedChannelsBar();
+    }
+    return isNowPinned;
+  }
+
+  function getPinnedChannels() {
+    const pinnedIds = getPinnedChannelIds();
+    const all = activeChannels && activeChannels.length > 0 ? activeChannels : [];
+    return all.filter(c => pinnedIds.includes(String(c.id || c.name)));
+  }
+
   // 4. Create a Professional, Accessible Live TV Channel Card
   function createChannelCardElement(ch, index = 0) {
     const card = document.createElement('div');
     card.className = 'live-channel-card dpad-focusable';
     card.tabIndex = 0;
     card.dataset.index = index;
-    card.dataset.channelId = ch.id || `ch_${index}`;
+    const chId = String(ch.id || ch.name || `ch_${index}`);
+    card.dataset.channelId = chId;
     card.setAttribute('role', 'button');
     card.setAttribute('aria-label', `مشاهدة قناة ${ch.name || 'بث مباشر'}`);
 
@@ -234,7 +285,15 @@ const IPTVEngine = (function () {
       ? `<button class="channel-freq-badge" title="عرض ترددات القناة الفضائية" aria-label="تردد القناة">📡 ترددات</button>`
       : '';
 
+    const isPinned = isChannelPinned(chId);
+    const pinBadgeHtml = `
+      <button class="channel-pin-btn ${isPinned ? 'pinned' : ''}" 
+              title="${isPinned ? 'إلغاء التثبيت من الشريط السريع' : 'تثبيت في شريط القنوات المفضلة السريع'}" 
+              aria-label="تثبيت القناة">📌</button>
+    `;
+
     card.innerHTML = `
+      ${pinBadgeHtml}
       <div class="live-pulse-wrapper">
         <span class="live-dot-pulse"></span>
         <span class="live-badge-text">${escapeXML(cleanBadge)}</span>
@@ -253,6 +312,18 @@ const IPTVEngine = (function () {
         <span class="channel-name-title" title="${escapeXML(cleanName)}">${escapeXML(cleanName)}</span>
       </div>
     `;
+
+    // Wire up pin button
+    const pinBtn = card.querySelector('.channel-pin-btn');
+    if (pinBtn) {
+      pinBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const pinnedNow = togglePinChannel(ch);
+        pinBtn.classList.toggle('pinned', pinnedNow);
+        pinBtn.title = pinnedNow ? 'إلغاء التثبيت من الشريط السريع' : 'تثبيت في شريط القنوات المفضلة السريع';
+      });
+    }
 
     // Wire up satellite frequencies button if present
     const freqBtn = card.querySelector('.channel-freq-badge');
@@ -561,7 +632,11 @@ const IPTVEngine = (function () {
       if (Array.isArray(channels)) {
         customChannels = [...customChannels, ...channels];
       }
-    }
+    },
+    getPinnedChannels,
+    getPinnedChannelIds,
+    isChannelPinned,
+    togglePinChannel
   };
 })();
 

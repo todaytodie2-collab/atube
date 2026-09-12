@@ -855,6 +855,15 @@ function showCategoryView(categoryName) {
     }
   }
 
+  const pinnedBar = document.getElementById('channels-pinned-bar');
+  if (pinnedBar) {
+    if (isChannels) {
+      renderPinnedChannelsBar();
+    } else {
+      pinnedBar.classList.add('is-hidden');
+    }
+  }
+
   if (bouquetBar) {
     if (isChannels) {
       bouquetBar.classList.remove('is-hidden');
@@ -947,6 +956,36 @@ function showCategoryView(categoryName) {
 
   if (window.RemoteControl) setTimeout(() => RemoteControl.refresh(), 100);
 }
+
+// Render Quick Pinned Favorite Channels Bar
+function renderPinnedChannelsBar() {
+  const pinnedBar = document.getElementById('channels-pinned-bar');
+  const track = document.getElementById('channels-pinned-track');
+  if (!pinnedBar || !track) return;
+
+  const pinnedChannels = (window.IPTVEngine && typeof window.IPTVEngine.getPinnedChannels === 'function')
+    ? window.IPTVEngine.getPinnedChannels()
+    : [];
+
+  if (!pinnedChannels || pinnedChannels.length === 0) {
+    pinnedBar.classList.add('is-hidden');
+    return;
+  }
+
+  pinnedBar.classList.remove('is-hidden');
+  track.innerHTML = '';
+  pinnedChannels.slice(0, 6).forEach((ch, idx) => {
+    const card = (window.IPTVEngine && typeof window.IPTVEngine.createChannelCardElement === 'function')
+      ? window.IPTVEngine.createChannelCardElement(ch, idx)
+      : createChannelCard(ch, idx);
+    track.appendChild(card);
+  });
+
+  if (window.RemoteControl && typeof RemoteControl.refresh === 'function') {
+    setTimeout(() => RemoteControl.refresh(), 50);
+  }
+}
+window.renderPinnedChannelsBar = renderPinnedChannelsBar;
 
 // Setup Bouquet Filter Bar for Live TV Channels
 function setupChannelsBouquetFilterBar() {
@@ -1839,7 +1878,56 @@ function renderTrendingTop10() {
 // ==========================================================================
 // MULTI-VIEW 4-SCREEN QUAD PLAYER
 // ==========================================================================
+// ==========================================================================
+// MULTI-VIEW DUAL SPLIT-SCREEN & QUAD PLAYER
+// ==========================================================================
 let multiViewHlsInstances = [];
+let multiViewCurrentMode = 'dual'; // Default: Dual Split-Screen 1fr 1fr
+
+function setMultiViewAudio(targetTileNum) {
+  const modal = document.getElementById('multiview-modal');
+  if (!modal) return;
+  const count = (multiViewCurrentMode === 'dual') ? 2 : 4;
+
+  for (let i = 1; i <= 4; i++) {
+    const vid = document.getElementById(`mv-video-${i}`);
+    const mBtn = modal.querySelector(`.mv-mute-btn[data-tile="${i}"]`);
+    const tile = document.getElementById(`mv-tile-${i}`);
+    if (vid) {
+      if (String(i) === String(targetTileNum) && i <= count) {
+        vid.muted = false;
+        if (mBtn) mBtn.textContent = '🔊';
+        if (tile) tile.classList.add('audio-active');
+      } else {
+        vid.muted = true;
+        if (mBtn) mBtn.textContent = '🔇';
+        if (tile) tile.classList.remove('audio-active');
+      }
+    }
+  }
+}
+
+function setMultiViewMode(mode) {
+  multiViewCurrentMode = mode;
+  const grid = document.querySelector('.multiview-grid-layout');
+  const dualBtn = document.getElementById('mv-mode-dual');
+  const quadBtn = document.getElementById('mv-mode-quad');
+
+  if (dualBtn && quadBtn) {
+    dualBtn.classList.toggle('active', mode === 'dual');
+    quadBtn.classList.toggle('active', mode === 'quad');
+  }
+
+  if (grid) {
+    if (mode === 'dual') {
+      grid.classList.add('split-dual');
+    } else {
+      grid.classList.remove('split-dual');
+    }
+  }
+
+  startMultiViewPlayback();
+}
 
 function setupMultiViewModal() {
   const modal = document.getElementById('multiview-modal');
@@ -1847,10 +1935,20 @@ function setupMultiViewModal() {
   const closeBtn = document.getElementById('close-multiview-modal-btn');
   if (!modal) return;
 
+  const dualBtn = document.getElementById('mv-mode-dual');
+  const quadBtn = document.getElementById('mv-mode-quad');
+
+  if (dualBtn) {
+    dualBtn.addEventListener('click', () => setMultiViewMode('dual'));
+  }
+  if (quadBtn) {
+    quadBtn.addEventListener('click', () => setMultiViewMode('quad'));
+  }
+
   if (openBtn) {
     openBtn.addEventListener('click', () => {
       modal.classList.add('active');
-      startMultiViewPlayback();
+      setMultiViewMode(multiViewCurrentMode);
     });
   }
 
@@ -1861,24 +1959,22 @@ function setupMultiViewModal() {
     });
   }
 
+  // Click on tile to swap audio directly
+  const tiles = modal.querySelectorAll('.multiview-screen-tile');
+  tiles.forEach(tile => {
+    tile.addEventListener('click', (e) => {
+      if (e.target.closest('.mv-mute-btn')) return;
+      const tileNum = tile.id.replace('mv-tile-', '');
+      setMultiViewAudio(tileNum);
+    });
+  });
+
   const muteBtns = modal.querySelectorAll('.mv-mute-btn');
   muteBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const tileNum = btn.getAttribute('data-tile');
-      for (let i = 1; i <= 4; i++) {
-        const vid = document.getElementById(`mv-video-${i}`);
-        const mBtn = modal.querySelector(`.mv-mute-btn[data-tile="${i}"]`);
-        if (vid) {
-          if (String(i) === String(tileNum)) {
-            vid.muted = !vid.muted;
-            if (mBtn) mBtn.textContent = vid.muted ? '🔇' : '🔊';
-          } else {
-            vid.muted = true;
-            if (mBtn) mBtn.textContent = '🔇';
-          }
-        }
-      }
+      setMultiViewAudio(tileNum);
     });
   });
 }
@@ -1889,15 +1985,24 @@ function startMultiViewPlayback() {
     ? IPTVEngine.getDefaultChannels()
     : [];
 
-  const top4 = channels.slice(0, 4);
-  top4.forEach((ch, idx) => {
+  const count = (multiViewCurrentMode === 'dual') ? 2 : 4;
+  const activeStreams = channels.slice(0, count);
+
+  activeStreams.forEach((ch, idx) => {
     const tileIdx = idx + 1;
     const titleEl = document.getElementById(`mv-title-${tileIdx}`);
     const videoEl = document.getElementById(`mv-video-${tileIdx}`);
+    const mBtn = document.querySelector(`.mv-mute-btn[data-tile="${tileIdx}"]`);
+    const tile = document.getElementById(`mv-tile-${tileIdx}`);
+
     if (titleEl) titleEl.textContent = ch.name || `قناة ${tileIdx}`;
     if (!videoEl || !ch.streamUrl) return;
 
+    // Default tile 1 has audio, other tiles muted
     videoEl.muted = (tileIdx !== 1);
+    if (mBtn) mBtn.textContent = (tileIdx === 1) ? '🔊' : '🔇';
+    if (tile) tile.classList.toggle('audio-active', tileIdx === 1);
+
     if (window.Hls && Hls.isSupported() && ch.streamUrl.includes('.m3u8')) {
       const hls = new Hls({ enableWorker: true, lowLatencyMode: true });
       hls.loadSource(ch.streamUrl);

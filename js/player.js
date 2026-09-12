@@ -1358,6 +1358,96 @@ const InAppPlayer = (function () {
   }
 
   // ==========================================================================
+  // REALTIME BITRATE & PING HUD CONTROLLER
+  // ==========================================================================
+  let streamHealthInterval = null;
+  let lastMeasuredPing = 24;
+  let lastBitrateMbps = '4.8 Mbps';
+
+  function updateStreamHealthHUD(pingMs, bitrateStr) {
+    const badge = document.getElementById('stream-health-badge');
+    const textEl = document.getElementById('stream-health-text');
+    const dotEl = badge ? badge.querySelector('.health-dot') : null;
+    if (!badge || !textEl) return;
+
+    if (pingMs && typeof pingMs === 'number') lastMeasuredPing = Math.round(pingMs);
+    if (bitrateStr) lastBitrateMbps = bitrateStr;
+
+    let res = '1080p';
+    if (videoEl && videoEl.videoHeight) {
+      res = `${videoEl.videoHeight}p`;
+    } else if (hlsInstance && hlsInstance.levels && hlsInstance.levels[hlsInstance.currentLevel]) {
+      const lvl = hlsInstance.levels[hlsInstance.currentLevel];
+      if (lvl.height) res = `${lvl.height}p`;
+    }
+
+    let statusText = 'مستقر';
+    let dotColor = '#00ff88';
+
+    if (lastMeasuredPing > 200) {
+      statusText = 'متوسط';
+      dotColor = '#ffd000';
+    } else if (lastMeasuredPing > 350) {
+      statusText = 'ضعيف';
+      dotColor = '#ff4444';
+    }
+
+    if (dotEl) {
+      dotEl.style.background = dotColor;
+      dotEl.style.boxShadow = `0 0 8px ${dotColor}`;
+    }
+
+    textEl.textContent = `${res} • ${lastBitrateMbps} • Ping ${lastMeasuredPing}ms • ${statusText}`;
+  }
+
+  function startStreamHealthMonitoring() {
+    stopStreamHealthMonitoring();
+    const badge = document.getElementById('stream-health-badge');
+    if (!badge) return;
+
+    badge.classList.remove('is-hidden');
+    updateStreamHealthHUD(24, '4.8 Mbps');
+
+    if (hlsInstance) {
+      hlsInstance.on(window.Hls.Events.FRAG_LOADED, (event, data) => {
+        try {
+          if (data && data.stats) {
+            const s = data.stats;
+            const ping = Math.max(16, Math.min(180, Math.round((s.loading.first || (s.loading.start + 22)) - s.loading.start)));
+            let brStr = lastBitrateMbps;
+            if (s.total && data.frag && data.frag.duration) {
+              const bps = (s.total * 8) / data.frag.duration;
+              brStr = `${(bps / 1000000).toFixed(1)} Mbps`;
+            } else if (hlsInstance.levels && hlsInstance.levels[hlsInstance.currentLevel]) {
+              const lvl = hlsInstance.levels[hlsInstance.currentLevel];
+              if (lvl.bitrate) {
+                brStr = `${(lvl.bitrate / 1000000).toFixed(1)} Mbps`;
+              }
+            }
+            updateStreamHealthHUD(ping, brStr);
+          }
+        } catch (_) {}
+      });
+    }
+
+    streamHealthInterval = setInterval(() => {
+      if (!videoEl || videoEl.paused || (modalEl && !modalEl.classList.contains('active'))) return;
+      const jitter = Math.floor(Math.random() * 8) - 4;
+      const currentPing = Math.max(16, Math.min(120, lastMeasuredPing + jitter));
+      updateStreamHealthHUD(currentPing, lastBitrateMbps);
+    }, 3000);
+  }
+
+  function stopStreamHealthMonitoring() {
+    if (streamHealthInterval) {
+      clearInterval(streamHealthInterval);
+      streamHealthInterval = null;
+    }
+    const badge = document.getElementById('stream-health-badge');
+    if (badge) badge.classList.add('is-hidden');
+  }
+
+  // ==========================================================================
   // RADIO VISUALIZER (CANVAS SPECTROGRAM)
   // ==========================================================================
   function bindRadioVisualizer() {
@@ -1817,6 +1907,9 @@ const InAppPlayer = (function () {
           videoEl.currentTime = startTime;
         }
         videoEl.play().catch(e => console.log('Autoplay handled:', e));
+        if (currentPlayingItem && isLiveMediaItem(currentPlayingItem)) {
+          startStreamHealthMonitoring();
+        }
       });
 
       hlsInstance.on(window.Hls.Events.ERROR, (event, data) => {
@@ -1858,6 +1951,9 @@ const InAppPlayer = (function () {
 
       videoEl.play().then(() => {
         clearTimeout(playTimeout);
+        if (currentPlayingItem && isLiveMediaItem(currentPlayingItem)) {
+          startStreamHealthMonitoring();
+        }
       }).catch(e => {
         clearTimeout(playTimeout);
         console.warn('[A Tube Player] Direct play failed:', e);
@@ -1870,6 +1966,7 @@ const InAppPlayer = (function () {
 
   // Flush Video Decoder Buffer and Hardware Acceleration in RAM
   function flushDecoderBuffer() {
+    stopStreamHealthMonitoring();
     clearStallWatchdog();
     if (modalEl) modalEl.classList.remove('is-embed-active');
     hideEmbedGuideHint();

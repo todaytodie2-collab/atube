@@ -387,6 +387,17 @@
               </div>
             </div>
 
+            <!-- Quick Pinned Channels Ribbon (Top Favorite Channels) -->
+            <div id="channels-pinned-bar" class="channels-pinned-bar is-hidden">
+              <div class="pinned-bar-header">
+                <span class="pinned-bar-title">📌 القنوات المثبتة المفضلة (Quick Pin):</span>
+                <span class="pinned-bar-hint">اضغط على 📌 في أي بطاقة قناة لتثبيتها هنا لسهولة الوصول</span>
+              </div>
+              <div id="channels-pinned-track" class="channels-pinned-track">
+                <!-- Dynamically populated via JS -->
+              </div>
+            </div>
+
             <!-- Country Bouquets Filter Pills (For Live TV Channels) -->
             <div id="channels-bouquet-filter-bar" class="channels-bouquet-filter-bar is-hidden">
               <button class="bouquet-pill active dpad-focusable" data-bouquet="all">🌐 الكل (141)</button>
@@ -1000,8 +1011,12 @@
           </h3>
           <button id="close-multiview-modal-btn" class="icon-btn dpad-focusable">✕</button>
         </div>
-        <p class="iptv-desc">شاهد ما يصل إلى 4 قنوات رياضية وإخبارية في نفس اللحظة:</p>
-        <div class="multiview-grid-layout">
+        <p class="iptv-desc">شاهد مباراتين أو قنوات رياضية وإخبارية في نفس اللحظة بشاشة منقسمة أو رباعية:</p>
+        <div class="multiview-mode-bar">
+          <button id="mv-mode-dual" class="mv-mode-btn dpad-focusable active" data-mode="dual">📺 شاشتان (مزدوج PIP)</button>
+          <button id="mv-mode-quad" class="mv-mode-btn dpad-focusable" data-mode="quad">⊞ 4 شاشات (رباعي)</button>
+        </div>
+        <div class="multiview-grid-layout split-dual">
           <div class="multiview-screen-tile" id="mv-tile-1">
             <div class="mv-tile-header"><span id="mv-title-1">قناة 1</span> <button class="mv-mute-btn" data-tile="1">🔊</button></div>
             <video id="mv-video-1" playsinline muted class="mv-video-player"></video>
