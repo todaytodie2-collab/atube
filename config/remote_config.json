@@ -6,16 +6,16 @@
     "_comment": "Register free at https://www.themoviedb.org/settings/api then paste your key here"
   },
   "domains": {
-    "akwam":     "https://akwam.to",
-    "arabseed":  "https://arabseed.irish",
+    "akwam": "https://akwam.to",
+    "arabseed": "https://arabseed.irish",
     "arablionz": "https://arablionz.live",
-    "cima4u":    "https://cima4u.boutique",
-    "egybest":   "https://egybests.live",
-    "egydead":   "https://tv10.egydead.live",
-    "fasel":     "https://web2.faselhd.top",
-    "qfilm":     "https://a.qfilm.tv",
-    "shahid4u":  "https://shaiid4u.co",
-    "wicanime":  "https://wicanime.tv"
+    "cima4u": "https://cima4u.boutique",
+    "egybest": "https://egybests.live",
+    "egydead": "https://tv10.egydead.live",
+    "fasel": "https://web2.faselhd.top",
+    "qfilm": "https://a.qfilm.tv",
+    "shahid4u": "https://shaiid4u.co",
+    "wicanime": "https://wicanime.tv"
   },
   "iptv_channels": [
     {
@@ -25,8 +25,8 @@
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/CBC_Egypt_logo.png/260px-CBC_Egypt_logo.png",
       "streams": [
         "https://flu.systemnet.tv/CBC/index.m3u8",
-        "https://cbcegypt.cdnvideo.ru/CBC/index.m3u8",
-        "https://iptv-org.github.io/iptv/countries/eg.m3u#CBC Egypt"
+        "https://iptv-org.github.io/iptv/countries/eg.m3u#CBC Egypt",
+        "https://cbcegypt.cdnvideo.ru/CBC/index.m3u8"
       ]
     },
     {
@@ -66,8 +66,8 @@
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/France_24_logo.svg/320px-France_24_logo.svg.png",
       "streams": [
         "https://static.france24.com/live/F24_AR_HI_HLS/live_tv.m3u8",
-        "https://www.france24.com/fr/directs/france24-ar.m3u8",
-        "https://iptv-org.github.io/iptv/languages/ara.m3u#France 24 Arabic"
+        "https://iptv-org.github.io/iptv/languages/ara.m3u#France 24 Arabic",
+        "https://www.france24.com/fr/directs/france24-ar.m3u8"
       ]
     },
     {
@@ -86,9 +86,9 @@
       "category": "موسيقى",
       "logo": "https://upload.wikimedia.org/wikipedia/ar/thumb/7/7b/Mazzika_logo.png/280px-Mazzika_logo.png",
       "streams": [
-        "https://mazzika.cdnvideo.ru/Mazzika/index.m3u8",
         "http://149.100.11.235:8080/Mazzika/index.m3u8",
-        "https://iptv-org.github.io/iptv/regions/arab.m3u#Mazzika"
+        "https://iptv-org.github.io/iptv/regions/arab.m3u#Mazzika",
+        "https://mazzika.cdnvideo.ru/Mazzika/index.m3u8"
       ]
     },
     {
@@ -97,9 +97,9 @@
       "category": "منوعات وترفيه",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Al-Masriyah_Logo.svg/260px-Al-Masriyah_Logo.svg.png",
       "streams": [
-        "https://almasriyah.cdnvideo.ru/almasriyah/index.m3u8",
         "http://185.9.2.18/chid_247/index.m3u8",
-        "https://iptv-org.github.io/iptv/countries/eg.m3u#Al Masriyah"
+        "https://iptv-org.github.io/iptv/countries/eg.m3u#Al Masriyah",
+        "https://almasriyah.cdnvideo.ru/almasriyah/index.m3u8"
       ]
     },
     {
@@ -108,8 +108,8 @@
       "category": "أفلام ومسلسلات",
       "logo": "https://upload.wikimedia.org/wikipedia/ar/thumb/5/5e/Rotana_Cinema.png/260px-Rotana_Cinema.png",
       "streams": [
-        "https://rotana.cdnvideo.ru/RotanaCinema/index.m3u8",
-        "https://iptv-org.github.io/iptv/regions/arab.m3u#Rotana Cinema"
+        "https://iptv-org.github.io/iptv/regions/arab.m3u#Rotana Cinema",
+        "https://rotana.cdnvideo.ru/RotanaCinema/index.m3u8"
       ]
     },
     {
@@ -118,8 +118,8 @@
       "category": "منوعات وترفيه",
       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/MBC_Masr.svg/260px-MBC_Masr.svg.png",
       "streams": [
-        "https://mbcmasr.cdnvideo.ru/MBCMasr/index.m3u8",
-        "https://iptv-org.github.io/iptv/countries/eg.m3u#MBC Masr"
+        "https://iptv-org.github.io/iptv/countries/eg.m3u#MBC Masr",
+        "https://mbcmasr.cdnvideo.ru/MBCMasr/index.m3u8"
       ]
     }
   ],
