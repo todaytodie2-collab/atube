@@ -59,7 +59,7 @@ const InAppPlayer = (function () {
     // Enforce anti-popup & strict security attributes on embed iframe
     if (iframeEl) {
       iframeEl.removeAttribute('sandbox'); // Removed sandbox attribute to allow Minochinos, Mixdrop & Vidmoly embeds without iframe restrictions
-      iframeEl.setAttribute('referrerpolicy', 'no-referrer');
+      iframeEl.removeAttribute('referrerpolicy'); // Remove no-referrer: player.eishha.com blocks iframes with strict referrer policy
       iframeEl.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
     }
 
@@ -1690,12 +1690,14 @@ const InAppPlayer = (function () {
           if (isLive && (s.isEmbed || sUrl.includes('vidlink') || sUrl.includes('multiembed') || sUrl.includes('vidsrc') || sUrl.includes('2embed') || sUrl.includes('/embed/'))) {
             return;
           }
+          const sIsHls = sUrl.includes('.m3u8');
+          const sIsEmbed = !sIsHls && (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('/p/') || sUrl.includes('.html') || sUrl.includes('player.eishha.com') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo'));
           pool.push({
             name: s.name || (isLive ? 'سيرفر بث حي' : 'سيرفر تشغيل'),
             url: sUrl,
             quality: s.quality || (isLive ? 'بث مباشر HD' : '1080p FHD'),
-            is_hls: s.is_hls ?? (sUrl.includes('.m3u8')),
-            isEmbed: isLive ? false : (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo'))
+            is_hls: s.is_hls ?? sIsHls,
+            isEmbed: isLive ? sIsEmbed : (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo'))
           });
         }
       });
@@ -1709,12 +1711,14 @@ const InAppPlayer = (function () {
         const [chosen] = pool.splice(matchIdx, 1);
         pool.unshift(chosen);
       } else if (matchIdx === -1) {
+        const selIsHls = selectedUrl.includes('.m3u8');
+        const selIsEmbed = !selIsHls && (item.isEmbed || selectedUrl.includes('/embed') || selectedUrl.includes('/e/') || selectedUrl.includes('/p/') || selectedUrl.includes('.html') || selectedUrl.includes('player.eishha.com'));
         pool.unshift({
           name: isLive ? 'بث القناة المباشر' : (item.name || 'السيرفر المختار'),
           url: selectedUrl,
           quality: isLive ? 'بث حي HD' : '1080p FHD',
-          is_hls: isLive ? true : selectedUrl.includes('.m3u8'),
-          isEmbed: isLive ? false : (item.isEmbed || selectedUrl.includes('embed') || selectedUrl.includes('/e/'))
+          is_hls: selIsHls,
+          isEmbed: isLive ? selIsEmbed : selIsEmbed
         });
       }
     }
@@ -1823,8 +1827,12 @@ const InAppPlayer = (function () {
 
     // Fast-path: Check if this is a direct media stream or an embed player
     const isDirectMedia = targetUrl.includes('.m3u8') || targetUrl.endsWith('.mp4') || targetUrl.endsWith('.mkv');
+    const isLiveEmbed = !isDirectMedia && (
+      targetUrl.includes('player.eishha.com') || targetUrl.includes('/p/') || 
+      (targetUrl.includes('.html') && !targetUrl.includes('localhost') && !targetUrl.includes('127.0.0.1'))
+    );
     const isEmbedUrl = !isDirectMedia && (
-      serverObj.isEmbed || 
+      serverObj.isEmbed || isLiveEmbed ||
       targetUrl.includes('/embed') || targetUrl.includes('/e/') || 
       targetUrl.includes('vidsrc') || targetUrl.includes('vidlink') || 
       targetUrl.includes('multiembed') || targetUrl.includes('2embed') ||
@@ -1837,9 +1845,17 @@ const InAppPlayer = (function () {
     // If it's an embed player, load immediately with ZERO latency (no blocking fetch!)
     if (isEmbedUrl) {
       if (iframeEl) {
-        // Enforce strict sandbox: allow playback scripts/presentation but strictly block popups, top navigation and modals
-        iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
-        iframeEl.setAttribute('referrerpolicy', 'no-referrer');
+        // Live channel web players (player.eishha.com, .html embeds) block sandbox & no-referrer!
+        // Only apply sandbox/referrer restrictions to non-live VOD embeds.
+        if (isLiveEmbed) {
+          // For live channel web players: NO sandbox, NO referrerpolicy restriction
+          iframeEl.removeAttribute('sandbox');
+          iframeEl.removeAttribute('referrerpolicy');
+        } else {
+          // For VOD embeds: apply limited sandbox to block popup ads
+          iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
+          iframeEl.setAttribute('referrerpolicy', 'no-referrer');
+        }
         iframeEl.setAttribute('allowfullscreen', 'true');
         iframeEl.setAttribute('webkitallowfullscreen', 'true');
         iframeEl.setAttribute('mozallowfullscreen', 'true');
