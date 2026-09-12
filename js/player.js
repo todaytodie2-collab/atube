@@ -1837,12 +1837,22 @@ const InAppPlayer = (function () {
     // If it's an embed player, load immediately with ZERO latency (no blocking fetch!)
     if (isEmbedUrl) {
       if (iframeEl) {
-        iframeEl.removeAttribute('sandbox'); // Removed sandbox attribute to prevent Minochinos/Vidmoly errors
+        // Enforce strict sandbox: allow playback scripts/presentation but strictly block popups, top navigation and modals
+        iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
         iframeEl.setAttribute('referrerpolicy', 'no-referrer');
         iframeEl.setAttribute('allowfullscreen', 'true');
         iframeEl.setAttribute('webkitallowfullscreen', 'true');
         iframeEl.setAttribute('mozallowfullscreen', 'true');
         iframeEl.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+
+        // Block popups globally while embed player is running
+        if (!window._origWindowOpen) {
+          window._origWindowOpen = window.open;
+          window.open = function() {
+            console.warn('[A Tube AdBlock] Blocked popup attempt');
+            return null;
+          };
+        }
 
         videoEl.style.display = 'none';
         videoEl.pause();
@@ -1858,7 +1868,8 @@ const InAppPlayer = (function () {
     }
 
     // Stream URL Resolution for non-embed, raw redirect links (with strict 1200ms non-blocking timeout)
-    if (targetUrl && !isDirectMedia && window.location.protocol.startsWith('http')) {
+    const isLocalBackend = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    if (targetUrl && !isDirectMedia && isLocalBackend) {
       try {
         const controller = new AbortController();
         const tId = setTimeout(() => controller.abort(), 1200);
@@ -1898,10 +1909,14 @@ const InAppPlayer = (function () {
         maxMaxBufferLength: 60
       });
 
-      // Sanitizer hook: If local server available, proxy m3u8 through in-memory sanitizer
-      const playUrl = (window.location.protocol.startsWith('http') && targetUrl.startsWith('http'))
-        ? `/api/stream/sanitize?url=${encodeURIComponent(targetUrl)}`
-        : targetUrl;
+      // Sanitizer hook: Only query local sanitizer when running on localhost backend
+      let playUrl = targetUrl;
+      if (isLocalBackend && targetUrl.startsWith('http')) {
+        playUrl = `/api/stream/sanitize?url=${encodeURIComponent(targetUrl)}`;
+      } else if (window.location.protocol === 'https:' && targetUrl.startsWith('http://')) {
+        // Upgrade HTTP stream to CORS proxy to prevent browser mixed-content block
+        playUrl = `https://corsproxy.io/?url=${encodeURIComponent(targetUrl)}`;
+      }
 
       hlsInstance.loadSource(playUrl);
       hlsInstance.attachMedia(videoEl);
@@ -1916,12 +1931,21 @@ const InAppPlayer = (function () {
         }
       });
 
+      let hasTriedProxy = false;
       hlsInstance.on(window.Hls.Events.ERROR, (event, data) => {
         if (data.fatal) {
           switch (data.type) {
             case window.Hls.ErrorTypes.NETWORK_ERROR:
               console.warn('[A Tube Player] HLS Network error, attempting recovery...');
-              hlsInstance.startLoad();
+              if (!hasTriedProxy && !playUrl.includes('corsproxy.io')) {
+                hasTriedProxy = true;
+                const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(targetUrl)}`;
+                console.log('[A Tube Player] Retrying stream via high-speed CORS proxy:', proxyUrl);
+                hlsInstance.loadSource(proxyUrl);
+                hlsInstance.startLoad();
+              } else {
+                hlsInstance.startLoad();
+              }
               break;
             case window.Hls.ErrorTypes.MEDIA_ERROR:
               console.warn('[A Tube Player] HLS Media error, attempting recovery...');
@@ -1972,6 +1996,10 @@ const InAppPlayer = (function () {
   function flushDecoderBuffer() {
     stopStreamHealthMonitoring();
     clearStallWatchdog();
+    if (window._origWindowOpen) {
+      window.open = window._origWindowOpen;
+      delete window._origWindowOpen;
+    }
     if (modalEl) modalEl.classList.remove('is-embed-active');
     hideEmbedGuideHint();
     if (hlsInstance) {

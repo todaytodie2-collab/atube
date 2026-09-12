@@ -438,9 +438,9 @@ const MediaCatalog = (function () {
       return cached.data;
     }
 
-    // file:// protocol (bundled APK) or server unavailable -> in-memory catalog
-    const isRemote = typeof window !== 'undefined' && window.location.protocol.startsWith('http');
-    if (!isRemote) {
+    // Only query local backend API if actually running on localhost
+    const isLocalBackend = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    if (!isLocalBackend) {
       const items = consolidateSeriesItems(getFeed(categoryKey, page, limit));
       const data = { items, pagination: { page, limit, total_items: items.length }, meta: { source: 'catalog' } };
       _feedCache.set(key, { data, ts: Date.now() });

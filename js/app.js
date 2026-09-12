@@ -1253,13 +1253,23 @@ function setupSidebarNavigation() {
     });
   }
 
-  // Nav Groups collapsible
+  // Nav Groups collapsible & smart navigation
   const groups = document.querySelectorAll('.nav-group');
   groups.forEach(grp => {
     const header = grp.querySelector('.nav-group-header');
     if (header) {
-      header.addEventListener('click', () => {
-        grp.classList.toggle('expanded');
+      header.addEventListener('click', (e) => {
+        const isCollapsed = sidebar && sidebar.classList.contains('collapsed');
+        if (isCollapsed) {
+          // If sidebar is collapsed into mini-icons, clicking the icon navigates directly to the group's first category
+          const firstSub = grp.querySelector('.sub-item');
+          if (firstSub) {
+            showCategoryView(firstSub.textContent.trim());
+          }
+          sidebar.classList.remove('collapsed');
+        } else {
+          grp.classList.toggle('expanded');
+        }
         setTimeout(() => RemoteControl.refresh(), 200);
       });
     }
@@ -1414,6 +1424,66 @@ function setupHeaderActions() {
   setupShortcutsHUD();
 }
 
+const ATUBE_I18N = {
+  ar: {
+    home: 'الرئيسية',
+    channels: 'القنوات',
+    movies: 'الأفلام',
+    series: 'المسلسلات',
+    anime: 'الأنمي',
+    shows_sports: 'البرامج والرياضة',
+    search_placeholder: 'البحث في القنوات والأفلام والبرامج...',
+    top10_title: '🔥 أفضل 10 أعمال اليوم في الوطن العربي (Top 10 Today)',
+    more_like_this: '✨ أعمال قد تنال إعجابك (More Like This)',
+    sub_items: {
+      'أفلام عربي': 'أفلام عربي', 'أفلام أجنبي': 'أفلام أجنبي', 'أفلام تركي': 'أفلام تركي',
+      'أفلام هندي': 'أفلام هندي', 'أفلام آسيوي': 'أفلام آسيوي', 'مسرحيات': 'مسرحيات',
+      'أفلام وثائقية': 'أفلام وثائقية', 'مسلسلات عربي': 'مسلسلات عربي', 'مسلسلات تركي': 'مسلسلات تركي',
+      'مسلسلات أجنبي': 'مسلسلات أجنبي', 'مسلسلات هندي': 'مسلسلات هندي', 'مسلسلات آسيوي': 'مسلسلات آسيوي',
+      'مسلسلات وثائقية': 'مسلسلات وثائقية', 'أفلام أنمي': 'أفلام أنمي', 'مسلسلات أنمي': 'مسلسلات أنمي',
+      'كارتون للأطفال': 'كارتون للأطفال', 'برامج وتلفزيون': 'برامج وتلفزيون', 'مصارعة حرة WWE': 'مصارعة حرة WWE', 'وثائقيات': 'وثائقيات'
+    }
+  },
+  en: {
+    home: 'Home',
+    channels: 'Channels',
+    movies: 'Movies',
+    series: 'Series',
+    anime: 'Anime',
+    shows_sports: 'Shows & Sports',
+    search_placeholder: 'Search channels, movies, series, shows...',
+    top10_title: '🔥 Top 10 Trending Today',
+    more_like_this: '✨ More Like This',
+    sub_items: {
+      'أفلام عربي': 'Arabic Movies', 'أفلام أجنبي': 'Foreign Movies', 'أفلام تركي': 'Turkish Movies',
+      'أفلام هندي': 'Indian Movies', 'أفلام آسيوي': 'Asian Movies', 'مسرحيات': 'Plays',
+      'أفلام وثائقية': 'Documentaries', 'مسلسلات عربي': 'Arabic Series', 'مسلسلات تركي': 'Turkish Series',
+      'مسلسلات أجنبي': 'Foreign Series', 'مسلسلات هندي': 'Indian Series', 'مسلسلات آسيوي': 'Asian Series',
+      'مسلسلات وثائقية': 'Docuseries', 'أفلام أنمي': 'Anime Movies', 'مسلسلات أنمي': 'Anime Series',
+      'كارتون للأطفال': 'Kids Cartoons', 'برامج وتلفزيون': 'TV Shows', 'مصارعة حرة WWE': 'WWE Wrestling', 'وثائقيات': 'Documentaries'
+    }
+  },
+  fr: {
+    home: 'Accueil',
+    channels: 'Chaînes',
+    movies: 'Films',
+    series: 'Séries',
+    anime: 'Animés',
+    shows_sports: 'Émissions & Sport',
+    search_placeholder: 'Rechercher chaînes, films, séries...',
+    top10_title: '🔥 Top 10 Aujourd\'hui',
+    more_like_this: '✨ Recommandations',
+    sub_items: {
+      'أفلام عربي': 'Films Arabes', 'أفلام أجنبي': 'Films Étrangers', 'أفلام تركي': 'Films Turcs',
+      'أفلام هندي': 'Films Indiens', 'أفلام آسيوي': 'Films Asiatiques', 'مسرحيات': 'Théâtre',
+      'أفلام وثائقية': 'Documentaires', 'مسلسلات عربي': 'Séries Arabes', 'مسلسلات تركي': 'Séries Turques',
+      'مسلسلات أجنبي': 'Séries Étrangères', 'مسلسلات هندي': 'Séries Indiennes', 'مسلسلات آسيوي': 'Séries Asiatiques',
+      'مسلسلات وثائقية': 'Séries Documentaires', 'أفلام أنمي': 'Films d\'Animation', 'مسلسلات أنمي': 'Séries Animées',
+      'كارتون للأطفال': 'Dessins Animés', 'برامج وتلفزيون': 'Émissions TV', 'مصارعة حرة WWE': 'Catch WWE', 'وثائقيات': 'Documentaires'
+    }
+  }
+};
+
 function setupLanguageSwitcher() {
   const langPills = document.querySelectorAll('.lang-pill');
   langPills.forEach(pill => {
@@ -1424,18 +1494,62 @@ function setupLanguageSwitcher() {
       applyLanguage(lang);
     });
   });
+
+  // Restore saved language on boot
+  const savedLang = localStorage.getItem('atube_lang') || 'ar';
+  const targetPill = Array.from(langPills).find(p => p.getAttribute('data-lang') === savedLang);
+  if (targetPill) {
+    langPills.forEach(p => p.classList.remove('active'));
+    targetPill.classList.add('active');
+  }
+  applyLanguage(savedLang);
 }
 
 function applyLanguage(lang) {
+  const dict = ATUBE_I18N[lang] || ATUBE_I18N.ar;
   const isArabic = (lang === 'ar');
   document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
   document.documentElement.lang = lang;
+  try { localStorage.setItem('atube_lang', lang); } catch (_) {}
 
+  // Search input
   const searchInput = document.getElementById('header-search-input');
   if (searchInput) {
-    if (lang === 'en') searchInput.placeholder = 'Search channels, movies, series, shows...';
-    else if (lang === 'fr') searchInput.placeholder = 'Rechercher chaînes, films, séries...';
-    else searchInput.placeholder = 'البحث في القنوات والأفلام والبرامج...';
+    searchInput.placeholder = dict.search_placeholder;
+  }
+
+  // Nav labels
+  const navHome = document.querySelector('.nav-item[data-nav="home"] .nav-label');
+  if (navHome) navHome.textContent = dict.home;
+
+  const navChannels = document.querySelector('.nav-item[data-nav="channels"] .nav-label');
+  if (navChannels) navChannels.textContent = dict.channels;
+
+  // Nav groups
+  const groupLabels = document.querySelectorAll('.nav-group .nav-group-title .nav-label');
+  if (groupLabels.length >= 4) {
+    groupLabels[0].textContent = dict.movies;
+    groupLabels[1].textContent = dict.series;
+    groupLabels[2].textContent = dict.anime;
+    groupLabels[3].textContent = dict.shows_sports;
+  }
+
+  // Sub items
+  const subItems = document.querySelectorAll('.sub-item');
+  subItems.forEach(sub => {
+    const originalText = sub.getAttribute('data-original-text') || sub.textContent.trim();
+    if (!sub.hasAttribute('data-original-text')) {
+      sub.setAttribute('data-original-text', originalText);
+    }
+    if (dict.sub_items && dict.sub_items[originalText]) {
+      sub.textContent = dict.sub_items[originalText];
+    }
+  });
+
+  // Top 10 Title
+  const top10Title = document.querySelector('.trending-top10-title');
+  if (top10Title) {
+    top10Title.textContent = dict.top10_title;
   }
 }
 
@@ -1959,13 +2073,50 @@ function setupMultiViewModal() {
     });
   }
 
-  // Click on tile to swap audio directly
+  // Expand / Maximize button on tiles to fill the container
+  function toggleMaximizeTile(tileNum) {
+    const targetTile = document.getElementById(`mv-tile-${tileNum}`);
+    if (!targetTile) return;
+    const isMax = targetTile.classList.contains('maximized');
+    modal.querySelectorAll('.multiview-screen-tile').forEach(t => {
+      t.classList.remove('maximized');
+      const b = t.querySelector('.mv-expand-btn');
+      if (b) {
+        b.textContent = '⛶';
+        b.title = 'تكبير لملء الشاشة';
+      }
+    });
+    if (!isMax) {
+      targetTile.classList.add('maximized');
+      const b = targetTile.querySelector('.mv-expand-btn');
+      if (b) {
+        b.textContent = '🗗';
+        b.title = 'استعادة العرض المنقسم';
+      }
+      setMultiViewAudio(tileNum);
+    }
+  }
+
+  const expandBtns = modal.querySelectorAll('.mv-expand-btn');
+  expandBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const tileNum = btn.getAttribute('data-tile');
+      toggleMaximizeTile(tileNum);
+    });
+  });
+
+  // Click on tile to swap audio directly, double click to maximize
   const tiles = modal.querySelectorAll('.multiview-screen-tile');
   tiles.forEach(tile => {
     tile.addEventListener('click', (e) => {
-      if (e.target.closest('.mv-mute-btn')) return;
+      if (e.target.closest('.mv-mute-btn') || e.target.closest('.mv-expand-btn')) return;
       const tileNum = tile.id.replace('mv-tile-', '');
       setMultiViewAudio(tileNum);
+    });
+    tile.addEventListener('dblclick', () => {
+      const tileNum = tile.id.replace('mv-tile-', '');
+      toggleMaximizeTile(tileNum);
     });
   });
 
@@ -2004,10 +2155,19 @@ function startMultiViewPlayback() {
     if (tile) tile.classList.toggle('audio-active', tileIdx === 1);
 
     if (window.Hls && Hls.isSupported() && ch.streamUrl.includes('.m3u8')) {
-      const hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+      const hls = new Hls({
+        enableWorker: true,
+        lowLatencyMode: true,
+        backBufferLength: 0,
+        maxBufferLength: 4,
+        maxMaxBufferLength: 8
+      });
       hls.loadSource(ch.streamUrl);
       hls.attachMedia(videoEl);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        if (hls.levels && hls.levels.length > 2) {
+          hls.autoLevelCapping = 1;
+        }
         videoEl.play().catch(() => {});
       });
       multiViewHlsInstances.push(hls);
@@ -2019,6 +2179,17 @@ function startMultiViewPlayback() {
 }
 
 function stopMultiViewPlayback() {
+  const modal = document.getElementById('multiview-modal');
+  if (modal) {
+    modal.querySelectorAll('.multiview-screen-tile').forEach(t => {
+      t.classList.remove('maximized');
+      const b = t.querySelector('.mv-expand-btn');
+      if (b) {
+        b.textContent = '⛶';
+        b.title = 'تكبير لملء الشاشة';
+      }
+    });
+  }
   multiViewHlsInstances.forEach(h => {
     try { h.destroy(); } catch (_) {}
   });

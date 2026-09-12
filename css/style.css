@@ -3730,8 +3730,8 @@ body {
   z-index: 30;
   border: 1px solid rgba(0, 229, 255, 0.4);
   box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
 
 .health-dot {
@@ -4041,3 +4041,246 @@ kbd {
   color: #94a3b8;
   margin-top: 8px;
 }
+
+/* ==========================================================================
+   LIVE EPG TV GUIDE STYLING (RESPONSIVE & CINEMATIC)
+   ========================================================================== */
+.epg-modal-card {
+  width: 94vw;
+  max-width: 1200px;
+  max-height: 86vh;
+  background: rgba(9, 15, 26, 0.97);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 229, 255, 0.12);
+}
+
+.epg-current-time-bar {
+  padding: 10px 24px;
+  font-size: 13px;
+  color: var(--primary-cyan);
+  background: rgba(0, 229, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.epg-schedule-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.epg-channel-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  min-height: 72px;
+}
+
+.epg-channel-row:hover,
+.epg-channel-row:focus {
+  background: rgba(0, 229, 255, 0.09);
+  border-color: rgba(0, 229, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.15);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.epg-ch-col {
+  width: 170px;
+  min-width: 170px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.epg-ch-col img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 4px;
+}
+
+.epg-events-col {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 229, 255, 0.3) transparent;
+}
+
+.epg-event-card {
+  min-width: 140px;
+  max-width: 180px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #cbd5e1;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.epg-event-card.current {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.22), rgba(0, 102, 255, 0.18));
+  border: 1px solid #00e5ff;
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.28);
+  font-weight: 700;
+}
+
+.epg-event-card.current::before {
+  content: '● البث الآن';
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  font-size: 9px;
+  color: #00e5ff;
+  font-weight: 900;
+  text-shadow: 0 0 6px #00e5ff;
+}
+
+/* Frequency modal */
+.freq-modal-card {
+  max-width: 650px;
+}
+
+.freq-modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.freq-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   MULTI-VIEW MAXIMIZE & EXPAND ACTIONS
+   ========================================================================== */
+.multiview-grid-layout {
+  position: relative;
+}
+
+.multiview-screen-tile {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.multiview-screen-tile.maximized {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.4);
+}
+
+.mv-expand-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mv-expand-btn:hover {
+  background: var(--primary-cyan);
+  color: #000;
+}
+
+/* ==========================================================================
+   MULTI-LANGUAGE & LTR (EN / FR) SIDEBAR & LAYOUT ALIGNMENT
+   ========================================================================== */
+html[dir="ltr"] .sidebar {
+  right: auto !important;
+  left: 0 !important;
+  border-left: none !important;
+  border-right: var(--border-glass) !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+html[dir="ltr"] .content-wrapper {
+  margin-right: 0 !important;
+  margin-left: var(--sidebar-width) !important;
+}
+
+html[dir="ltr"] .sidebar.collapsed ~ .content-wrapper {
+  margin-right: 0 !important;
+  margin-left: var(--sidebar-collapsed-width) !important;
+}
+
+html[dir="ltr"] .nav-item.active::before {
+  right: auto !important;
+  left: 0 !important;
+  border-radius: 0 4px 4px 0 !important;
+}
+
+html[dir="ltr"] .nav-arrow {
+  transform: rotate(180deg);
+}
+
+html[dir="ltr"] .nav-group.expanded .nav-arrow {
+  transform: rotate(90deg);
+}
+
+html[dir="ltr"] .header-left {
+  order: 1;
+}
+
+html[dir="ltr"] .header-right {
+  order: 2;
+}
+
+html[dir="ltr"] .epg-event-card.current::before {
+  left: auto;
+  right: 8px;
+}
+

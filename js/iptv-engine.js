@@ -448,24 +448,17 @@ const IPTVEngine = (function () {
     }
   }
 
+  // Pre-populate with bundled channels immediately
+  if (typeof window !== 'undefined' && Array.isArray(window.ATUBE_STATIC_CHANNELS) && window.ATUBE_STATIC_CHANNELS.length > 0) {
+    activeChannels = window.ATUBE_STATIC_CHANNELS.map(formatRawChannel);
+  }
+
   // 6. Fetch verified, legal channels from backend API or static JSON fallback
   async function fetchVerifiedChannels() {
-    // Check local storage cache first
-    try {
-      const cached = localStorage.getItem('atube_channels_cache');
-      if (cached) {
-        const list = JSON.parse(cached);
-        if (Array.isArray(list) && list.length > 0) {
-          activeChannels = list;
-        }
-      }
-    } catch (_) {}
-
-    // Try API first, then relative static file fallback
-    const urls = [
-      '/api/iptv/verified?t=' + Date.now(),
-      new URL('data/verified_live_channels.json?t=' + Date.now(), window.location.href).href
-    ];
+    const isLocalBackend = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    const urls = isLocalBackend
+      ? ['/api/iptv/verified?t=' + Date.now(), new URL('data/verified_live_channels.json?t=' + Date.now(), window.location.href).href]
+      : [new URL('data/verified_live_channels.json?t=' + Date.now(), window.location.href).href];
 
     for (const u of urls) {
       try {
