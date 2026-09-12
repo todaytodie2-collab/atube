@@ -5,6 +5,7 @@ A TuBe Smart Content Ingestion & Multi-Server Harvester Engine
 - Extracts authentic watch servers (Vipserver, Mixdrop, Hgcloud, Minochinos, Vidmoly)
 - Auto-classifies content into distinct Arabic taxonomy categories
 - Deduplicates and merges multiple server mirrors under unified media cards
+- TMDB API enrichment: real posters, backdrops, stills (requires API key in remote_config.json)
 """
 
 import os
@@ -26,6 +27,21 @@ sys.path.insert(0, os.path.join(BASE_DIR, "services"))
 
 from vod_db import VODDatabase
 from stream_validator import StreamHealthValidator
+
+# Optional enrichment services (fail-safe: imported lazily so harvester works without them)
+try:
+    from tmdb_client import TMDBClient
+    _HAS_TMDB = True
+except ImportError:
+    TMDBClient = None  # type: ignore
+    _HAS_TMDB = False
+
+try:
+    from content_registry import ContentRegistry
+    _HAS_REGISTRY = True
+except ImportError:
+    ContentRegistry = None  # type: ignore
+    _HAS_REGISTRY = False
 
 class ContentIngestEngine:
     HEADERS = {
@@ -246,11 +262,24 @@ class ContentIngestEngine:
             print(f"[ContentIngestEngine] Discarding '{clean_title}': 0 working servers found.")
             return None
 
+        # Enrich with TMDB (real poster, backdrop, stills, tmdb_id) — non-blocking
+        if _HAS_TMDB and TMDBClient:
+            try:
+                TMDBClient.enrich_entry(media_entry)
+                # Persist stills into SQLite if available
+                if media_entry.get("stills") and media_entry.get("id"):
+                    VODDatabase.upsert_stills(media_entry["id"], media_entry["stills"])
+            except Exception as _tmdb_ex:
+                print(f"[TMDB] Enrichment note for '{clean_title}': {_tmdb_ex}")
+
         # Save into SQLite DB
         VODDatabase.upsert_media(media_entry)
 
-        # Update catalog.json
-        cls._sync_to_catalog_json(media_entry)
+        # Update catalog.json via ContentRegistry (unified dedup) or legacy fallback
+        if _HAS_REGISTRY and ContentRegistry:
+            ContentRegistry.register(media_entry)
+        else:
+            cls._sync_to_catalog_json(media_entry)
 
         return media_entry
 

@@ -1,0 +1,44 @@
+name: IPTV Stream Health Check & Auto-Repair
+
+on:
+  schedule:
+    # Every 12 hours — offset from harvester runs to avoid catalog.json conflicts
+    - cron: '0 1,13 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: harvester        # share group so it never clashes with harvester.yml
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  iptv_health:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 🔍 Run IPTV Health Check & Auto-Repair
+        run: |
+          python services/iptv_health_check.py
+          echo "--- IPTV Health Check Completed ---"
+
+      - name: 📤 Commit Updated Stream Config
+        run: |
+          git config --global user.name  "ATuBe-IPTV-Bot"
+          git config --global user.email "bot@atube.app"
+          git add config/remote_config.json || true
+          if git diff --staged --quiet; then
+            echo "All streams healthy — no changes needed."
+          else
+            git commit -m "fix(iptv): auto-repair dead streams [skip ci]"
+            git push origin main
+          fi

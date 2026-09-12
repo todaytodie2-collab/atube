@@ -1,0 +1,66 @@
+name: TMDB Poster & Stills Refresh
+
+on:
+  schedule:
+    # Weekly on Sunday at 02:00 UTC — low traffic time
+    - cron: '0 2 * * 0'
+  workflow_dispatch:   # Allow manual trigger
+
+concurrency:
+  group: harvester
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  poster_refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 📦 Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests urllib3
+
+      - name: 🎨 Fix Content Types & Refresh Posters via TMDB
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        run: |
+          python -c "
+          import sys
+          sys.path.insert(0, 'services')
+          from tmdb_client import TMDBClient, fix_all_posters
+          from poster_fetcher import fix_content_type_and_posters
+
+          print('=== Step 1: Fix content types & poster placeholders ===')
+          fix_content_type_and_posters()
+
+          if TMDBClient.has_api_key():
+              print('=== Step 2: TMDB full enrichment (poster + stills) ===')
+              fix_all_posters()
+          else:
+              print('[WARN] TMDB_API_KEY secret not set — skipping TMDB enrichment.')
+              print('       Add it at: Settings > Secrets > Actions > TMDB_API_KEY')
+          "
+          echo "--- Poster Refresh Completed ---"
+
+      - name: 📤 Commit Updated Catalog
+        run: |
+          git config --global user.name  "ATuBe-Poster-Bot"
+          git config --global user.email "bot@atube.app"
+          git add catalog.json js/bundled-data.js || true
+          if git diff --staged --quiet; then
+            echo "No poster changes detected."
+          else
+            git commit -m "fix(posters): weekly TMDB poster & stills refresh [skip ci]"
+            git push origin main
+          fi

@@ -67,6 +67,7 @@ class VODDatabase:
                 trailer_youtube_id TEXT,
                 director TEXT,
                 total_seasons INTEGER DEFAULT 1,
+                tmdb_id TEXT,                                -- TMDB numeric ID for poster/stills lookups
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         """)
@@ -183,14 +184,46 @@ class VODDatabase:
         except Exception as mig_ex:
             print(f"[Schema Migration Note] {mig_ex}")
 
+        # Auto-migrate: add tmdb_id column if not present (for existing databases)
+        try:
+            cur.execute("PRAGMA table_info(vod_media);")
+            existing_cols = [c[1] for c in cur.fetchall()]
+            if "tmdb_id" not in existing_cols:
+                cur.execute("ALTER TABLE vod_media ADD COLUMN tmdb_id TEXT;")
+        except Exception as tmdb_mig:
+            print(f"[Schema Migration Note] tmdb_id: {tmdb_mig}")
+
         # Indices for Sub-5ms queries
         cur.execute("CREATE INDEX IF NOT EXISTS idx_vod_media_type_cat ON vod_media(content_type, category);")
         cur.execute("CREATE INDEX IF NOT EXISTS idx_vod_episodes_lookup ON vod_episodes(media_id, season_number);")
         cur.execute("CREATE INDEX IF NOT EXISTS idx_vod_servers_lookup ON vod_servers(media_id, season_number, episode_number);")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_vod_media_tmdb ON vod_media(tmdb_id);")
 
         conn.commit()
         conn.close()
         cls._initialized = True
+
+    @classmethod
+    def upsert_stills(cls, media_id: str, stills: List[str]) -> None:
+        """
+        Replace all stills for a media entry with the provided list.
+        Safe to call repeatedly — always replaces, never duplicates.
+        """
+        if not media_id or not stills:
+            return
+        cls.init_schema()
+        conn = cls.get_connection()
+        try:
+            conn.execute("DELETE FROM vod_stills WHERE media_id = ?", (media_id,))
+            conn.executemany(
+                "INSERT INTO vod_stills (media_id, photo_url) VALUES (?, ?)",
+                [(media_id, url) for url in stills if url],
+            )
+            conn.commit()
+        except Exception as e:
+            print(f"[VODDatabase] upsert_stills error for {media_id}: {e}")
+        finally:
+            conn.close()
 
     @classmethod
     def upsert_media(cls, media: Dict[str, Any]):
