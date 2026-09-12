@@ -14,6 +14,7 @@ import ipaddress
 import threading
 import urllib.parse
 import urllib.request
+import datetime
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 
 # Force UTF-8 for stdout and stderr on Windows
@@ -299,6 +300,82 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"status": "started", "message": "جاري فحص وتحديث قنوات البث المباشر في الخلفية"}, ensure_ascii=False).encode("utf-8"))
                 return
 
+            # 3c-2. API: EPG Guide Program Schedule
+            elif path == "/api/iptv/epg":
+                ch_id = query.get("channel_id", [""])[0]
+                now = datetime.datetime.now()
+                channels = []
+                if HAS_SERVICES:
+                    try:
+                        channels = IPTVManager.get_instance().get_active_channels()
+                    except Exception:
+                        channels = []
+                if not channels and HAS_SERVICES:
+                    channels = self.get_real_channels()
+
+                if ch_id:
+                    channels = [c for c in channels if str(c.get("id")) == str(ch_id)]
+
+                epg_result = {}
+                program_templates = {
+                    "news": ["نشرة الأخبار الحادية عشرة", "عين على العالم", "حوار خاص ومباشر", "حصاد اليوم الإخباري", "ما وراء الخبر", "الصحافة اليوم"],
+                    "sports": ["استوديو الدوري الممتاز", "ملخص أهداف الجولة", "عالم الرياضة والسرعة", "برنامج الصافرة والهدف", "أبطال الملاعب المفتوحة"],
+                    "documentary": ["أسرار الطبيعة البرية", "حضارات قديمة لا تنسى", "في أعماق البحار والمحيطات", "وثائقي: رواد الفضاء", "عالم التكنولوجيا الحديث"],
+                    "general": ["صباح الخير والنشاط", "اللقاء المفتوح مع الجمهور", "بانوراما المنوعات", "سهرة المساء والسينما", "روائع الطرب الأصيل"]
+                }
+
+                current_hour = now.hour
+                for ch in channels[:30]:
+                    c_id = str(ch.get("id"))
+                    c_name = ch.get("name", "")
+                    c_cat = str(ch.get("category", "")).lower()
+
+                    if any(w in c_cat or w in c_name.lower() for w in ["أخبار", "news", "جزيرة", "حدث", "عربية"]):
+                        prog_list = program_templates["news"]
+                    elif any(w in c_cat or w in c_name.lower() for w in ["رياضة", "sport", "كأس", "كرة"]):
+                        prog_list = program_templates["sports"]
+                    elif any(w in c_cat or w in c_name.lower() for w in ["وثائقي", "doc", "طبيعة"]):
+                        prog_list = program_templates["documentary"]
+                    else:
+                        prog_list = program_templates["general"]
+
+                    schedules = []
+                    for offset in range(-1, 5):
+                        slot_hour = (current_hour + offset) % 24
+                        prog_idx = (abs(hash(c_id)) + slot_hour) % len(prog_list)
+                        prog_title = prog_list[prog_idx]
+
+                        start_time = now.replace(hour=slot_hour, minute=0, second=0, microsecond=0)
+                        if offset < 0 and current_hour == 0:
+                            start_time -= datetime.timedelta(days=1)
+                        elif offset > 0 and (current_hour + offset) >= 24:
+                            start_time += datetime.timedelta(days=1)
+                        end_time = start_time + datetime.timedelta(minutes=60)
+
+                        is_current = (start_time <= now < end_time)
+                        prog_percent = 0
+                        if is_current:
+                            elapsed = (now - start_time).total_seconds()
+                            prog_percent = min(100, max(0, int((elapsed / 3600.0) * 100)))
+
+                        schedules.append({
+                            "id": f"{c_id}_{slot_hour}",
+                            "title": prog_title,
+                            "start": start_time.strftime("%H:%M"),
+                            "end": end_time.strftime("%H:%M"),
+                            "is_live": is_current,
+                            "progress": prog_percent
+                        })
+
+                    epg_result[c_id] = {
+                        "channel_id": c_id,
+                        "channel_name": c_name,
+                        "programs": schedules
+                    }
+
+                self.send_cors_json(epg_result)
+                return
+
             # 3d. API: Remote Config Domains & Oscar VOD Config
             elif path == "/api/config/domains":
                 self.send_response(200)
@@ -550,6 +627,70 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps(result, ensure_ascii=False).encode("utf-8"))
                 return
 
+            # 5d. API: CORS-Bypassing Stream & Segment Proxy Bridge
+            elif path == "/api/stream/proxy":
+                target_url = query.get("url", [""])[0]
+                if not target_url or not is_safe_external_url(target_url):
+                    self.send_cors_json({"error": "Invalid, blocked or missing target URL"}, status=400)
+                    return
+
+                try:
+                    req = urllib.request.Request(
+                        target_url,
+                        headers={
+                            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+                            "Referer": target_url
+                        }
+                    )
+                    ctx = ssl.create_default_context()
+                    ctx.check_hostname = False
+                    ctx.verify_mode = ssl.CERT_NONE
+
+                    with urllib.request.urlopen(req, context=ctx, timeout=12) as response:
+                        ct = response.headers.get("Content-Type", "application/vnd.apple.mpegurl")
+                        self.send_response(200)
+                        self.send_header("Content-Type", ct)
+                        self.send_header("Access-Control-Allow-Origin", "*")
+                        self.send_header("Cache-Control", "no-cache")
+                        self.end_headers()
+                        while True:
+                            chunk = response.read(65536)
+                            if not chunk:
+                                break
+                            self.wfile.write(chunk)
+                except Exception as ex:
+                    self.send_cors_json({"error": f"Proxy upstream error: {str(ex)}"}, status=502)
+                return
+
+            # 5e. API: System Health & Performance Diagnostics
+            elif path == "/api/health":
+                vod_count = 0
+                iptv_count = 0
+                if HAS_SERVICES:
+                    try:
+                        conn = VODDatabase.get_connection()
+                        vod_count = conn.execute("SELECT COUNT(*) FROM vod_media").fetchone()[0]
+                        conn.close()
+                    except Exception:
+                        pass
+                    try:
+                        iptv_count = len(IPTVManager.get_active_channels())
+                    except Exception:
+                        pass
+
+                self.send_cors_json({
+                    "status": "healthy",
+                    "platform": "A TuBe Ultra HD Media Experience",
+                    "version": "2.5.0",
+                    "timestamp": datetime.datetime.now().isoformat(),
+                    "stats": {
+                        "vod_titles": vod_count,
+                        "iptv_channels": iptv_count,
+                        "engine": "SQLite 3 WAL Mode"
+                    }
+                })
+                return
+
             # 6. API: Multi-Year Universal Harvester Trigger
             elif path in ["/api/crawler/run", "/api/crawler/harvest-years"]:
                 start_yr = int(query.get("start_year", ["2000"])[0])
@@ -659,6 +800,28 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     StreamSanitizer.purge_memory()
                 return
 
+            # 9. API: User Data Cloud Backup & Restore (GET)
+            elif path == "/api/user/backup":
+                backup_file = os.path.join(BASE_DIR, "config", "user_backup.json")
+                if os.path.exists(backup_file):
+                    try:
+                        with open(backup_file, "r", encoding="utf-8") as bf:
+                            backup_data = json.load(bf)
+                        self.send_cors_json(backup_data)
+                        return
+                    except Exception:
+                        pass
+                self.send_cors_json({
+                    "status": "empty",
+                    "data": {
+                        "favorites": [],
+                        "history": [],
+                        "watch_later": [],
+                        "settings": {"theme": "cyan", "subtitles": "ar", "audio_eq": "flat"}
+                    }
+                })
+                return
+
             # Fallback to serving static files (index.html, css, js, assets)
             super().do_GET()
         except Exception as e:
@@ -671,6 +834,48 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
             except Exception:
                 pass
+
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+        self.end_headers()
+
+    def do_POST(self):
+        try:
+            parsed = urllib.parse.urlparse(self.path)
+            path = parsed.path
+            if path == "/api/user/backup":
+                content_len = int(self.headers.get("Content-Length", 0))
+                if content_len > 5 * 1024 * 1024:
+                    self.send_cors_json({"error": "Payload exceeds 5MB limit"}, status=413)
+                    return
+                body = self.rfile.read(content_len).decode("utf-8")
+                try:
+                    payload = json.loads(body)
+                except Exception as je:
+                    self.send_cors_json({"error": f"Invalid JSON payload: {je}"}, status=400)
+                    return
+
+                backup_file = os.path.join(BASE_DIR, "config", "user_backup.json")
+                os.makedirs(os.path.dirname(backup_file), exist_ok=True)
+                with open(backup_file, "w", encoding="utf-8") as f:
+                    json.dump({
+                        "saved_at": datetime.datetime.now().isoformat(),
+                        "data": payload
+                    }, f, ensure_ascii=False, indent=2)
+
+                self.send_cors_json({
+                    "status": "success",
+                    "message": "تم حفظ النسخة الاحتياطية بنجاح على السيرفر",
+                    "saved_at": datetime.datetime.now().isoformat()
+                })
+                return
+            else:
+                self.send_cors_json({"error": "Resource not found"}, status=404)
+        except Exception as ex:
+            self.send_cors_json({"error": str(ex)}, status=500)
 
     def get_real_channels(self, category=None):
         channels = []
@@ -760,16 +965,26 @@ def run(port=8085):
     # Initialize and seed database if empty
     if HAS_SERVICES:
         try:
-            catalog_file = os.path.join(BASE_DIR, "catalog.json")
-            if os.path.exists(catalog_file):
-                try:
-                    with open(catalog_file, "r", encoding="utf-8") as cf:
-                        disk_catalog = json.load(cf)
-                        if isinstance(disk_catalog, list) and disk_catalog:
-                            print(f"[VOD DB Startup] Seeding {len(disk_catalog)} items from catalog.json into SQLite...")
-                            VODDatabase.seed_initial_catalog(disk_catalog)
-                except Exception as ex_cat:
-                    print(f"[VOD DB Startup] Note reading catalog.json: {ex_cat}")
+            VODDatabase.init_schema()
+            conn = VODDatabase.get_connection()
+            cur = conn.cursor()
+            cur.execute("SELECT COUNT(*) FROM vod_media")
+            existing_count = cur.fetchone()[0]
+            conn.close()
+
+            if existing_count == 0:
+                catalog_file = os.path.join(BASE_DIR, "catalog.json")
+                if os.path.exists(catalog_file):
+                    try:
+                        with open(catalog_file, "r", encoding="utf-8") as cf:
+                            disk_catalog = json.load(cf)
+                            if isinstance(disk_catalog, list) and disk_catalog:
+                                print(f"[VOD DB Startup] Seeding {len(disk_catalog)} items from catalog.json into SQLite...")
+                                VODDatabase.seed_initial_catalog(disk_catalog)
+                    except Exception as ex_cat:
+                        print(f"[VOD DB Startup] Note reading catalog.json: {ex_cat}")
+            else:
+                print(f"[VOD DB Startup] SQLite database active with {existing_count} items. Zero-latency startup ready.")
         except Exception as e:
             print(f"[VOD DB Startup] {e}")
 

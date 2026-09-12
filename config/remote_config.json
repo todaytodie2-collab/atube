@@ -2,7 +2,7 @@
   "version": "4.0.0",
   "updated_at": "2026-09-12",
   "tmdb": {
-    "api_key": "",
+    "api_key": "cabefb963ee5db1ecd2c5778bda9b6d0",
     "_comment": "Register free at https://www.themoviedb.org/settings/api then paste your key here"
   },
   "domains": {
@@ -19,108 +19,1414 @@
   },
   "iptv_channels": [
     {
-      "id": "cbc_egypt",
-      "name": "CBC مصر العامة HD",
-      "category": "منوعات وترفيه",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/CBC_Egypt_logo.png/260px-CBC_Egypt_logo.png",
+      "id": "live_eishha_iraqia-general",
+      "name": "العراق الفضائية",
+      "category": "قنوات عراقية 🇮🇶",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgFkIMSvDzMQgzT39c679FJUyk4GwSy8vzwsot8YqpH0TEjckzbHhj9dy_oDDLWJN8nH7bCgyOtvH0o2UT0IFn8DpjBAf8hyTmLANBbUzh5O8FX9yIC7WQKNmIwGG55dJ5Ujv7_BNwZQIZlgVok9C-YgiYPjiFWXCttZkjupAOdYYTWIHWf8gX-ReXJaS4/s800/iraq.webp",
       "streams": [
-        "https://flu.systemnet.tv/CBC/index.m3u8",
-        "https://iptv-org.github.io/iptv/countries/eg.m3u#CBC Egypt",
-        "https://cbcegypt.cdnvideo.ru/CBC/index.m3u8"
-      ]
+        "https://imn-live.esite-lab.com/hls/iraqia-general.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/iraqia-general.html"
     },
     {
-      "id": "cbc_drama",
-      "name": "CBC دراما (مسلسلات)",
-      "category": "أفلام ومسلسلات",
-      "logo": "https://upload.wikimedia.org/wikipedia/ar/thumb/9/90/Cbc_drama_logo.png/280px-Cbc_drama_logo.png",
+      "id": "live_eishha_iraqia-sports",
+      "name": "العراق الرياضية",
+      "category": "قنوات عراقية 🇮🇶",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnu8ntkBN161V0A8QLr2QjHdGukSuThHZ41LY8JDElMJNrVf4Kbr0idcEFgqpoL0SJteQihAOq4frgiYEjXkmZzIWWHTF7kRGuQXW19767yRbCXfZUw3ryo0Y5pMaabXTNihJHmFklb8JwYRfbT0Yg6o8avkFc-EeFNMP1K8cYPY32bwH_1BQ28SgqfJw/s800/iraq-sport.webp",
       "streams": [
-        "https://flu.systemnet.tv/CBCDrama/index.m3u8",
-        "https://cbcdrama.cdnvideo.ru/CBCDrama/index.m3u8"
-      ]
+        "https://imn-live.esite-lab.com/hls/iraqia-sports-1.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/iraqia-sports.html"
     },
     {
-      "id": "cbc_sofra",
-      "name": "CBC سفرة",
-      "category": "منوعات وترفيه",
-      "logo": "https://upload.wikimedia.org/wikipedia/ar/thumb/b/b2/CBC_Sofra_logo.png/280px-CBC_Sofra_logo.png",
+      "id": "live_eishha_al-rasheed",
+      "name": "الرشيد العراقية",
+      "category": "قنوات ترفيهية 🌟",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWZJVAg7AULB6tgEjUI5q0v36ENjSKc5vFh3uHu_hjvu4FBqQNxdIv6ax_AxATs2wjLE-jbzm_z1_LR_ZJBscO1Cxa9qk_LlDMP5hOOmgbuQ97CcTlfa9au7yZvOcJN8HjheEdBGhNotUFD6NeQ6Ke12BKD-5g8DOSWgm13PjUts0lAuyfne1FERsmy1Y/s800/al-rasheed.webp",
       "streams": [
-        "https://flu.systemnet.tv/CBCSofra/index.m3u8",
-        "https://cbcsofra.cdnvideo.ru/CBCSofra/index.m3u8"
-      ]
+        "https://media1.livaat.com/static/AL-RASHEED-HD.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/al-rasheed.html"
     },
     {
-      "id": "alghad_tv",
-      "name": "قناة الغد الإخبارية HD",
-      "category": "الأخبار",
-      "logo": "https://alghad.tv/wp-content/themes/alghad/assets/images/logo.png",
+      "id": "live_eishha_elheddaf",
+      "name": "الهداف الرياضية",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhDI_uEqFhJxH4D5agDYSZfMtPuQna71R_syVYM_5DHXvuf7NwljyOC-nV_Mkv4jxe4sm-jhlWAw_sUL2rqC6vOmtoVL-bEo4O9-unOGpeFAVNY9PokEBh774cPAhN7c5t6cs-riuzF9kNjgzJIkJNFGfyHVjjwEYI9LRIms2CoplFCHpCPbhsQg_8kxrM/s800/al-hadaf.webp",
       "streams": [
-        "https://eazyvwqssi.erbvr.com/alghadtv/alghadtv.m3u8",
-        "https://iptv-org.github.io/iptv/countries/jo.m3u#Al Ghad"
-      ]
+        "https://live.elheddaftv.com:8081/elheddaftv/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/elheddaf.html"
     },
     {
-      "id": "france24_ar",
-      "name": "فرانس 24 العربية HD",
-      "category": "الأخبار",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/France_24_logo.svg/320px-France_24_logo.svg.png",
+      "id": "live_eishha_aljadeed",
+      "name": "الجديد اللبنانية",
+      "category": "قنوات ترفيهية 🌟",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjGIP0zyWel4v5uakXjcAAYx7kOIqGbw3JFGIQBbzXn2MxX_5aK5EkneVxLZSuBRJyTCnDcARgo9OhaeqaAYzgMpDmTDPK1d2ka6qzsBxsvHXmnFeMYfTdjODuyyL44N_hogfwY3JMzgc39gtDrvUZeI8zqZlQWZzUhCngtpCU64mVRjphim2Aeqf7hWfY/s800/jadeed.webp",
       "streams": [
-        "https://static.france24.com/live/F24_AR_HI_HLS/live_tv.m3u8",
-        "https://iptv-org.github.io/iptv/languages/ara.m3u#France 24 Arabic",
-        "https://www.france24.com/fr/directs/france24-ar.m3u8"
-      ]
+        "https://player.eishha.com/p/aljadeed.html"
+      ],
+      "embed": "https://player.eishha.com/p/aljadeed.html"
     },
     {
-      "id": "radio_9090",
-      "name": "راديو 9090 مصر المباشر",
-      "category": "منوعات وترفيه",
-      "logo": "https://mobtada.com/assets/images/9090.png",
+      "id": "live_eishha_mtv-hd",
+      "name": "MTV اللبنانية",
+      "category": "قنوات ترفيهية 🌟",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgz7M1byePK8d301mM4Ne6LTdeFGjrMIq_MwQyRM4R4YFcOXOBMtiWWl0jG67KnSgJlX5xnEkbDRUCDAVX3ImKxhKmNshjfVxPrNvB3h2e2UpfkvE5O2saD5LSP-MuD9h10p8tAGdhoJdAb_hL4V_vm_Yk1wbUn1TdlIfryezQ6LMLqeuSFF3VndQqpMEw/s800/mtv.webp",
       "streams": [
-        "https://9090video.mobtada.com/hls/stream.m3u8",
-        "https://stream.9090.com.eg/live.m3u8"
-      ]
+        "https://player.eishha.com/p/mtv-hd.html"
+      ],
+      "embed": "https://player.eishha.com/p/mtv-hd.html"
     },
     {
-      "id": "mazzika",
-      "name": "مزيكا (Mazzika TV)",
-      "category": "موسيقى",
-      "logo": "https://upload.wikimedia.org/wikipedia/ar/thumb/7/7b/Mazzika_logo.png/280px-Mazzika_logo.png",
+      "id": "live_eishha_dubai-zaman",
+      "name": "دبي زمان",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSlQpNuqLpJt3StbBxKjEwXVZL50TQEE5QiQaXdgd4fLH-rKAlUq0gVhgTNZQWNijXWSUneeHVOmbdkvqEOxYCYROvGPB4dvt47hkcJjG79hfljI7talgdNoCzzOinf0ZTg4puHcizJqt6yddBI5JHtZCvJLgchvzJZcJOflii8Mx3hsSK9-FjB3cgeh4/s800/dubai-zaman.webp",
       "streams": [
-        "http://149.100.11.235:8080/Mazzika/index.m3u8",
-        "https://iptv-org.github.io/iptv/regions/arab.m3u#Mazzika",
-        "https://mazzika.cdnvideo.ru/Mazzika/index.m3u8"
-      ]
+        "https://player.eishha.com/p/dubai-zaman.html"
+      ],
+      "embed": "https://player.eishha.com/p/dubai-zaman.html"
     },
     {
-      "id": "almasriyah",
-      "name": "القناة الفضائية المصرية",
-      "category": "منوعات وترفيه",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Al-Masriyah_Logo.svg/260px-Al-Masriyah_Logo.svg.png",
+      "id": "live_eishha_noor-dubai",
+      "name": "نور دبي",
+      "category": "قنوات إماراتية 🇦🇪",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEibZF784T-s07hhXG2vhp-OZcxxMDZQWs-AJuZrGFqxsHqb4JP5TctS4LpE2SGWm3seLR66HiQRPGcuHPyOzES37cxkO_UDlEFVpk205eQRyRZk8M0s-0EsKkOU_YDY2w1ulIwgbjdjPS0vli6M-5kaPwLBpoc3Qe6Y5TuvL4qhH3BhO9ZqbwqgfuhfTi4/s800/noor-dubai.webp",
       "streams": [
-        "http://185.9.2.18/chid_247/index.m3u8",
-        "https://iptv-org.github.io/iptv/countries/eg.m3u#Al Masriyah",
-        "https://almasriyah.cdnvideo.ru/almasriyah/index.m3u8"
-      ]
+        "https://player.eishha.com/p/noor-dubai.html"
+      ],
+      "embed": "https://player.eishha.com/p/noor-dubai.html"
     },
     {
-      "id": "rotana_cinema",
+      "id": "live_eishha_sbc",
+      "name": "SBC",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgNr-vhagRoJBOP66l3SR8BqhHmWnukwZdHrqIlRBC4YOZZfz21WhR-sFuWVktXYgmrleA5hPc9KiwubR9mRZA5qaYW0NhY3ujGUFzUozqqufFX4KO1c0M7c2riTzST67po9QZY6iMe4z2wpGqzSEKiOBEEa6g0KEiR7AIBoiQGxH4YybxpCak8xzAXPfU/s800/sbc.webp",
+      "streams": [
+        "https://player.eishha.com/p/sbc.html"
+      ],
+      "embed": "https://player.eishha.com/p/sbc.html"
+    },
+    {
+      "id": "live_eishha_sumaria",
+      "name": "السومرية",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjikTMkFCTMYHRE0RzXrpoyvKTEfPGrl4oxVulMfI5y260KFGKCmu8UJkbM-1Nwoxjae9pAz75IhyphenhyphenFQUQKKw-pjVmX9gl47BZt_kvkoIagp2RQU_JfU4V7EOWuNiayWnWIH_VElZLa9u8WDxVub6IIt4kJgbCrq6INE_CU9u1pxkYC2VjA-rjg9Q73-ZD4/s800/Alsumaria.webp",
+      "streams": [
+        "https://player.eishha.com/p/sumaria.html"
+      ],
+      "embed": "https://player.eishha.com/p/sumaria.html"
+    },
+    {
+      "id": "live_eishha_cairo-wel-nas-1",
+      "name": "القاهرة والناس 1",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgYkrDQztPJp7A0BwSJsI7Y6vTi4aVr2DUB4f-NjTcl9ldCsqV8wmid1aOUf2NEnDNyd0cZjcaTSR8_IK4ilcsr-suhCAJJn16GajtcKSkPwbx9tfWC-ndwQ71H6sikDofksNe0u3MGqIYo9LvTG4FUhF5iS9xa1FOrNOGf0k7V10OQw2QurrkmX6pm81A/s800/cairo-wel-nas-1.webp",
+      "streams": [
+        "https://player.eishha.com/p/cairo-wel-nas-1.html"
+      ],
+      "embed": "https://player.eishha.com/p/cairo-wel-nas-1.html"
+    },
+    {
+      "id": "live_eishha_cairo-wel-nas-2",
+      "name": "القاهرة والناس 2",
+      "category": "قنوات ترفيهية 🌟",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgsP2wWxVim5DEsbTEWG-Gg_aeIPHmjMenmiSc0rfWxQcXjOmN2TQw0Kmh3e78lIDlDdkq8NkavSp5np2OcMx7WbMQUrXK0udHza-Ii0Y4SWWp6R4AnmlE4PZ-RvRswMWRlTdO4xWB-C0Gbvt853uPWkysNUHc3Q9OO_g52Di3o3CJF4ZsBhuzZCHPL0dY/s800/cairo-wel-nas-2.webp",
+      "streams": [
+        "https://player.eishha.com/p/cairo-wel-nas-2.html"
+      ],
+      "embed": "https://player.eishha.com/p/cairo-wel-nas-2.html"
+    },
+    {
+      "id": "live_eishha_alnahar-drama",
+      "name": "النهار دراما",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEimKZVHzVjihGqijSHA_75ySHqDRuh3skyczg3no7rOAzie-cd8xGflAxb4i4UEf0kJ0uWSwyEN2UZylh4A7YcB5lDPE06pH37ocp8fe7WUPn9_5Zzs3KF8YgVHGQKTjUGvFlQF3oviIh-LwyfQ54LlClAeb1YuYC5HbaTQIJKmPtviMdXq-9FfCiFHLjM/s800/al-nahar-drama.webp",
+      "streams": [
+        "https://player.eishha.com/p/alnahar-drama.html"
+      ],
+      "embed": "https://player.eishha.com/p/alnahar-drama.html"
+    },
+    {
+      "id": "live_eishha_alnahar",
+      "name": "النهار",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgMheAe4EvukZmeUenCHBa86AmF4lOAfpgloxBr34a8hZuz-n-ynspth9CZAH1oivo-BdT0OhWdGEMMQx8CkwDbNaFGEn6IT4gNgP5iSqrB_8wNiJkVRKXwuEDV9JYFsn6WLzqDsOX_kVURMwi30IW9l5znX0aQynkklVYxYz53Rrhs6dglxdJVR4yWW4w/s800/al-nahar.webp",
+      "streams": [
+        "https://player.eishha.com/p/alnahar.html"
+      ],
+      "embed": "https://player.eishha.com/p/alnahar.html"
+    },
+    {
+      "id": "live_eishha_zee-aflam",
+      "name": "زي أفلام",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTkTQDCXD6hST5jS-J4ugsYOddK4cskiw_Ql531c7iH2ENjQLxqD6hWeHhrYCDfBXUDoGSry0rCRUYNaCpXFGQ-bNHqtYxMId3Bb64NlCX-z4Zie3Xtqmke5lJpxMkDjMNLyAdcsmXQZrOO4zh043nHms8uitV51r6c_Wh5QAMBWT3jETqdYK54R5pw6c/s800/zee-aflam.webp",
+      "streams": [
+        "https://player.eishha.com/p/zee-aflam.html"
+      ],
+      "embed": "https://player.eishha.com/p/zee-aflam.html"
+    },
+    {
+      "id": "live_eishha_zee-alwan",
+      "name": "زي الوان",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigYp9xzNfaL8SL85a6yI7MQuLYsExxA4gavAItjpKAlD3M3RJuOxaV1dRLvHrMhWfm3Bu9ndrzzprcppbNDo7p6S7ewhhZgDVKqG4TULZn1dC3Q_S0UzYFm_xSdDflD4P_6Wef2-HC3cLRVA5mdPIRjCEjgbaCCPlW5WIFxni5uE9TR3PQ5LADkr0kuT4/s800/zee-alwan.webp",
+      "streams": [
+        "https://player.eishha.com/p/zee-alwan.html"
+      ],
+      "embed": "https://player.eishha.com/p/zee-alwan.html"
+    },
+    {
+      "id": "live_eishha_dmc",
+      "name": "DMC",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigrNwwOj3m2F7MhScjXe1wTxwXFhdJstYlQkGVVy9C7aLXWPxZpknh1yhsL32UhOM_pu5rfONrhyphenhyphenP2CoKeZoLnuQWQws37sGusR6-FpannngGmAQ-V84rbptWRKP418-E0icaEF-qhGn83qPx6eGws6OsAXD2I61QPCP50XsapPvB8tKcD6oFQWcUvmS0/s800/dmc.webp",
+      "streams": [
+        "https://fastly.live.brightcove.com/1843587511277700484/eu-west-1/6057955906001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiZGd4MWQ4LmVncmVzcy5mZDJ2eHIiLCJhY2NvdW50X2lkIjoiNjA1Nzk1NTkwNjAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU3OTU1OTA2MDAxIl0sImp0aSI6IjE4NDM1ODc1MTEyNzc3MDA0ODQifQ.5wPFktewEw9I-uizJ-Kk8GJpxh540V8eWuARmlEnLLM/playlist-hls.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/dmc.html"
+    },
+    {
+      "id": "live_eishha_alhayah",
+      "name": "الحياة",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6CWZUvtHbis3EQSPU1zQJFEG0z54kPU_tywxaN6FYoJOdc4NarCaUTK8HX6x2GMuL9Ojwb26D-01nFBuTOpICEn_mxkijQr73eScHF5k-oB_j9a9UKbszYjlB7P-YURKmC9qK2LcWlCsPu1u2HxRdQY1JTAJMKh4KkUAmWYaUm4t6vtTlD5tuL_zDewU/s800/al-hayah.webp",
+      "streams": [
+        "https://player.eishha.com/p/alhayah.html"
+      ],
+      "embed": "https://player.eishha.com/p/alhayah.html"
+    },
+    {
+      "id": "live_eishha_alhayah-drama",
+      "name": "الحياة دراما",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgLjoSJ_ZLpRsjQXx2baUvD6PcB6gT0YGdh3v2Oo0XLYiWTNoDLqeuU9fGh38GZsjp_FStuJPEnlSjT3RfFgBTwZES_5dLXhKiSszp1NtqGcq4oeVz9LwrsagWdq9fZN3fDt0omwcWPIxghsBXsB0igmpe0VLxa2TU7RWsjF4Pxo93NDVQ9EloEJOgoQr4/s800/al-hayah-drama.webp",
+      "streams": [
+        "https://fastly.live.brightcove.com/1843521635140662966/eu-west-1/6057955906001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiZGd4MWQ4LmVncmVzcy5mZDJ2eHIiLCJhY2NvdW50X2lkIjoiNjA1Nzk1NTkwNjAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU3OTU1OTA2MDAxIl0sImp0aSI6IjE4NDM1MjE2MzUxNDA2NjI5NjYifQ.3f6Ek99wdZf_GSaWnd7hHgbJOSa2zbyqt2cUoxyTHzk/playlist-hls.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/alhayah-drama.html"
+    },
+    {
+      "id": "live_eishha_lbchd",
+      "name": "LBC اللبنانية",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiFDeapkrdAHQggGJaZqkWYXtRdlYeHsgFAKJOk4_GH7-fEavKrsRq5XpWCNR35ONsK7NrjGX1iYtIsuCdE_lJrjEJMQZjacw4RMY-4AHWDQLA5LNcxvsqEP7rwYBXcCGxyiH3Xb8jPIk1xL012cdEVyLcU2n3IG1vJExckmiX6IfODfVlron_Mcv5KpZI/s800/lbc.webp",
+      "streams": [
+        "https://player.eishha.com/p/lbchd.html"
+      ],
+      "embed": "https://player.eishha.com/p/lbchd.html"
+    },
+    {
+      "id": "live_eishha_mbc-1",
+      "name": "أم بي سي 1",
+      "category": "قنوات ترفيهية 🌟",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfcGbg-w8vd-sAhPge2Cw1MYH3I_9xkt2Vz4Hu5lYvPwjr_qrcz5wMcVlkfva80SZj5ToTgtw6ZH09sbXB3ExFesdbIIV1atNhshY4d1haZoXRL0BPwSM_jHDt5luvgI7C0B8g58RmDo877Y5C1gVEF3v5CHIAXsAF9B1q9nDMx-r79Sgvs4QUBSyDBvY/s800/mbc-1.webp",
+      "streams": [
+        "https://shd-gcp-live-orng.shahid.net/live/bitmovin-mbc-1-na/eec141533c90dd34722c503a296dd0d8/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-1.html"
+    },
+    {
+      "id": "live_eishha_mbc-2",
+      "name": "mbc 2",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzXvdlPfUU7Q4ByOsdPvv6Zkzf81UMs464-IQdSqN7zJ6BPxkxlWbFyUf947YFpdSN9jUhDgIOn8TpuBAOVq5BcPWlmYmNpvtfA8UkMxMIZoLvLcu5Q_06yXEXN9aW1Y7_nCrW8Lws8EeNU0hOWC8XKO0uEcEZ0igc8kYG4trZ6S3cxsS0fixwffXiL1A/s800/MBC-2.webp",
+      "streams": [
+        "https://player.eishha.com/p/mbc-2.html"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-2.html"
+    },
+    {
+      "id": "live_eishha_mbc-3-ksa",
+      "name": "mbc 3",
+      "category": "أطفال وعائلة 🧸",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8L6RLocqJqvJcBWlClHdcq6U0-HJjx_wtkL6lJUKM7_GqBKGLEivb3Sq6XN8eGT-izDVnOYCMrBsFP8CD1ud05hbS5kO20NtLm4JmUzFbz2t9W9Zt5u9JvFAB1Dx_U2QZKdR5vHmUwVf1NkO8okR3-d8dL5XIZsHhLUtAGN9eiWNUV4DOYSoxz2HN48k/s800/mbc-3.webp",
+      "streams": [
+        "https://player.eishha.com/p/mbc-3-ksa.html"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-3-ksa.html"
+    },
+    {
+      "id": "live_eishha_mbc-4",
+      "name": "mbc4",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgIjc9CGhpXVtKHTxO3UNhf9ot6uIJXUU5onRrT7t-fJr4w2fh1sHDOBtQyJug5c3HTyRPurJ9F6yGYVgTk3wfYUXySCOj3zWRUqyCYsHxe9ojQ7CJWvFI5xLVvv72l1lre0ZydUXAQVqzp1GtMll2uuRbChuBfzzFz9W_yaSWQfcJeZKOITmQHjOzpS0U/s800/mbc-4.webp",
+      "streams": [
+        "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-4/24f134f1cd63db9346439e96b86ca6ed/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-4.html"
+    },
+    {
+      "id": "live_eishha_mbc-5",
+      "name": "mbc5",
+      "category": "قنوات ترفيهية 🌟",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiS_xALvS_-F192sO2KdK2iO8c_zee_XB-Nq80OTN4n9xZxFaJ6XUBGRrxe58oswmcapBb1WTzteE7QVykzDBocjklWAZ3xl4f5i-aweI6yEXWDoJJkxn6ZdDhM4croyqh2AsW5kFwfhlBavikq7TdvMhCBI8gQIl6fWII0bqTLQPNcoDdjzjr_Ga3GZyw/w400-h266/mbc-5.webp",
+      "streams": [
+        "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-5/ee6b000cee0629411b666ab26cb13e9b/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-5.html"
+    },
+    {
+      "id": "live_eishha_mbc-bollywood",
+      "name": "ام بي سي بوليود",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwr4EWLqx-F_LQ02Tm35XbBBCv8gEDOkWq_cjawTMRiVoWuEDRqNAojVR_U86ojLIbCeuACFgVPrNJBMs76RAGUvVNGIRHyYC0atxZ1MER4m8nHk75xHJyvfdASTHZL-QyQMC8kJ40EyfjEw07MQhZJYrZjw8dcjYX3wWsQaZ6OZ3zCAbZQ2_KsKFyIH0/w400-h266/mbc-bollywood.webp",
+      "streams": [
+        "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-bollywood/546eb40d7dcf9a209255dd2496903764/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-bollywood.html"
+    },
+    {
+      "id": "live_eishha_mbc-max",
+      "name": "أم بي سي ماكس",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsgn6Ad4Y0saBKSxTmwRR1jhcXmsKyOX8gtyp63JEKYIiq5q1dJ-gj3NrABd9F_btoV6Mj985NDV28VFWyhRhS_VT7Jc-0bx3QCMXnSjNCozldc8jhdwK4ODfmgPsRPtDs2zQ1H85Ox5gPycyr1PIKmHI74-FnVvFpVjjRw8Z3o2xvdFODt9424sE8zpk/s800/mbc-max.webp",
+      "streams": [
+        "https://player.eishha.com/p/mbc-max.html"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-max.html"
+    },
+    {
+      "id": "live_eishha_mbc-action-hd",
+      "name": "mbc action",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiPb_rOQhyZIouZmweTNKvu2rbQsRQiy9ACNlckW59AImGNJbItUyE2ppcoqN-PIiIGa0FatEm-gP-4XUsdU9Z6Nkwf8_Jgtfus8BvchR9W0lOv0yReYwoSMME0w85TgAM-MxoEtVjOxxnj0CrD_cfxnaAZxPV3gISmYE8deO506SWpUp1F0yB9VWOctX4/s800/mbc-action.webp",
+      "streams": [
+        "https://player.eishha.com/p/mbc-action-hd.html"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-action-hd.html"
+    },
+    {
+      "id": "live_eishha_mbc-iraq",
+      "name": "أم بي سي العراق",
+      "category": "قنوات عراقية 🇮🇶",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3HAhrY9CZPcWucEMbY1UWhE2eyuW5pD8ZoRQk_eRWBs9GWTJOVumP1mGYaek1zgdOAHZq5Xy-D3fCRQv2xhe71Nd_l7uS70QX-i1wyAsiLqXZDDMQiFcmM9v6yRH4eksRuQC5Jy6gqgG8U0Y_mHfgifY0UxPN_mHvx59CaNmE2u6xdMVVxNYhqx5kXNc/s800/mbc-iraq.webp",
+      "streams": [
+        "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-iraq/e38c44b1b43474e1c39cb5b90203691e/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-iraq.html"
+    },
+    {
+      "id": "live_eishha_mbc-misr-drama",
+      "name": "أم بي سي مصر دراما",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiNavYCw97crTmplJPh2oPCpbfqqY46vOsVCUYb58Um93Iim0abXKtpbhm31w8xFKIFAySvFzamsb4D72UBWEgiFrjlsMLOBSagO8UPvL2ij1fahIsiIkiZFGIozmfzgAWjWKVdkoSnD0Ho3_ySkBGdkDCDUwheAAKlc6dT2WhlAo3aMQiwB-XHYyQvnaw/s800/mbc-masr-drama.webp",
+      "streams": [
+        "https://shd-gcp-live-orng.shahid.net/live/bitmovin-mbc-masr-drama/567b703c19ede6598222de81b0e4508b/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-misr-drama.html"
+    },
+    {
+      "id": "live_eishha_mbc-masr-1",
+      "name": "أم بي سي مصر 1",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSjiTEEAHmoi9yWZinnVpxhLHcScTJ0TzrvBKUbpklpvtiyua0kDaDbXUpUN4Jmc2yPBWfE-kBdtUAN67P_k09bcfksM4vOz7GB4-wrZhcSOfdUuct7zDOCc4ZFgsLDrswhflsthEbcmDJRfT3pE2dhWDtfjkHM5YNnDaFByfmbMdYe0ZJtBLs3uY6NTU/s800/mbc-masr-1.webp",
+      "streams": [
+        "https://shd-gcp-live.lg.mncdn.com/live/bitmovin-mbc-masr/956eac069c78a35d47245db6cdbb1575/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-masr-1.html"
+    },
+    {
+      "id": "live_eishha_mbc-masr-2",
+      "name": "أم بي سي مصر 2",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEirzT_llbOqA5hwO4Y3EdBK3tGmiKSqBzlZKj-3orO32q_uGl7Ms75OX88a1Svu1OC0FRZyk7zoLd_2hScWNI46V4QAWP_DMwY21aJIwXlwSw739Befwo1nSn1vROG0t5gaW6ueKS1hsW4fh-Gv9zZZtNuDdn6UixV4DFh_S1Ni8_IpPeF_82zl3dfyWoc/s800/mbc-masr-2.webp",
+      "streams": [
+        "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-masr-2/754931856515075b0aabf0e583495c68/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-masr-2.html"
+    },
+    {
+      "id": "live_eishha_mbc-drama",
+      "name": "أم بي سي دراما",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj2lXt8i2yWLa3fjIb84zy4EP7fzDEoetwiGFaXZAehkvculWJmEMGPiLXL3yfsGbaFzXg1jLdP1LTFaNNcBJ6r5Tn54pBU1wzDEZ2L7zeU3jRkBi9_a74MetqnO8Tcqh5q7C_5lpUNFgGWI-OtovsImGKisiuICOb7H5xejqhZtcd2NOR-UxktBx_qvb8/s800/mbc-drama.webp",
+      "streams": [
+        "https://shd-gcp-live-orng.shahid.net/live/bitmovin-mbc-drama/2c28a458e2f3253e678b07ac7d13fe71/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-drama.html"
+    },
+    {
+      "id": "live_eishha_mbc-drama-plus",
+      "name": "أم بي سي دراما بلس",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhe1p8JXHwMhMddI2ahl3sSr5vk0w_tP-gjxARhhfkDhxpzlAAv4imsBSzTCea4Jg4kGW8jp72wlc1NCH4UPJC1ZQAExvcw2MTRuhb0mW6HidjB5xeMFwRGv6AfJm-801Y95CeQY74ie_wsC1l7rMiw0sFXR9GRgWScJi-myfPjz0fb5F8GnVfWh4v-85k/s800/mbc-drama-plus.webp",
+      "streams": [
+        "https://shd-gcp-live.edgenextcdn.net/live/bitmovin-mbc-plus-drama/e37251ec2aac8f6c98f75cd0fa37cd28/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-drama-plus.html"
+    },
+    {
+      "id": "live_eishha_bbc-arabic",
+      "name": "bbc  العربية",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioMWXxqfKytdCN-ooKjDqjpBiLO_-Xx3mEuzwH6aYAFYSvF77dDJmDk5tn9Xj_3UFjIveQQ7202pNmZS_YS0LktWT_cCS0Drw3dd1ZJubedxrhe_xUnVuLOVfnGVJPG5S25rpnYkm8XVn5frNJsvmaQiYZyaXnE2CEIWe5FytWtKpjhC7lQbnVGanoZe4/s800/bbc-arabic.webp",
+      "streams": [
+        "https://player.eishha.com/p/bbc-arabic.html"
+      ],
+      "embed": "https://player.eishha.com/p/bbc-arabic.html"
+    },
+    {
+      "id": "live_eishha_trt-arabiya",
+      "name": "trt  الاخبارية العربية مباشر",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAnjN1jkdqRGJM_De6cHslwc04wnq3DYPUvYN7-_WFoA6yUdZ905rEZhGW76e3KQxlM4xS-MVLbTkLzs63vG6GhPJEBCkOx-aWjeYvJyls47LCbd4dSiplUJl6cYey_VRVYiTEaveXGkZ9uYsi6B7atOobqFFRsKbNmOdy5NfKexk60HVM7cYh3vQw6NQ/s800/trt-arabic-news.webp",
+      "streams": [
+        "https://tv-trtarabi.medya.trt.com.tr/master.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/trt-arabiya.html"
+    },
+    {
+      "id": "live_eishha_alhadath",
+      "name": "الحدث الاخبارية",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggrTARIPMzeg_dcD592KmeaTV9fv_Q62_zVr5cQNiRwz-pZXnXB0o6JGhIVORCVdyNoYPLhNigtgDPgZu2UQhFDneVTHYmJnzCreQAh7JP6tf9JHS0f8waiRJZGowmM8bwLi2xOxTW9BxRRq1Vu36DMINN8vAaIeiJnLgjC3KOQl6aACSdrP0Llv1YKSY/s800/alhadath-news.webp",
+      "streams": [
+        "https://live.alarabiya.net/alarabiapublish/alhadath.smil/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/alhadath.html"
+    },
+    {
+      "id": "live_eishha_sudan-one",
+      "name": "السودان",
+      "category": "قنوات ترفيهية 🌟",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgdLThlqeJrafWakkqw2fDtzvI2SDobGJ2730E_heMqaek4XYHjWGWinfrwwMQWqgy26q4qMGxNq07Qi4qU9R9B4SFhGB2LiF9rv2rCNwcDSqC6GzGHWKd-48OtygRgNYh3RNDpVYDbCMoMSARws3CZr2D_bE4cWxF1a11zm-bPKaE9Pg8MSsuPCYJ3FLo/s800/sudan.webp",
+      "streams": [
+        "https://player.eishha.com/p/sudan-one.html"
+      ],
+      "embed": "https://player.eishha.com/p/sudan-one.html"
+    },
+    {
+      "id": "live_eishha_moracoo.html?ch=73_arryadia_k2tgcj0",
+      "name": "مشاهدة القناة الرياضية المغربية 3",
+      "category": "قنوات مغاربية 🇲🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgnoAIl9GBxYLRP2RCBUUpz3ZrLEK9HaA_XJxKIKIxt5X6f-IIpeWWfG9Ojg7HBnswnkZdrwEwU-VosFvilHH1NU8246dj20_aGJrbahBkwVAGLzAvJFBU0kp_8yPQM5sS0WJo2le8y1h2Ge4j-CRXqopCoQQveEVCu76_Zs1sJpX4yLquUAceEi36pCog/s800/morocco-sport-3.webp",
+      "streams": [
+        "https://player.eishha.com/p/moracoo.html?ch=73_arryadia_k2tgcj0"
+      ],
+      "embed": "https://player.eishha.com/p/moracoo.html?ch=73_arryadia_k2tgcj0"
+    },
+    {
+      "id": "live_eishha_moracoo.html?ch=73_aloula_w1dqfwm",
+      "name": "مشاهدة القناة الأولى المغربية",
+      "category": "قنوات مغاربية 🇲🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh3c_IDOrk5YKSRyILemT7bhtFsOzFUj2SAQrd8skfRWNb-FVvisJCpsCwIxc5IPTH-hfHtADkdXt4mvG5SWU_tL8hC8BUiNsU8fbX4k4rqO8VEGOpqb8tCBlFzzWav7AizHjZ3EA_VgffkzQNK0akKMoPXmPaPBcXVGaNFRbqhbi_olbpFI22bTbjpu9k/s800/moroco-one.webp",
+      "streams": [
+        "https://player.eishha.com/p/moracoo.html?ch=73_aloula_w1dqfwm"
+      ],
+      "embed": "https://player.eishha.com/p/moracoo.html?ch=73_aloula_w1dqfwm"
+    },
+    {
+      "id": "live_eishha_mamlaka",
+      "name": "المملكة الأردنية",
+      "category": "قنوات أردنية 🇯🇴",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhML1Cxq_MTLCF9L8o3mFdaN4TIVNuWvv6vZQDcWbTDXiUxfh7ZMG4p_kygHbvN0wHHiOXNZ1N39lNBmSEnf4nBv0TOo5mH00QYmbgDNRHN3LUTiEWQLsNLvKwUbG2iLHi6oXK0_dymCQuDQRSN1uC21re0kMP8gErVdzleYRbEY5CDsBUsM4eSfgMTlDU/s800/mmlaka.webp",
+      "streams": [
+        "https://fastly.live.brightcove.com/6376826200112/eu-central-1/6415809151001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoieWlod3RhLmVncmVzcy5haGc3NmwiLCJhY2NvdW50X2lkIjoiNjQxNTgwOTE1MTAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2NDE1ODA5MTUxMDAxIl0sImp0aSI6IjYzNzY4MjYyMDAxMTIifQ.EBaDAQiDkyoRKYIjLROyrZzKFPcftOUxk4ftmhtVsEk/playlist-hls.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mamlaka.html"
+    },
+    {
+      "id": "live_eishha_roya-comedy",
+      "name": "رؤيا كوميدي",
+      "category": "قنوات أردنية 🇯🇴",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfEw5wwfPyUlo8G8nIVcC4hcN4MhYqjluLG35_3OAVKWlXw0fKTH3KNj0VKpUeYvAtONZziTPNKZbU0BOxWE3HAcJk4zn7zSARgQ6-f1IhC7kr3l3lTEXGErXndNKK9q6KTXpP4Dp_G2tWyLtxPzIuNrS_DfDbSYRCoe9pGPRQO9SJQCWnnkUAvNMmjS0/s800/roya-comedy.webp",
+      "streams": [
+        "https://playlist.fasttvcdn.com/pl/toa2uuhhygheuly7xtuqrg/roya-comedy/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/roya-comedy.html"
+    },
+    {
+      "id": "live_eishha_roya-drama",
+      "name": "رؤيا دراما",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpSyUBg2yCcxGW75o0hWL3cTqz0KGUHIE5ICbXpbarT7siUBtGE2wWkmcrCuK89p5XZPwPELWSoGb-qw8AmgGNO1euHg7cCYlIieEYmvQswGTuVeHwcwc4N_LFKsBkvgO6S_JUmvuypwdVvFqYfTWZdr4lldwjczhigsbhxCKD8H56nM5dKJ0k7UQWU5I/s800/roya-drama.webp",
+      "streams": [
+        "https://playlist.fasttvcdn.com/pl/a2le4pbpa6rpzv147haf4w/drama/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/roya-drama.html"
+    },
+    {
+      "id": "live_eishha_roya",
+      "name": "رؤيا الأردنية",
+      "category": "قنوات أردنية 🇯🇴",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjHrJIKFfG38NXf9YWUj2w9v_nxdvrDt3kXEHtTWxUvu_c6glkfWKagSP7rgyee77WQF7OiaMSE-cgwzEzzfEJTL_V8JYTCNntBFj5j7bxd1TqxS0UYHBja9MF-GnVZOwPrMT4suxu-rck-GdKtsccN3LKOjHum8GNfNZ-20jNaxq_ubRnQCt1yBxI4duI/s800/roya.webp",
+      "streams": [
+        "https://player.eishha.com/p/roya.html"
+      ],
+      "embed": "https://player.eishha.com/p/roya.html"
+    },
+    {
+      "id": "live_eishha_jordan",
+      "name": "الأردن الفضائية",
+      "category": "قنوات أردنية 🇯🇴",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGfHGbgrOamGuZ4r2ajbSCNav8xQwARtmc9orVDn9K8Rkk0itJhG9LSHcTMtIVoqGm_7LZ13zvBLuXknqsDQJN10vhnv-XF1_ofhnGJtTQfOd34c-4qjCvOaKotY5G-rO3kB90RD2tDj60VNP3N8Z-ypsHjnGKCkWdCo3qu_LrZnjjgKEqBqOvqmrRqfk/s800/jorden.webp",
+      "streams": [
+        "https://jrtv-live.ercdn.net/jordanhd/jordanhd.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/jordan.html"
+    },
+    {
+      "id": "live_eishha_mayadeen",
+      "name": "الميادين",
+      "category": "قنوات لبنانية 🇱🇧",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjAKQtXOCt0JL8RIHSnshqYiFeusB1yEX1lZg9BiDw7Mv4Qti5R4jKQkc3tGbPQXtcMaIO_L4i5hFxzGCT9UlOLucLEHLuVgsebUgIKTOpQz4O5VWieGCC2KfDYQhbYZmyqAvl-AD0Go5HPnVmRsro0Mso0eV-fyQ-9u_BpUELcpGy4j9RKRj1zqeYJmso/s800/mayadeen.webp",
+      "streams": [
+        "https://mdnlv.cdn.octivid.com/almdn/smil:mpegts.stream.smil/chunklist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mayadeen.html"
+    },
+    {
+      "id": "live_eishha_teleliban",
+      "name": "مشاهدة تلفزيون لبنان",
+      "category": "قنوات لبنانية 🇱🇧",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhAD0XLQYRo26lXvWKeGRGHWQTuvM9jsnZPWtsy760aSRlc6t8_DnxlfkM-upzIbW3emb01x2zzxCnjWc71rLDX3e83iOjA8FgHwPAJHrBA5JeOAUXzplhy8tGQSQ7gpdz2_A5OBFC5KqJcFqhnAUHJCr5enNGi_L1c_VHb1dyFiWEobek4wz7x1xmgMNs/s800/lebanon.webp",
+      "streams": [
+        "https://cdn.catiacast.video/abr/ed8f807e2548db4507d2a6f4ba0c4a06/tl/mbs1/chunks.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/teleliban.html"
+    },
+    {
+      "id": "live_eishha_kuwait-sports-2",
+      "name": "الكويت الرياضية 2",
+      "category": "قنوات كويتية 🇰🇼",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrHA2zFxTHi21bd0id8EEZXDQXyw0mCzfzeL5QLMfQYNJDyw5lv34YX2ykz-gaZ0AJr_RDTPFgane-N09w0_QOLQQNLX1wYHIH0Js5bVvRtCtUUArSTcRq6BSNb52hvdv4yLzOfW7PvCim4wWerjrhskMWzFpqCH2OwWk_emFzlZtjQZxMve7Vxf9vyV0/s800/Kuwait-sport.webp",
+      "streams": [
+        "https://kwtsplta.cdn.mangomolo.com/spl/smil:spl.stream.smil/chunklist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/kuwait-sports-2.html"
+    },
+    {
+      "id": "live_eishha_kuwait-one",
+      "name": "الكويت الأولى",
+      "category": "قنوات كويتية 🇰🇼",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOgRb4n28NOxAAZOE1z5TP5eS-HD9j6LaBXuzGMhfwVPc2X0QcUwT6LHxqxaP4qV4X6PKcd97k0rOX1qHsH29P6OM7poRaxjd1TMAgcr9XzcEfG7ZlGWWgOeYE7GzRyTSCFkve4lfInZ4GUNwK6yDkJKISVphWVCqyhQYkaqs1Ha7bPx_y3AAryKD278s/s800/kuwait.webp",
+      "streams": [
+        "https://kwtktv1ta.cdn.mangomolo.com/ktv1/smil:ktv1.stream.smil/chunklist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/kuwait-one.html"
+    },
+    {
+      "id": "live_eishha_alrai",
+      "name": "الراى",
+      "category": "قنوات كويتية 🇰🇼",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIZq994Xi-3eUMeSZ4bbKx9TBGzEjr8sJiss5cD-eumDHaldWbjF6VB07mDRwNpygcPYuM649z-kjFrWP1jy9l2UUxEymHSh5hcq6ub797L-iwN5-vERejGxPV93oRD77kJOF_WBcdVmxCkR_Yj1ThEWa5C4gxYfFWHkxO6XDib4xnhHRS4YZVe0XZ8Ng/s800/alrai.webp",
+      "streams": [
+        "https://player.eishha.com/p/alrai.html"
+      ],
+      "embed": "https://player.eishha.com/p/alrai.html"
+    },
+    {
+      "id": "live_eishha_emarat",
+      "name": "الأمارات",
+      "category": "قنوات إماراتية 🇦🇪",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXNHKoRPfQZKh6Mn3qSPhkTkohPPJsbAXR7aaBCAM90tykOG8ePRfHqkia9dDm7Y_izP5nGg6qTL_8QJ98sgyyDdUVR1k0e_yh8C1_2dU1Frz82bPCRlg2y7Zmuygi6xzGKvmK3OeiQF1caCn00nTaBjX7pAuC72Ttyf34GQpft5U6bEFyrbNOyZGIruc/s800/emarat.webp",
+      "streams": [
+        "https://player.eishha.com/p/emarat.html"
+      ],
+      "embed": "https://player.eishha.com/p/emarat.html"
+    },
+    {
+      "id": "live_eishha_sunnah",
+      "name": "السنة النبوية",
+      "category": "قنوات سعودية 🇸🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjjQirlGxDJTXPqVBaJJs86FOpR85qNdQhXdXcPBcHutdOY-TBLwVn3x-5DH0ZPtNUaRR6CzxN-KG5_sreJs6DSyJSHB22srkePyyatH1gAdt_0Tai7JBF3Dnq6Hng4e9y_DGtjnd0prsIpp5VUc6cr_bW06NQYpfJ9IOQ1_eEY8ZGh8dy5h65uw3dDgL0/s800/sunnah.webp",
+      "streams": [
+        "https://player.eishha.com/p/sunnah.html"
+      ],
+      "embed": "https://player.eishha.com/p/sunnah.html"
+    },
+    {
+      "id": "live_eishha_saudi-one",
+      "name": "السعودية الأولى",
+      "category": "قنوات سعودية 🇸🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg5yMlv8wBp8UgbxmUXazR9mDpl0FmzWP7y9Dzlk0zfHjo_rfYs3DnP3w5oGzZy8KQobKX3Q5xNNaTz7n8YUNT20eCxEZ1qDwfyT0RQtLQtoFxtrGLjugCVHy7rT1UAjz2qlF95ewDRBfX6h-3uazxS5cgvn3BjnBfGAN_a8uK5eH5vP2wgRT1FEh6JoUk/s800/ksa-one.webp",
+      "streams": [
+        "https://player.eishha.com/p/saudi-one.html"
+      ],
+      "embed": "https://player.eishha.com/p/saudi-one.html"
+    },
+    {
+      "id": "live_eishha_thakirat-saudi",
+      "name": "ذكريات السعودية",
+      "category": "قنوات ترفيهية 🌟",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj8XkpRgXQoob-awJ2UkRgMTnxb8oLF3vSWDscNj0qogJSm1uW3szAvK0zSUkz3UP8k95ErSll4Ha_L06mqWDkN525lV4Dykhbs2892hqZQVUGIDA30QhVVNdhpbgBFvB1U-6XAyshE-CFoXL6osM68i3XEHFeCHkhFns7mIFK0uqkRLWEEZUsAa_FcFzg/s800/thakirat.webp",
+      "streams": [
+        "https://player.eishha.com/p/thakirat-saudi.html"
+      ],
+      "embed": "https://player.eishha.com/p/thakirat-saudi.html"
+    },
+    {
+      "id": "live_eishha_abu-dhabi-sports-1",
+      "name": "أبو ظبي الرياضية 1",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi_0SbLfpuGsBHG0-uS8GeElR3ZjWHLZOZfKnlJSpDTLppg4e14K5gIbGYbH_lleC1uogbSSvySybTDpRtXEp9GSJXPIkkOislzkveoFibGJ9ohEd9xl4JqbbndGvAOlRUBx4cOOOuGv9naZ1XHC-k9vZ1j_ppM2zz_535zm0cZuaiVCn9kndk_Nn_W25Y/s800/abu-dhabi-sport-1.webp",
+      "streams": [
+        "https://player.eishha.com/p/abu-dhabi-sports-1.html"
+      ],
+      "embed": "https://player.eishha.com/p/abu-dhabi-sports-1.html"
+    },
+    {
+      "id": "live_eishha_abu-dhabi-sports-2",
+      "name": "أبو ظبي الرياضية 2",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi4tJcznaYejIk1EWpTUSfQrLSfUWgLMwDXuaxv9udkDj_0SsJ_DegUK4aNtCjvit5KsDfL0TnKmoGv72bJ9xQnEd_RgzLu_h-qSBAI5m2CQXp5ZkGsS2U3F8HOacKLRDbQ4ZFnhR0U5JPNRKD9wbLGXuUqwsAwpfWbEHgd-zaAZQQjdIaM7ag_oCb_8Mg/s800/abu-dhabi-sport-2.webp",
+      "streams": [
+        "https://player.eishha.com/p/abu-dhabi-sports-2.html"
+      ],
+      "embed": "https://player.eishha.com/p/abu-dhabi-sports-2.html"
+    },
+    {
+      "id": "live_eishha_ontime-sports-1",
+      "name": "أون تايم سبورت 1",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEimuPqniZd1eDHkxRNKQT6t-yUGGinpzCysT_rPOzSqob7wxhZ8nLtqxG_lf94Qu28zYiKsRXt58t2MRWtVG9LrKhJJCqDvS2d43wjIlZDdxOZ-BrcxUr3BrpcPlI778ZlCHGAiPyAClHes7Z-HSqyqgw5MqRnIG_yTkK1iPfxhfJGwL6WM4zJDaoOr334/s800/on-sport-1.webp",
+      "streams": [
+        "https://fastly.live.brightcove.com/6386027187112/us-east-1/6416013238001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoieWN3Ymx1LmVncmVzcy5zenkzeHgiLCJhY2NvdW50X2lkIjoiNjQxNjAxMzIzODAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2NDE2MDEzMjM4MDAxIl0sImp0aSI6IjYzODYwMjcxODcxMTIifQ.o9bQYbACQ386kDSKbOPBVYlIhCz3WFgEHI3A8Pcw3qg/playlist-hls.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/ontime-sports-1.html"
+    },
+    {
+      "id": "live_eishha_ontime-sports-2",
+      "name": "أون تايم سبورت 2",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi40FyF6E1EeuNiVt1iehnVH72Fx8sOe5ec8Z3NUAct7SgCE7rH_ta9y1_Hv1QEDpUH-XEqNe6EA7EHk1tKVlxxRNswD_CVJB6xi91QgVbgK-PO5lY10V1j60Yza8g0Bz_z3ORPiYFvf8Z1iCPrpChN1ehXWg2nzbiW3FPcJPZwmZWB7NIU3qfXNF50fY0/s800/on-sport-2.webp",
+      "streams": [
+        "https://fastly.live.brightcove.com/6386027187112/us-east-1/6416013238001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoieWN3Ymx1LmVncmVzcy5zenkzeHgiLCJhY2NvdW50X2lkIjoiNjQxNjAxMzIzODAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2NDE2MDEzMjM4MDAxIl0sImp0aSI6IjYzODYwMjcxODcxMTIifQ.o9bQYbACQ386kDSKbOPBVYlIhCz3WFgEHI3A8Pcw3qg/playlist-hls.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/ontime-sports-2.html"
+    },
+    {
+      "id": "live_eishha_dubai-sports-1",
+      "name": "دبي الرياضية 1",
+      "category": "قنوات إماراتية 🇦🇪",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhFfri_cbeZ34WWe3nObfACpFH3ualhFBkTDN6VlarlivlXhv0eqBi0_4f3gK99i5VfXooNx4gwwTD8BMWUqJA50B2sxM19CMpmNr0FIp_iHgZw-2KcspN23RnajDk0O6Hdci3jLZviBnHSTW6OhGVDXL-LI6SlkCxthz-WLT6DCHR4CtrLtEBOjHG_2z0/s800/dubai-sport-1.webp",
+      "streams": [
+        "https://player.eishha.com/p/dubai-sports-1.html"
+      ],
+      "embed": "https://player.eishha.com/p/dubai-sports-1.html"
+    },
+    {
+      "id": "live_eishha_dijlah",
+      "name": "دجلة العراقية",
+      "category": "قنوات عراقية 🇮🇶",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEje39T2WZhQXdGkhCnq-QbLUjzUXx_MmeBtKMsBQtGpX_4ga0s1M4sSJvBoidqSzTyNluhPb7OLTYWtEaepYw-cTW7pM87rEN0e1mz0OQgjzyUhkjuAlan_Aek9mE5dK7MTj6Z0BhBNbV_uPYEX9MaIoa0VMJQgIwB47_BGufLeYUJj4GBEvHPP6drBP4I/s800/dijlah.webp",
+      "streams": [
+        "https://ghaasiflu.online/Dijlah/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/dijlah.html"
+    },
+    {
+      "id": "live_eishha_dubai-sports-2",
+      "name": "دبي الرياضية 2",
+      "category": "قنوات إماراتية 🇦🇪",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjARjWSjR-aHW5w1T5fSX8vdKI8FIVHLl3BEo_z8US0HB_w65HJHH66bVHHJBX6gBWR7Jf42wOtiKh_JlnKJBKvOg8CrcS4tQg1Th6c77PHXDrkjnt25Vs6gyQZnMEqvnCtMuRkn3PVZfrncY5Bz08bSl8HkqPIThd5R9Gl9PaloDUW0G7Ky7y59xZDtOY/s800/dubai-sport-2.webp",
+      "streams": [
+        "https://player.eishha.com/p/dubai-sports-2.html"
+      ],
+      "embed": "https://player.eishha.com/p/dubai-sports-2.html"
+    },
+    {
+      "id": "live_eishha_cairo-news",
+      "name": "القاهرة الاخبارية",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj5p7R9sfvuRP9DQss6Fck-LYRvOfhp-BUdAt0NxDFnIRpvn63YljV4ITjkjzL2IoVfjnm_PRe44OHIL0dQO9ROpRktO43habNxzfs5qASdS5P1pef0MWGNmRNgh1kbfCifKcLBxSJQh5MXd1Z1yrKz0fzm7zIbn3hxpqFOrXVplMOvrHKAmbOyE6USQFw/s800/al-qahera-news.webp",
+      "streams": [
+        "https://fastly.live.brightcove.com/1843520572297019367/eu-central-1/6057955906001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiYXltc3VjLmVncmVzcy5haGc3NmwiLCJhY2NvdW50X2lkIjoiNjA1Nzk1NTkwNjAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU3OTU1OTA2MDAxIl0sImp0aSI6IjE4NDM1MjA1NzIyOTcwMTkzNjcifQ.VDAy1TCwzlhiHq7touUEdjjhIJL8dl-x5KiSVpjOKWc/playlist-hls.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/cairo-news.html"
+    },
+    {
+      "id": "live_eishha_almashed",
+      "name": "المشهد",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGjpz-cnc8FLr5a5qbp-ct1ZD9IzsvuA6l2F4KN7MufdtXGV_8Re_aLaoAvGOwrPNz5bcglr6lqsYPyJpml1ConnpZ0a_oLkHC2c-5zQSPvsBO5o-r-3MKGX-z0vxialQoMcOjiqp0rRZ5eVSQ8oEBNQV0lJpMWfO1UsuZtpfsiZVG55khbLzHnQUVyTM/s800/almashed.webp",
+      "streams": [
+        "https://fastly.live.brightcove.com/6385343550112/ap-south-1/6313884884001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiaWR2d3RnLmVncmVzcy5qYXYzemwiLCJhY2NvdW50X2lkIjoiNjMxMzg4NDg4NDAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MzEzODg0ODg0MDAxIl0sImp0aSI6IjYzODUzNDM1NTAxMTIifQ.OXCUOblTM-ZkjiyDxPav01or3H6GE5cbGOp1qXlLERk/playlist-hls.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/almashed.html"
+    },
+    {
+      "id": "live_eishha_asharq-news",
+      "name": "الشرق الاخبارية",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLTn7ZSisF3RX-WAOH-cPpJreNTfO-Jm-aE_a-IAkmX680nIPHyC6m5wFjjBvHfUay0bsnPnXwQKWToSdh6IBWyNyYBLfK3GN2KatQhg8UCjTIjj3j7F8oEpAadx58Ou0MlzySPDbq73AvLiaSV0pS0wuJQ6vHPFuWj2brHgUPY_8my3tyev8n_LHBAYk/s800/Asharq-News.webp",
+      "streams": [
+        "https://live-news.asharq.com/asharq.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/asharq-news.html"
+    },
+    {
+      "id": "live_eishha_aljazeera-mubasher",
+      "name": "الجزيرة مباشر",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVSaMjfC4sK4sbD4LWLogDlTa8iLfoeKXpCFTwfOwdE9xs895lTBbsYkxK8yS301fKyWMgzSr4m6yc7Wc6MbvC63EpnDGVhYEVpGiPKSSySgJL-WRpPizFW9Ac4s4TRb-ZLv8GQNW4YjGpK9NlYEneBZGXdrE0BjNxfAqqM3FQfRQ1wAmSp-5c4bZ7a_M/s800/aljazeera-mubasher.webp",
+      "streams": [
+        "https://live-hls-web-ajm-fa.thehlive.com/AJM/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/aljazeera-mubasher.html"
+    },
+    {
+      "id": "live_eishha_alalam",
+      "name": "العالم الاخبارية",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_yaeyj4_MJGqjoesjpAaqP-zryWOWeaGXVMh_Fw_KdzHNF_aInPzkfuMpJ-LYLyJCtdPFfz-7-RcEtwx3xzbbJVWeAVDfkU6v9WgWDU7CkUAK6pgdSt9HtniZpVve0D8Fu4WySOXcAOxt8APA9vIZdZcs56LJCmImUxXjTSCXlbFyx2jWqVInKOZRzEc/s800/alalam.webp",
+      "streams": [
+        "https://alm.eishha.com/proxy/live/Alalam_high/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/alalam.html"
+    },
+    {
+      "id": "live_eishha_cbc-extra",
+      "name": "سي بي سي اكسترا مباشر",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5w_1JAqtCN517WiMGjtFWKdG0WtszFK6vU8POt0ryP_p04c6hRBPCrXQfbWOy25o2kkuISZ5Kon4SfsUhrz27GlXBWMWDNd148cw6zBKLDlHKs9w6UUtxOg8vhGNHnSZOlzQCzb9VIhU6xjno24vx9KaLdk_aZAczcjqVhDk31DCVT60O8c1zDhKna_k/s800/extra-news-arabic.webp",
+      "streams": [
+        "https://player.eishha.com/p/cbc-extra.html"
+      ],
+      "embed": "https://player.eishha.com/p/cbc-extra.html"
+    },
+    {
+      "id": "live_eishha_alaraby-tv",
+      "name": "التلفزيون العربي",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgnFrsQ-oGZBIninVHTmvkaLeFpyhzUQr6i8vgicB2UYr42y0R_0r9pVe72oCisqoHVu2G-mzLORgQyAIs6XAeL_XI0RNqXnPNH_MX9BDgSEt9kWsZDje03jZFNBG_284KXn3eN2RalXbUiKIVDKHDt4kKgNmEhrZv1NMsxUqyepOcKuOQV9PHZminLX68/s800/alaraby.webp",
+      "streams": [
+        "https://live.kwikmotion.com/alaraby1live/alaraby_abr/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/alaraby-tv.html"
+    },
+    {
+      "id": "live_eishha_alarabiya",
+      "name": "العربية الأخبارية",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiu4jLU2PN79PoG_vlnsc2zrMbDRiNG9_jEpCcszK5Cv4G1xQkEs6IgH6a3VUKwAfC3JXq17CSGDjaYyJQUdDdQZp5l_CXGU51Lpi5htHB3ubCuiCpbRxYI4GK4ROQzF5gzSUwW4b0oi8bdm3WMhabMURzib5rrKH8rvYdgXvadVSckE7940nFWauRV1DY/s800/al-arabiya-news-.webp",
+      "streams": [
+        "https://live.alarabiya.net/alarabiapublish/alarabiya.smil/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/alarabiya.html"
+    },
+    {
+      "id": "live_eishha_alhiwar-lebanon",
+      "name": "الحوار اللبنانى",
+      "category": "قنوات لبنانية 🇱🇧",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjU7FEevOff629HTc-P9LlZ1VMT-Tbni0zGgwYDm_4MiKs1RPky7CsFH96VtfvMzvGtXuBv-GN2XpGQYkaxR6hYYdQ4s8lzwnCFfy2WSeR6ZWbdwvarNvIxAVLsnTLjtLNATO_-ZboAL2mQdhnWVIsJ772hCWbMCw5Ve-fnej255UzMGcikturyrwvgZEg/s800/alhiwar-lebanon.webp",
+      "streams": [
+        "https://mn-nl.mncdn.com/alhiwar_live/smil:alhiwar.smil/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/alhiwar-lebanon.html"
+    },
+    {
+      "id": "live_eishha_aljazeera-news",
+      "name": "الجزيرة",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgVGY2G9l8il6lwVpzTEx9d2iVPHETR_JkzxJry7CSOzmoXrrzrMZaOjF4v5kjysKz-5Cu4TPn9rNZosWOjOZ3OnFJ5Q9AIWe5WvZHqCFsJ0BY-1TaR16CRDM3jrDQxrtNVcHqIM-5aAaxw_BHc9NslxRtBrrkiY6X1Fh9xinZkxR41TV6ireDkaq-tHcc/s800/aljazeera.webp",
+      "streams": [
+        "https://live-hls-web-aja-fa.thehlive.com/AJA/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/aljazeera-news.html"
+    },
+    {
+      "id": "live_eishha_rt-arabic",
+      "name": "روسيا اليوم",
+      "category": "أخبار وسياسة 🌍",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhxjqW0NIViO72mFWKB5WqKKnwsNnLsJ00VDgRclzy-DxbVlCwb62rVpNEB64go9mAn-P3zovgJ0VMwvDnBSSgxuciz9irYB8qCjAKTbcIDp48tWDTem2oBsxZmlyj1NkMZg87EWyQsHT4VQuNOU5W4r-pB1Ci9yG63NiM59Oy6Oc-5MPGS6BhGEI27yaU/s800/rt-arabic.webp",
+      "streams": [
+        "https://rt-arb.rttv.com/dvr/rtarab/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/rt-arabic.html"
+    },
+    {
+      "id": "live_eishha_national-geographic",
+      "name": "ناشيونال جيوغرافيك ابو ظبي",
+      "category": "وثائقيات 📚",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj-zORpueol7nO407y0w2m8szLvmOCPNhsggpnylQOZMJBPhcGrkz5nzH86xFV6eaEquB9aIydUFqSMSGLEH6s_QurmIvIxrWbIY5gfW3B119sxQ4VYrYRVrwOzubilFtVFR-yMnuK_L5m86lnsmg2t5x9cbhymI-n4eMSLvh1GbXmLM3ulvncaXnICcj4/s800/national-geographic.webp",
+      "streams": [
+        "https://player.eishha.com/p/national-geographic.html"
+      ],
+      "embed": "https://player.eishha.com/p/national-geographic.html"
+    },
+    {
+      "id": "live_eishha_asharq-documentary",
+      "name": "الشرق الوثائقية",
+      "category": "وثائقيات 📚",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5i4O5IiyhdZXd0cLwIIoAsGsTOtVrO9KP0LCHcCqPb6pgmd6H2jmJ4WYeool_5jGBDoZdCu4KNbWUBWE8dQkYmOrJTerVQZMPDyAeNs522BdHIhOeeWsQCg2qWLVb58IyyKbEHe77Zxo5TSo9JtjsTbALxwS3bG0yc0720b_tC14oD1NnGv6DJ9fD26Q/s800/asharq-documentary.webp",
+      "streams": [
+        "https://svs.itworkscdn.net/asharqdocumentarylive/asharqdocumentary.smil/playlist_dvr.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/asharq-documentary.html"
+    },
+    {
+      "id": "live_eishha_sharq-discovery",
+      "name": "الشرق ديسكفرى",
+      "category": "وثائقيات 📚",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdnaOh6wHzK8MUyIGLrPKlj_4g93oS_e7Hlb3kCjJ9I4a5u9hF78ZdIucftrLfsEsH02d_LvhylkXp90MCVdGDbh8okQgSpJ3PuqvMTV6MDgbRQK0REMi9p-5xdi4jgeOHAUCLpVYzAKL4VGJYqoQIJfqPH72OQechgoFuRL22cdFLnJwhlZwO5LTl-Tk/s800/sharq-discovery.webp",
+      "streams": [
+        "https://svs.itworkscdn.net/asharqdiscoverylive/asharqd.smil/playlist_dvr.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/sharq-discovery.html"
+    },
+    {
+      "id": "live_eishha_aljazeera-doc",
+      "name": "الجزيرة الوثائقية",
+      "category": "وثائقيات 📚",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjj3XWIbMmscCgT3L-lZGpvepkGGUhFjBrwN0Xg4LwAYNO6x9F6nDQtfSln6_QphRsPSJ3BZk0fMJm-5hLdUzlQbseWdo0OvLNqe7KcD3e8xeN3TKWx8QzNmaEspmnmLAWqLzoRDyynp5fwfDd2VfIcLCBkAsEgDzV1wNLMS3CiQi6Cc_BZIbZ_pHFVKck/s800/aljazeera-doc.webp",
+      "streams": [
+        "https://live-hls-web-ajd-fa.thehlive.com/AJD/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/aljazeera-doc.html"
+    },
+    {
+      "id": "live_eishha_oman-culture",
+      "name": "عمان الثقافية",
+      "category": "وثائقيات 📚",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgY9GOyD0SPI7cF07EWqJNrzCNZNHO2N61QE4OdPFYvsFTy6SsIxzLWaxcUn-70Zhrk9kF3_X_g08VfeOfZoDQPh4M9N9B3-AYefE31g6I7DcS2q5HHh642gYhdH_yDXiHwpAg7ncuWWEDA3vdF96ZG1SSSmnZdK5Tq3tUQDHLrA_IPUm15u2aUnfRM0Cw/s800/oman-culture.webp",
+      "streams": [
+        "https://partwota.cdn.mgmlcdn.com/omcultural/smil:omcultural.stream.smil/chunklist.m3u8"
+      ],
+      "embed": "https://play.arab-stream.live/p/oman-culture.html"
+    },
+    {
+      "id": "live_eishha_al-arabi-ktv",
+      "name": "العربي الكويتية",
+      "category": "وثائقيات 📚",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjmHgIaWbW_sWi6gAvJpN424hir1qkk6g7GhqG8UgDrfeFozkbU6Qf1wQfIDT13MjGzR1mmExt3qFlWkTTbYXh_vvKyrgct0ZyvwWyaA7w5EuivPPvg-lvpJGSukk87sO6fZKgLNW-Ir97QzX9qs7WUOK2R033BatofPRZ4BSpFED88H9Tam1mIO80LDks/s800/al-arabi-ktv.webp",
+      "streams": [
+        "https://kwtktvata.cdn.mangomolo.com/ktva/smil:tktva.stream.smil/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/al-arabi-ktv.html"
+    },
+    {
+      "id": "live_eishha_ethraa-ktv",
+      "name": "اثراء الكويتية",
+      "category": "قنوات كويتية 🇰🇼",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgmYFm2REvTlBvf6hh8Y1JiD061WwsK71tCpNXRCGOtPUvK-32Vz2Mvkbd1Av91ezndd_RUFGF7hFTd5HkY9wboBKX-tMY9UePYsi0sSp6ti5nWoO5mMzNwA3auB6QZ_NFnU1FtrjcTCWwUvBM-Q9a-TlmW11XwmF2aT-hwtDUow9P2RgFqKlXqWWGdQM0/s800/ethraa-ktv.webp",
+      "streams": [
+        "https://player.eishha.com/p/ethraa-ktv.html"
+      ],
+      "embed": "https://player.eishha.com/p/ethraa-ktv.html"
+    },
+    {
+      "id": "live_eishha_iqraa-quran",
+      "name": "أقرأ للقران الكريم",
+      "category": "قنوات سعودية 🇸🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGSIjJ0Etdvp257GG-uIgk4EfVuwvkTZnlviiLjYSgpVd4URT7G0B09-lUpXqpc6YpDQGWXx1qaLa-7xuzuCcw9PqF8q5lhDlIS-oOh-u-NUMfsL0hh_u2m5lJQF8-ZciQnN-MQTDgLV_n7dDOv9bPEy6UIprAspGT4vCJWxk-csJdjBC5pwxgrYaZFRc/s800/iqraa.webp",
+      "streams": [
+        "https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv2/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/iqraa-quran.html"
+    },
+    {
+      "id": "live_eishha_bahrain-quran",
+      "name": "البحرين قران كريم",
+      "category": "قنوات دينية 🕌",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhfaz-4qjzKsMIWYd5zspu7VwtHLTPvl_luzKfhqeP-23KdV7brAaXT0Tmw_YrTp0p93FYfaibQutZSMUnzxJdKvU196tb0QUgojqa64LDk9WanjmOa_RaPDwXOxkWiyej57OOW89sz5oH79dge295gXkVip3xyo1UF8nFyC0xcDDEZ_k4HHJMMAzMLzDk/s800/bahrain-quran.webp",
+      "streams": [
+        "https://player.eishha.com/p/bahrain-quran.html"
+      ],
+      "embed": "https://player.eishha.com/p/bahrain-quran.html"
+    },
+    {
+      "id": "live_eishha_alresalah",
+      "name": "الرسالة",
+      "category": "قنوات دينية 🕌",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjB8kGpY3sYP_UxWhxnUGl8UGepI5ntl8kjUHnXx4KqFWQON0BrPwBrLFj8Bpmxpfh5NjUMqD3HdGx6sbam5iV3olIapbhPaulWSAj0WUkXi7TJGOG79ruWnULzUcK5Ym3XdeCJZA482uyihhyphenhyphen1pJ5Y8HvfTHtnoWewNdcJmOWgfYwGRn4nkp2zniQbj88/s800/alresalah.webp",
+      "streams": [
+        "https://player.eishha.com/p/alresalah.html"
+      ],
+      "embed": "https://player.eishha.com/p/alresalah.html"
+    },
+    {
+      "id": "live_eishha_moracoo.html?ch=73_assadissa_7b7u5n1",
+      "name": "مشاهدة القناة السادسة المغربية",
+      "category": "قنوات مغاربية 🇲🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEheaA0zuQ7OY2kxXe-xVkvRryzGgGiNL7rkWVdryPlLNbvu0Phe4KNsXpVDyszneNzqXK5Kt0Fw5iSG0X7_FqLKnDlCdJz_HmZujbbEW6LILXa_vmW31yFk0DTnJPMDb2H6z53ir-CUoWE7rkLoWXqYucl25vcpEwfEpYZPB4JJYwuUpj9mZ2-55WGizas/s800/assadisa.webp",
+      "streams": [
+        "https://player.eishha.com/p/moracoo.html?ch=73_assadissa_7b7u5n1"
+      ],
+      "embed": "https://player.eishha.com/p/moracoo.html?ch=73_assadissa_7b7u5n1"
+    },
+    {
+      "id": "live_eishha_makkah",
+      "name": "مكة",
+      "category": "قنوات سعودية 🇸🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEil2BOSbdSrZ2-oujV6g9gpkgaAVP0c_Q4Glekkuigm0xUNgFonJj74q4Sb6yf_CDmDAfAhtmue1JI5fH4QV-cxs-puqEXcFRedp7tgmFhfuPQBZmXcE81WpWGJzBLa7_zWQrR2nnkOLxr0bYtx0SpcNfuWwT07SFrpw4LFq3_ZwJBoiDCEgToXX7wsJ0Q/s800/makkah.webp",
+      "streams": [
+        "https://media2.streambrothers.com:1936/8122/8122/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/makkah.html"
+    },
+    {
+      "id": "live_eishha_iqraa",
+      "name": "أقرأ",
+      "category": "قنوات سعودية 🇸🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGSIjJ0Etdvp257GG-uIgk4EfVuwvkTZnlviiLjYSgpVd4URT7G0B09-lUpXqpc6YpDQGWXx1qaLa-7xuzuCcw9PqF8q5lhDlIS-oOh-u-NUMfsL0hh_u2m5lJQF8-ZciQnN-MQTDgLV_n7dDOv9bPEy6UIprAspGT4vCJWxk-csJdjBC5pwxgrYaZFRc/s800/iqraa.webp",
+      "streams": [
+        "https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv3/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/iqraa.html"
+    },
+    {
+      "id": "live_eishha_makkah-live",
+      "name": "القران الكريم من مكة",
+      "category": "قنوات سعودية 🇸🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgmO0tNUeOn18HeZYR8dxjVBN-qXXSDh3wLtU_cNjGd6dTJmPZ85GsqtgIjz6ASWEXcXjozxUWz2mabjMsAyPDGYNBg8Bqw0p2Xnp2kJo_zFkGZKmIcjgqp2N3eFEDcQva8hwSjHOI7w8_QdcDG57cmHvVJR7TIqBs79UqeRqxMFfLGKSgy-5nxyhyphenhyphenYFj0/s800/quran-makkah.webp",
+      "streams": [
+        "https://player.eishha.com/p/makkah-live.html"
+      ],
+      "embed": "https://player.eishha.com/p/makkah-live.html"
+    },
+    {
+      "id": "live_eishha_roya-kids",
+      "name": "رؤيا كيدز",
+      "category": "قنوات أردنية 🇯🇴",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-8Rc7o6OyKF_JO_V57TNp4n6AHQA3w5UQUcrZSKAqe_Z5PJczUjCbWju78GJcLJlY1VsdIfXEHn_lR5zTH5FWsnS0xkNWKofz6N2TkKv0wDUqVWJamLvyE5Jq4mQSfImG7w6PlzL8Z5uzGWknGj7v_v1aDLsvCwozLN4iKEzPoaG2ztitAisDEAWHZ4o/s800/roya-kids.webp",
+      "streams": [
+        "https://playlist.fasttvcdn.com/pl/ptllxjd03j6g9oxxjdfapg/roya-kids/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/roya-kids.html"
+    },
+    {
+      "id": "live_eishha_atfal-w-mawahib",
+      "name": "اطفال ومواهب",
+      "category": "أطفال وعائلة 🧸",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEinip4B3DTQJT1oSTpEBQdYglX-bTyAfwKptIyroU9pPLDRNLi3m1rO8L12f83xzSXG2VUhOfdgeetUopgMrVQcWFCzToGGlwQJczONGJ2_1bX6aOxy80Tzl4UDnrX3rxxpTrtJVN4UjGBhyZSHmqmkDQcRSW6Fr9kpK9_hfckDJLryHJ1W-POezKmSVXc/s800/atfal-w-mawahib.webp",
+      "streams": [
+        "https://5aafcc5de91f1.streamlock.net/atfal1.com/atfal2/chunklist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/atfal-w-mawahib.html"
+    },
+    {
+      "id": "live_eishha_jeem",
+      "name": "جيم للاطفال",
+      "category": "أطفال وعائلة 🧸",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLUoq9ZFKLEsKXikLblSFRqDOrrxgAM4ZihMfXIS59B1d0hzFCJlSyYoKqZ8cOnAxV5d6Yl-BpzWpQu8QqIGTrKXnsgs411QARJGAV_WlBOwjBri1q3v_npLvnf6J6qjjh0P4V3tx7jBG3Xkcp6mYdrgPeVJM2SAVWKRsmm0SRezS8SEStrurTSJBBMwU/s800/jeem.webp",
+      "streams": [
+        "https://player.eishha.com/p/jeem.html"
+      ],
+      "embed": "https://player.eishha.com/p/jeem.html"
+    },
+    {
+      "id": "live_eishha_jeem",
+      "name": "براعم",
+      "category": "أطفال وعائلة 🧸",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaEe74Q9N1vUUiw5RoKEipLVTsft5UMO-xEydF8v95rvKpTwAr6AmmMFkmXGoPKTKgPkzZJ2fEk8CQU9PPCd3zkZ2zYCMH1zJakz-fe0ZLr0-ecOipckWnwxziYM1qLIZXRUDYg5skKd2oCEqhPGLJ1GcUo7f-vreS6Sck_CKXg1ppxjkzDBdOqaKRpg4/s800/baraem.webp",
+      "streams": [
+        "https://live20.bozztv.com/giatvplayout7/giatv-208314/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/jeem.html"
+    },
+    {
+      "id": "live_eishha_karameesh",
+      "name": "كراميش",
+      "category": "قنوات أردنية 🇯🇴",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhkGd7_zYpjwzLCpLGsVWW57AKkDKQ7y-srLMqsRTV5cadZivwIn5Zr42xsZYSTJfjDbKWGvDr470y59bRwJAM8ZFCByYxVpgStU5g5CmZO3h1H2XCm126AQKBV27cbbJ6EgkscUo5PJiQLR9vxo5xgWnQp4jMYXn4SRthfZ-kj9-5LnTBLFoiN7LiQZaI/s800/karameesh.webp",
+      "streams": [
+        "https://player.eishha.com/p/karameesh.html"
+      ],
+      "embed": "https://player.eishha.com/p/karameesh.html"
+    },
+    {
+      "id": "live_eishha_spacetoon-go",
+      "name": "سبيس تون جو العربية",
+      "category": "أطفال وعائلة 🧸",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgWXXHQ_nvpVjIIiEx1iDwK4AXyWhMHpodHc6pOZ_9X2lydbL4OtrAWE2CtU_X-_Q_gQk5JrTS-X4m8xW5E0ypJjX_E-E9olLHL37pkTgDYZ5AI8W259GKRdrV1IARcmOwodC8_MaIzlmtotMo8NRG2c6uNgvW0PqZQIKT6-LOLr2prkml4rrFlgteJH7M/s800/spacetoon.webp",
+      "streams": [
+        "https://player.eishha.com/p/spacetoon-go.html"
+      ],
+      "embed": "https://player.eishha.com/p/spacetoon-go.html"
+    },
+    {
+      "id": "live_eishha_majed-kids",
+      "name": "ماجد",
+      "category": "قنوات إماراتية 🇦🇪",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj-yx0QE_2jdaBbEgbUs0hZpHECnvadBqZid9xlHWtdYgClab82CaC9VSy2MHpQ3QAipvLr76bMjw28b5ghzeUBKogICFVVCfvRHzEY_wZo-Vp1xDHtN-2OELNKwW9PDvSwzCbMh7fnmHPHZ_-zNSI3ckS524xwPXC2t9wnCZ_eKSdFq-cLa5PjFbyOkao/s800/majed-kids.webp",
+      "streams": [
+        "https://player.eishha.com/p/majed-kids.html"
+      ],
+      "embed": "https://player.eishha.com/p/majed-kids.html"
+    },
+    {
+      "id": "live_eishha_amo-yazed",
+      "name": "عمو يزيد",
+      "category": "أطفال وعائلة 🧸",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjEbdMDhv7CMjSLT0Jujx6e3UmE2AZURvdtesq0pi7KxPCEFy-upfWGSvP-DRGWh-o3cGK5h6HRg8gR7CWZQ0UmwmGVyJ9g0c0Vevpyp3n3KcQD6JoPrNOWcyzgfhxf_m1i3NqO_fxcLzmTanEU60NPGtRAhaCg9fv5Pk6jU2WAdUKSz9ckDpE5zSVSlYg/s800/amo-yazed.webp",
+      "streams": [
+        "https://zid.eishha.com/?url=http://mkstream.servehttp.com:1940/AmouYazid/ay1/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/amo-yazed.html"
+    },
+    {
+      "id": "live_eishha_toyor-aljanah",
+      "name": "طيور الجنة",
+      "category": "أطفال وعائلة 🧸",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhkeIAnjYydDYHvwrX4bXz5zN9KZCG0kFqpwm8Wc8Ia37JhjDb_ukw3Y14nP9MpvHBmIuV5N_lJI9Nhl0-L9a_sB7B1J7OlmfXozflTP9r3NFNE8MXHr9ERAGroXHaM6Ix9HSpQM8C2ILzimDcGQyElSOUtZ7me_g9xP5zmwtm0EDQJNRw3LBZkob50ZOk/s800/toyor-aljanah.webp",
+      "streams": [
+        "https://player.eishha.com/p/toyor-aljanah.html"
+      ],
+      "embed": "https://player.eishha.com/p/toyor-aljanah.html"
+    },
+    {
+      "id": "live_eishha_cartoon-network-arabic",
+      "name": "كارتون نتورك العربية",
+      "category": "أطفال وعائلة 🧸",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgKdzJWoIfHFI4J15mUGPiyWY6F8QgIZJ2lOklFc8M1w1SOdva11G-CVKUBxAj79Z-kYf2AMipE3zKiNc3wZRgJa5yiX7EtylMZO6aBRr9csUD-_Q935Vm715jvUXEWCNbyjURBkAGkvHcq5eBw-vGmDah6EDDXK4ru43O8ewSjBhp34D6JIUFfccKOHMM/s800/cartoon-network-arabic.webp",
+      "streams": [
+        "https://player.eishha.com/p/cartoon-network-arabic.html"
+      ],
+      "embed": "https://player.eishha.com/p/cartoon-network-arabic.html"
+    },
+    {
+      "id": "live_eishha_ksa-sport-1",
+      "name": "السعودية الرياضية 1",
+      "category": "قنوات سعودية 🇸🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEil4Jm56Dsf8xPdIkeXwoc08ftdH8d1v3boGQwZmCOKoBlxE0bBwxlxXrWNwFq-bsSXykFs-cotjh0eSCDVVzcgcEbSOCAEspcm-gLTwcFMu2P6gTkLjPZmkhXljBfQvlJphfbGuDWTIEzWjS36SzoITCPmQWi5YvRuypnxtP_mmLpXe7ajwDK21ufYREU/s800/ksa-sport-1.webp",
+      "streams": [
+        "https://player.eishha.com/p/ksa-sport-1.html"
+      ],
+      "embed": "https://player.eishha.com/p/ksa-sport-1.html"
+    },
+    {
+      "id": "live_eishha_ksa-sport-2",
+      "name": "السعودية الرياضية 2",
+      "category": "قنوات سعودية 🇸🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj_iDX-su8qQuVS2ug8x2DuuFSB5CIbDNrco1yJYdwIf_g476Te929Y3JzTHvjfoIvxRcYZu6dmfbPnpkyjSOmDq7lYwjFsjj4EWfAM7hL_iYqcuxx2qt-QaahznT1LYy3n-225y-l-jfuEqZmvbXCBDNd1oXxQYZxbvLdI2S9VSKu9T_Ik-2HyVY_wOKY/s800/ksa-sport-2.webp",
+      "streams": [
+        "https://player.eishha.com/p/ksa-sport-2.html"
+      ],
+      "embed": "https://player.eishha.com/p/ksa-sport-2.html"
+    },
+    {
+      "id": "live_eishha_ksa-sport-3",
+      "name": "السعودية الرياضية 3",
+      "category": "قنوات سعودية 🇸🇦",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj9CvTjF178nwzexR0E1Pu_04vVcQSDLTKq3kOD-hKOiARpjyXiyGYgQSj-iJGGQDDwf7J_vIwqKIYuvyoMhuPOJwrcownygYwtgJY2dKF8HaqMN8okVzJ17-E4Dc21bcbFnQQqCDKodrE39l0MItRT0B8wTgHGnV3RF_bQwh4YA63W3syLx0YzmS7jQWE/s800/ksa-sport-3.webp",
+      "streams": [
+        "https://player.eishha.com/p/ksa-sport-3.html"
+      ],
+      "embed": "https://player.eishha.com/p/ksa-sport-3.html"
+    },
+    {
+      "id": "live_eishha_kass-1",
+      "name": "الكأس 1",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEje2BEHVItMAsV8_yUPCLK3KtcBGtpUGbl1RlAToJkjoQcCbJnG25eDmGEuJIBq4e6l5AnxivbScj5vLXIvQKvy0BdUBHtiMAX-cdU6MYk5bgTPsEUci_XYMD-cNBTbRiG0wqw-md2DpeLEePYDmZC-D9Wv6gbO9kIHeL3dtBbNyJtXb4Y432GhK-XqFgg/s800/1.webp",
+      "streams": [
+        "https://play.arab-stream.live/p/kass-1.html"
+      ],
+      "embed": "https://play.arab-stream.live/p/kass-1.html"
+    },
+    {
+      "id": "live_eishha_kass-2",
+      "name": "الكأس 2",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjNsVmV215GMcwHnIzuqM8cJElg14PeHvf2JwzlRs8bu0hY851Jy9w08ml0qnT-6j5rYeAkxgNDNLNe3i34O3H04TVxySUoApmySxxvzLLrg2N78drMK4muezMfY4MYV2Cvzif2I_Kr_1iBfDFCQ0gCDouF78Y5OPv8ptoQiFgUS_VYHH7GYCcaRTovWNA/s800/2.webp",
+      "streams": [
+        "https://play.arab-stream.live/p/kass-2.html"
+      ],
+      "embed": "https://play.arab-stream.live/p/kass-2.html"
+    },
+    {
+      "id": "live_eishha_kass-3",
+      "name": "الكأس 3",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhia5N3ujUlDTJUnOYJPCFf3i9I022tUkYkgni8Lpe7SHVAeMuJ5qYcNwBV5O1UsP48ZFJCtRymw7nD0BBCj-3qEOMtg8JTp88YS5h58bG00IzZMc4OPf14IYYYJ02rVxAKDc_D2YnJ2EDcEaqgP44hh3g_w-ifbUliGq9fmoLeklpnSnbsIQkPO_YGGAE/s800/3.webp",
+      "streams": [
+        "https://play.arab-stream.live/p/kass-3.html"
+      ],
+      "embed": "https://play.arab-stream.live/p/kass-3.html"
+    },
+    {
+      "id": "live_eishha_kass-4",
+      "name": "الكأس 4",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh5HPhP8D4E37PISBJKywH38jvFrl8TqJNYIrqBkhw-4JfO6ws1UP9bOUa79PZ6dIQp5WcxhYm3Um5SJE2SHjUVYFJHeRvdI30oigKIe-xHWTNLku2OxOd0rctoMwhD7fHgep5RIxCVgUUkcbT_lCcLrXnK0LxNHsco6nBmG9hyphenhyphenw0nKZbsWpflBLNHMHaY/s800/4.webp",
+      "streams": [
+        "https://play.arab-stream.live/p/kass-4.html"
+      ],
+      "embed": "https://play.arab-stream.live/p/kass-4.html"
+    },
+    {
+      "id": "live_eishha_alkass-5",
+      "name": "الكأس 5",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgMmn3zDXkjI_hCq6GkgNjfUFpxeUlrSbl-ZSF5VmtoPXNxTDlZX_nJeoktrA53nk6zCNbOL4phIaOlPy2GpGjAxn0SM_xaUqaCtApfg5IUjpw25Qz3MHN-wcEiEzwDpLeF6jIhpsQMxvwZ_H0mT2kvIDPnHYlbcN9hD7jf7SiQHLYVC6iX2OllChvmAjQ/s800/5.webp",
+      "streams": [
+        "https://play.arab-stream.live/p/alkass-5.html"
+      ],
+      "embed": "https://play.arab-stream.live/p/alkass-5.html"
+    },
+    {
+      "id": "live_eishha_al-kass-6",
+      "name": "الكأس 6",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGHOGTpK5CCwUI5i5PnZoAW1yK1izc3_5ZDxId4_lvxilgrhRyAeAUbT_5YLsDO4fYV98QBkYfhAZuhpjgkLdiLC_msDIYNONOTdq8_fX4RvoUXzJ8zAPqNVm1O0L69wT33U6DmlLMblZwTAzn7H7ANXvJ9_1JZ6fiwpxwjNHIdpWcvjqO3076BpYXI68/s800/6.webp",
+      "streams": [
+        "https://play.arab-stream.live/p/al-kass-6.html"
+      ],
+      "embed": "https://play.arab-stream.live/p/al-kass-6.html"
+    },
+    {
+      "id": "live_eishha_al-kass-6",
+      "name": "الكأس 7",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeNSxa5nMsBC61kMEbXYK-Bdu2W-DTAEu-1PprQhlWCPrcsMIDHo2NAeLQssitG7OVCmXkvdFcplXFd2TO7zzfUnQ3E-g_wT2Hg3_Q6CViOaSOZ6u5vnrczZo_2EaIZquOBWrjZ7GISD7cvXn866xxCWaSK0WkkVRTHMRkcpazG2fHMU4AsZLbRlzCKf4/s800/7.webp",
+      "streams": [
+        "https://play.arab-stream.live/p/al-kass-6.html"
+      ],
+      "embed": "https://play.arab-stream.live/p/al-kass-6.html"
+    },
+    {
+      "id": "live_eishha_al-kass-8",
+      "name": "الكأس 8",
+      "category": "قنوات رياضية ⚽",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzcIRxtUP9Qgv9WK3dW0owkRu5qLzR6LMOcGdE_93aOd1FsKvclZ3qoF9_j2egu1WT3rtoZonf-85Q65ex6UItyjFa5gGy8CndS9L6bGdrmphNNCvfN8YvOiDIK9buv2S3lFaVV_dEvwsP-hg-WilwvhBqlshQgkcodlYcNrDN7kSJVwODdpkEJRyzjV4/s800/8.webp",
+      "streams": [
+        "https://play.arab-stream.live/p/al-kass-8.html"
+      ],
+      "embed": "https://play.arab-stream.live/p/al-kass-8.html"
+    },
+    {
+      "id": "live_eishha_rotana-cinema-hd",
       "name": "روتانا سينما",
-      "category": "أفلام ومسلسلات",
-      "logo": "https://upload.wikimedia.org/wikipedia/ar/thumb/5/5e/Rotana_Cinema.png/260px-Rotana_Cinema.png",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhkVRUQ3o5HOU37dRfN_x7uwOJav2YFILiAu_NOuJ1waqF7BYiwA_5B_zN-3GS91sUKSqVH7aEc7KTDWeYwbqHzo1I12fJcOn1yyn3ERgTYolWb-RzjBBXVa0wZsEHCfI0S95YLJECA2ZrSxpdG1RbbOITESukaaDbauEvxrmdvowqwzcLV_RRuFc99psA/s800/rotana-cinema.webp",
       "streams": [
-        "https://iptv-org.github.io/iptv/regions/arab.m3u#Rotana Cinema",
-        "https://rotana.cdnvideo.ru/RotanaCinema/index.m3u8"
-      ]
+        "https://player.eishha.com/p/rotana-cinema-hd.html"
+      ],
+      "embed": "https://player.eishha.com/p/rotana-cinema-hd.html"
     },
     {
-      "id": "mbc_masr",
-      "name": "MBC مصر",
-      "category": "منوعات وترفيه",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/MBC_Masr.svg/260px-MBC_Masr.svg.png",
+      "id": "live_eishha_rotana-comedy",
+      "name": "روتانا كوميدي",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjVGzaYEU0s4O46b0yEvY15j2WIMWqBdqFj1-VRBpij6q_pCVmwnLSRdKQEfHj6uvbsZ8vzKHZXkyVO-jmQLhJp5LchQG8i0IvZyqnlCRlwVRyGIVY3SvHNZO08m1HibQLMaL1Yu4uER8Szo89jgcgbl-TRnUWGb6XD5n7HN16n8efFF-yHsyGVFShOzVI/s800/rotana-comedy.webp",
       "streams": [
-        "https://iptv-org.github.io/iptv/countries/eg.m3u#MBC Masr",
-        "https://mbcmasr.cdnvideo.ru/MBCMasr/index.m3u8"
-      ]
+        "https://player.eishha.com/p/rotana-comedy.html"
+      ],
+      "embed": "https://player.eishha.com/p/rotana-comedy.html"
+    },
+    {
+      "id": "live_eishha_rotana-classic-hd",
+      "name": "روتانا كلاسيك",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj0b3VShEQLA9w_gO-tM3iQMP59a94KzAX8frrWSgD2Av2hx_B8_RtursxQRFBXPCBijY8ugQC7zQSKXhNc4WR_Kj-614UnmU_ME5pJI6mhoS_SMVO0v4ythdCLtd1WLLma9BAcZJukE8aHTmp7kOrFxC1me5hAizKzedL-zXoWXMS7QX-RQIJTA-4H_bk/s800/rotana-classic.webp",
+      "streams": [
+        "https://player.eishha.com/p/rotana-classic-hd.html"
+      ],
+      "embed": "https://player.eishha.com/p/rotana-classic-hd.html"
+    },
+    {
+      "id": "live_eishha_rotana-drama-hd",
+      "name": "روتانا دراما",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEipzVAPZq-SVfpOnSIw0AkWca1JUSVZUd3GAYke-rE1vHHY5ARKaTcF9gL_PMxUBq6_5fR0ofMQAwhdxKGVTlxkmBQKdCkpCYkJzvCmiYQsvEyX3YpXmJDNgTDCYBETBilUi3otf_UqiabSEH7iBWPWMsG2s1RLCAKQJj9Nd1QxGReQxQW6fxtz_3swIOU/s800/rotana-drama.webp",
+      "streams": [
+        "https://player.eishha.com/p/rotana-drama-hd.html"
+      ],
+      "embed": "https://player.eishha.com/p/rotana-drama-hd.html"
+    },
+    {
+      "id": "live_eishha_rotana-khalejia",
+      "name": "روتانا خليجية",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhhCnrI8SI90bvgz235RYiDqchuiYjB_YWlfHL8w9LaVRAa_AqSDILfiivfrtuUZN0-8xlhkUft3yLm_8PLPVh6fI5_MnoKXVTNw8E1zJlN0EcQdPmu2nbPlmlZyLsfKvUrBPIFi4OlakMl77hZ15lFopg8jzyuqOE2xbwi4LVcC12cTQTN0c50wbL56N0/s800/Rotana-Khalijiya.webp",
+      "streams": [
+        "https://player.eishha.com/p/rotana-khalejia.html"
+      ],
+      "embed": "https://player.eishha.com/p/rotana-khalejia.html"
+    },
+    {
+      "id": "live_eishha_rotana-aflam",
+      "name": "روتانا افلام",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEijmAjNrTOYfPfUh9EJDBlJ5IgujGlfHwKIhw9CJGF3Lie0XO3L0Wpc-Bv7ryrc-LaQb9iDY9yizZHjmtUOAMSa5r4YVAC-3XoA4R1_OY103I73zyCuVxaWMzyYCi5T1_1uW7LCTY7MJH2gcqHfuQLFzWExcuomF8Z0qB2uUbBrZm2f1C8xdlAv83kkjnI/s800/rotana-aflam.webp",
+      "streams": [
+        "https://player.eishha.com/p/rotana-aflam.html"
+      ],
+      "embed": "https://player.eishha.com/p/rotana-aflam.html"
+    },
+    {
+      "id": "live_eishha_rotana-kids",
+      "name": "روتانا كيدز",
+      "category": "أطفال وعائلة 🧸",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEge2dn5dtAGzd9ldtn3vF7VJ6awlwuNO201tGDFQOzthKS-5FSyMpua4oGtkv_H3QktAWE46gqD0fZi-Rk5tzXDth7fwQ0W_M_-fco-xEvWllqlvsPyhxUjT-YIkO3hwwjhCmMvC2m3bQ-bkkeLI2HPuAPbYsZNuvcq84prtSkeoFAT5pC7XBUoU1URX7E/s800/rotana-kids.webp",
+      "streams": [
+        "https://player.eishha.com/p/rotana-kids.html"
+      ],
+      "embed": "https://player.eishha.com/p/rotana-kids.html"
+    },
+    {
+      "id": "live_eishha_rotana-plus",
+      "name": "روتانا بلس",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBwyhidVvZT0BpOeg6g6eHuRz6IHLpaddOop_GpCHY61JVPnB1ElQfXQRaEvKnLdsHa6PdjETDEr3VqrfOoSBoFXFySW6PUjWacYwYoTUocLpj6NsmwfMMpAfTCCXGmSnFR9KGxTu7BJV2rUOergZ9nPIazWgmwBrO75H3_QNCYI1866mYCjLPAe9MNX8/s800/rotana-plus.webp",
+      "streams": [
+        "https://player.eishha.com/p/rotana-plus.html"
+      ],
+      "embed": "https://player.eishha.com/p/rotana-plus.html"
+    },
+    {
+      "id": "live_eishha_mix-one",
+      "name": "ميكس وان",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglBHI7zoAro4P6mlA9ChkhKLTDvc2TwVd0ycRoIR6J748Yg9xm8VFC_2TF2t5Np-EQxF_e1hyNvJqhr9sDLU3JS8h_ga8AEMQRe8rHSGQYJRm_NLWmjrtlBBwoJ-kB2gi7CnV29R7vJLimCl13j30HiFR202P1iyqYW148qUlWxMqgPCynKC0fCIqUr0I/s800/mix-one.webp",
+      "streams": [
+        "https://player.eishha.com/p/mix-one.html"
+      ],
+      "embed": "https://player.eishha.com/p/mix-one.html"
+    },
+    {
+      "id": "live_eishha_mix-belaraby",
+      "name": "ميكس بالعربي",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh_YMXeYTOGV_Nl0_dtcsE77MCG-t-HzKPaW732Ec7zreP_w7V-mTDcmAnD3Xm0-_l83OntmWcgGylNpUte7JNxH44-2XG4pPDOvaJS3w4Dl0m1TcqzZ7uS6nsi7l4BZf-6NZqRW6tc4vYOLZts0tGlqgWbwHF1SUilU9BBMHvqS6loBym3nkdikVtJU50/s800/mix-bel-arabi.webp",
+      "streams": [
+        "https://player.eishha.com/p/mix-belaraby.html"
+      ],
+      "embed": "https://player.eishha.com/p/mix-belaraby.html"
+    },
+    {
+      "id": "live_eishha_dubai-tv",
+      "name": "دبي الأولى",
+      "category": "قنوات إماراتية 🇦🇪",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiciOaHWztomLjVnwexfx5hyphenhyphenT1uGUnoXGGCHoa6FkpaIBSDe6uh3gBOUmxH5IoBkzI8JjJ7VDSZ55KBgiE1IxkUUf83ypjILfogWbT8pIM5_NQfiY-YCEAdLGmm-Cc0PbqQ5i3jjITRQOPoSEgc1t4J6R-NyZG2VrAgrrwsmeOTUoYb5-fRXgnLUxj2u0Q/s800/dubai-tv.webp",
+      "streams": [
+        "https://player.eishha.com/p/dubai-tv.html"
+      ],
+      "embed": "https://player.eishha.com/p/dubai-tv.html"
+    },
+    {
+      "id": "live_eishha_sama-dubai",
+      "name": "سما دبي",
+      "category": "قنوات إماراتية 🇦🇪",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiUVdCdUEVcKPEg3khnXfZYeUKsY0YlOcyZ35vY3vRwqqbgn7R05vYScRfxvB1qhOnZBGawlNTPCEoNgy1W8-uXXhjijbgFd_D2COCWsP0P_OCjHg2wc-e3LEOISEv7EL3ATGeeVqxifRG6lwvystw9yXRRQ5IjTs7AM5-4iOw7BTRK1tYdlqs5sP2bV1E/s800/sama-dubai.webp",
+      "streams": [
+        "https://player.eishha.com/p/sama-dubai.html"
+      ],
+      "embed": "https://player.eishha.com/p/sama-dubai.html"
+    },
+    {
+      "id": "live_eishha_fujairah",
+      "name": "الفجيرة",
+      "category": "قنوات إماراتية 🇦🇪",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj2U9AtUCyhsw7DTxK8h13VWvfrwTiFm760oX7hyphenhyphenQ3cGR9mk5oZmn4Z4j_C9cWiLbeIsvzuQmxPoW-DPw6CjyqiMohB6FkQfQ8QFB2EVG0CMnCVlRt-VMikQcTz_BA4FW7Mi3_eKW4K9Ck6wvp_FDFXku4MIlEE5VJP0JTs5voIPdEd8j4RFiv-leKCOJE/s800/fujairah.webp",
+      "streams": [
+        "https://player.eishha.com/p/fujairah.html"
+      ],
+      "embed": "https://player.eishha.com/p/fujairah.html"
+    },
+    {
+      "id": "live_eishha_maspero-zaman",
+      "name": "ماسبيرو زمان",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgY9-AKXN_DD-dd1hbHxN8Spox2TwHDTz9yBbvqJZMV4-n50gHppj3juIIFXCxAN9pSzHnURiVgwrayeQvrtN6t1D7ZqrAtitoYCUQfLVpVLZINGmG_oRyP187bw-QX4vrMQfLoqgix0V_mvCwHdxRnLTcmMjMrzoVxdGkiM332wtlcmJbpUx1x4ERqfEs/s800/maspero-zaman.webp",
+      "streams": [
+        "https://dailymotion.arab-stream.live/?id=x8n6e4h"
+      ],
+      "embed": "https://play.arab-stream.live/p/maspero-zaman.html"
+    },
+    {
+      "id": "live_eishha_mix-hollywood",
+      "name": "ميكس هوليود",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj4BZ372WH_ZnJedsuqSVRnXxPeKvy8J4I_3ArqZb3pVinUM433O0gAXLMUSUJBv2vbnaKCXavo-dMedAQH2ssdIQL_s3eBjdEFbLWYOatoOQVdsGxI1osYRrh4t6oqz9EK0szhyphenhyphen6TMN8yQ_BVi0rLiWm3yBWNUpQFiFXtljyaw68_6N_w1nsQDaMuvSAs/s800/mix-hollywood.webp",
+      "streams": [
+        "https://ml-pull-hwc.myco.io/MixTV/hls/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/mix-hollywood.html"
+    },
+    {
+      "id": "live_eishha_cbc-drama",
+      "name": "سي بي سي دراما",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjJg2myB_BiEBd24H7sJlHmZRrFJmPB3MOmxoTc8cHofuicAdT5JggIGw7l9c2fw6AsmjC_POakVJ24h0o9tGEohB1wnWvWxRzhobNcRM7y4emDC6xXQUeYZyebiAPEE5xvLj3DTl-OZXijMhQbCm73ViZusFSfowcKAAUXrGGjF_gPqzuS720lCYv5imE/s800/CBC-Drama.webp",
+      "streams": [
+        "https://player.eishha.com/p/cbc-drama.html"
+      ],
+      "embed": "https://player.eishha.com/p/cbc-drama.html"
+    },
+    {
+      "id": "live_eishha_cbc",
+      "name": "سي بي سي",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiBxIRnYkTpLKewRsc-GuN9GSl_r_dEUlAN7UHGDtCou4K1g9C1nj8HhsQZUZewmNlekAUIqEB4k0us6Sx2_h-eHz9bQmfMI1BAzM4nPegW6TzXVwzo7YsfaklFjSn4fPjNmh0mC2VRQXwUCjp2prfqCZyTWakyv_VHcL8dlIAhGJJMh238qIa4v_xPzIg/s800/cbc.webp",
+      "streams": [
+        "https://player.eishha.com/p/cbc.html"
+      ],
+      "embed": "https://player.eishha.com/p/cbc.html"
+    },
+    {
+      "id": "live_eishha_2m",
+      "name": "2M",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTdJnlIZs6nvsck-rILeaCUJv0CmeINw24cD4yVc_Sj4cbZu3i4uyLh9NN2h0Cv_9bbPSJ0g7QvNMUFxKWTZiu46e1hj47v26XMhAKaf4TYqhkh1xVqsDCrwJgSDqhEjtEcM3kNEEUSkLwYC1xhQDNs6R4ff9XmEi-inkTBO-kUdH0qz8LcN0_zcp_ZMQ/s800/2m.webp",
+      "streams": [
+        "https://2m.eishha.com/?url=https://cdn-globecast.akamaized.net/live/eds/2m_monde/hls_video_ts_tuhawxpiemz257adfc/2m_monde.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/2m.html"
+    },
+    {
+      "id": "live_eishha_on-drama",
+      "name": "أون دراما",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgDggAy1d5KdDo1LOJPMFwJpBk4dh6a20LWixRbf0tLQ4O4Bfr4i5dHDai-5ovnH1q2001FC2RU1rpHZ8M_ysFtfrzm9GCZrT_TzCJh7A5F5EDdETN5fr8a2p5SNnYpChinAegjIYzAcikQEdW-Hshvo8makzv_0hLBgRL-wUrJY-wsO9NvT99ZdiNMSqw/s800/on-drama.webp",
+      "streams": [
+        "https://fastly.live.brightcove.com/1843587421941170322/eu-west-1/6057955906001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiZGd4MWQ4LmVncmVzcy5mZDJ2eHIiLCJhY2NvdW50X2lkIjoiNjA1Nzk1NTkwNjAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU3OTU1OTA2MDAxIl0sImp0aSI6IjE4NDM1ODc0MjE5NDExNzAzMjIifQ.r6YCffy47zkO1b8ng0w4Cxe8QVIsrat2RiuQrGYemyk/playlist-hls.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/on-drama.html"
+    },
+    {
+      "id": "live_eishha_on-tv",
+      "name": "أون تى فى",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwcuKtwKfzPi9_-cK_nZZnRkKquhihAEeM4Ry26GRZfw5rsfs9udht7MpUYWGf0DtFDToNfklOCqKEsvhdEFKVenkdJgeAbtJSrKo2EDj9vNMz8uG7jP3MElsO_pjWdfVGmEc-q94uBM9a09IXL-n6EqnmBNS0A3yxsKmI_vpTHRq-zjTcaEV3uJiaijw/s800/on-tv.webp",
+      "streams": [
+        "https://fastly.live.brightcove.com/1843587421941170322/eu-west-1/6057955906001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiZGd4MWQ4LmVncmVzcy5mZDJ2eHIiLCJhY2NvdW50X2lkIjoiNjA1Nzk1NTkwNjAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU3OTU1OTA2MDAxIl0sImp0aSI6IjE4NDM1ODc0MjE5NDExNzAzMjIifQ.r6YCffy47zkO1b8ng0w4Cxe8QVIsrat2RiuQrGYemyk/playlist-hls.m3u8"
+      ],
+      "embed": "https://play.arab-stream.live/p/on-tv.html"
+    },
+    {
+      "id": "live_eishha_dmc-drama",
+      "name": "DMC Drama",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5qicboDTOdyPuAuPAL8nmowykpS9Omcgsf_8vCHC_PNnCw7hr5dvCsfpxnboaH7mmohThjKWFhTyEn6SmzbVNjty6qvW1a_9WBxrS4FcxhC7g2N4CyPRTdRCJWZZsVm8UQEhUVN63QnSiJyovee-U-BOlHS7pgWgHKaHG9x2wa4EmZ9PGlTRpJYwt3lw/s800/dmc-drama.webp",
+      "streams": [
+        "https://player.eishha.com/p/dmc-drama.html"
+      ],
+      "embed": "https://player.eishha.com/p/dmc-drama.html"
+    },
+    {
+      "id": "live_eishha_aldhafra",
+      "name": "الظفرة",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi37GtnThPh3jgSp3Nht7Z_4KwHLnFDK_HKlhA5e27L_syvl_BL2DBsoviXLSpFUntOQRPCahDB9RrIZ1Ki3GIoNgsOB4yJlDWAdR3ka6RJUbuBHMj2HELDUK7ConjMIxSUU-aoLfmdpsiJ27Bq_EkP13U666viOIMOANGRSoVxyR1jLRk63NpIxLdj8hI/s800/aldhafra.webp",
+      "streams": [
+        "https://player.eishha.com/p/aldhafra.html"
+      ],
+      "embed": "https://player.eishha.com/p/aldhafra.html"
+    },
+    {
+      "id": "live_eishha_ten-tv-egypt",
+      "name": "تن",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhmqPgx7RHGh9L4fEjEkYdt6tY3vBoEOMmMlDUnvszgrreYFoAvSybkcb1Wvf7xIKMlXbLeyNoY8uj7v95BhXwjzfUrc-u0yn_5cAF4i1rKmDQZyDZ-GV0wO3uxMErrS8OnhGeFn_cS02w8GSVpF16-vobYwWF4da5dVT7sI4H9Bhwh0EKkrpHa_UE4GqE/s800/ten.webp",
+      "streams": [
+        "https://player.eishha.com/p/ten-tv-egypt.html"
+      ],
+      "embed": "https://player.eishha.com/p/ten-tv-egypt.html"
+    },
+    {
+      "id": "live_eishha_dubai-one-movies",
+      "name": "Dubai One",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhATSCh5qJ7pHZPhlU30YXsdmjtFMRE07iOgHMy1ODbnvL1rwbj2_6DDbIV0oQ0upm4-z9zNn-E41ALer3EEHW1SQb8uiXp0QmZSdcmn41VMUiRlG24kRxgyEynEITOg02g6VDClrEf4Psmr_RsgmHe3VgGSS6sLGjY2qOPX83YQzBqAG5wwBzRlmc8uxg/s800/dubai-one.webp",
+      "streams": [
+        "https://player.eishha.com/p/dubai-one-movies.html"
+      ],
+      "embed": "https://player.eishha.com/p/dubai-one-movies.html"
+    },
+    {
+      "id": "live_eishha_nessma",
+      "name": "نسمة",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbWnh6FXVijq_dotkR7tY7GFgUZJ-oguPvaPsrtvTCsXwPMedWbw-jmWO8Gku9PZwviYCIXwqvmMDcj3AjbKiVu4Z6uW2CoWAT3z-sdjrQX5zzg2UnDfLxILahh5klov_peMM_NpmKFwCpaAm-FOQlkcXHlSB9tS7VdAGFp9unAC0ilhqr0QqGiz90YLs/s800/nessma.webp",
+      "streams": [
+        "https://magic.arab-stream.live/proxy/live/087/index.m3u8"
+      ],
+      "embed": "https://play.arab-stream.live/p/nessma.html"
+    },
+    {
+      "id": "live_eishha_almasriay",
+      "name": "الفضائية المصرية",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbq2C_eyoO37sUpbXXmOa7NHyHfmw0yQw5jHwOIS5ltcQWhs65mnEZpBh648_KYLGGv8hqeldQ4E0ibywIElIbjIbFe23Fywp628mQZ4LJjw4KNYEVHP8nM9goN7O2M9xAdRogWP8Mw0o9R3eRllNxh1JekdxswZ_J3nXN8aIjzI7j1uKA3w7l1E3e45I/s800/egypt-tv.webp",
+      "streams": [
+        "https://player.eishha.com/p/almasriay.html"
+      ],
+      "embed": "https://player.eishha.com/p/almasriay.html"
+    },
+    {
+      "id": "live_eishha_off-line",
+      "name": "مشاهدة القناة الاولى المصرية",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVYO4GugnbH7xdzK6HRbOI1c-3ZJP6ZG2qQKK_crL2s8jdbgIaAoiT6QpwSkZ2VhMnciy0tZUdO0EbJ2e7G0gYgBLlSSSJACEHzGhT_nX8TkQc70POcmArbQE5RmvinIArK2YJ3M3grFhZWoafgZVUbSMNPhA0ymfax8z_gxYrhoH4orhFoo8wdNFLHLc/s800/egypt-one.webp",
+      "streams": [
+        "https://player.eishha.com/p/off-line.html"
+      ],
+      "embed": "https://player.eishha.com/p/off-line.html"
+    },
+    {
+      "id": "live_eishha_otv",
+      "name": "otv اللبنانية",
+      "category": "قنوات لبنانية 🇱🇧",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQTT9CDc-Vj0eqVl9G7vUNSZC_nNismUVb-0fSRz-mOIOgenAhyphenhyphenlSYpBP6bCRDRCLaEhHaovNOsuIz9TkwBPZ7lQVF-jI22DbUygYlcTASZjqhDGs7EU6eRCtwvDz9ABZPcKTk8nnUKNRTRHpeb5JlkeUtubeyxdHTZbzrPl5ZO_phlXgeqY1fLZ2yT_k/s800/otv.webp",
+      "streams": [
+        "https://otv.eishha.com/?url=https://otv.hibridcdn.net/otv/tv_abr/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/otv.html"
+    },
+    {
+      "id": "live_eishha_abu-dhabi-one",
+      "name": "أبو ظبي الأولي",
+      "category": "قنوات إماراتية 🇦🇪",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEitwX3b8YsVENRqRl5RfNCe66aOoHFRcYrjvGhwotuUJMYGspFRH219idkhj5s7yzZnoeaYXDOgg8nBuZmlISgDS-_JOS72GxVmu1ZNZVwwuorw5nFNayh3gnImTiQh3YEE8PJ2XdSbZxCPfALTPudphC-hIM_fWJ1sYjHNaxe-fFUqxkiFq7jpH5oiKb4/s800/Abu-Dhabi.webp",
+      "streams": [
+        "https://player.eishha.com/p/abu-dhabi-one.html"
+      ],
+      "embed": "https://player.eishha.com/p/abu-dhabi-one.html"
+    },
+    {
+      "id": "live_eishha_lana",
+      "name": "لنا السورية",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgXcanvM1FFVLq0gOyh6-DkDHlvDcvExt700B9EdmultmrIuZ4Q7YVNIw9sl2B7srVuoCFKogIlDY2O8e3Q5VXMk5VsCxlmNpphuCci9C9DdTBbSh803dh3Dtd1bC1m4Ow3G-P2dDO8IG9zzQaVZOE2EmaXDqtuc1_H8zoFM7wHbiUsGWQWiW_GXNaqK9A/s800/Lana.webp",
+      "streams": [
+        "https://cdn.streamlane.tv/hls/ltv/index.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/lana.html"
+    },
+    {
+      "id": "live_eishha_morocoo-7",
+      "name": "المغرب السابعة افلام",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUUhA_ZQFQ-iXRfZJSa8nJMM2iPoyCLP2nqeFBhyphenhyphenONL4htNcU2cZTYmf-zKfP7cHMqvkC4q2g7SRySEsuCzCgExS-jfSxLf5s2rvz_cEkkeCgIYyPWdPhDymTAx3Q-sgM880pkyrU3_DBd0pBdJTGYUqCqVZiWPj0ibywIgDuwh7Of0mlRs5nD54z1ZEw/s800/7-aflam.webp",
+      "streams": [
+        "https://player.eishha.com/p/morocoo-7.html"
+      ],
+      "embed": "https://player.eishha.com/p/morocoo-7.html"
+    },
+    {
+      "id": "live_eishha_cbc-sofra",
+      "name": "سي بي سي سفرة",
+      "category": "قنوات مصرية 🇪🇬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiuF4qa-lyRb0ycC6YM5pvQ9XoT2MDF7QG5Z70hYdwoctUbrNhx7juEZlfrZLG3Zxf_kF-B3WE2kXzq9i68UgTvK93b2UotPuPgPt-fksE6XYRd53K8kLCYkFjMOtRzdHi6LD3aBlW3uJqSflcVhNjx0yQe3E6n7ppMBvUi9N5NgjuTv1LgeS0a1RMEpkc/s800/cbc-sofra.webp",
+      "streams": [
+        "https://player.eishha.com/p/cbc-sofra.html"
+      ],
+      "embed": "https://player.eishha.com/p/cbc-sofra.html"
+    },
+    {
+      "id": "live_eishha_mbc-elife",
+      "name": "mbc elife",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj4AUSafHmplcYD3xfUxCJURNopxom5NrLCTacGxsF1dEVRSwd_2nhJ2jzU8xxHXeSEnrqF-VDMN-UgWiiYvR3zfqYJ6pBF8zNYR2aWZyDe3tlwI2EfZtOfK1TeRUVPFQpohdKd6lMrl3KGIBLUsWM1R5QxeWNvx1bXt4hg_LlbDNx_-_1a8h7WInlBo2s/s800/mbc-elife.webp",
+      "streams": [
+        "https://player.eishha.com/p/mbc-elife.html"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-elife.html"
+    },
+    {
+      "id": "live_eishha_mbc-variety",
+      "name": "MBC Variety",
+      "category": "أفلام ومسلسلات 🎬",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgepH_017mrlrgdY1a-H5mkgjbN7DcwHTWWscTkPOQEoUjW9jclQIURmpH9blUVJqW9YtIwg02HaoxfbN7vUUESzz43cBkC1Xhtrb5-Sgwlgj9wsE7bk5PXOsQy9uHFsNXkJ_iqmcLK6KGIxkPsgJQbGHdiKJaR_AMcKCJ_Km9-oli0BPiuU1fKTSn0QVY/s800/mbc-variety.webp",
+      "streams": [
+        "https://player.eishha.com/p/mbc-variety.html"
+      ],
+      "embed": "https://player.eishha.com/p/mbc-variety.html"
     }
   ],
   "oscar_vod": {

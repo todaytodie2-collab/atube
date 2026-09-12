@@ -21,6 +21,12 @@ import tempfile
 import urllib.request
 import urllib.parse
 
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
+
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 CATALOG_JSON = os.path.join(PROJECT_ROOT, "catalog.json")
 BUNDLED_JS   = os.path.join(PROJECT_ROOT, "js", "bundled-data.js")

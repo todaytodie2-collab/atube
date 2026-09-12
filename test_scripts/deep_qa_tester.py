@@ -1,9 +1,16 @@
 import json
 import os
 import re
+import sys
 import urllib.request
 import urllib.error
 from concurrent.futures import ThreadPoolExecutor
+
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 JS_DATA_FILE = os.path.join(PROJECT_ROOT, "js", "bundled-data.js")

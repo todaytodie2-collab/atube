@@ -9,6 +9,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+  <meta name="theme-color" content="#04090e">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/aljazeera.svg">
+
   <!-- Core Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/tv-navigation.css">
@@ -62,6 +66,41 @@
           <!-- IPTV / Multi-Screen Playlist Button -->
           <button id="open-iptv-modal-btn" class="icon-btn dpad-focusable" title="إضافة سيرفر واشتراك IPTV" aria-label="IPTV Settings">
             <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
+          </button>
+
+          <!-- Multi-View 4-Screens Button -->
+          <button id="open-multiview-btn" class="icon-btn dpad-focusable" title="العرض المتعدد (4 شاشات بث)" aria-label="Multi View">
+            <svg viewBox="0 0 24 24"><path d="M3 3v8h8V3H3zm6 6H5V5h4v4zm8-6v8h8V3h-8zm6 6h-4V5h4v4zM3 13v8h8v-8H3zm6 6H5v-4h4v4zm8-6v8h8v-8h-8zm6 6h-4v-4h4v4z"/></svg>
+          </button>
+
+          <!-- Random Surprise Cinema Button -->
+          <button id="surprise-me-btn" class="icon-btn dpad-focusable" title="فاجئني بعمل عشوائي 🎲" aria-label="Surprise Me">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7 7.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S9.33 9 8.5 9 7 8.33 7 7.5zm9 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm0-7.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5S18.33 9 17.5 9 16 8.33 16 7.5zm-4 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm-4 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          </button>
+
+          <!-- QR Phone Remote Button -->
+          <button id="open-qr-remote-btn" class="icon-btn dpad-focusable" title="ريموت الهاتف الذكي (QR Code)" aria-label="QR Remote">
+            <svg viewBox="0 0 24 24"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+          </button>
+
+          <!-- Watch Together / SyncPlay Button -->
+          <button id="open-watch-together-btn" class="icon-btn dpad-focusable" title="المشاهدة الجماعية المتزامنة (SyncPlay) 👥" aria-label="Watch Together">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 3s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </button>
+
+          <!-- EPG TV Guide Button -->
+          <button id="open-epg-modal-btn" class="icon-btn dpad-focusable" title="دليل البرامج التلفزيونية الحي (EPG) 📅" aria-label="EPG Guide">
+            <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5v-5z"/></svg>
+          </button>
+
+          <!-- Custom Themes Switcher -->
+          <button id="open-themes-modal-btn" class="icon-btn dpad-focusable" title="تغيير الثيم وألوان الواجهة 🎨" aria-label="Themes">
+            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.31 19.58 10.6 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+          </button>
+
+          <!-- Shortcuts HUD Button -->
+          <button id="open-shortcuts-btn" class="icon-btn dpad-focusable" title="اختصارات لوحة المفاتيح والريموت ⌨️" aria-label="Shortcuts">
+            <svg viewBox="0 0 24 24"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8v-2h8v2zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg>
           </button>
 
           <!-- Cast Icon -->
@@ -238,6 +277,51 @@
             <div id="hero-slider-dots" class="hero-slider-dots"></div>
           </section>
 
+          <!-- 2. CONTINUE WATCHING RIBBON -->
+          <section id="continue-watching-section" class="continue-watching-section is-hidden">
+            <div class="section-header-row">
+              <h2 class="section-row-title">
+                <span class="row-icon">⏳</span>
+                <span>متابعة المشاهدة (Continue Watching)</span>
+              </h2>
+            </div>
+            <div id="continue-watching-track" class="continue-watching-track"></div>
+          </section>
+
+          <!-- 3. TRENDING TOP 10 TODAY -->
+          <section id="trending-top10-section" class="trending-top10-section">
+            <div class="section-header-row">
+              <h2 class="section-row-title">
+                <span class="row-icon">🔥</span>
+                <span>أفضل 10 أعمال اليوم في الوطن العربي (Top 10 Today)</span>
+              </h2>
+            </div>
+            <div id="trending-top10-track" class="trending-top10-track"></div>
+          </section>
+
+          <!-- MOOD-BASED SMART CINEMA FILTER & 30s QUIZ -->
+          <section class="mood-filter-section">
+            <div class="mood-filter-header">
+              <div class="mood-header-title">
+                <span class="mood-header-icon">🎭</span>
+                <span>تصفح حسب المزاج والأجواء (Mood Cinema)</span>
+              </div>
+              <button id="open-cinema-quiz-btn" class="btn-cinema-quiz dpad-focusable" title="اختبار 30 ثانية لاقتراح فيلم السهرة">
+                <span>🎲 ماذا تشاهد الليلة؟ (كويز 30 ثانية)</span>
+              </button>
+            </div>
+            <div class="mood-pills-scroll" id="mood-pills-container">
+              <button class="mood-pill active dpad-focusable" data-mood="all">الكل 🌟</button>
+              <button class="mood-pill dpad-focusable" data-mood="action">حماسي وأكشن ⚡</button>
+              <button class="mood-pill dpad-focusable" data-mood="horror">رعب وتشويق 😱</button>
+              <button class="mood-pill dpad-focusable" data-mood="comedy">كوميدي ومضحك 😂</button>
+              <button class="mood-pill dpad-focusable" data-mood="mystery">غموض وذكاء 🧠</button>
+              <button class="mood-pill dpad-focusable" data-mood="drama">دراما عميقة 🎭</button>
+              <button class="mood-pill dpad-focusable" data-mood="scifi">خيال علمي 🚀</button>
+              <button class="mood-pill dpad-focusable" data-mood="kids">عائلي وكارتون 🎈</button>
+            </div>
+          </section>
+
           <!-- QUICK CATEGORIES FILTER PILLS -->
           <section class="quick-pills-section is-hidden">
             <div class="filter-tabs-bar" id="home-quick-filter-bar">
@@ -301,6 +385,21 @@
                 <button class="sort-pill dpad-focusable" data-sort="rating">الأعلى تقييماً</button>
                 <button class="sort-pill dpad-focusable" data-sort="title">أبجدياً</button>
               </div>
+            </div>
+
+            <!-- Country Bouquets Filter Pills (For Live TV Channels) -->
+            <div id="channels-bouquet-filter-bar" class="channels-bouquet-filter-bar is-hidden">
+              <button class="bouquet-pill active dpad-focusable" data-bouquet="all">🌐 الكل (141)</button>
+              <button class="bouquet-pill dpad-focusable" data-bouquet="egypt">🇪🇬 مصر</button>
+              <button class="bouquet-pill dpad-focusable" data-bouquet="ksa">🇸🇦 السعودية</button>
+              <button class="bouquet-pill dpad-focusable" data-bouquet="emarat">🇦🇪 الإمارات</button>
+              <button class="bouquet-pill dpad-focusable" data-bouquet="lebanon">🇱🇧 لبنان</button>
+              <button class="bouquet-pill dpad-focusable" data-bouquet="iraq">🇮🇶 العراق</button>
+              <button class="bouquet-pill dpad-focusable" data-bouquet="sport">⚽ الرياضة</button>
+              <button class="bouquet-pill dpad-focusable" data-bouquet="drama">🎬 مسلسلات وأفلام</button>
+              <button class="bouquet-pill dpad-focusable" data-bouquet="kids">🧸 أطفال</button>
+              <button class="bouquet-pill dpad-focusable" data-bouquet="news">🌍 أخبار</button>
+              <button class="bouquet-pill dpad-focusable" data-bouquet="religion">🕌 دينية</button>
             </div>
 
             <!-- Per-Section Animated Mini-Hero Banner -->
@@ -407,9 +506,29 @@
 
       <!-- Video & Embed Canvas Container -->
       <div id="player-canvas-container" class="video-element-container">
+        <!-- Ambient Cinema Glow Layer -->
+        <div id="player-ambient-glow" class="player-ambient-glow-layer"></div>
         <video id="main-video" class="main-video-element"></video>
         <iframe id="main-embed-frame" class="main-embed-element" title="A Tube Video Embed Player" aria-label="A Tube Video Embed Player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"></iframe>
         
+        <!-- Skip Intro Floating Button -->
+        <button id="player-skip-intro-btn" class="player-skip-intro-btn dpad-focusable is-hidden" title="تخطي المقدمة (85 ثانية)">
+          <span>تخطي المقدمة ⏭️</span>
+        </button>
+
+        <!-- Binge Next Episode Countdown Toast -->
+        <div id="player-next-ep-countdown" class="player-next-ep-banner is-hidden">
+          <div class="next-ep-info">
+            <span class="next-ep-label">الحلقة التالية بعد</span>
+            <span id="next-ep-timer" class="next-ep-counter">5</span>
+            <span class="next-ep-sec">ثوانٍ...</span>
+          </div>
+          <div class="next-ep-actions">
+            <button id="next-ep-now-btn" class="btn-primary next-ep-btn dpad-focusable">تشغيل الآن</button>
+            <button id="next-ep-cancel-btn" class="btn-secondary next-ep-btn dpad-focusable">إلغاء</button>
+          </div>
+        </div>
+
         <!-- Touch & Key Gesture Ripple Feedback HUD -->
         <div id="player-gesture-hud" class="player-gesture-feedback"></div>
 
@@ -421,6 +540,43 @@
             <button id="resume-no-btn" class="btn-secondary player-resume-btn">من البداية</button>
           </div>
         </div>
+
+        <!-- Top Dual Subtitles Overlay -->
+        <div id="dual-subtitles-container" class="dual-subtitles-container is-hidden"></div>
+
+        <!-- Subtitle Drag and Drop Overlay Zone -->
+        <div id="sub-drop-zone" class="sub-drop-zone is-hidden">
+          <div class="sub-drop-card">
+            <div class="sub-drop-icon">📥</div>
+            <div class="sub-drop-title">أفلت ملف الترجمة هنا</div>
+            <div class="sub-drop-subtitle">يدعم ملفات .srt و .vtt العربية والإنجليزية تلقائياً</div>
+          </div>
+        </div>
+
+        <!-- Screen Touch Lock Overlay (Kids Mode) -->
+        <div id="touch-lock-overlay" class="touch-lock-overlay is-hidden">
+          <button id="touch-unlock-btn" class="touch-unlock-btn">
+            🔒 اضغط مطولاً لفك قفل الشاشة
+          </button>
+        </div>
+
+        <!-- Quick Channel Zapping Drawer -->
+        <div id="player-zapping-drawer" class="player-zapping-drawer is-hidden">
+          <div class="zapping-header">
+            <span>📺 التنقل السريع بين القنوات (Zapping)</span>
+            <button id="close-zapping-btn" class="icon-btn">✕</button>
+          </div>
+          <div id="zapping-channels-list" class="zapping-list"></div>
+        </div>
+
+        <!-- Live Stream Health & FPS Badge -->
+        <div id="stream-health-badge" class="stream-health-badge is-hidden">
+          <span class="health-dot"></span>
+          <span id="stream-health-text">1080p • 60 FPS • مستقر</span>
+        </div>
+
+        <!-- Radio & Audio Visualizer Canvas -->
+        <canvas id="radio-visualizer-canvas" class="radio-visualizer-canvas is-hidden"></canvas>
       </div>
 
       <!-- Bottom Interactive Controls Bar -->
@@ -491,10 +647,81 @@
               </div>
             </div>
 
-            <!-- Subtitles Toggle -->
+            <!-- Audio Boost & Night Mode FX -->
+            <div class="player-dropdown-wrap">
+              <button id="player-audio-fx-btn" class="player-action-btn dpad-focusable" title="مؤثرات الصوت والمشاهدة الليلية">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v9.28c-.47-.17-.97-.28-1.5-.28C8.01 12 6 14.01 6 16.5S8.01 21 10.5 21c2.31 0 4.2-1.75 4.45-4H15V6h4V3h-7z"/></svg>
+                <span id="audio-fx-label">صوت عادي</span>
+              </button>
+              <div id="player-audio-fx-menu" class="player-dropdown-menu">
+                <div class="dropdown-item active" data-audiofx="normal">صوت طبيعي 100%</div>
+                <div class="dropdown-item" data-audiofx="night">المشاهدة الليلية (موازنة الحوار) 🌙</div>
+                <div class="dropdown-item" data-audiofx="boost150">تضخيم الصوت 150% 🔊</div>
+                <div class="dropdown-item" data-audiofx="boost200">تضخيم أقصى 200% 🚀</div>
+              </div>
+            </div>
+
+            <!-- Aspect Ratio Dropdown -->
+            <div class="player-dropdown-wrap">
+              <button id="player-aspect-btn" class="player-action-btn dpad-focusable" title="أبعاد الشاشة">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z"/></svg>
+                <span id="aspect-label">تلقائي</span>
+              </button>
+              <div id="player-aspect-menu" class="player-dropdown-menu">
+                <div class="dropdown-item active" data-aspect="contain">تلقائي (Contain)</div>
+                <div class="dropdown-item" data-aspect="16-9">16:9 شاشة عريضة</div>
+                <div class="dropdown-item" data-aspect="4-3">4:3 شاشة تقليدية</div>
+                <div class="dropdown-item" data-aspect="cover">تكبير (Zoom / Fill)</div>
+                <div class="dropdown-item" data-aspect="stretch">تمديد (Stretch)</div>
+              </div>
+            </div>
+
+            <!-- Subtitles Toggle & Settings -->
             <button id="player-subs-btn" class="player-action-btn dpad-focusable" title="الترجمة والشرح (CC)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 7H9.5v-.5h-2v3h2V13H11v1c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1zm7 0h-1.5v-.5h-2v3h2V13H18v1c0 .55-.45 1-1 1h-3c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1z"/></svg>
               <span>الترجمة</span>
+            </button>
+
+            <!-- Picture-in-Picture (PiP) Toggle -->
+            <button id="player-pip-btn" class="player-action-btn dpad-focusable" title="صورة داخل صورة (PiP)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11h-8v6h8v-6zm4 8V4.98C23 3.88 22.1 3 21 3H3c-1.1 0-2 .88-2 1.98V19c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2zm-2 .02H3V4.97h18v14.05z"/></svg>
+              <span>نافذة مصغرة</span>
+            </button>
+
+            <!-- Equalizer 10-Band EQ -->
+            <button id="player-eq-btn" class="player-action-btn dpad-focusable" title="معادل الصوت الاحترافي (10-Band EQ)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+              <span>المعادل EQ</span>
+            </button>
+
+            <!-- Sleep Timer Button -->
+            <button id="player-sleep-btn" class="player-action-btn dpad-focusable" title="مؤقت النوم (Sleep Timer)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.3 2a10 10 0 0 0-1.9 19.8 10 10 0 0 0 11.6-11.6A10 10 0 0 0 12.3 2z"/></svg>
+              <span id="sleep-timer-badge">مؤقت النوم</span>
+            </button>
+
+            <!-- 4K Screenshot Grabber -->
+            <button id="player-screenshot-btn" class="player-action-btn dpad-focusable" title="التقاط لقطة شاشة سينمائية 4K">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+              <span>لقطة 4K</span>
+            </button>
+
+            <!-- A-B Loop Repeat -->
+            <button id="player-loop-btn" class="player-action-btn dpad-focusable" title="تكرار مقطع محدد A-B Loop">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+              <span id="loop-btn-label">تكرار A-B</span>
+            </button>
+
+            <!-- Touch Lock (Kids Mode) -->
+            <button id="player-lock-btn" class="player-action-btn dpad-focusable" title="قفل شاشة اللمس للأطفال">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+              <span>قفل اللمس</span>
+            </button>
+
+            <!-- Ambient Glow Toggle -->
+            <button id="player-ambient-btn" class="player-action-btn dpad-focusable" title="إضاءة سينمائية محيطية (Ambient Mode)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.31 19.58 10.6 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+              <span>إضاءة محيطية</span>
             </button>
 
             <!-- Fullscreen Button -->
@@ -758,6 +985,304 @@
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MULTI-SCREEN / QUAD-VIEW 4-STREAMS MODAL
+         ==================================================================== -->
+    <div id="multiview-modal" class="modal-backdrop">
+      <div class="multiview-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#00e5ff"><path d="M3 3v8h8V3H3zm6 6H5V5h4v4zm8-6v8h8V3h-8zm6 6h-4V5h4v4zM3 13v8h8v-8H3zm6 6H5v-4h4v4zm8-6v8h8v-8h-8zm6 6h-4v-4h4v4z"/></svg>
+            <span>العرض المتعدد (Multi-Screen Quad-View)</span>
+          </h3>
+          <button id="close-multiview-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <p class="iptv-desc">شاهد ما يصل إلى 4 قنوات رياضية وإخبارية في نفس اللحظة:</p>
+        <div class="multiview-grid-layout">
+          <div class="multiview-screen-tile" id="mv-tile-1">
+            <div class="mv-tile-header"><span id="mv-title-1">قناة 1</span> <button class="mv-mute-btn" data-tile="1">🔊</button></div>
+            <video id="mv-video-1" playsinline muted class="mv-video-player"></video>
+          </div>
+          <div class="multiview-screen-tile" id="mv-tile-2">
+            <div class="mv-tile-header"><span id="mv-title-2">قناة 2</span> <button class="mv-mute-btn" data-tile="2">🔇</button></div>
+            <video id="mv-video-2" playsinline muted class="mv-video-player"></video>
+          </div>
+          <div class="multiview-screen-tile" id="mv-tile-3">
+            <div class="mv-tile-header"><span id="mv-title-3">قناة 3</span> <button class="mv-mute-btn" data-tile="3">🔇</button></div>
+            <video id="mv-video-3" playsinline muted class="mv-video-player"></video>
+          </div>
+          <div class="multiview-screen-tile" id="mv-tile-4">
+            <div class="mv-tile-header"><span id="mv-title-4">قناة 4</span> <button class="mv-mute-btn" data-tile="4">🔇</button></div>
+            <video id="mv-video-4" playsinline muted class="mv-video-player"></video>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         PHONE QR REMOTE MODAL
+         ==================================================================== -->
+    <div id="qr-remote-modal" class="modal-backdrop">
+      <div class="iptv-modal-card qr-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#00e5ff"><path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg>
+            <span>ريموت الهاتف الذكي السريع</span>
+          </h3>
+          <button id="close-qr-remote-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <div class="qr-remote-body">
+          <div class="qr-code-box">
+            <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=http%3A%2F%2Flocalhost%3A8085%2F%23remote" alt="QR Remote Link" class="qr-image">
+          </div>
+          <p class="qr-instruction">امسح الكود بكاميرا هاتفك للتحكم في هذا التلفزيون أو المشغل عن بُعد بدون أسلاك.</p>
+          <div class="qr-local-url" id="qr-local-url-display">http://localhost:8085/#remote</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         SUBTITLE CUSTOMIZER MODAL
+         ==================================================================== -->
+    <div id="subtitle-settings-modal" class="modal-backdrop">
+      <div class="iptv-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <span>إعدادات وتخصيص الترجمة (Subtitles)</span>
+          </h3>
+          <button id="close-sub-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <div class="iptv-form-group">
+          <label>حجم خط الترجمة:</label>
+          <div class="sub-size-options">
+            <button class="sub-opt-btn active dpad-focusable" data-subsize="100%">عادي</button>
+            <button class="sub-opt-btn dpad-focusable" data-subsize="130%">كبير</button>
+            <button class="sub-opt-btn dpad-focusable" data-subsize="160%">كبير جداً</button>
+          </div>
+        </div>
+        <div class="iptv-form-group">
+          <label>لون خط الترجمة:</label>
+          <div class="sub-color-options">
+            <button class="sub-opt-btn active dpad-focusable" data-subcolor="#ffffff">أبيض</button>
+            <button class="sub-opt-btn dpad-focusable" data-subcolor="#ffd700">أصفر سينمائي</button>
+            <button class="sub-opt-btn dpad-focusable" data-subcolor="#00e5ff">أزرق نيون</button>
+          </div>
+        </div>
+        <div class="iptv-form-group">
+          <label>مزامنة توقيت الترجمة (تأخير / تقديم بالثواني):</label>
+          <div class="sub-delay-row">
+            <button id="sub-delay-minus" class="btn-secondary dpad-focusable">-0.5s</button>
+            <span id="sub-delay-label">0.0 ثانية</span>
+            <button id="sub-delay-plus" class="btn-secondary dpad-focusable">+0.5s</button>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="save-sub-settings-btn" class="btn-primary dpad-focusable">حفظ الترجمة</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         10-BAND GRAPHIC EQUALIZER MODAL
+         ==================================================================== -->
+    <div id="equalizer-modal" class="modal-backdrop">
+      <div class="iptv-modal-card eq-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <span>🎚️ معادل الصوت الاحترافي (10-Band Studio Equalizer)</span>
+          </h3>
+          <button id="close-eq-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <div class="eq-presets-bar">
+          <button class="eq-preset-btn active dpad-focusable" data-preset="flat">طبيعي (Flat)</button>
+          <button class="eq-preset-btn dpad-focusable" data-preset="cinema">سينما هوليوود 🎬</button>
+          <button class="eq-preset-btn dpad-focusable" data-preset="bass">بيز عميق 🔊</button>
+          <button class="eq-preset-btn dpad-focusable" data-preset="vocal">وضوح الحوار 🎙️</button>
+        </div>
+        <div class="eq-sliders-grid" id="eq-sliders-container">
+          <!-- Populated dynamically with 10 bands: 32Hz, 64Hz, 125Hz, 250Hz, 500Hz, 1kHz, 2kHz, 4kHz, 8kHz, 16kHz -->
+        </div>
+        <div class="modal-actions">
+          <button id="reset-eq-btn" class="btn-secondary dpad-focusable">إعادة ضبط</button>
+          <button id="save-eq-btn" class="btn-primary dpad-focusable">تطبيق الصوت</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         SLEEP TIMER MODAL
+         ==================================================================== -->
+    <div id="sleep-timer-modal" class="modal-backdrop">
+      <div class="iptv-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <span>🌙 مؤقت النوم وإيقاف التشغيل التلقائي</span>
+          </h3>
+          <button id="close-sleep-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <p class="iptv-desc">اختر المدة التي ترغب بعدها في خفض الصوت وإيقاف التشغيل تدريجياً:</p>
+        <div class="sleep-options-grid">
+          <button class="sleep-opt-btn dpad-focusable" data-sleep="15">15 دقيقة</button>
+          <button class="sleep-opt-btn dpad-focusable" data-sleep="30">30 دقيقة</button>
+          <button class="sleep-opt-btn dpad-focusable" data-sleep="45">45 دقيقة</button>
+          <button class="sleep-opt-btn dpad-focusable" data-sleep="60">60 دقيقة</button>
+          <button class="sleep-opt-btn dpad-focusable" data-sleep="end">عند نهاية هذا العمل</button>
+          <button class="sleep-opt-btn dpad-focusable btn-cancel-sleep" data-sleep="off">إيقاف المؤقت ✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         30s CINEMA QUIZ MODAL
+         ==================================================================== -->
+    <div id="cinema-quiz-modal" class="modal-backdrop">
+      <div class="iptv-modal-card quiz-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <span>🎲 كويز 30 ثانية: ماذا تشاهد الليلة؟</span>
+          </h3>
+          <button id="close-quiz-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <div id="quiz-body-container" class="quiz-body">
+          <!-- Steps injected dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         WATCH TOGETHER / SYNCPLAY ROOM MODAL
+         ==================================================================== -->
+    <div id="watch-together-modal" class="modal-backdrop">
+      <div class="iptv-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <span>👥 المشاهدة الجماعية المتزامنة (Watch Together)</span>
+          </h3>
+          <button id="close-wt-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <p class="iptv-desc">شاهد نفس الفيلم أو الحلقة بالتزامن مع عائلتك وأصدقائك في نفس اللحظة:</p>
+        <div class="wt-room-box">
+          <div class="iptv-form-group">
+            <label for="wt-room-input">معرّف غرفة المشاهدة (Room Code):</label>
+            <div class="wt-input-row">
+              <input type="text" id="wt-room-input" value="ATUBE-FAMILY-VIP" title="معرّف غرفة المشاهدة" placeholder="رمز الغرفة" aria-label="معرّف غرفة المشاهدة" readonly>
+              <button id="wt-copy-link-btn" class="btn-primary dpad-focusable">نسخ الرابط 📋</button>
+            </div>
+          </div>
+          <div class="wt-status-box" id="wt-status-text">
+            <span>🟢 الغرفة نشطة ومتصلة عبر البث المحلي التزامني. أي إيقاف أو تقديم سيتزامن فوراً مع الجميع.</span>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="wt-join-btn" class="btn-primary dpad-focusable">بدء المشاهدة الجماعية الآن</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         THEMES CUSTOMIZER MODAL
+         ==================================================================== -->
+    <div id="themes-modal" class="modal-backdrop">
+      <div class="iptv-modal-card themes-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <span>🎨 ثيمات وألوان المنصة المخصصة</span>
+          </h3>
+          <button id="close-themes-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <div class="themes-grid">
+          <div class="theme-card active dpad-focusable" data-theme="cyan">
+            <div class="theme-preview cyan-theme"></div>
+            <div class="theme-name">أزرق نيون سايبربانك (افتراضي)</div>
+          </div>
+          <div class="theme-card dpad-focusable" data-theme="oled">
+            <div class="theme-preview oled-theme"></div>
+            <div class="theme-name">أسود OLED فائق العمق (توفير البطارية)</div>
+          </div>
+          <div class="theme-card dpad-focusable" data-theme="gold">
+            <div class="theme-preview gold-theme"></div>
+            <div class="theme-name">ذهبي كلاسيكي ملكي (VIP Gold)</div>
+          </div>
+          <div class="theme-card dpad-focusable" data-theme="red">
+            <div class="theme-preview red-theme"></div>
+            <div class="theme-name">أحمر سينما نيتفلكس (Cinema Red)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         KEYBOARD SHORTCUTS & REMOTE D-PAD HUD
+         ==================================================================== -->
+    <div id="shortcuts-hud-modal" class="modal-backdrop">
+      <div class="iptv-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <span>⌨️ دليل اختصارات لوحة المفاتيح والريموت</span>
+          </h3>
+          <button id="close-shortcuts-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <div class="shortcuts-grid">
+          <div class="shortcut-item"><kbd>Space</kbd> <span>تشغيل / إيقاف مؤقت</span></div>
+          <div class="shortcut-item"><kbd>→</kbd> <span>تقديم 10 ثوانٍ</span></div>
+          <div class="shortcut-item"><kbd>←</kbd> <span>تأخير 10 ثوانٍ</span></div>
+          <div class="shortcut-item"><kbd>↑</kbd> <span>رفع مستوى الصوت</span></div>
+          <div class="shortcut-item"><kbd>↓</kbd> <span>خفض مستوى الصوت</span></div>
+          <div class="shortcut-item"><kbd>F</kbd> <span>ملء الشاشة كاملة</span></div>
+          <div class="shortcut-item"><kbd>M</kbd> <span>كتم الصوت كلياً</span></div>
+          <div class="shortcut-item"><kbd>P</kbd> <span>نافذة مصغرة (PiP)</span></div>
+          <div class="shortcut-item"><kbd>C</kbd> <span>تشغيل / إخفاء الترجمة</span></div>
+          <div class="shortcut-item"><kbd>?</kbd> <span>فتح دليل الاختصارات</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         EPG TV GUIDE MODAL
+         ==================================================================== -->
+    <div id="epg-guide-modal" class="modal-backdrop">
+      <div class="epg-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <span>📅 جدول ودليل البرامج التلفزيونية الحي (Live EPG)</span>
+          </h3>
+          <button id="close-epg-guide-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <div class="epg-current-time-bar">الوقت الحالي: <span id="epg-clock">--:--</span> • يتم التحديث تلقائياً</div>
+        <div id="epg-schedule-table" class="epg-schedule-container">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         AERIAL 4K SCREENSAVER (INACTIVITY TRIGGER)
+         ==================================================================== -->
+    <div id="aerial-screensaver" class="aerial-screensaver is-hidden">
+      <video id="screensaver-video" playsinline muted loop class="screensaver-video-bg"></video>
+      <div class="screensaver-overlay">
+        <div class="screensaver-clock" id="screensaver-clock">12:00</div>
+        <div class="screensaver-tagline">A TuBe Ultra HD • اضغط أي زر للمتابعة</div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         SATELLITE FREQUENCIES MODAL
+         ==================================================================== -->
+    <div id="satellite-freq-modal" class="modal-backdrop">
+      <div class="epg-modal-card freq-modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">
+            <span id="freq-modal-channel-name">📡 ترددات القناة الفضائية</span>
+          </h3>
+          <button id="close-freq-modal-btn" class="icon-btn dpad-focusable">✕</button>
+        </div>
+        <div id="freq-modal-content" class="freq-modal-body">
+          <!-- Populated dynamically via JS -->
+        </div>
       </div>
     </div>
 

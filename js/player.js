@@ -30,6 +30,22 @@ const InAppPlayer = (function () {
   let originalWindowOpen = null;
   let wakeLock = null;
   let resumeTimer = null;
+  let nextEpDismissed = false;
+  let audioCtx = null;
+  let audioSourceNode = null;
+  let audioGainNode = null;
+  let audioCompressorNode = null;
+  let audioAnalyserNode = null;
+  let eqFilters = [];
+  let subOffsetSeconds = 0;
+  let sleepTimerInterval = null;
+  let sleepEndTime = null;
+  let loopPointA = null;
+  let loopPointB = null;
+  let isLoopActive = false;
+  let customSubtitles = [];
+  let isTouchLocked = false;
+  const EQ_FREQUENCIES = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
 
   function init() {
     videoEl = document.getElementById('main-video');
@@ -58,12 +74,29 @@ const InAppPlayer = (function () {
     bindResumePlaybackEvents();
     bindKeyboardShortcuts();
     bindTouchGestures();
+    bindPiPAndAmbientGlow();
+    bindSkipIntroAndNextEpisode();
+    bindAspectRatio();
+    bindAudioFX();
+    bindSubtitleCustomizer();
+    bindEqualizer();
+    bindSleepTimer();
+    bindScreenshot4K();
+    bindTouchLock();
+    bindABLoop();
+    bindSubtitleDropAndDual();
+    bindZappingAndHealth();
+    bindRadioVisualizer();
 
     // Time update listener
     videoEl.addEventListener('timeupdate', () => {
       if (videoEl.duration && !isNaN(videoEl.duration)) {
         savedPlayheadTime = videoEl.currentTime;
         updateTimelineUI(videoEl.currentTime, videoEl.duration);
+        checkSkipIntro(videoEl.currentTime, videoEl.duration);
+        checkNextEpisodeCountdown(videoEl.currentTime, videoEl.duration);
+        checkABLoop(videoEl.currentTime);
+        updateCustomSubtitles(videoEl.currentTime);
 
         // Periodically save resume position in localStorage
         if (currentPlayingItem && Math.floor(videoEl.currentTime) % 4 === 0) {
@@ -577,6 +610,793 @@ const InAppPlayer = (function () {
     gestureTimer = setTimeout(() => {
       hud.classList.remove('active');
     }, 1100);
+  }
+
+  function bindPiPAndAmbientGlow() {
+    const pipBtn = document.getElementById('player-pip-btn');
+    if (pipBtn) {
+      pipBtn.addEventListener('click', async () => {
+        try {
+          if (document.pictureInPictureElement) {
+            await document.exitPictureInPicture();
+          } else if (videoEl && document.pictureInPictureEnabled) {
+            await videoEl.requestPictureInPicture();
+          }
+        } catch (err) {
+          console.warn('[A Tube Player] PiP note:', err);
+        }
+      });
+    }
+
+    const ambientBtn = document.getElementById('player-ambient-btn');
+    const glowEl = document.getElementById('player-ambient-glow');
+    let isAmbientActive = true;
+    if (glowEl) glowEl.classList.add('active');
+    if (ambientBtn) {
+      ambientBtn.style.color = '#00e5ff';
+      ambientBtn.addEventListener('click', () => {
+        isAmbientActive = !isAmbientActive;
+        if (glowEl) {
+          glowEl.classList.toggle('active', isAmbientActive);
+        }
+        ambientBtn.style.color = isAmbientActive ? '#00e5ff' : '#8fa2b8';
+      });
+    }
+  }
+
+  function bindSkipIntroAndNextEpisode() {
+    const skipBtn = document.getElementById('player-skip-intro-btn');
+    if (skipBtn) {
+      skipBtn.addEventListener('click', () => {
+        seekBy(85);
+        skipBtn.classList.add('is-hidden');
+        showGestureFeedback('تم تخطي المقدمة ⏭️');
+      });
+    }
+
+    const nextNowBtn = document.getElementById('next-ep-now-btn');
+    const nextCancelBtn = document.getElementById('next-ep-cancel-btn');
+    const countdownModal = document.getElementById('player-next-ep-countdown');
+
+    if (nextNowBtn) {
+      nextNowBtn.addEventListener('click', () => {
+        playNextEpisode();
+      });
+    }
+    if (nextCancelBtn) {
+      nextCancelBtn.addEventListener('click', () => {
+        nextEpDismissed = true;
+        if (countdownModal) countdownModal.classList.add('is-hidden');
+      });
+    }
+  }
+
+  function checkSkipIntro(cur, dur) {
+    const skipBtn = document.getElementById('player-skip-intro-btn');
+    if (!skipBtn) return;
+    if (cur >= 5 && cur <= 85 && dur >= 180) {
+      skipBtn.classList.remove('is-hidden');
+    } else {
+      skipBtn.classList.add('is-hidden');
+    }
+  }
+
+  function checkNextEpisodeCountdown(cur, dur) {
+    if (nextEpDismissed || dur < 180) return;
+    const remaining = dur - cur;
+    const countdownModal = document.getElementById('player-next-ep-countdown');
+    const timerLabel = document.getElementById('next-ep-timer');
+
+    if (remaining <= 35 && remaining > 0 && hasNextEpisode()) {
+      if (countdownModal) countdownModal.classList.remove('is-hidden');
+      const secInt = Math.max(1, Math.ceil(remaining));
+      if (timerLabel) timerLabel.textContent = String(secInt);
+      if (secInt <= 1) {
+        nextEpDismissed = true;
+        playNextEpisode();
+      }
+    } else {
+      if (countdownModal) countdownModal.classList.add('is-hidden');
+    }
+  }
+
+  function hasNextEpisode() {
+    if (!currentPlayingItem) return false;
+    const item = currentPlayingItem;
+    if (item.content_type !== 'series') return false;
+    const seasons = item.seasons || [];
+    if (!seasons.length) return false;
+    return true;
+  }
+
+  function playNextEpisode() {
+    const countdownModal = document.getElementById('player-next-ep-countdown');
+    if (countdownModal) countdownModal.classList.add('is-hidden');
+    if (window.MovieDetails && typeof MovieDetails.playNextEpisode === 'function') {
+      MovieDetails.playNextEpisode();
+    } else {
+      showGestureFeedback('جاري بدء الحلقة التالية 🎬');
+    }
+  }
+
+  function bindAspectRatio() {
+    const aspectBtn = document.getElementById('player-aspect-btn');
+    const aspectMenu = document.getElementById('player-aspect-menu');
+    const aspectLabel = document.getElementById('aspect-label');
+
+    if (aspectBtn && aspectMenu) {
+      aspectBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        aspectMenu.classList.toggle('active');
+      });
+
+      aspectMenu.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+          aspectMenu.querySelectorAll('.dropdown-item').forEach(d => d.classList.remove('active'));
+          item.classList.add('active');
+          const aspect = item.getAttribute('data-aspect');
+          if (aspectLabel) aspectLabel.textContent = item.textContent.trim().split(' ')[0];
+          applyAspectRatio(aspect);
+          aspectMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!aspectBtn.contains(e.target)) aspectMenu.classList.remove('active');
+      });
+    }
+  }
+
+  function applyAspectRatio(mode) {
+    if (!videoEl) return;
+    videoEl.style.transform = '';
+    videoEl.style.aspectRatio = '';
+
+    if (mode === 'contain') {
+      videoEl.style.objectFit = 'contain';
+      videoEl.style.width = '100%';
+      videoEl.style.height = '100%';
+    } else if (mode === '16-9') {
+      videoEl.style.objectFit = 'fill';
+      videoEl.style.aspectRatio = '16/9';
+    } else if (mode === '4-3') {
+      videoEl.style.objectFit = 'fill';
+      videoEl.style.aspectRatio = '4/3';
+    } else if (mode === 'cover') {
+      videoEl.style.objectFit = 'cover';
+      videoEl.style.width = '100%';
+      videoEl.style.height = '100%';
+    } else if (mode === 'stretch') {
+      videoEl.style.objectFit = 'fill';
+      videoEl.style.width = '100%';
+      videoEl.style.height = '100%';
+    }
+    showGestureFeedback(`أبعاد الشاشة: ${mode}`);
+  }
+
+  function bindAudioFX() {
+    const audioBtn = document.getElementById('player-audio-fx-btn');
+    const audioMenu = document.getElementById('player-audio-fx-menu');
+    const audioLabel = document.getElementById('audio-fx-label');
+
+    function initWebAudio() {
+      if (!audioCtx && typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext)) {
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContextClass();
+          audioSourceNode = audioCtx.createMediaElementSource(videoEl);
+          audioCompressorNode = audioCtx.createDynamicsCompressor();
+          audioGainNode = audioCtx.createGain();
+          audioAnalyserNode = audioCtx.createAnalyser();
+          audioAnalyserNode.fftSize = 128;
+
+          // Build 10-band Graphic Equalizer Filter Chain
+          eqFilters = EQ_FREQUENCIES.map((freq, idx) => {
+            const f = audioCtx.createBiquadFilter();
+            f.frequency.value = freq;
+            f.gain.value = 0;
+            if (idx === 0) f.type = 'lowshelf';
+            else if (idx === EQ_FREQUENCIES.length - 1) f.type = 'highshelf';
+            else f.type = 'peaking';
+            return f;
+          });
+
+          // Connect source -> eqFilters -> compressor -> gain -> analyser -> destination
+          let lastNode = audioSourceNode;
+          eqFilters.forEach(f => {
+            lastNode.connect(f);
+            lastNode = f;
+          });
+          lastNode.connect(audioCompressorNode);
+          audioCompressorNode.connect(audioGainNode);
+          audioGainNode.connect(audioAnalyserNode);
+          audioAnalyserNode.connect(audioCtx.destination);
+        } catch (ex) {
+          console.warn('[AudioFX] Web Audio note:', ex);
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+    }
+
+    if (audioBtn && audioMenu) {
+      audioBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        audioMenu.classList.toggle('active');
+        initWebAudio();
+      });
+
+      audioMenu.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', () => {
+          initWebAudio();
+          audioMenu.querySelectorAll('.dropdown-item').forEach(d => d.classList.remove('active'));
+          item.classList.add('active');
+          const fx = item.getAttribute('data-audiofx');
+          if (audioLabel) audioLabel.textContent = item.textContent.trim().split(' ')[0];
+          applyAudioFX(fx);
+          audioMenu.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!audioBtn.contains(e.target)) audioMenu.classList.remove('active');
+      });
+    }
+  }
+
+  function applyAudioFX(fx) {
+    if (!audioGainNode || !audioCompressorNode) return;
+    if (fx === 'night') {
+      // Night Mode Dynamic Compression
+      audioCompressorNode.threshold.setValueAtTime(-28, audioCtx.currentTime);
+      audioCompressorNode.knee.setValueAtTime(40, audioCtx.currentTime);
+      audioCompressorNode.ratio.setValueAtTime(12, audioCtx.currentTime);
+      audioCompressorNode.attack.setValueAtTime(0.003, audioCtx.currentTime);
+      audioCompressorNode.release.setValueAtTime(0.25, audioCtx.currentTime);
+      audioGainNode.gain.setValueAtTime(1.2, audioCtx.currentTime);
+      showGestureFeedback('وضع المشاهدة الليلية 🌙');
+    } else if (fx === 'boost150') {
+      audioCompressorNode.threshold.setValueAtTime(-12, audioCtx.currentTime);
+      audioGainNode.gain.setValueAtTime(1.5, audioCtx.currentTime);
+      showGestureFeedback('تضخيم الصوت 150% 🔊');
+    } else if (fx === 'boost200') {
+      audioCompressorNode.threshold.setValueAtTime(-8, audioCtx.currentTime);
+      audioGainNode.gain.setValueAtTime(2.0, audioCtx.currentTime);
+      showGestureFeedback('تضخيم أقصى 200% 🚀');
+    } else {
+      // Normal
+      audioCompressorNode.threshold.setValueAtTime(0, audioCtx.currentTime);
+      audioGainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
+      showGestureFeedback('صوت طبيعي 100%');
+    }
+  }
+
+  function bindSubtitleCustomizer() {
+    const subBtn = document.getElementById('player-subs-btn');
+    const modal = document.getElementById('subtitle-settings-modal');
+    const closeBtn = document.getElementById('close-sub-modal-btn');
+    const saveBtn = document.getElementById('save-sub-settings-btn');
+    const delayMinus = document.getElementById('sub-delay-minus');
+    const delayPlus = document.getElementById('sub-delay-plus');
+    const delayLabel = document.getElementById('sub-delay-label');
+
+    if (subBtn && modal) {
+      subBtn.addEventListener('click', () => {
+        modal.classList.add('active');
+      });
+    }
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+    }
+    if (saveBtn && modal) {
+      saveBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+        showGestureFeedback('تم حفظ إعدادات الترجمة ✓');
+      });
+    }
+
+    if (delayMinus && delayPlus && delayLabel) {
+      delayMinus.addEventListener('click', () => {
+        subOffsetSeconds -= 0.5;
+        delayLabel.textContent = `${subOffsetSeconds > 0 ? '+' : ''}${subOffsetSeconds.toFixed(1)} ثانية`;
+        applySubtitlesDelay(subOffsetSeconds);
+      });
+      delayPlus.addEventListener('click', () => {
+        subOffsetSeconds += 0.5;
+        delayLabel.textContent = `${subOffsetSeconds > 0 ? '+' : ''}${subOffsetSeconds.toFixed(1)} ثانية`;
+        applySubtitlesDelay(subOffsetSeconds);
+      });
+    }
+
+    // Subtitle font color and size options
+    document.querySelectorAll('.sub-size-options .sub-opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sub-size-options .sub-opt-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const sz = btn.getAttribute('data-subsize');
+        document.documentElement.style.setProperty('--sub-font-size', sz);
+      });
+    });
+
+    document.querySelectorAll('.sub-color-options .sub-opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sub-color-options .sub-opt-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const col = btn.getAttribute('data-subcolor');
+        document.documentElement.style.setProperty('--sub-font-color', col);
+      });
+    });
+  }
+
+  function applySubtitlesDelay(offset) {
+    if (!videoEl || !videoEl.textTracks) return;
+    for (let i = 0; i < videoEl.textTracks.length; i++) {
+      const track = videoEl.textTracks[i];
+      if (track && track.cues) {
+        for (let j = 0; j < track.cues.length; j++) {
+          const cue = track.cues[j];
+          cue.startTime += offset;
+          cue.endTime += offset;
+        }
+      }
+    }
+  }
+
+  // ==========================================================================
+  // 10-BAND GRAPHIC EQUALIZER ENGINE
+  // ==========================================================================
+  function bindEqualizer() {
+    const eqBtn = document.getElementById('player-eq-btn');
+    const modal = document.getElementById('equalizer-modal');
+    const closeBtn = document.getElementById('close-eq-modal-btn');
+    const resetBtn = document.getElementById('reset-eq-btn');
+    const saveBtn = document.getElementById('save-eq-btn');
+
+    if (eqBtn && modal) {
+      eqBtn.addEventListener('click', () => {
+        initWebAudio();
+        renderEQSliders();
+        modal.classList.add('active');
+      });
+    }
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+    }
+
+    if (saveBtn && modal) {
+      saveBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+        showGestureFeedback('🎚️ تم حفظ وتطبيق معادل الصوت');
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        applyEQPreset('flat');
+        renderEQSliders();
+        showGestureFeedback('تمت استعادة الضبط الطبيعي (Flat)');
+      });
+    }
+
+    const presetBtns = document.querySelectorAll('.eq-preset-btn');
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        presetBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const p = btn.getAttribute('data-preset');
+        applyEQPreset(p);
+        renderEQSliders();
+      });
+    });
+  }
+
+  function renderEQSliders() {
+    const container = document.getElementById('eq-sliders-container');
+    if (!container) return;
+    container.innerHTML = '';
+    EQ_FREQUENCIES.forEach((freq, idx) => {
+      const col = document.createElement('div');
+      col.className = 'eq-slider-col';
+      const labelText = freq >= 1000 ? `${freq / 1000}kHz` : `${freq}Hz`;
+      const currentGain = (eqFilters[idx] && eqFilters[idx].gain) ? Math.round(eqFilters[idx].gain.value) : 0;
+
+      col.innerHTML = `
+        <span class="eq-gain-label" id="eq-gain-${idx}">${currentGain > 0 ? '+' : ''}${currentGain}dB</span>
+        <input type="range" min="-12" max="12" step="1" value="${currentGain}" data-band="${idx}" aria-label="Frequency ${labelText}">
+        <span class="eq-freq-label">${labelText}</span>
+      `;
+
+      const slider = col.querySelector('input');
+      const gainLabel = col.querySelector('.eq-gain-label');
+      slider.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value);
+        if (eqFilters[idx] && audioCtx) {
+          eqFilters[idx].gain.setValueAtTime(val, audioCtx.currentTime);
+        }
+        gainLabel.textContent = `${val > 0 ? '+' : ''}${val}dB`;
+      });
+
+      container.appendChild(col);
+    });
+  }
+
+  function applyEQPreset(preset) {
+    initWebAudio();
+    if (!eqFilters.length || !audioCtx) return;
+    let gains = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    if (preset === 'cinema') {
+      gains = [5, 4, 2, -1, -2, 1, 3, 4, 3, 2];
+    } else if (preset === 'bass') {
+      gains = [9, 7, 5, 2, 0, -1, -1, 0, 0, 0];
+    } else if (preset === 'vocal') {
+      gains = [-4, -3, -1, 2, 5, 5, 4, 2, -1, -3];
+    }
+    eqFilters.forEach((f, idx) => {
+      f.gain.setValueAtTime(gains[idx], audioCtx.currentTime);
+    });
+  }
+
+  // ==========================================================================
+  // SLEEP TIMER & AUDIO FADEOUT
+  // ==========================================================================
+  function bindSleepTimer() {
+    const sleepBtn = document.getElementById('player-sleep-btn');
+    const modal = document.getElementById('sleep-timer-modal');
+    const closeBtn = document.getElementById('close-sleep-modal-btn');
+
+    if (sleepBtn && modal) {
+      sleepBtn.addEventListener('click', () => {
+        modal.classList.add('active');
+      });
+    }
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+    }
+
+    const optBtns = document.querySelectorAll('.sleep-opt-btn');
+    optBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        optBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const mode = btn.getAttribute('data-sleep');
+        setSleepTimer(mode);
+        if (modal) modal.classList.remove('active');
+      });
+    });
+  }
+
+  function setSleepTimer(mode) {
+    if (sleepTimerInterval) {
+      clearInterval(sleepTimerInterval);
+      sleepTimerInterval = null;
+    }
+    const badge = document.getElementById('sleep-timer-badge');
+    if (mode === 'off') {
+      sleepEndTime = null;
+      if (badge) badge.textContent = 'مؤقت النوم';
+      showGestureFeedback('تم إلغاء مؤقت النوم ✕');
+      return;
+    }
+
+    if (mode === 'end') {
+      sleepEndTime = 'end';
+      if (badge) badge.textContent = 'نهاية العمل 🌙';
+      showGestureFeedback('تم ضبط الإيقاف التلقائي عند نهاية العمل');
+      return;
+    }
+
+    const minutes = parseInt(mode, 10);
+    sleepEndTime = Date.now() + minutes * 60 * 1000;
+    showGestureFeedback(`🌙 سيتوقف التشغيل بعد ${minutes} دقيقة`);
+
+    sleepTimerInterval = setInterval(() => {
+      if (!sleepEndTime || sleepEndTime === 'end') return;
+      const leftMs = sleepEndTime - Date.now();
+      if (leftMs <= 0) {
+        clearInterval(sleepTimerInterval);
+        sleepTimerInterval = null;
+        sleepEndTime = null;
+        if (badge) badge.textContent = 'مؤقت النوم';
+        if (videoEl) {
+          videoEl.pause();
+          showGestureFeedback('تم إيقاف التشغيل بواسطة مؤقت النوم 🌙');
+        }
+      } else {
+        const minsLeft = Math.ceil(leftMs / (60 * 1000));
+        if (badge) badge.textContent = `🌙 ${minsLeft} د`;
+        if (leftMs < 20000 && videoEl) {
+          videoEl.volume = Math.max(0, videoEl.volume - 0.05);
+        }
+      }
+    }, 1000);
+  }
+
+  // ==========================================================================
+  // 4K SCREENSHOT GRABBER
+  // ==========================================================================
+  function bindScreenshot4K() {
+    const btn = document.getElementById('player-screenshot-btn');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      if (!videoEl) return;
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = videoEl.videoWidth || 1920;
+        canvas.height = videoEl.videoHeight || 1080;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+
+        ctx.font = 'bold 24px sans-serif';
+        ctx.fillStyle = 'rgba(0, 229, 255, 0.75)';
+        ctx.textAlign = 'right';
+        ctx.fillText('A TuBe Ultra HD', canvas.width - 30, canvas.height - 30);
+
+        canvas.toBlob((blob) => {
+          if (!blob) return;
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          const title = currentPlayingItem ? (currentPlayingItem.title || 'Screen') : 'A_TuBe';
+          a.download = `${title.replace(/[^a-zA-Z0-9]/g, '_')}_${Math.floor(videoEl.currentTime)}s.png`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+          showGestureFeedback('📸 تم حفظ لقطة 4K بنجاح');
+        }, 'image/png');
+      } catch (err) {
+        showGestureFeedback('تعذر التقاط الشاشة بسبب حماية مصدر البث');
+      }
+    });
+  }
+
+  // ==========================================================================
+  // TOUCH LOCK (KIDS MODE)
+  // ==========================================================================
+  function bindTouchLock() {
+    const lockBtn = document.getElementById('player-lock-btn');
+    const overlay = document.getElementById('touch-lock-overlay');
+    const unlockBtn = document.getElementById('touch-unlock-btn');
+
+    if (lockBtn && overlay) {
+      lockBtn.addEventListener('click', () => {
+        isTouchLocked = true;
+        overlay.classList.remove('is-hidden');
+        document.querySelector('.player-top-controls')?.classList.add('is-hidden');
+        document.querySelector('.player-bottom-controls')?.classList.add('is-hidden');
+        showGestureFeedback('🔒 تم قفل الشاشة للأطفال');
+      });
+    }
+
+    if (unlockBtn && overlay) {
+      unlockBtn.addEventListener('click', () => {
+        isTouchLocked = false;
+        overlay.classList.add('is-hidden');
+        document.querySelector('.player-top-controls')?.classList.remove('is-hidden');
+        document.querySelector('.player-bottom-controls')?.classList.remove('is-hidden');
+        showGestureFeedback('🔓 تم فك قفل الشاشة');
+      });
+    }
+  }
+
+  // ==========================================================================
+  // A-B LOOP REPEAT
+  // ==========================================================================
+  function bindABLoop() {
+    const loopBtn = document.getElementById('player-loop-btn');
+    const label = document.getElementById('loop-btn-label');
+    if (!loopBtn) return;
+
+    loopBtn.addEventListener('click', () => {
+      if (!videoEl) return;
+      if (loopPointA === null) {
+        loopPointA = videoEl.currentTime;
+        if (label) label.textContent = `نقطة A: ${formatTime(loopPointA)}`;
+        showGestureFeedback(`🔁 تم تحديد بداية المقطع [A: ${formatTime(loopPointA)}]`);
+      } else if (loopPointB === null) {
+        if (videoEl.currentTime > loopPointA) {
+          loopPointB = videoEl.currentTime;
+          isLoopActive = true;
+          if (label) label.textContent = `تكرار [A-B نشط 🔁]`;
+          showGestureFeedback(`🔁 تكرار المقطع من ${formatTime(loopPointA)} إلى ${formatTime(loopPointB)}`);
+        } else {
+          loopPointA = videoEl.currentTime;
+          if (label) label.textContent = `نقطة A: ${formatTime(loopPointA)}`;
+        }
+      } else {
+        loopPointA = null;
+        loopPointB = null;
+        isLoopActive = false;
+        if (label) label.textContent = 'تكرار A-B';
+        showGestureFeedback('تم إيقاف تكرار المقطع');
+      }
+    });
+  }
+
+  function checkABLoop(cur) {
+    if (isLoopActive && loopPointA !== null && loopPointB !== null) {
+      if (cur >= loopPointB) {
+        if (videoEl) videoEl.currentTime = loopPointA;
+      }
+    }
+  }
+
+  // ==========================================================================
+  // SUBTITLE DRAG & DROP AND DUAL SUBTITLES
+  // ==========================================================================
+  function bindSubtitleDropAndDual() {
+    const container = document.getElementById('player-canvas-container');
+    const dropZone = document.getElementById('sub-drop-zone');
+    if (!container || !dropZone) return;
+
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('is-hidden');
+    });
+
+    container.addEventListener('dragleave', (e) => {
+      if (!container.contains(e.relatedTarget)) {
+        dropZone.classList.add('is-hidden');
+      }
+    });
+
+    container.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('is-hidden');
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          parseSubtitlesText(ev.target.result);
+          showGestureFeedback(`📥 تم تحميل الترجمة: ${file.name}`);
+        };
+        reader.readAsText(file);
+      }
+    });
+  }
+
+  function parseSubtitlesText(txt) {
+    customSubtitles = [];
+    if (!txt) return;
+    const blocks = txt.replace(/\r/g, '').split('\n\n');
+    blocks.forEach(b => {
+      const lines = b.trim().split('\n');
+      if (lines.length >= 2) {
+        let timeLine = lines[0].includes('-->') ? lines[0] : (lines[1] && lines[1].includes('-->') ? lines[1] : null);
+        let textLines = lines.slice(lines.indexOf(timeLine) + 1);
+        if (timeLine) {
+          const parts = timeLine.split('-->');
+          if (parts.length === 2) {
+            const startSec = timeToSeconds(parts[0].trim());
+            const endSec = timeToSeconds(parts[1].trim());
+            const text = textLines.join('<br>');
+            if (!isNaN(startSec) && !isNaN(endSec)) {
+              customSubtitles.push({ start: startSec, end: endSec, text });
+            }
+          }
+        }
+      }
+    });
+  }
+
+  function timeToSeconds(tStr) {
+    const parts = tStr.replace(',', '.').split(':');
+    if (parts.length === 3) {
+      return parseFloat(parts[0]) * 3600 + parseFloat(parts[1]) * 60 + parseFloat(parts[2]);
+    } else if (parts.length === 2) {
+      return parseFloat(parts[0]) * 60 + parseFloat(parts[1]);
+    }
+    return 0;
+  }
+
+  function updateCustomSubtitles(cur) {
+    const dualContainer = document.getElementById('dual-subtitles-container');
+    if (!dualContainer || customSubtitles.length === 0) return;
+    const activeCue = customSubtitles.find(c => cur >= c.start && cur <= c.end);
+    if (activeCue) {
+      dualContainer.innerHTML = activeCue.text;
+      dualContainer.classList.remove('is-hidden');
+    } else {
+      dualContainer.classList.add('is-hidden');
+    }
+  }
+
+  // ==========================================================================
+  // CHANNEL ZAPPING DRAWER & STREAM HEALTH
+  // ==========================================================================
+  function bindZappingAndHealth() {
+    const zappingDrawer = document.getElementById('player-zapping-drawer');
+    const closeBtn = document.getElementById('close-zapping-btn');
+    const healthBadge = document.getElementById('stream-health-badge');
+
+    if (closeBtn && zappingDrawer) {
+      closeBtn.addEventListener('click', () => zappingDrawer.classList.add('is-hidden'));
+    }
+
+    if (healthBadge) {
+      healthBadge.addEventListener('click', () => {
+        if (zappingDrawer) {
+          zappingDrawer.classList.toggle('is-hidden');
+          renderZappingChannels();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'z' || e.key === 'Z') && modalEl && modalEl.classList.contains('active')) {
+        if (zappingDrawer) {
+          zappingDrawer.classList.toggle('is-hidden');
+          renderZappingChannels();
+        }
+      }
+    });
+  }
+
+  function renderZappingChannels() {
+    const listContainer = document.getElementById('zapping-channels-list');
+    if (!listContainer || !window.IPTVEngine) return;
+    const channels = IPTVEngine.getDefaultChannels() || [];
+    listContainer.innerHTML = '';
+    channels.forEach(ch => {
+      const card = document.createElement('div');
+      card.className = 'zapping-card dpad-focusable';
+      card.innerHTML = `
+        <img src="${ch.logo || 'assets/aljazeera.svg'}" class="zapping-logo" alt="${ch.name}" onerror="this.src='assets/aljazeera.svg';">
+        <div class="zapping-info">
+          <div class="zapping-title">${ch.name}</div>
+          <div class="zapping-cat">${ch.category || 'قنوات مباشرة'}</div>
+        </div>
+      `;
+      card.addEventListener('click', () => {
+        document.getElementById('player-zapping-drawer')?.classList.add('is-hidden');
+        playMedia({ ...ch, is_live: true });
+      });
+      listContainer.appendChild(card);
+    });
+  }
+
+  // ==========================================================================
+  // RADIO VISUALIZER (CANVAS SPECTROGRAM)
+  // ==========================================================================
+  function bindRadioVisualizer() {
+    const canvas = document.getElementById('radio-visualizer-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    function draw() {
+      if (!modalEl || !modalEl.classList.contains('active')) return;
+      requestAnimationFrame(draw);
+      if (!audioAnalyserNode) return;
+
+      const bufferLength = audioAnalyserNode.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      audioAnalyserNode.getByteFrequencyData(dataArray);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const barWidth = (canvas.width / bufferLength) * 2.5;
+      let barHeight;
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i++) {
+        barHeight = dataArray[i] * 1.2;
+        const grad = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
+        grad.addColorStop(0, 'rgba(0, 229, 255, 0.2)');
+        grad.addColorStop(1, 'rgba(0, 229, 255, 0.8)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
+        x += barWidth;
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      canvas.width = canvas.parentElement ? canvas.parentElement.clientWidth : 800;
+      canvas.height = canvas.parentElement ? canvas.parentElement.clientHeight : 450;
+    });
+    canvas.width = canvas.parentElement ? canvas.parentElement.clientWidth : 800;
+    canvas.height = canvas.parentElement ? canvas.parentElement.clientHeight : 450;
+    draw();
   }
 
   async function requestScreenWakeLock() {

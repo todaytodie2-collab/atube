@@ -117,7 +117,10 @@ const IPTVEngine = (function () {
       resolution: c.resolution || '1080p',
       duration: 'مباشر',
       logo: c.logo,
-      streamUrl: c.stream_url || c.streamUrl,
+      streamUrl: c.stream_url || c.streamUrl || c.directHls || c.embedUrl,
+      directHls: c.directHls,
+      embedUrl: c.embedUrl,
+      frequencies: c.frequencies || [],
       desc: c.desc || c.name
     };
   }
@@ -226,6 +229,11 @@ const IPTVEngine = (function () {
     const fallbackSvg = generateChannelLogoSVG(cleanName, cleanCategory);
     const initialLogo = getLogoURL(ch);
 
+    const hasFreq = Array.isArray(ch.frequencies) && ch.frequencies.length > 0;
+    const freqBadgeHtml = hasFreq
+      ? `<button class="channel-freq-badge" title="عرض ترددات القناة الفضائية" aria-label="تردد القناة">📡 ترددات</button>`
+      : '';
+
     card.innerHTML = `
       <div class="live-pulse-wrapper">
         <span class="live-dot-pulse"></span>
@@ -239,10 +247,22 @@ const IPTVEngine = (function () {
              loading="lazy"
              onerror="this.onerror=null; this.src='${fallbackSvg}';">
       </div>
+      <div class="channel-play-overlay">▶</div>
+      ${freqBadgeHtml}
       <div class="channel-card-footer">
         <span class="channel-name-title" title="${escapeXML(cleanName)}">${escapeXML(cleanName)}</span>
       </div>
     `;
+
+    // Wire up satellite frequencies button if present
+    const freqBtn = card.querySelector('.channel-freq-badge');
+    if (freqBtn) {
+      freqBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        showSatelliteFrequencyModal(ch);
+      });
+    }
 
     // Direct, immediate click-to-play with zero popups
     card.addEventListener('click', (e) => {
@@ -262,13 +282,70 @@ const IPTVEngine = (function () {
     return card;
   }
 
+  // Show Satellite Frequencies Modal
+  function showSatelliteFrequencyModal(ch) {
+    const modal = document.getElementById('satellite-freq-modal');
+    const titleEl = document.getElementById('freq-modal-channel-name');
+    const contentEl = document.getElementById('freq-modal-content');
+    if (!modal || !contentEl) return;
+
+    if (titleEl) {
+      titleEl.textContent = `📡 ترددات قناة ${ch.name || ''}`;
+    }
+
+    const freqs = ch.frequencies || [];
+    if (freqs.length === 0) {
+      contentEl.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:20px;">لا توجد بيانات ترددات مسجلة لهذه القناة حالياً.</p>`;
+    } else {
+      contentEl.innerHTML = `
+        <table class="freq-table">
+          <thead>
+            <tr>
+              <th>القمر الصناعي</th>
+              <th>التردد</th>
+              <th>الاستقطاب</th>
+              <th>معدل الترميز</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${freqs.map(f => `
+              <tr>
+                <td style="font-weight:700; color:#00e5ff;">${escapeXML(f.satellite || 'نايل سات')}</td>
+                <td style="font-family:monospace; font-size:14px;">${escapeXML(f.frequency || '-')}</td>
+                <td>${escapeXML(f.polarization || '-')}</td>
+                <td style="font-family:monospace;">${escapeXML(f.symbol_rate || '27500')}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        <div style="margin-top:16px; text-align:center;">
+          <button class="btn-primary dpad-focusable" id="freq-modal-play-now" style="padding:8px 24px; font-size:13px; border-radius:8px;">
+            ▶ تشغيل القناة الآن
+          </button>
+        </div>
+      `;
+
+      const playNowBtn = contentEl.querySelector('#freq-modal-play-now');
+      if (playNowBtn) {
+        playNowBtn.addEventListener('click', () => {
+          modal.classList.remove('active');
+          playLiveChannel(ch);
+        });
+      }
+    }
+
+    modal.classList.add('active');
+  }
+
   // 5. Direct playback through InAppPlayer or fallback
   function playLiveChannel(ch) {
-    const stream = ch.streamUrl || (ch.streams && ch.streams[0]) || '';
+    const stream = ch.streamUrl || ch.directHls || ch.embedUrl || (ch.streams && ch.streams[0]) || '';
     if (!stream) {
       alert('عذراً، رابط البث غير متاح حالياً لهذه القناة.');
       return;
     }
+
+    const isEmbed = !stream.includes('.m3u8') && (ch.embedUrl || stream.includes('/p/') || stream.includes('player.eishha.com'));
 
     const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
     if (player && typeof player.playMedia === 'function') {
@@ -277,9 +354,16 @@ const IPTVEngine = (function () {
         title: ch.name,
         name: ch.name,
         streamUrl: stream,
+        directHls: ch.directHls,
+        embedUrl: ch.embedUrl,
         category: ch.category || 'قنوات مباشرة',
-        badge: ch.badge || 'LIVE',
+        badge: ch.badge || 'LIVE HD',
         is_live: true,
+        isEmbed: isEmbed,
+        servers: [
+          ...(ch.directHls ? [{ name: 'سيرفر HLS فائق السرعة', url: ch.directHls, is_hls: true, isEmbed: false }] : []),
+          ...(ch.embedUrl ? [{ name: 'سيرفر مشغل الويب الفضائي', url: ch.embedUrl, is_hls: false, isEmbed: true }] : [])
+        ],
         logo: getLogoURL(ch)
       });
     } else {
@@ -312,18 +396,7 @@ const IPTVEngine = (function () {
         if (res.ok) {
           const list = await res.json();
           if (Array.isArray(list) && list.length > 0) {
-            activeChannels = list.map(c => ({
-              id: c.id,
-              name: c.name,
-              category: c.category || 'قنوات مباشرة',
-              badge: c.badge || 'LIVE 1080p FHD',
-              quality: c.quality || '1080p FHD',
-              resolution: c.resolution || '1080p',
-              duration: 'مباشر',
-              logo: c.logo,
-              streamUrl: c.stream_url || c.streamUrl,
-              desc: c.desc || c.name
-            }));
+            activeChannels = list.map(formatRawChannel);
             try {
               localStorage.setItem('atube_channels_cache', JSON.stringify(activeChannels));
             } catch (_) {}
@@ -372,9 +445,105 @@ const IPTVEngine = (function () {
     return channels;
   }
 
+  // 8. Dynamic EPG Guide Generator (100% Free & Local)
+  function initEPGGuide() {
+    const openBtn = document.getElementById('open-epg-modal-btn');
+    const modal = document.getElementById('epg-guide-modal');
+    const closeBtn = document.getElementById('close-epg-guide-btn');
+    const table = document.getElementById('epg-schedule-table');
+    const clock = document.getElementById('epg-clock');
+
+    if (!modal) return;
+
+    if (openBtn) {
+      openBtn.addEventListener('click', () => {
+        modal.classList.add('active');
+        renderEPGSchedule();
+        updateEPGClock();
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+    }
+
+    function updateEPGClock() {
+      if (!clock) return;
+      const d = new Date();
+      clock.textContent = d.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    setInterval(() => {
+      if (modal.classList.contains('active')) updateEPGClock();
+    }, 1000);
+
+    function renderEPGSchedule() {
+      if (!table) return;
+      table.innerHTML = '';
+      const channels = activeChannels.slice(0, 15);
+      const curHour = new Date().getHours();
+
+      channels.forEach(ch => {
+        const row = document.createElement('div');
+        row.className = 'epg-channel-row';
+
+        const programs = generateProgramsForChannel(ch, curHour);
+
+        row.innerHTML = `
+          <div class="epg-ch-col">
+            <img src="${ch.logo || 'assets/aljazeera.svg'}" style="width: 24px; height: 24px; object-fit: contain;" alt="${ch.name}">
+            <span>${ch.name}</span>
+          </div>
+          <div class="epg-events-col">
+            ${programs.map(p => `
+              <div class="epg-event-card ${p.isCurrent ? 'current' : ''}">
+                <span style="opacity: 0.75; font-size: 10px;">${p.time}</span>
+                <div>${p.title}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        row.addEventListener('click', () => {
+          modal.classList.remove('active');
+          playLiveChannel(ch);
+        });
+
+        table.appendChild(row);
+      });
+    }
+
+    function generateProgramsForChannel(ch, curHour) {
+      const template = [
+        { h: 8, title: 'صباح الخير والمنوعات ☀️' },
+        { h: 10, title: 'برنامج وثائقي واستكشافي 🌍' },
+        { h: 12, title: 'النشرة الإخبارية الرئيسية 🎙️' },
+        { h: 14, title: 'جولة حول العالم وأحدث الأحداث 🌐' },
+        { h: 16, title: 'استوديو التحليل الرياضي ⚽' },
+        { h: 18, title: 'حوار خاص مع كبار النجوم 🌟' },
+        { h: 20, title: 'حصاد اليوم وأبرز القضايا 📰' },
+        { h: 22, title: 'سهرة سينمائية ووثائقية كبرى 🎬' }
+      ];
+
+      return template.map(t => {
+        const isCurrent = (curHour >= t.h && curHour < t.h + 2);
+        const startStr = `${String(t.h).padStart(2, '0')}:00`;
+        const endStr = `${String(t.h + 2).padStart(2, '0')}:00`;
+        return {
+          time: `${startStr} - ${endStr}`,
+          title: t.title,
+          isCurrent
+        };
+      });
+    }
+  }
+
   // Background fetch of verified channels on load
   if (typeof window !== 'undefined') {
-    setTimeout(fetchVerifiedChannels, 150);
+    setTimeout(() => {
+      fetchVerifiedChannels();
+      initEPGGuide();
+    }, 150);
   }
 
   // Clean, focused public interface
@@ -382,6 +551,7 @@ const IPTVEngine = (function () {
     getDefaultChannels: () => activeChannels,
     fetchVerifiedChannels,
     createChannelCardElement,
+    showSatelliteFrequencyModal,
     getLogoURL,
     generateChannelLogoSVG,
     playLiveChannel,

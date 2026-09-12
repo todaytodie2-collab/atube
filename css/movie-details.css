@@ -635,3 +635,87 @@
   margin-top: 2px;
 }
 
+/* ==========================================================================
+   SIMILAR MOVIES (MORE LIKE THIS)
+   ========================================================================== */
+.similar-movies-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.similar-header {
+  margin-bottom: 14px;
+}
+
+.similar-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.similar-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+
+.similar-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.similar-track::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.4);
+  border-radius: 3px;
+}
+
+.similar-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.similar-card {
+  min-width: 130px;
+  max-width: 130px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.similar-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-cyan);
+}
+
+.similar-thumb {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.similar-card-info {
+  padding: 8px;
+}
+
+.similar-card-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.similar-card-badge {
+  font-size: 10px;
+  color: var(--primary-cyan);
+  margin-top: 2px;
+}

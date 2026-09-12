@@ -1573,10 +1573,30 @@ body {
   background: #000;
 }
 
+.player-ambient-glow-layer {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  filter: blur(50px) brightness(1.2);
+  transition: opacity 0.5s ease, background 0.8s ease;
+  background: radial-gradient(circle at center, rgba(0, 229, 255, 0.18) 0%, rgba(10, 40, 60, 0.25) 50%, transparent 75%);
+}
+
+.player-ambient-glow-layer.active {
+  opacity: 0.65;
+}
+
 .main-video-element {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  position: relative;
+  z-index: 2;
 }
 
 .main-embed-element {
@@ -1585,6 +1605,8 @@ body {
   height: 100%;
   border: none;
   background: #000;
+  position: relative;
+  z-index: 2;
 }
 
 .player-overlay-top {
@@ -2252,6 +2274,200 @@ body {
   width: 100%;
 }
 
+/* ==========================================================================
+   LIVE TV CHANNELS: EXACT 5 TO 6 CARDS PER ROW GRID
+   ========================================================================== */
+.category-grid-container.is-channels-view {
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr) !important;
+  gap: 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding-bottom: 50px !important;
+}
+
+@media (max-width: 1400px) {
+  .category-grid-container.is-channels-view {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 14px !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  .category-grid-container.is-channels-view {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 820px) {
+  .category-grid-container.is-channels-view {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+
+@media (max-width: 540px) {
+  .category-grid-container.is-channels-view {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+}
+
+.category-grid-container.is-channels-view .live-channel-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  flex: none !important;
+  height: 146px !important;
+}
+
+/* Country Bouquets Filter Bar */
+.channels-bouquet-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0 16px;
+  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+.bouquet-pill {
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  padding: 7px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bouquet-pill:hover,
+.bouquet-pill:focus,
+.bouquet-pill.tv-focused {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: #00e5ff;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.bouquet-pill.active {
+  background: linear-gradient(135deg, #00e5ff 0%, #0077ff 100%);
+  border-color: #00e5ff;
+  color: #050811;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.4);
+}
+
+.channels-bouquet-filter-bar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.channels-bouquet-filter-bar::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.4);
+  border-radius: 3px;
+}
+
+.channels-bouquet-filter-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Satellite Frequencies Table & Modal */
+.freq-modal-card {
+  max-width: 580px;
+}
+
+.freq-modal-body {
+  padding: 20px 24px;
+}
+
+.freq-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.freq-table th {
+  background: rgba(0, 229, 255, 0.15);
+  color: #00e5ff;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.freq-table td {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+  color: #f1f5f9;
+}
+
+.freq-table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Channel Card Play Button Overlay & Freq Button */
+.channel-play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 229, 255, 0.92);
+  color: #050811;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  opacity: 0;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.6);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.live-channel-card:hover .channel-play-overlay,
+.live-channel-card.tv-focused .channel-play-overlay {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.channel-freq-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #00e5ff;
+  font-size: 10.5px;
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  cursor: pointer;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  transition: 0.2s ease;
+}
+
+.channel-freq-badge:hover {
+  background: #00e5ff;
+  color: #030712;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+
 @media (max-width: 768px) {
   .category-grid-container {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -2664,5 +2880,1037 @@ body {
   transition: opacity 0.2s ease;
 }
 
+/* ==========================================================================
+   ADVANCED PLAYER ADDITIONS: SKIP INTRO, NEXT EPISODE, AMBIENT & AUDIO
+   ========================================================================== */
+.player-skip-intro-btn {
+  position: absolute;
+  bottom: 85px;
+  right: 35px;
+  z-index: 25;
+  background: rgba(10, 16, 26, 0.85);
+  border: 1px solid rgba(0, 229, 255, 0.5);
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  transition: all 0.25s ease;
+}
 
+.player-skip-intro-btn:hover {
+  background: #00e5ff;
+  color: #000;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.8);
+  transform: scale(1.05);
+}
 
+.player-next-ep-banner {
+  position: absolute;
+  bottom: 85px;
+  left: 35px;
+  z-index: 25;
+  background: rgba(8, 14, 24, 0.92);
+  border: 1px solid rgba(255, 0, 85, 0.4);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+}
+
+.next-ep-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.next-ep-counter {
+  color: #00e5ff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.next-ep-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.next-ep-btn {
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   CONTINUE WATCHING RIBBON & TRENDING TOP 10
+   ========================================================================== */
+.continue-watching-section,
+.trending-top10-section {
+  padding: 10px 30px 20px;
+}
+
+.continue-watching-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 10px 0;
+  scroll-behavior: smooth;
+}
+
+.continue-watching-track::-webkit-scrollbar {
+  height: 6px;
+}
+
+.continue-card {
+  min-width: 220px;
+  width: 220px;
+  background: #0d1624;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+  position: relative;
+}
+
+.continue-card:hover {
+  transform: translateY(-4px);
+  border-color: #00e5ff;
+}
+
+.continue-thumb-wrap {
+  width: 100%;
+  height: 125px;
+  position: relative;
+  overflow: hidden;
+}
+
+.continue-thumb-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.continue-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.continue-progress-fill {
+  height: 100%;
+  background: #ff0055;
+  box-shadow: 0 0 8px #ff0055;
+}
+
+.continue-info {
+  padding: 10px;
+}
+
+.continue-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.continue-meta {
+  font-size: 11px;
+  color: #8fa2b8;
+  margin-top: 4px;
+}
+
+/* Trending Top 10 */
+.trending-top10-track {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  padding: 15px 10px;
+}
+
+.top10-card {
+  display: flex;
+  align-items: flex-end;
+  min-width: 200px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.25s ease;
+}
+
+.top10-card:hover {
+  transform: scale(1.05);
+}
+
+.top10-rank {
+  font-size: 96px;
+  font-weight: 900;
+  color: #04090e;
+  -webkit-text-stroke: 3px #00e5ff;
+  line-height: 0.8;
+  margin-left: -20px;
+  z-index: 1;
+  font-family: impact, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.top10-poster-wrap {
+  width: 130px;
+  height: 190px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 2;
+}
+
+.top10-poster-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================================================
+   MULTI-VIEW QUAD & QR REMOTE MODALS
+   ========================================================================== */
+.multiview-modal-card {
+  background: #090f18;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 14px;
+  width: 95vw;
+  max-width: 1150px;
+  padding: 24px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
+}
+
+.multiview-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  margin-top: 15px;
+  aspect-ratio: 16 / 9;
+}
+
+.multiview-screen-tile {
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mv-tile-header {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #fff;
+}
+
+.mv-mute-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.mv-video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* QR Remote */
+.qr-modal-card {
+  max-width: 420px;
+  text-align: center;
+}
+
+.qr-remote-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.qr-code-box {
+  background: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  display: inline-block;
+  box-shadow: 0 8px 24px rgba(0, 229, 255, 0.3);
+}
+
+.qr-image {
+  width: 180px;
+  height: 180px;
+  display: block;
+}
+
+.qr-instruction {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+.qr-local-url {
+  font-size: 12px;
+  background: rgba(0, 229, 255, 0.1);
+  color: #00e5ff;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: monospace;
+}
+
+/* Subtitles Options */
+.sub-size-options,
+.sub-color-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.sub-opt-btn {
+  flex: 1;
+  padding: 8px 12px;
+  background: #141f30;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.sub-opt-btn.active,
+.sub-opt-btn:hover {
+  background: #00e5ff;
+  color: #000;
+  border-color: #00e5ff;
+  font-weight: 700;
+}
+
+.sub-delay-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+#sub-delay-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #00e5ff;
+  min-width: 80px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   MOOD-BASED CINEMA FILTER & 30s QUIZ
+   ========================================================================== */
+.mood-filter-section {
+  padding: 18px 24px;
+  background: linear-gradient(180deg, rgba(4, 9, 14, 0.95) 0%, rgba(10, 20, 32, 0.8) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mood-filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mood-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.mood-header-icon {
+  font-size: 18px;
+}
+
+.btn-cinema-quiz {
+  background: linear-gradient(135deg, #ff007f 0%, #7928ca 100%);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 0, 127, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-cinema-quiz:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 127, 0.5);
+}
+
+.mood-pills-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.mood-pills-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.mood-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  padding: 7px 16px;
+  border-radius: 24px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.mood-pill:hover,
+.mood-pill.active {
+  background: var(--primary-cyan);
+  color: #04090e;
+  border-color: var(--primary-cyan);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+}
+
+/* ==========================================================================
+   10-BAND GRAPHIC EQUALIZER
+   ========================================================================== */
+.eq-modal-card {
+  max-width: 720px;
+  width: 95vw;
+}
+
+.eq-presets-bar {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0 20px 0;
+  flex-wrap: wrap;
+}
+
+.eq-preset-btn {
+  flex: 1;
+  min-width: 100px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.eq-preset-btn.active,
+.eq-preset-btn:hover {
+  background: var(--primary-cyan);
+  color: #04090e;
+  border-color: var(--primary-cyan);
+  font-weight: 700;
+}
+
+.eq-sliders-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 8px;
+}
+
+.eq-slider-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.eq-slider-col input[type="range"] {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  height: 140px;
+  width: 18px;
+  accent-color: var(--primary-cyan);
+  cursor: pointer;
+}
+
+.eq-freq-label {
+  font-size: 10px;
+  color: #8fa2b8;
+}
+
+.eq-gain-label {
+  font-size: 10px;
+  color: var(--primary-cyan);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   SLEEP TIMER MODAL
+   ========================================================================== */
+.sleep-options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.sleep-opt-btn {
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sleep-opt-btn:hover,
+.sleep-opt-btn.active {
+  background: var(--primary-cyan);
+  color: #04090e;
+  border-color: var(--primary-cyan);
+  font-weight: 700;
+}
+
+.btn-cancel-sleep {
+  background: rgba(255, 42, 68, 0.2) !important;
+  border-color: rgba(255, 42, 68, 0.5) !important;
+  color: #ff2a44 !important;
+}
+
+/* ==========================================================================
+   DUAL SUBTITLES & SUBTITLE DROP ZONE
+   ========================================================================== */
+.dual-subtitles-container {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: #ffd700;
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  text-shadow: 0 2px 6px #000;
+  pointer-events: none;
+  z-index: 20;
+  text-align: center;
+  max-width: 85%;
+}
+
+.sub-drop-zone {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 229, 255, 0.15);
+  border: 3px dashed var(--primary-cyan);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.sub-drop-card {
+  background: #090f18;
+  padding: 30px 40px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+}
+
+.sub-drop-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.sub-drop-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.sub-drop-subtitle {
+  font-size: 12px;
+  color: #8fa2b8;
+}
+
+/* ==========================================================================
+   TOUCH LOCK OVERLAY
+   ========================================================================== */
+.touch-lock-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 150;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 60px;
+}
+
+.touch-unlock-btn {
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid var(--primary-cyan);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+
+/* ==========================================================================
+   QUICK CHANNEL ZAPPING DRAWER
+   ========================================================================== */
+.player-zapping-drawer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 320px;
+  background: rgba(6, 14, 24, 0.95);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.8);
+}
+
+.zapping-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.zapping-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.zapping-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.zapping-card:hover,
+.zapping-card.active {
+  background: rgba(0, 229, 255, 0.2);
+  border: 1px solid var(--primary-cyan);
+}
+
+.zapping-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.zapping-info {
+  flex: 1;
+}
+
+.zapping-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.zapping-cat {
+  font-size: 10px;
+  color: #8fa2b8;
+}
+
+/* ==========================================================================
+   STREAM HEALTH BADGE & RADIO VISUALIZER
+   ========================================================================== */
+.stream-health-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  color: #00e5ff;
+  font-family: monospace;
+  z-index: 25;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+.health-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00ff88;
+  box-shadow: 0 0 8px #00ff88;
+}
+
+.radio-visualizer-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   30s CINEMA QUIZ MODAL
+   ========================================================================== */
+.quiz-modal-card {
+  max-width: 520px;
+}
+
+.quiz-body {
+  margin-top: 16px;
+}
+
+.quiz-question {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.quiz-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.quiz-opt-btn {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.quiz-opt-btn:hover {
+  background: var(--primary-cyan);
+  color: #04090e;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   WATCH TOGETHER / SYNCPLAY ROOM
+   ========================================================================== */
+.wt-room-box {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 14px;
+}
+
+.wt-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.wt-input-row input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #00e5ff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-weight: 700;
+}
+
+.wt-status-box {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #8fa2b8;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   THEMES CUSTOMIZER
+   ========================================================================== */
+.themes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.theme-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-card:hover,
+.theme-card.active {
+  border-color: var(--primary-cyan);
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.3);
+}
+
+.theme-preview {
+  height: 45px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.cyan-theme {
+  background: linear-gradient(90deg, #04090e 0%, #00e5ff 100%);
+}
+
+.oled-theme {
+  background: linear-gradient(90deg, #000000 0%, #3b82f6 100%);
+}
+
+.gold-theme {
+  background: linear-gradient(90deg, #0f0c05 0%, #ffd700 100%);
+}
+
+.red-theme {
+  background: linear-gradient(90deg, #140306 0%, #ff0055 100%);
+}
+
+.theme-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+}
+
+/* Theme overrides */
+[data-theme="oled"] {
+  --primary-cyan: #3b82f6;
+  --bg-app-dark: #000000;
+}
+
+[data-theme="gold"] {
+  --primary-cyan: #ffd700;
+  --bg-app-dark: #0a0802;
+}
+
+[data-theme="red"] {
+  --primary-cyan: #ff0055;
+  --bg-app-dark: #0d0205;
+}
+
+/* ==========================================================================
+   KEYBOARD SHORTCUTS HUD
+   ========================================================================== */
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.shortcut-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+kbd {
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-weight: 700;
+  color: #00e5ff;
+}
+
+/* ==========================================================================
+   EPG TV GUIDE MODAL
+   ========================================================================== */
+.epg-modal-card {
+  max-width: 900px;
+  width: 95vw;
+}
+
+.epg-current-time-bar {
+  font-size: 12px;
+  color: var(--primary-cyan);
+  margin: 10px 0;
+  font-family: monospace;
+}
+
+.epg-schedule-container {
+  max-height: 450px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.epg-channel-row {
+  display: flex;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.epg-ch-col {
+  width: 180px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.4);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.epg-events-col {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  overflow-x: auto;
+}
+
+.epg-event-card {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.epg-event-card.current {
+  background: rgba(0, 229, 255, 0.2);
+  border: 1px solid var(--primary-cyan);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   AERIAL 4K SCREENSAVER
+   ========================================================================== */
+.aerial-screensaver {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screensaver-video-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+.screensaver-overlay {
+  position: absolute;
+  bottom: 40px;
+  left: 50px;
+  text-align: left;
+  color: #fff;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.9);
+}
+
+.screensaver-clock {
+  font-size: 72px;
+  font-weight: 900;
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+}
+
+.screensaver-tagline {
+  font-size: 16px;
+  color: #94a3b8;
+  margin-top: 8px;
+}

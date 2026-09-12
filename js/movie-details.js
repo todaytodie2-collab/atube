@@ -702,6 +702,65 @@ const MovieDetails = (function () {
         });
       }
     }
+
+    // Render "More Like This" (أعمال مشابهة)
+    renderMoreLikeThis(movie);
+  }
+
+  function renderMoreLikeThis(movie) {
+    let container = document.getElementById('md-similar-container');
+    if (!container) {
+      const modalBody = document.querySelector('.movie-details-body') || document.getElementById('md-servers-section')?.parentElement;
+      if (!modalBody) return;
+      const section = document.createElement('div');
+      section.className = 'similar-movies-section';
+      section.innerHTML = `
+        <div class="similar-header">
+          <h3 class="similar-title">
+            <span>✨ أعمال قد تنال إعجابك (More Like This)</span>
+          </h3>
+        </div>
+        <div id="md-similar-container" class="similar-track"></div>
+      `;
+      modalBody.appendChild(section);
+      container = document.getElementById('md-similar-container');
+    }
+
+    if (!container || !window.MediaCatalog) return;
+    container.innerHTML = '';
+    const all = MediaCatalog.getAll() || [];
+    const targetGenre = (movie.genres && movie.genres[0]) || '';
+    const targetCat = movie.category || '';
+
+    const similar = all.filter(m => {
+      if (m.id === movie.id) return false;
+      const genreMatch = targetGenre && m.genres && m.genres.some(g => String(g).includes(targetGenre));
+      const catMatch = targetCat && m.category === targetCat;
+      return (genreMatch || catMatch) && m.poster;
+    }).slice(0, 8);
+
+    if (similar.length === 0) {
+      container.parentElement.style.display = 'none';
+      return;
+    }
+    container.parentElement.style.display = '';
+
+    similar.forEach(sim => {
+      const card = document.createElement('div');
+      card.className = 'similar-card dpad-focusable';
+      card.tabIndex = 0;
+      card.innerHTML = `
+        <img src="${sim.poster}" alt="${safeHtml(sim.title)}" loading="lazy" class="similar-thumb" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 130 190\\' fill=\\'%2308101a\\'/%3E'">
+        <div class="similar-card-info">
+          <div class="similar-card-title">${safeHtml(sim.arabic_title || sim.title)}</div>
+          <div class="similar-card-badge">${safeHtml(sim.rating || '★ 8.5')}</div>
+        </div>
+      `;
+      card.addEventListener('click', () => {
+        open(sim);
+      });
+      container.appendChild(card);
+    });
   }
 
   function getFallbackMovie(id) {

@@ -1,0 +1,34 @@
+{
+  "name": "A TuBe Ultra HD Media Experience",
+  "short_name": "A TuBe",
+  "description": "تطبيق A TuBe الترفيهي الاحترافي لمشاهدة البث المباشر والقنوات والأفلام والمسلسلات بجودة Ultra HD",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#04090e",
+  "theme_color": "#04090e",
+  "dir": "rtl",
+  "lang": "ar",
+  "categories": ["entertainment", "video", "multimedia"],
+  "icons": [
+    {
+      "src": "assets/aljazeera.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "الرئيسية",
+      "url": "./index.html",
+      "description": "الصفحة الرئيسية لـ A TuBe"
+    },
+    {
+      "name": "البث المباشر",
+      "url": "./index.html#channels",
+      "description": "قنوات البث المباشر الفضائية"
+    }
+  ]
+}

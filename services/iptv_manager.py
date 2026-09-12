@@ -230,6 +230,10 @@ class IPTVManager:
     _cache_lock = asyncio.Lock()
     _thread_pool: Optional[ThreadPoolExecutor] = None
 
+    @classmethod
+    def get_instance(cls):
+        return cls
+
     # ------------------------------------------------------------------
     # Initialization / schema
     # ------------------------------------------------------------------
@@ -683,6 +687,8 @@ class IPTVManager:
                         "logo": r["logo"],
                         "category": r["category"],
                         "current_stream_url": r["current_stream_url"],
+                        "stream_url": r["current_stream_url"],
+                        "streamUrl": r["current_stream_url"],
                         "status": r["status"],
                         "quality": r["quality"],
                     }

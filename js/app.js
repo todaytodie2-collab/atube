@@ -90,16 +90,10 @@ const CATEGORY_DEFINITIONS = [
     desc: 'أقوى الأفلام والبرامج الوثائقية عن الطبيعة والكون والتاريخ'
   },
   {
-    key: 'مسلسلات تركي',
-    title: 'مسلسلات تركي',
-    icon: '🇹🇷',
-    desc: 'أضخم المسلسلات التركية التاريخية والدرامية المدبلجة والمترجمة'
-  },
-  {
-    key: 'مسلسلات هندي',
-    title: 'مسلسلات هندي',
-    icon: '🇮🇳',
-    desc: 'أشهر وأحدث المسلسلات الهندية والدراما المدبلجة'
+    key: 'أفلام آسيوي',
+    title: 'أفلام آسيوي وكوري',
+    icon: '⛩️',
+    desc: 'روائع السينما الآسيوية والكورية المترجمة بجودة Ultra HD'
   },
   {
     key: 'مسلسلات آسيوي',
@@ -179,6 +173,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   SplashManager.init();
   SplashManager.setProgress(20, 'تهيئة مشغل الفيديو وقاعدة البيانات...');
 
+  // 0b. Register Service Worker for Offline Resilience & PWA Support
+  if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+
   // 1. Initialize Video Player & Movie Details
   InAppPlayer.init();
   MovieDetails.init();
@@ -197,14 +196,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   SplashManager.setProgress(75, 'تجهيز القنوات والصفحة الرئيسية...');
 
-  // 4. Render Hero Billboard Banner & Category Carousels
+  // 4. Render Hero Billboard Banner, Quick Feeds & Category Carousels
   renderHeroBillboard();
+  renderContinueWatching();
+  renderTrendingTop10();
   renderHomeCarousels();
 
   // 4b. Background-preload API feeds for every home category, then re-render
   //     so the carousels reflect live /api/media/feed data (one card per series).
   preloadHomeFeeds().then(() => {
     renderHomeCarousels();
+    renderContinueWatching();
+    renderTrendingTop10();
     if (window.RemoteControl && typeof RemoteControl.refresh === 'function') {
       setTimeout(() => RemoteControl.refresh(), 100);
     }
@@ -219,6 +222,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 7. Setup IPTVSettings Modal
   setupIPTVModal();
+
+  // 8. Next-Gen Features: Moods, Quiz, Watch Together, Themes, Gamepad, Screensaver
+  setupMoodFilter();
+  setupCinemaQuiz();
+  setupWatchTogether();
+  setupThemesCustomizer();
+  setupShortcutsHUD();
+  setupAerialScreensaver();
+  setupGamepadSupport();
+  setupHapticFeedback();
+  setupKidsSafeMode();
 
   SplashManager.setProgress(95, 'جاهز للتصفح والتشغيل...');
 
@@ -828,12 +842,34 @@ function showCategoryView(categoryName) {
 
   // Retrieve all category items
   currentCategoryItems = getItemsForCategory(def.key);
+
+  const grid = document.getElementById('category-grid');
+  const bouquetBar = document.getElementById('channels-bouquet-filter-bar');
+  const isChannels = (def.key === 'قنوات مباشرة' || def.key === 'channels' || def.key === 'قنوات البث المباشر');
+
+  if (grid) {
+    if (isChannels) {
+      grid.classList.add('is-channels-view');
+    } else {
+      grid.classList.remove('is-channels-view');
+    }
+  }
+
+  if (bouquetBar) {
+    if (isChannels) {
+      bouquetBar.classList.remove('is-hidden');
+      setupChannelsBouquetFilterBar();
+    } else {
+      bouquetBar.classList.add('is-hidden');
+    }
+  }
+
   renderCategoryGrid(currentCategoryItems, def.key);
 
   // Render per-section animated mini-hero banner
   const miniHeroEl = document.getElementById('category-mini-hero');
   if (miniHeroEl) {
-    if (currentCategoryItems.length > 0) {
+    if (currentCategoryItems.length > 0 && !isChannels) {
       const topItem = currentCategoryItems[0];
       miniHeroEl.classList.remove('is-hidden');
       miniHeroEl.innerHTML = `
@@ -912,27 +948,98 @@ function showCategoryView(categoryName) {
   if (window.RemoteControl) setTimeout(() => RemoteControl.refresh(), 100);
 }
 
+// Setup Bouquet Filter Bar for Live TV Channels
+function setupChannelsBouquetFilterBar() {
+  const bouquetBar = document.getElementById('channels-bouquet-filter-bar');
+  if (!bouquetBar || bouquetBar.dataset.initialized === 'true') return;
+  bouquetBar.dataset.initialized = 'true';
+
+  const pills = bouquetBar.querySelectorAll('.bouquet-pill');
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+
+      const bouquet = pill.getAttribute('data-bouquet');
+      filterChannelsByBouquet(bouquet);
+    });
+  });
+
+  // Wire satellite freq modal close button once
+  const closeFreqBtn = document.getElementById('close-freq-modal-btn');
+  const freqModal = document.getElementById('satellite-freq-modal');
+  if (closeFreqBtn && freqModal) {
+    closeFreqBtn.addEventListener('click', () => {
+      freqModal.classList.remove('active');
+    });
+    freqModal.addEventListener('click', (e) => {
+      if (e.target === freqModal) freqModal.classList.remove('active');
+    });
+  }
+}
+
+// Filter channels by country / genre bouquet
+function filterChannelsByBouquet(bouquet) {
+  const allChannels = (window.IPTVEngine && typeof window.IPTVEngine.getDefaultChannels === 'function')
+    ? window.IPTVEngine.getDefaultChannels()
+    : currentCategoryItems;
+
+  if (bouquet === 'all' || !bouquet) {
+    renderCategoryGrid(allChannels, 'قنوات مباشرة');
+    return;
+  }
+
+  const bouquetMap = {
+    egypt: ['مصر', 'مصري', 'مصرية'],
+    ksa: ['السعودية', 'سعودي', 'سعودية'],
+    emarat: ['الإمارات', 'امارات', 'إماراتي', 'دبي', 'أبوظبي'],
+    lebanon: ['لبنان', 'لبناني', 'لبنانية'],
+    iraq: ['العراق', 'عراقي', 'عراقية'],
+    sport: ['رياض', 'sport', 'كأس', 'دوري', 'أون تايم', 'on time'],
+    drama: ['دراما', 'مسلسل', 'أفلام', 'سينما', 'روتانا سينما'],
+    kids: ['أطفال', 'كرتون', 'كارتون', 'spacetoon', 'طيور الجنة', 'ماجد'],
+    news: ['أخبار', 'news', 'إخبارية', 'الحدث', 'العربية', 'الجزيرة', 'فرانس', 'dw'],
+    religion: ['دين', 'قرآن', 'إسلام', 'سنة', 'مجد', 'الناس', 'رسالة']
+  };
+
+  const keywords = bouquetMap[bouquet] || [];
+  const filtered = allChannels.filter(ch => {
+    const text = `${ch.name || ''} ${ch.category || ''} ${ch.desc || ''}`.toLowerCase();
+    return keywords.some(kw => text.includes(kw.toLowerCase()));
+  });
+
+  renderCategoryGrid(filtered, 'قنوات مباشرة');
+}
+
 // Render the category responsive grid
 function renderCategoryGrid(items, categoryKey) {
   const grid = document.getElementById('category-grid');
   const countBadge = document.getElementById('category-page-count');
-  if (countBadge) countBadge.textContent = `${items.length} عملاً`;
+  const isChannels = (categoryKey === 'قنوات مباشرة' || categoryKey === 'channels' || categoryKey === 'قنوات البث المباشر');
+
+  if (countBadge) countBadge.textContent = `${items.length} ${isChannels ? 'قناة' : 'عملاً'}`;
   if (!grid) return;
+
+  if (isChannels) {
+    grid.classList.add('is-channels-view');
+  } else {
+    grid.classList.remove('is-channels-view');
+  }
 
   grid.innerHTML = '';
   if (items.length === 0) {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #94a3b8;">
         <div style="font-size: 38px; margin-bottom: 12px;">🔍</div>
-        <div style="font-size: 18px; color: #fff; font-weight: 700;">لم يتم العثور على أعمال مطابقة</div>
-        <div style="font-size: 13px; margin-top: 6px;">جرب تغيير كلمة البحث أو تصفح قسم آخر</div>
+        <div style="font-size: 18px; color: #fff; font-weight: 700;">لم يتم العثور على ${isChannels ? 'قنوات' : 'أعمال'} مطابقة</div>
+        <div style="font-size: 13px; margin-top: 6px;">جرب تغيير كلمة البحث أو اختيار باقة أخرى</div>
       </div>
     `;
     return;
   }
 
   items.forEach((item, idx) => {
-    const isLiveChannel = categoryKey === 'قنوات مباشرة' ||
+    const isLiveChannel = isChannels ||
                           item.is_live === true ||
                           (item.category && item.streamUrl && (item.category.includes('قنوات') || item.category === 'الأخبار' || item.category === 'الوثائقيات' || item.category === 'إسلامية ودينية'));
     if (isLiveChannel) {
@@ -1248,6 +1355,24 @@ function setupHeaderActions() {
 
   // User Profile & Settings Modal
   setupProfileModal();
+
+  // Multi-View Quad Player Modal
+  setupMultiViewModal();
+
+  // QR Phone Remote Modal
+  setupQRRemoteModal();
+
+  // Random Surprise Cinema
+  setupSurpriseMe();
+
+  // Watch Together Modal
+  setupWatchTogether();
+
+  // Themes Customizer
+  setupThemesCustomizer();
+
+  // Shortcuts HUD
+  setupShortcutsHUD();
 }
 
 function setupLanguageSwitcher() {
@@ -1595,3 +1720,698 @@ function setupIPTVModal() {
     });
   }
 }
+
+// ==========================================================================
+// CONTINUE WATCHING & RESUME PLAYHEAD MANAGER
+// ==========================================================================
+function renderContinueWatching() {
+  const section = document.getElementById('continue-watching-section');
+  const track = document.getElementById('continue-watching-track');
+  if (!section || !track) return;
+
+  let history = [];
+  try {
+    history = JSON.parse(localStorage.getItem('atube_history') || '[]');
+  } catch (_) {}
+
+  const itemsWithProgress = [];
+  history.forEach(item => {
+    if (!item || !item.id) return;
+    const pos = parseFloat(localStorage.getItem(`atube_pos_${item.id}`) || '0');
+    const dur = parseFloat(localStorage.getItem(`atube_dur_${item.id}`) || '0');
+    let pct = 30;
+    if (dur > 0 && pos > 0) {
+      pct = Math.min(95, Math.max(5, Math.round((pos / dur) * 100)));
+    }
+    itemsWithProgress.push({
+      ...item,
+      progressPct: pct,
+      positionSec: pos
+    });
+  });
+
+  if (itemsWithProgress.length === 0) {
+    section.classList.add('is-hidden');
+    return;
+  }
+
+  section.classList.remove('is-hidden');
+  track.innerHTML = '';
+
+  itemsWithProgress.slice(0, 12).forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'continue-card dpad-focusable';
+    card.tabIndex = 0;
+    const title = escapeHtml(item.arabic_title || item.title || item.name || 'متابعة المشاهدة');
+    const poster = item.poster || item.backdrop || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 120\' fill=\'%2308101a\'/%3E';
+    const subLabel = item.is_live ? 'بث مباشر' : `متبقي ${100 - item.progressPct}% • استئناف`;
+
+    card.innerHTML = `
+      <div class="continue-thumb-wrap">
+        <img src="${poster}" alt="${title}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 120\' fill=\'%2308101a\'/%3E'">
+        <div class="continue-progress-bar">
+          <div class="continue-progress-fill" style="width: ${item.progressPct}%"></div>
+        </div>
+      </div>
+      <div class="continue-info">
+        <div class="continue-title">${title}</div>
+        <div class="continue-meta">${subLabel}</div>
+      </div>
+    `;
+
+    card.addEventListener('click', () => {
+      const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
+      if (player && typeof player.playMedia === 'function') {
+        player.playMedia(item);
+      } else if (window.MovieDetails && typeof MovieDetails.open === 'function') {
+        MovieDetails.open(item);
+      }
+    });
+
+    track.appendChild(card);
+  });
+}
+
+// ==========================================================================
+// TRENDING TOP 10 TODAY RIBBON
+// ==========================================================================
+function renderTrendingTop10() {
+  const section = document.getElementById('trending-top10-section');
+  const track = document.getElementById('trending-top10-track');
+  if (!section || !track) return;
+
+  const catalog = window.MediaCatalog || (typeof MediaCatalog !== 'undefined' ? MediaCatalog : null);
+  if (!catalog || typeof catalog.getAll !== 'function') return;
+
+  const all = catalog.getAll() || [];
+  if (all.length === 0) return;
+
+  const top10 = all.filter(m => m.poster && !m.is_live).slice(0, 10);
+  if (top10.length === 0) return;
+
+  track.innerHTML = '';
+  top10.forEach((item, index) => {
+    const rank = index + 1;
+    const card = document.createElement('div');
+    card.className = 'top10-card dpad-focusable';
+    card.tabIndex = 0;
+    const title = escapeHtml(item.arabic_title || item.title || '');
+    const poster = item.poster;
+
+    card.innerHTML = `
+      <div class="top10-rank">${rank}</div>
+      <div class="top10-poster-wrap">
+        <img src="${poster}" alt="${title}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 130 190\' fill=\'%2308101a\'/%3E'">
+      </div>
+    `;
+
+    card.addEventListener('click', () => {
+      const details = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
+      if (details && typeof details.open === 'function') {
+        details.open(item);
+      }
+    });
+
+    track.appendChild(card);
+  });
+}
+
+// ==========================================================================
+// MULTI-VIEW 4-SCREEN QUAD PLAYER
+// ==========================================================================
+let multiViewHlsInstances = [];
+
+function setupMultiViewModal() {
+  const modal = document.getElementById('multiview-modal');
+  const openBtn = document.getElementById('open-multiview-btn');
+  const closeBtn = document.getElementById('close-multiview-modal-btn');
+  if (!modal) return;
+
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      modal.classList.add('active');
+      startMultiViewPlayback();
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      stopMultiViewPlayback();
+      modal.classList.remove('active');
+    });
+  }
+
+  const muteBtns = modal.querySelectorAll('.mv-mute-btn');
+  muteBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const tileNum = btn.getAttribute('data-tile');
+      for (let i = 1; i <= 4; i++) {
+        const vid = document.getElementById(`mv-video-${i}`);
+        const mBtn = modal.querySelector(`.mv-mute-btn[data-tile="${i}"]`);
+        if (vid) {
+          if (String(i) === String(tileNum)) {
+            vid.muted = !vid.muted;
+            if (mBtn) mBtn.textContent = vid.muted ? '🔇' : '🔊';
+          } else {
+            vid.muted = true;
+            if (mBtn) mBtn.textContent = '🔇';
+          }
+        }
+      }
+    });
+  });
+}
+
+function startMultiViewPlayback() {
+  stopMultiViewPlayback();
+  const channels = (window.IPTVEngine && typeof IPTVEngine.getDefaultChannels === 'function')
+    ? IPTVEngine.getDefaultChannels()
+    : [];
+
+  const top4 = channels.slice(0, 4);
+  top4.forEach((ch, idx) => {
+    const tileIdx = idx + 1;
+    const titleEl = document.getElementById(`mv-title-${tileIdx}`);
+    const videoEl = document.getElementById(`mv-video-${tileIdx}`);
+    if (titleEl) titleEl.textContent = ch.name || `قناة ${tileIdx}`;
+    if (!videoEl || !ch.streamUrl) return;
+
+    videoEl.muted = (tileIdx !== 1);
+    if (window.Hls && Hls.isSupported() && ch.streamUrl.includes('.m3u8')) {
+      const hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+      hls.loadSource(ch.streamUrl);
+      hls.attachMedia(videoEl);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        videoEl.play().catch(() => {});
+      });
+      multiViewHlsInstances.push(hls);
+    } else {
+      videoEl.src = ch.streamUrl;
+      videoEl.play().catch(() => {});
+    }
+  });
+}
+
+function stopMultiViewPlayback() {
+  multiViewHlsInstances.forEach(h => {
+    try { h.destroy(); } catch (_) {}
+  });
+  multiViewHlsInstances = [];
+  for (let i = 1; i <= 4; i++) {
+    const vid = document.getElementById(`mv-video-${i}`);
+    if (vid) {
+      vid.pause();
+      vid.removeAttribute('src');
+      vid.load();
+    }
+  }
+}
+
+// ==========================================================================
+// QR PHONE REMOTE CONTROLLER MODAL
+// ==========================================================================
+function setupQRRemoteModal() {
+  const modal = document.getElementById('qr-remote-modal');
+  const openBtn = document.getElementById('open-qr-remote-btn');
+  const closeBtn = document.getElementById('close-qr-remote-btn');
+  const qrImg = document.getElementById('qr-code-img');
+  const urlDisplay = document.getElementById('qr-local-url-display');
+
+  if (!modal) return;
+
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      const remoteUrl = `${window.location.origin}/#remote`;
+      if (urlDisplay) urlDisplay.textContent = remoteUrl;
+      if (qrImg) {
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(remoteUrl)}`;
+      }
+      modal.classList.add('active');
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+  }
+}
+
+// ==========================================================================
+// SURPRISE ME (RANDOM TITLE PICKER)
+// ==========================================================================
+function setupSurpriseMe() {
+  const surpriseBtn = document.getElementById('surprise-me-btn');
+  if (surpriseBtn) {
+    surpriseBtn.addEventListener('click', () => {
+      const catalog = window.MediaCatalog || (typeof MediaCatalog !== 'undefined' ? MediaCatalog : null);
+      if (!catalog || typeof catalog.getAll !== 'function') return;
+      const all = catalog.getAll();
+      if (!all || all.length === 0) return;
+      const randomItem = all[Math.floor(Math.random() * all.length)];
+      const details = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
+      if (details && typeof details.open === 'function') {
+        details.open(randomItem);
+      }
+    });
+  }
+}
+
+// ==========================================================================
+// MOOD-BASED CINEMA FILTER
+// ==========================================================================
+function setupMoodFilter() {
+  const container = document.getElementById('mood-pills-container');
+  if (!container) return;
+
+  const moodKeywords = {
+    action: ['اكشن', 'أكشن', 'حركة', 'إثارة', 'قتال', 'action'],
+    horror: ['رعب', 'تشويق', 'مخيف', 'horror', 'thriller'],
+    comedy: ['كوميدي', 'كوميديا', 'مضحك', 'ساخر', 'comedy'],
+    mystery: ['غموض', 'جريمة', 'تحقيق', 'ذكاء', 'mystery', 'crime'],
+    drama: ['دراما', 'رومانسي', 'اجتماعي', 'drama'],
+    scifi: ['خيال', 'فضاء', 'مستقبل', 'sci-fi', 'scifi', 'خيال علمي'],
+    kids: ['كارتون', 'أنمي', 'انمي', 'اطفال', 'أطفال', 'عائلي', 'animation']
+  };
+
+  const pills = container.querySelectorAll('.mood-pill');
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const mood = pill.getAttribute('data-mood');
+
+      if (mood === 'all') {
+        showHomeView();
+        return;
+      }
+
+      const catalog = window.MediaCatalog || (typeof MediaCatalog !== 'undefined' ? MediaCatalog : null);
+      if (!catalog || typeof catalog.getAll !== 'function') return;
+
+      const all = catalog.getAll() || [];
+      const keywords = moodKeywords[mood] || [];
+
+      const filtered = all.filter(item => {
+        const titleStr = `${item.title || ''} ${item.arabic_title || ''} ${item.synopsis || ''}`.toLowerCase();
+        const genreStr = Array.isArray(item.genres) ? item.genres.join(' ').toLowerCase() : '';
+        const combined = `${titleStr} ${genreStr} ${item.category || ''}`.toLowerCase();
+        return keywords.some(k => combined.includes(k));
+      });
+
+      // Render dedicated category view with mood results
+      const homeView = document.getElementById('home-page-view');
+      const catView = document.getElementById('category-page-view');
+      if (homeView && catView) {
+        homeView.classList.add('is-hidden');
+        homeView.style.display = 'none';
+        catView.classList.remove('is-hidden');
+        catView.style.display = 'block';
+
+        const titleEl = document.getElementById('category-page-title');
+        if (titleEl) titleEl.textContent = `أجواء: ${pill.textContent.trim()}`;
+        const headingEl = document.getElementById('category-page-heading');
+        if (headingEl) headingEl.textContent = `سينما المزاج: ${pill.textContent.trim()}`;
+        const descEl = document.getElementById('category-page-desc');
+        if (descEl) descEl.textContent = `تم العثور على ${filtered.length} عملاً يطابق هذه الأجواء الخاصة`;
+
+        renderCategoryGrid(filtered, mood);
+      }
+    });
+  });
+}
+
+// ==========================================================================
+// 30s CINEMA QUIZ ("ماذا تشاهد الليلة؟")
+// ==========================================================================
+function setupCinemaQuiz() {
+  const openBtn = document.getElementById('open-cinema-quiz-btn');
+  const modal = document.getElementById('cinema-quiz-modal');
+  const closeBtn = document.getElementById('close-quiz-modal-btn');
+  const body = document.getElementById('quiz-body-container');
+
+  if (!modal || !body) return;
+
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      modal.classList.add('active');
+      startQuizFlow();
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+  }
+
+  const quizState = { mood: null, type: null, lang: null };
+
+  function startQuizFlow() {
+    quizState.mood = null;
+    quizState.type = null;
+    quizState.lang = null;
+    renderQuizStep1();
+  }
+
+  function renderQuizStep1() {
+    body.innerHTML = `
+      <div class="quiz-question">السؤال 1 من 3: ما هو نوع المشاهدة التي تبحث عنها الليلة؟</div>
+      <div class="quiz-options-grid">
+        <button class="quiz-opt-btn dpad-focusable" data-answer="action">⚡ أكشن وحماس وإثارة</button>
+        <button class="quiz-opt-btn dpad-focusable" data-answer="comedy">😂 ضحك ومرح وتسلية</button>
+        <button class="quiz-opt-btn dpad-focusable" data-answer="horror">😱 رعب وتشويق وحبس أنفاس</button>
+        <button class="quiz-opt-btn dpad-focusable" data-answer="drama">🎭 دراما عميقة وقصة قوية</button>
+      </div>
+    `;
+    body.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+      btn.onclick = () => {
+        quizState.mood = btn.getAttribute('data-answer');
+        renderQuizStep2();
+      };
+    });
+  }
+
+  function renderQuizStep2() {
+    body.innerHTML = `
+      <div class="quiz-question">السؤال 2 من 3: هل تفضل فيلماً سريعاً أم مسلسلاً بحلقات كاملة؟</div>
+      <div class="quiz-options-grid">
+        <button class="quiz-opt-btn dpad-focusable" data-answer="movie">🎬 فيلم سهرة كامل (ساعتين)</button>
+        <button class="quiz-opt-btn dpad-focusable" data-answer="series">📺 مسلسل حلقات كاملة</button>
+      </div>
+    `;
+    body.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+      btn.onclick = () => {
+        quizState.type = btn.getAttribute('data-answer');
+        renderQuizStep3();
+      };
+    });
+  }
+
+  function renderQuizStep3() {
+    body.innerHTML = `
+      <div class="quiz-question">السؤال 3 من 3: ما هي لغة العمل المفضلة لديك؟</div>
+      <div class="quiz-options-grid">
+        <button class="quiz-opt-btn dpad-focusable" data-answer="foreign">🌍 أجنبي وعالمي مترجم</button>
+        <button class="quiz-opt-btn dpad-focusable" data-answer="arabic">🇪🇬 مصري وعربي</button>
+        <button class="quiz-opt-btn dpad-focusable" data-answer="turkish">🇹🇷 تركي دراما</button>
+        <button class="quiz-opt-btn dpad-focusable" data-answer="anime">⛩️ أنمي ياباني</button>
+      </div>
+    `;
+    body.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+      btn.onclick = () => {
+        quizState.lang = btn.getAttribute('data-answer');
+        calculateQuizResult();
+      };
+    });
+  }
+
+  function calculateQuizResult() {
+    const catalog = window.MediaCatalog || (typeof MediaCatalog !== 'undefined' ? MediaCatalog : null);
+    if (!catalog || typeof catalog.getAll !== 'function') return;
+
+    const all = catalog.getAll() || [];
+    let candidates = all.filter(m => m.poster);
+
+    if (quizState.type) {
+      candidates = candidates.filter(m => quizState.type === 'movie' ? (m.content_type === 'movie' || !m.content_type) : m.content_type === 'series');
+    }
+    if (quizState.lang && candidates.some(m => m.category === quizState.lang)) {
+      candidates = candidates.filter(m => m.category === quizState.lang);
+    }
+
+    const winner = candidates.length > 0 ? candidates[Math.floor(Math.random() * Math.min(5, candidates.length))] : all[0];
+    if (!winner) return;
+
+    body.innerHTML = `
+      <div style="text-align: center;">
+        <div style="font-size: 14px; color: var(--primary-cyan); font-weight: 700; margin-bottom: 6px;">🎉 عملك المثالي لهذه السهرة وفق اختياراتك هو:</div>
+        <img src="${winner.backdrop || winner.poster}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(0,229,255,0.4);" alt="${winner.title}">
+        <h3 style="font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 4px;">${winner.arabic_title || winner.title}</h3>
+        <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 16px;">★ ${winner.rating || '8.8'} • ${winner.quality || '1080p FHD'} • ${winner.year || '2026'}</div>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+          <button id="quiz-play-winner-btn" class="btn-primary dpad-focusable" style="padding: 10px 24px; font-size: 14px;">▶ مشاهدة فورية الآن</button>
+          <button id="quiz-retry-btn" class="btn-secondary dpad-focusable" style="padding: 10px 18px; font-size: 14px;">إعادة الاختبار 🔄</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('quiz-play-winner-btn')?.addEventListener('click', () => {
+      modal.classList.remove('active');
+      if (window.MovieDetails && typeof MovieDetails.open === 'function') {
+        MovieDetails.open(winner);
+      }
+    });
+
+    document.getElementById('quiz-retry-btn')?.addEventListener('click', () => {
+      startQuizFlow();
+    });
+  }
+}
+
+// ==========================================================================
+// WATCH TOGETHER (SYNCPLAY ROOM VIA BROADCASTCHANNEL)
+// ==========================================================================
+let syncBroadcastChannel = null;
+
+function setupWatchTogether() {
+  const openBtn = document.getElementById('open-watch-together-btn');
+  const modal = document.getElementById('watch-together-modal');
+  const closeBtn = document.getElementById('close-wt-modal-btn');
+  const joinBtn = document.getElementById('wt-join-btn');
+  const copyBtn = document.getElementById('wt-copy-link-btn');
+  const roomInput = document.getElementById('wt-room-input');
+
+  if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+    syncBroadcastChannel = new BroadcastChannel('atube_sync_room');
+    syncBroadcastChannel.onmessage = (event) => {
+      const data = event.data;
+      const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
+      const vid = document.getElementById('main-video');
+      if (!vid) return;
+
+      if (data.action === 'play') {
+        if (vid.paused) vid.play().catch(() => {});
+      } else if (data.action === 'pause') {
+        if (!vid.paused) vid.pause();
+      } else if (data.action === 'seek') {
+        if (Math.abs(vid.currentTime - data.time) > 2) {
+          vid.currentTime = data.time;
+        }
+      }
+    };
+  }
+
+  if (openBtn && modal) {
+    openBtn.addEventListener('click', () => {
+      modal.classList.add('active');
+    });
+  }
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+  }
+
+  if (copyBtn && roomInput) {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(`${window.location.origin}/?room=${roomInput.value}`).then(() => {
+        copyBtn.textContent = 'تم النسخ بنجاح ✓';
+        setTimeout(() => copyBtn.textContent = 'نسخ الرابط 📋', 2000);
+      });
+    });
+  }
+
+  if (joinBtn && modal) {
+    joinBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+      alert('تم الاتصال بغرفة المشاهدة الجماعية! أي إيقاف أو تشغيل سيتزامن مع الجميع في نفس الوقت.');
+    });
+  }
+}
+
+// ==========================================================================
+// CUSTOM THEMES SWITCHER
+// ==========================================================================
+function setupThemesCustomizer() {
+  const openBtn = document.getElementById('open-themes-modal-btn');
+  const modal = document.getElementById('themes-modal');
+  const closeBtn = document.getElementById('close-themes-modal-btn');
+
+  // Load saved theme on boot
+  const savedTheme = localStorage.getItem('atube_theme') || 'cyan';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+
+  if (openBtn && modal) {
+    openBtn.addEventListener('click', () => {
+      modal.classList.add('active');
+      modal.querySelectorAll('.theme-card').forEach(card => {
+        card.classList.toggle('active', card.getAttribute('data-theme') === savedTheme);
+      });
+    });
+  }
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+  }
+
+  const themeCards = document.querySelectorAll('.theme-card');
+  themeCards.forEach(card => {
+    card.addEventListener('click', () => {
+      themeCards.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      const theme = card.getAttribute('data-theme');
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('atube_theme', theme);
+      if (modal) modal.classList.remove('active');
+    });
+  });
+}
+
+// ==========================================================================
+// KEYBOARD SHORTCUTS HUD
+// ==========================================================================
+function setupShortcutsHUD() {
+  const openBtn = document.getElementById('open-shortcuts-btn');
+  const modal = document.getElementById('shortcuts-hud-modal');
+  const closeBtn = document.getElementById('close-shortcuts-modal-btn');
+
+  if (openBtn && modal) {
+    openBtn.addEventListener('click', () => modal.classList.add('active'));
+  }
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '?' && modal) {
+      modal.classList.toggle('active');
+    }
+  });
+}
+
+// ==========================================================================
+// AERIAL 4K SCREENSAVER (3-MINUTE IDLE DETECTOR)
+// ==========================================================================
+function setupAerialScreensaver() {
+  const saverEl = document.getElementById('aerial-screensaver');
+  const clockEl = document.getElementById('screensaver-clock');
+  const videoBg = document.getElementById('screensaver-video');
+  if (!saverEl) return;
+
+  let idleTimer = null;
+  const IDLE_TIME_MS = 3 * 60 * 1000; // 3 minutes
+
+  function resetIdleTimer() {
+    if (saverEl.classList.contains('active')) {
+      saverEl.classList.remove('active');
+      saverEl.classList.add('is-hidden');
+      if (videoBg) videoBg.pause();
+    }
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(triggerScreensaver, IDLE_TIME_MS);
+  }
+
+  function triggerScreensaver() {
+    const vidModal = document.getElementById('video-modal');
+    if (vidModal && vidModal.classList.contains('active')) return; // Do not interrupt movie watching
+
+    saverEl.classList.remove('is-hidden');
+    saverEl.classList.add('active');
+    if (videoBg) {
+      videoBg.src = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+      videoBg.play().catch(() => {});
+    }
+    updateClock();
+  }
+
+  function updateClock() {
+    if (!clockEl) return;
+    const now = new Date();
+    clockEl.textContent = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  setInterval(() => {
+    if (saverEl.classList.contains('active')) updateClock();
+  }, 1000);
+
+  ['mousemove', 'keydown', 'touchstart', 'click'].forEach(evt => {
+    window.addEventListener(evt, resetIdleTimer, { passive: true });
+  });
+
+  resetIdleTimer();
+}
+
+// ==========================================================================
+// GAMEPAD / CONTROLLER SUPPORT (XBOX & PLAYSTATION)
+// ==========================================================================
+function setupGamepadSupport() {
+  if (typeof window === 'undefined' || !('getGamepads' in navigator)) return;
+
+  let lastButtonPress = 0;
+
+  function pollGamepad() {
+    const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+    const gp = gamepads[0];
+
+    if (gp && Date.now() - lastButtonPress > 220) {
+      // D-Pad / Left Stick
+      if (gp.buttons[12] && gp.buttons[12].pressed) {
+        dispatchVirtualKey('ArrowUp');
+        lastButtonPress = Date.now();
+      } else if (gp.buttons[13] && gp.buttons[13].pressed) {
+        dispatchVirtualKey('ArrowDown');
+        lastButtonPress = Date.now();
+      } else if (gp.buttons[14] && gp.buttons[14].pressed) {
+        dispatchVirtualKey('ArrowLeft');
+        lastButtonPress = Date.now();
+      } else if (gp.buttons[15] && gp.buttons[15].pressed) {
+        dispatchVirtualKey('ArrowRight');
+        lastButtonPress = Date.now();
+      } else if (gp.buttons[0] && gp.buttons[0].pressed) {
+        // Button A / Cross: Select / Click
+        const focused = document.activeElement;
+        if (focused && typeof focused.click === 'function') focused.click();
+        lastButtonPress = Date.now();
+      } else if (gp.buttons[1] && gp.buttons[1].pressed) {
+        // Button B / Circle: Back / Escape
+        dispatchVirtualKey('Escape');
+        lastButtonPress = Date.now();
+      }
+    }
+    requestAnimationFrame(pollGamepad);
+  }
+
+  function dispatchVirtualKey(keyName) {
+    const ev = new KeyboardEvent('keydown', { key: keyName, bubbles: true });
+    document.dispatchEvent(ev);
+  }
+
+  window.addEventListener('gamepadconnected', () => {
+    console.log('[A TuBe] Gamepad connected successfully');
+    requestAnimationFrame(pollGamepad);
+  });
+}
+
+// ==========================================================================
+// HAPTIC FEEDBACK (VIBRATION API)
+// ==========================================================================
+function setupHapticFeedback() {
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('button, .dpad-focusable, .program-card, .mood-pill')) {
+        try { navigator.vibrate(12); } catch (_) {}
+      }
+    }, { passive: true });
+  }
+}
+
+// ==========================================================================
+// KIDS SAFE MODE
+// ==========================================================================
+function setupKidsSafeMode() {
+  const isKids = localStorage.getItem('atube_kids_mode') === 'true';
+  if (isKids) {
+    document.body.classList.add('kids-mode-active');
+  }
+}
+
+
