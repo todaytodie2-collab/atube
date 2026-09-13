@@ -75,13 +75,16 @@ try:
     from procedural_manifest import ProceduralManifestEngine
     from stream_sanitizer import StreamSanitizer
     from api_controller import APIController
-    from iptv_manager import IPTVManager
+    from stream_extractor import DirectStreamExtractor
+    from google_dork_scraper import GoogleDorkScraper
     HAS_SERVICES = True
 except Exception as e:
     print(f"[A Tube Server] Note: Services loaded with fallback: {e}")
     try:
         from procedural_manifest import ProceduralManifestEngine
         from stream_sanitizer import StreamSanitizer
+        from stream_extractor import DirectStreamExtractor
+        from google_dork_scraper import GoogleDorkScraper
         HAS_SERVICES = True
     except Exception:
         HAS_SERVICES = False
@@ -138,6 +141,105 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     "has_services": HAS_SERVICES,
                     "active_resolvers": 8
                 })
+                return
+
+            # 0.1 API: High-Performance Universal Stream Proxy (Anti-CORS & Anti-403)
+            if path == "/api/stream/proxy":
+                target_url = query.get("url", [None])[0]
+                if not target_url:
+                    self.send_error(400, "Missing url parameter")
+                    return
+
+                if not is_safe_external_url(target_url):
+                    self.send_error(403, "URL target blocked by SSRF security rules")
+                    return
+
+                req_referer = query.get("referer", [None])[0]
+                if not req_referer:
+                    if "megamax" in target_url:
+                        req_referer = "https://egydead.live/"
+                    elif "vidmoly" in target_url:
+                        req_referer = "https://vidmoly.to/"
+                    elif "fasel" in target_url:
+                        req_referer = "https://www.fasel-hd.co/"
+                    elif "mixdrop" in target_url:
+                        req_referer = "https://mixdrop.ag/"
+                    elif "akwam" in target_url:
+                        req_referer = "https://akwam.to/"
+                    else:
+                        req_referer = target_url
+
+                client_range = self.headers.get("Range")
+                proxy_headers = {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                    "Referer": req_referer,
+                    "Origin": (urllib.parse.urlparse(req_referer).scheme + "://" + urllib.parse.urlparse(req_referer).netloc) if req_referer else "https://egydead.live",
+                    "Accept": "*/*",
+                    "Accept-Encoding": "identity"
+                }
+                if client_range:
+                    proxy_headers["Range"] = client_range
+
+                req = urllib.request.Request(target_url, headers=proxy_headers)
+                ssl_ctx = ssl.create_default_context()
+                ssl_ctx.check_hostname = False
+                ssl_ctx.verify_mode = ssl.CERT_NONE
+
+                try:
+                    with urllib.request.urlopen(req, context=ssl_ctx, timeout=12.0) as remote_resp:
+                        status_code = remote_resp.status
+                        self.send_response(status_code)
+                        for h_key, h_val in remote_resp.headers.items():
+                            if h_key.lower() in ["content-type", "content-length", "content-range", "accept-ranges", "last-modified", "etag"]:
+                                self.send_header(h_key, h_val)
+                        self.send_header("Access-Control-Allow-Origin", "*")
+                        self.send_header("Access-Control-Allow-Headers", "*")
+                        self.send_header("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS")
+                        self.end_headers()
+
+                        while True:
+                            chunk = remote_resp.read(64 * 1024)
+                            if not chunk:
+                                break
+                            self.wfile.write(chunk)
+                except urllib.error.HTTPError as he:
+                    self.send_response(he.code)
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.end_headers()
+                    try:
+                        self.wfile.write(he.read())
+                    except Exception:
+                        pass
+                except Exception as ex:
+                    self.send_error(502, f"Proxy stream error: {str(ex)}")
+                return
+
+            # 0.2 API: Direct Stream Resolver
+            if path == "/api/resolve-stream":
+                target_url = query.get("url", [None])[0]
+                if not target_url:
+                    self.send_cors_json({"success": False, "error": "Missing url"})
+                    return
+                try:
+                    res = DirectStreamExtractor.resolve(target_url)
+                    self.send_cors_json(res)
+                except Exception as ex:
+                    self.send_cors_json({"success": False, "error": str(ex)})
+                return
+
+            # 0.3 API: Live Google Dorking Scraper
+            if path == "/api/scrape-servers":
+                t_en = query.get("title_en", [""])[0]
+                t_ar = query.get("title_ar", [""])[0]
+                year = query.get("year", [""])[0]
+                c_type = query.get("type", ["movie"])[0]
+                season = query.get("season", [""])[0]
+                episode = query.get("episode", [""])[0]
+                try:
+                    res = GoogleDorkScraper.scrape_servers(t_en, t_ar, year, c_type, season, episode)
+                    self.send_cors_json(res)
+                except Exception as ex:
+                    self.send_cors_json({"success": False, "error": str(ex), "servers": []})
                 return
 
             # 1. API: Legacy Multi-Category Feed (backward compatible alias)
