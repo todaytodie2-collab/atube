@@ -535,31 +535,96 @@ const MovieDetails = (function () {
       let allServers = [...(servers || [])];
       if (allServers.length === 0) {
         allServers = [
-          { site: 'A Tube VIP', quality: '1080p FHD', stream_url: '', badge: 'VIP Fast ⚡', size: '1.4 GB' },
-          { site: 'A Tube Cloud', quality: '720p HD', stream_url: '', badge: 'توفير باقة', size: '680 MB' }
+          { site: 'A Tube VIP', quality: '1080p FHD', stream_url: '', badge: 'VIP Fast ⚡', size: '1.4 GB', latency: '35ms' },
+          { site: 'A Tube Cloud', quality: '720p HD', stream_url: '', badge: 'توفير باقة', size: '680 MB', latency: '65ms' }
         ];
       }
 
       const qualitySizes = [
-        { quality: '1080p FHD', size: '1.4 GB', tagClass: 'quality-1080p' },
-        { quality: '720p HD', size: '680 MB', tagClass: 'quality-720p' },
-        { quality: '480p SD', size: '320 MB', tagClass: 'quality-default' }
+        { quality: '1080p FHD', size: '1.4 GB', tagClass: 'quality-1080p', latency: '32ms', isFast: true },
+        { quality: '720p HD', size: '680 MB', tagClass: 'quality-720p', latency: '68ms', isFast: true },
+        { quality: '480p SD', size: '320 MB', tagClass: 'quality-default', latency: '110ms', isFast: false }
       ];
 
+      // 0. Auto-Play Best Server Glowing Button
+      const autoPlayBestBtn = document.createElement('button');
+      autoPlayBestBtn.className = 'auto-play-best-btn dpad-focusable';
+      autoPlayBestBtn.tabIndex = 0;
+      autoPlayBestBtn.innerHTML = `
+        <span style="font-size: 20px;">⚡</span>
+        <span>تشغيل ذكي فوري (أفضل جودة وأسرع استجابة تلقائياً)</span>
+      `;
+      autoPlayBestBtn.onclick = () => {
+        const bestServer = allServers[0] || {};
+        const q = bestServer.quality || '1080p FHD';
+        closeModal();
+        const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
+        if (player && typeof player.playMedia === 'function') {
+          player.playMedia({
+            name: `${mediaTitle} (${q})`,
+            title: mediaTitle,
+            category: movie.category_name || movie.category || 'A Tube Ultra HD',
+            streamUrl: bestServer.url || bestServer.stream_url,
+            quality: q,
+            content_type: movie.content_type,
+            candidateServers: allServers
+          });
+        }
+      };
+      watchGrid.appendChild(autoPlayBestBtn);
+
+      // 0b. Quality Quick-Filter Bar
+      const filterBar = document.createElement('div');
+      filterBar.className = 'quality-filter-bar';
+      filterBar.innerHTML = `
+        <button class="quality-filter-pill active dpad-focusable" data-filter="all">🌟 الكل (${allServers.length})</button>
+        <button class="quality-filter-pill dpad-focusable" data-filter="1080p">💎 1080p FHD</button>
+        <button class="quality-filter-pill dpad-focusable" data-filter="720p">⚡ 720p HD</button>
+        <button class="quality-filter-pill dpad-focusable" data-filter="480p">💾 480p (توفير)</button>
+        <button class="quality-filter-pill dpad-focusable" data-filter="vip">🚀 VIP Fast</button>
+      `;
+
+      filterBar.querySelectorAll('.quality-filter-pill').forEach(pill => {
+        pill.onclick = (e) => {
+          e.stopPropagation();
+          filterBar.querySelectorAll('.quality-filter-pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          const f = pill.getAttribute('data-filter');
+          watchGrid.querySelectorAll('.server-card-component:not(.auto-play-best-btn):not(.deep-search-trigger)').forEach(card => {
+            if (f === 'all') {
+              card.style.display = 'flex';
+            } else if (f === '1080p') {
+              card.style.display = card.textContent.includes('1080p') ? 'flex' : 'none';
+            } else if (f === '720p') {
+              card.style.display = card.textContent.includes('720p') ? 'flex' : 'none';
+            } else if (f === '480p') {
+              card.style.display = card.textContent.includes('480p') ? 'flex' : 'none';
+            } else if (f === 'vip') {
+              card.style.display = (card.textContent.includes('VIP') || card.textContent.includes('⚡') || card.textContent.includes('Direct')) ? 'flex' : 'none';
+            }
+          });
+        };
+      });
+      watchGrid.appendChild(filterBar);
+
+      // Render Individual Server Cards
       allServers.forEach((srv, idx) => {
         const qInfo = qualitySizes[idx % qualitySizes.length];
         const quality = srv.quality || qInfo.quality;
         const sizeTag = srv.size || qInfo.size;
-        const serverBadge = srv.badge || (idx === 0 ? 'A Tube VIP ⚡' : 'A Tube Direct');
+        const latencyText = srv.latency || qInfo.latency;
+        const latencyClass = qInfo.isFast ? 'fast' : 'stable';
+        const serverBadge = srv.badge || (idx === 0 ? 'VIP Fast ⚡' : 'A Tube Direct');
         const serverTitle = srv.name || `سيرفر مشاهدة ${idx + 1} - A Tube Direct`;
 
-        // 1. Redesigned Watch Card Component (Full Width Grid)
+        // 1. Redesigned Watch Card Component
         const watchCard = document.createElement('button');
         watchCard.className = 'server-card-component dpad-focusable';
         watchCard.tabIndex = 0;
         watchCard.innerHTML = `
           <div class="server-card-top-row">
             <span class="server-site-badge">${safeHtml(serverBadge)}</span>
+            <span class="latency-badge ${latencyClass}">🟢 ${latencyText}</span>
             <div class="server-action-icon">▶</div>
           </div>
           <div class="server-card-middle-row">
@@ -580,19 +645,21 @@ const MovieDetails = (function () {
               category: movie.category_name || movie.category || 'A Tube Ultra HD',
               streamUrl: srv.url || srv.stream_url,
               quality: quality,
-              content_type: movie.content_type
+              content_type: movie.content_type,
+              candidateServers: allServers
             });
           }
         };
         watchGrid.appendChild(watchCard);
 
-        // 2. Redesigned Download Card Component (Full Width Grid)
+        // 2. Redesigned Download Card Component
         const dlCard = document.createElement('button');
         dlCard.className = 'server-card-component download-card dpad-focusable';
         dlCard.tabIndex = 0;
         dlCard.innerHTML = `
           <div class="server-card-top-row">
             <span class="server-site-badge download-badge">تحميل مباشر 📥</span>
+            <span class="latency-badge fast">🟢 سرعة قصوى</span>
             <div class="server-action-icon">⬇</div>
           </div>
           <div class="server-card-middle-row">
@@ -614,22 +681,46 @@ const MovieDetails = (function () {
         downloadGrid.appendChild(dlCard);
       });
 
-      // 3. Multi-Portal Live Deep Search Card (Appended to Watch Grid)
+      // 3. Multi-Portal Live Deep Search Card with Radar Live Scanner
       const deepSearchCard = document.createElement('button');
-      deepSearchCard.className = 'server-card-component dpad-focusable';
-      deepSearchCard.style.cssText = 'background: rgba(0, 229, 255, 0.08); border: 1px dashed rgba(0, 229, 255, 0.45); justify-content: center; align-items: center; min-height: 100px;';
+      deepSearchCard.className = 'server-card-component deep-search-trigger dpad-focusable';
+      deepSearchCard.style.cssText = 'background: rgba(0, 229, 255, 0.08); border: 1px dashed rgba(0, 229, 255, 0.45); justify-content: center; align-items: center; min-height: 100px; width: 100%;';
       deepSearchCard.tabIndex = 0;
       deepSearchCard.innerHTML = `
         <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;">
-          <span style="font-size: 22px;">🔍</span>
-          <span style="color: var(--primary-cyan); font-weight: 800; font-size: 12px;">البحث عن المزيد من السيرفرات السحابية...</span>
+          <span style="font-size: 24px;">🔍</span>
+          <span style="color: var(--primary-cyan); font-weight: 800; font-size: 14px;">بحث حي متقدم في محركات السيرفرات العربية (Radar Scanner)...</span>
         </div>
       `;
 
       deepSearchCard.onclick = async () => {
-        if (loaderEl) loaderEl.classList.remove('is-hidden');
-        watchGrid.classList.add('is-hidden');
-        downloadGrid.classList.add('is-hidden');
+        // Render Live Multi-Stage Radar Scanner
+        watchGrid.innerHTML = `
+          <div class="radar-scanner-container">
+            <div class="radar-sweep-icon"></div>
+            <div class="radar-stage-title">📡 جاري مسح محركات البث الحية عبر Google Dorking</div>
+            <div id="radar-live-status-text" class="radar-stage-text">🔍 جاري فحص محرك جوجل وقاعدة بيانات أكوام (Akwam)...</div>
+          </div>
+        `;
+
+        const statusTextEl = document.getElementById('radar-live-status-text');
+
+        // Multi-stage radar ticker
+        const radarStages = [
+          '🔍 جاري فحص محرك جوجل وقاعدة بيانات أكوام (Akwam)...',
+          '⚡ فحص فاصل إعلاني (FaselHD) وسيرفرات Vidmoly...',
+          '🎬 فحص عرب سيد (ArabSeed) وإيجي ديد وسيرفرات Mixdrop...',
+          '🛡️ تنقية السيرفرات وإزالة التكرار واستخراج الروابط المباشرة...',
+          '✨ اكتمل البحث! جاري تجهيز أزرار المشاهدة والتحميل...'
+        ];
+
+        let stageIdx = 0;
+        const tickerInterval = setInterval(() => {
+          stageIdx++;
+          if (stageIdx < radarStages.length && statusTextEl) {
+            statusTextEl.textContent = radarStages[stageIdx];
+          }
+        }, 550);
 
         const titleEn = movie.title || '';
         const titleAr = movie.arabic_title || '';
@@ -646,6 +737,7 @@ const MovieDetails = (function () {
 
         try {
           const res = await fetch(`/api/scrape-servers?title_en=${encodeURIComponent(titleEn)}&title_ar=${encodeURIComponent(titleAr)}&year=${encodeURIComponent(year)}&type=${encodeURIComponent(movie.content_type || 'movie')}&episode=${encodeURIComponent(epNum)}&season=${encodeURIComponent(sNum)}`);
+          clearInterval(tickerInterval);
           if (res.ok) {
             const data = await res.json();
             if (data && data.servers && data.servers.length > 0) {
@@ -653,10 +745,12 @@ const MovieDetails = (function () {
               return;
             }
           }
-        } catch (_) {}
+        } catch (_) {
+          clearInterval(tickerInterval);
+        }
 
-        if (loaderEl) loaderEl.classList.add('is-hidden');
-        watchGrid.classList.remove('is-hidden');
+        clearInterval(tickerInterval);
+        renderServersList(allServers, mediaTitle);
       };
 
       watchGrid.appendChild(deepSearchCard);

@@ -958,3 +958,181 @@
   color: #10b981 !important;
   border: 1px solid rgba(16, 185, 129, 0.4) !important;
 }
+
+/* ==========================================================================
+   SMART RADAR SCANNER, QUALITY QUICK-FILTER & AUTO-PLAY BEST SERVER UX
+   ========================================================================== */
+
+/* Auto-Play Best Server Glowing Action */
+.auto-play-best-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: linear-gradient(135deg, #00e5ff 0%, #ff0055 100%);
+  color: #ffffff;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 25px rgba(0, 229, 255, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.auto-play-best-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.auto-play-best-btn:hover, .auto-play-best-btn:focus {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 6px 35px rgba(255, 0, 85, 0.55);
+}
+
+.auto-play-best-btn:hover::before {
+  opacity: 1;
+}
+
+/* Quality Quick-Filter Bar */
+.quality-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+
+.quality-filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.quality-filter-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.quality-filter-pill:hover {
+  background: rgba(0, 229, 255, 0.1);
+  color: #00e5ff;
+  border-color: rgba(0, 229, 255, 0.3);
+}
+
+.quality-filter-pill.active {
+  background: rgba(0, 229, 255, 0.2);
+  color: #00e5ff;
+  border-color: #00e5ff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+}
+
+/* Radar Live Scanner UX */
+.radar-scanner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 35px 20px;
+  background: radial-gradient(circle at center, rgba(0, 229, 255, 0.08) 0%, rgba(8, 23, 31, 0.95) 70%);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.radar-sweep-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid #00e5ff;
+  position: relative;
+  margin-bottom: 14px;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+  animation: radarPulse 2s infinite ease-out;
+}
+
+.radar-sweep-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 45%;
+  height: 2px;
+  background: #00e5ff;
+  transform-origin: 0% 0%;
+  animation: radarSpin 1.4s infinite linear;
+}
+
+@keyframes radarSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes radarPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 10px rgba(0, 229, 255, 0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 229, 255, 0.8); }
+  100% { transform: scale(0.95); box-shadow: 0 0 10px rgba(0, 229, 255, 0.4); }
+}
+
+.radar-stage-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.radar-stage-text {
+  font-size: 13px;
+  color: var(--primary-cyan, #00e5ff);
+  font-weight: 500;
+  min-height: 20px;
+  transition: opacity 0.2s ease;
+}
+
+/* Latency / Speed Indicator */
+.latency-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.latency-badge.fast {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.latency-badge.stable {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
