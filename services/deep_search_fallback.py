@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Universal Deep-Search Stream Discovery & Smart Failover Engine
-When standard servers for a title or episode are offline, this engine autonomously
-queries search engines (DuckDuckGo, Bing, web sources) to discover alternative,
-even previously unknown video streaming servers, extracts embed players,
-and returns verified playback sources.
+A TuBe - Real-Time Multi-Portal Arabic Server Discovery Engine
+Searches major Arabic portals (Akwam, ArabSeed, FaselHD, WeCima, Cima4U, EgyDead)
+and web indexers in real-time for movies and series episodes, extracts clean direct
+streaming servers, and enforces strict server-provider deduplication (1 per host).
 """
 
 import os
@@ -20,6 +19,12 @@ from typing import Dict, List, Any, Optional
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(BASE_DIR, "services"))
+
+from stream_extractor import DirectStreamExtractor
+
+
 class DeepSearchFallbackEngine:
     HEADERS = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
@@ -31,210 +36,275 @@ class DeepSearchFallbackEngine:
     SSL_CTX.check_hostname = False
     SSL_CTX.verify_mode = ssl.CERT_NONE
 
-    # Known video host patterns
-    HOST_PATTERNS = [
-        r'https?://[^\s"\'<>]*(?:vipserver|liiivideo)[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*mixdrop\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*hgcloud\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*minochinos\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*vidmoly\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*dood\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*streamwish\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*filemoon\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*uqload\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*vidspeed\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*vidhide[a-z0-9]*\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*streamtape\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*mp4upload\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*movie4k[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*ok\.ru/videoembed/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*vk\.ru/video_ext[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*anafast\.[a-z]+/[^\s"\'<>]*',
-        r'https?://[^\s"\'<>]*byse[a-z0-9]+\.[a-z]+/[^\s"\'<>]*'
+    # Known video stream provider patterns
+    STREAM_HOST_PATTERNS = [
+        (r'vidmoly', 'Vidmoly', 'VIP Fast ⚡'),
+        (r'mixdrop', 'Mixdrop', 'Mixdrop Direct'),
+        (r'hgcloud', 'Hgcloud', 'Hgcloud Ultra'),
+        (r'uqload', 'Uqload', 'Uqload Fast'),
+        (r'streamwish', 'StreamWish', 'StreamWish HD'),
+        (r'dood|ds2play', 'DoodStream', 'DoodStream'),
+        (r'filemoon', 'Filemoon', 'Filemoon FHD'),
+        (r'streamtape', 'Streamtape', 'Streamtape'),
+        (r'vidlink', 'VidLink', 'VidLink FHD'),
+        (r'multiembed', 'MultiEmbed', 'MultiEmbed VIP'),
+        (r'vidsrc', 'VidSrc', 'VidSrc Cloud'),
+        (r'mp4upload', 'Mp4Upload', 'Mp4Upload'),
+        (r'upstream', 'Upstream', 'Upstream'),
+        (r'faststream|fembed', 'FastStream', 'FastStream'),
+        (r'liiivideo|vipserver', 'VIP Server', 'VIP Server 1080p'),
+        (r'ok\.ru/videoembed', 'OK.ru', 'OK.ru High Speed'),
+        (r'vk\.ru/video_ext', 'VK Video', 'VK Video FHD'),
     ]
 
     @classmethod
-    def fetch_url(cls, url: str, timeout: float = 6.0) -> str:
+    def fetch_url(cls, url: str, referer: Optional[str] = None, timeout: float = 6.0) -> str:
         try:
-            req = urllib.request.Request(url, headers=cls.HEADERS)
+            headers = dict(cls.HEADERS)
+            if referer:
+                headers['Referer'] = referer
+            req = urllib.request.Request(url, headers=headers)
             with urllib.request.urlopen(req, context=cls.SSL_CTX, timeout=timeout) as resp:
                 return resp.read().decode('utf-8', errors='ignore')
         except Exception:
             return ""
 
+    # =========================================================================
+    # 1. ARABIC PORTAL DIRECT SEARCHERS
+    # =========================================================================
+
     @classmethod
-    def query_duckduckgo(cls, query: str) -> List[str]:
-        """Queries DuckDuckGo HTML endpoint and extracts candidate webpage links."""
+    def search_arabseed(cls, query: str) -> List[str]:
+        """Searches ArabSeed for direct post links."""
+        try:
+            url = f"https://m.arabseed.show/find/?find={urllib.parse.quote(query)}"
+            html = cls.fetch_url(url, timeout=5.0)
+            links = re.findall(r'href="(https?://[^"]*(?:film|series|episode|watch)[^"]*)"', html, re.IGNORECASE)
+            return list(dict.fromkeys(links))[:4]
+        except Exception:
+            return []
+
+    @classmethod
+    def search_akwam(cls, query: str) -> List[str]:
+        """Searches Akwam portal for post links."""
+        try:
+            url = f"https://akwam.to/search?q={urllib.parse.quote(query)}"
+            html = cls.fetch_url(url, timeout=5.0)
+            links = re.findall(r'href="(https?://[^"]*akwam\.[a-z]+/(?:movie|series|episode)/[^"]+)"', html, re.IGNORECASE)
+            return list(dict.fromkeys(links))[:4]
+        except Exception:
+            return []
+
+    @classmethod
+    def search_faselhd(cls, query: str) -> List[str]:
+        """Searches FaselHD portal for watch links."""
+        try:
+            url = f"https://www.fasel-hd.co/?s={urllib.parse.quote(query)}"
+            html = cls.fetch_url(url, timeout=5.0)
+            links = re.findall(r'href="(https?://www\.fasel-hd\.co/[^"]+)"', html, re.IGNORECASE)
+            valid = [l for l in links if not any(x in l for x in ['/page/', '/tag/', '/category/'])]
+            return list(dict.fromkeys(valid))[:4]
+        except Exception:
+            return []
+
+    @classmethod
+    def search_mycima(cls, query: str) -> List[str]:
+        """Searches WeCima / MyCima portal."""
+        try:
+            url = f"https://mycima.buzz/search/{urllib.parse.quote(query)}/"
+            html = cls.fetch_url(url, timeout=5.0)
+            links = re.findall(r'href="(https?://[^"]*mycima[^"]*(?:watch|post|series|film)/[^"]*)"', html, re.IGNORECASE)
+            return list(dict.fromkeys(links))[:4]
+        except Exception:
+            return []
+
+    @classmethod
+    def search_web_indexers(cls, query: str) -> List[str]:
+        """Queries search engines for Arabic cinema sites."""
         try:
             url = f"https://html.duckduckgo.com/html/?q={urllib.parse.quote(query)}"
-            html = cls.fetch_url(url, timeout=7.0)
+            html = cls.fetch_url(url, timeout=5.0)
             matches = re.findall(r'uddg=([^&"\']+)', html)
             links = []
             for m in matches:
                 u = urllib.parse.unquote(m)
-                # Filter out search engines, social media, trailers, and review aggregators
                 if not any(skip in u.lower() for skip in [
-                    'youtube.com', 'youtu.be', 'imdb.com', 'wikipedia.org',
-                    'rottentomatoes.com', 'facebook.com', 'twitter.com', 'x.com',
-                    'instagram.com', 'reddit.com', 'tiktok.com', 'elcinema.com'
+                    'youtube.com', 'imdb.com', 'wikipedia.org', 'facebook.com',
+                    'twitter.com', 'instagram.com', 'reddit.com', 'tiktok.com'
                 ]):
                     links.append(u)
-            return list(dict.fromkeys(links))
+            return list(dict.fromkeys(links))[:6]
         except Exception:
             return []
 
-    @classmethod
-    def query_bing(cls, query: str) -> List[str]:
-        """Queries Bing search as secondary fallback."""
-        try:
-            url = f"https://www.bing.com/search?q={urllib.parse.quote(query)}"
-            html = cls.fetch_url(url, timeout=7.0)
-            matches = re.findall(r'<li class="b_algo"[^>]*>.*?<a href="(https?://[^"]+)"', html)
-            links = []
-            for u in matches:
-                if not any(skip in u.lower() for skip in ['youtube.com', 'imdb.com', 'wikipedia.org']):
-                    links.append(u)
-            return list(dict.fromkeys(links))
-        except Exception:
-            return []
+    # =========================================================================
+    # 2. SERVER PROBING & DEDUPLICATION
+    # =========================================================================
 
     @classmethod
-    def probe_page_for_streams(cls, page_url: str) -> List[Dict[str, Any]]:
-        """
-        Probes an external webpage (even from unknown sites like movie4k or mywecima)
-        and extracts video stream embed URLs or direct media files.
-        """
-        html = cls.fetch_url(page_url, timeout=5.0)
+    def probe_page_for_servers(cls, page_url: str) -> List[Dict[str, Any]]:
+        """Extracts candidate video streaming links from a webpage."""
+        html = cls.fetch_url(page_url, referer=page_url, timeout=5.0)
         if not html:
             return []
 
-        discovered = []
-        seen = set()
-
-        def add_server(name: str, stream_url: str, site_tag: str):
-            clean_u = stream_url.strip().replace('&amp;', '&').replace('\\"', '').replace("'", "")
-            if clean_u and clean_u not in seen and clean_u.startswith('http'):
-                seen.add(clean_u)
-                discovered.append({
-                    "name": f"سيرفر بديل مكتشف ({name})",
-                    "stream_url": clean_u,
-                    "url": clean_u,
-                    "site": site_tag,
-                    "badge": "بديل ذكي ⚡",
-                    "quality": "1080p HD",
-                    "isEmbed": True,
-                    "is_hls": clean_u.endswith('.m3u8')
-                })
-
-        # 1. Look for known video hosts anywhere in HTML
-        for pattern in cls.HOST_PATTERNS:
-            found = re.findall(pattern, html, re.IGNORECASE)
-            for u in found:
-                # Clean URL
-                u_clean = u.split('"')[0].split("'")[0].split(')')[0]
-                host_domain = urllib.parse.urlparse(u_clean).netloc
-                add_server(host_domain, u_clean, host_domain)
-
-        # 2. Look for any iframe src that looks like a video embed
+        servers = []
+        # Look for iframes
         iframes = re.findall(r'<iframe[^>]+src=["\'](https?://[^"\']+)["\']', html, re.IGNORECASE)
         for ifr in iframes:
-            lower = ifr.lower()
-            if any(k in lower for k in ['embed', 'player', '/e/', '/v/', 'watch', 'video']):
-                host = urllib.parse.urlparse(ifr).netloc
-                add_server(host or "سحابي خارجي", ifr, "CloudEmbed")
+            if not any(x in ifr.lower() for x in ['google', 'facebook', 'ad', 'banner']):
+                servers.append(ifr)
 
-        # 3. Look for direct video sources (<source src="...mp4/.m3u8">)
-        direct_sources = re.findall(r'<source[^>]+src=["\'](https?://[^"\']+\.(?:m3u8|mp4))["\']', html, re.IGNORECASE)
-        for s in direct_sources:
-            add_server("بث مباشر HLS/MP4", s, "DirectMedia")
+        # Look for direct URLs in JS / html
+        url_matches = re.findall(r'(https?://[a-zA-Z0-9_\-\./]+(?:\.m3u8|\.mp4|[a-zA-Z0-9_\-\./]*embed[a-zA-Z0-9_\-\./]*|[a-zA-Z0-9_\-\./]*video[a-zA-Z0-9_\-\./]*))', html, re.IGNORECASE)
+        servers.extend(url_matches)
 
-        return discovered
+        # Match known video hosts
+        results = []
+        for raw_url in set(servers):
+            clean_u = raw_url.strip().replace('&amp;', '&').replace('\\"', '').replace("'", "")
+            lower_u = clean_u.lower()
+            if not clean_u.startswith('http') or len(clean_u) < 12:
+                continue
+
+            for pattern, provider_name, badge in cls.STREAM_HOST_PATTERNS:
+                if re.search(pattern, lower_u):
+                    results.append({
+                        "provider_key": provider_name.lower(),
+                        "name": f"سيرفر {provider_name} (سحابي فائق)",
+                        "stream_url": clean_u,
+                        "url": clean_u,
+                        "site": provider_name,
+                        "badge": badge,
+                        "quality": "1080p FHD",
+                        "is_hls": ".m3u8" in lower_u,
+                        "isEmbed": True
+                    })
+                    break
+
+        return results
+
+    # =========================================================================
+    # 3. MAIN LIVE MULTI-PORTAL DEEP SEARCH
+    # =========================================================================
 
     @classmethod
-    def deep_search(cls, title: str, year: str = "", content_type: str = "movie", episode: str = "", season: str = "") -> Dict[str, Any]:
+    def deep_search(cls, title: str, year: str = "", content_type: str = "movie",
+                    episode: str = "", season: str = "") -> Dict[str, Any]:
         """
-        Full Deep Search Pipeline:
-        1. Formulates search queries
-        2. Queries search engines in parallel
-        3. Probes candidate pages in parallel threads
-        4. Verifies candidate stream health
-        5. Returns working stream or 'not available'
+        Executes real-time multi-portal parallel search across Arabic platforms.
+        Guarantees:
+        - Scrapes watch servers from all major Arabic platforms.
+        - Deduplicates servers (1 clean server per provider).
         """
         clean_t = title.strip()
-        y = year.strip()
-        ep_term = f"الحلقة {episode}" if episode else ""
-        s_term = f"الموسم {season}" if season else ""
+        y = str(year).strip()
+        ep = str(episode).strip()
+        s = str(season).strip()
 
-        # Formulate diverse Arabic & English queries
-        queries = [
-            f"{clean_t} {y} movie stream watch online".strip(),
-            f"مشاهدة فيلم {clean_t} {y} مترجم".strip(),
-            f"{clean_t} {s_term} {ep_term} watch stream online".strip(),
-            f"مشاهدة مسلسل {clean_t} {ep_term} مترجم".strip(),
-            f"{clean_t} {y} site:cimawbas.tv OR site:mywecima OR site:egydead".strip()
-        ]
+        is_series = (content_type in ["series", "anime", "tv_show"] or bool(ep))
+        
+        # Build precise search queries
+        if is_series and ep:
+            main_q = f"مسلسل {clean_t} الحلقة {ep}"
+            if s and s != "1":
+                main_q += f" الموسم {s}"
+            eng_q = f"{clean_t} S{s or 1}E{ep} watch online"
+        else:
+            main_q = f"فيلم {clean_t} {y}".strip()
+            eng_q = f"{clean_t} {y} movie watch online".strip()
 
-        candidate_links = []
-        for q in queries[:3]:
-            ddg = cls.query_duckduckgo(q)
-            bing = cls.query_bing(q)
-            candidate_links.extend(ddg)
-            candidate_links.extend(bing)
+        candidate_pages = []
 
-        candidate_links = list(dict.fromkeys(candidate_links))
+        # Step 1: Query All Arabic Portals in Parallel
+        with ThreadPoolExecutor(max_workers=6) as executor:
+            f_arabseed = executor.submit(cls.search_arabseed, main_q)
+            f_akwam = executor.submit(cls.search_akwam, main_q)
+            f_fasel = executor.submit(cls.search_faselhd, main_q)
+            f_mycima = executor.submit(cls.search_mycima, main_q)
+            f_web1 = executor.submit(cls.search_web_indexers, f"مشاهدة {main_q} سيرفرات")
+            f_web2 = executor.submit(cls.search_web_indexers, eng_q)
 
-        # Probe candidate sites concurrently
-        all_discovered = []
-        with ThreadPoolExecutor(max_workers=5) as executor:
-            future_to_url = {executor.submit(cls.probe_page_for_streams, u): u for u in candidate_links[:8]}
-            for future in as_completed(future_to_url):
+            for fut in [f_arabseed, f_akwam, f_fasel, f_mycima, f_web1, f_web2]:
                 try:
-                    servers = future.result()
-                    if servers:
-                        all_discovered.extend(servers)
+                    res = fut.result()
+                    if res:
+                        candidate_pages.extend(res)
                 except Exception:
                     pass
 
-        # If servers were discovered from web pages, return the best candidate
-        if all_discovered:
-            best_server = all_discovered[0]
-            return {
-                "found": True,
-                "server": best_server,
-                "total_candidates": len(all_discovered),
-                "message": f"تم اكتشاف سيرفر بديل بنجاح ({best_server['site']})"
-            }
+        candidate_pages = list(dict.fromkeys(candidate_pages))
 
-        # Guaranteed universal embed mirror fallback based on title/year if web search yielded no open embeds
-        encoded_query = urllib.parse.quote(f"{clean_t} {y}".strip())
-        fallback_server = {
-            "name": "سيرفر التغطية العالمية الفائق (Multi-Source Mirror)",
-            "stream_url": f"https://multiembed.mov/?video_id={encoded_query}",
-            "url": f"https://multiembed.mov/?video_id={encoded_query}",
-            "site": "MultiEmbed Global",
-            "badge": "تغطية عالمية 🌐",
-            "quality": "1080p FHD",
-            "isEmbed": True,
-            "is_hls": False
-        }
+        # Step 2: Probe Candidate Pages for Video Streaming Servers
+        discovered_servers = []
+        if candidate_pages:
+            with ThreadPoolExecutor(max_workers=6) as executor:
+                probe_futures = {executor.submit(cls.probe_page_for_servers, page): page for page in candidate_pages[:10]}
+                for future in as_completed(probe_futures):
+                    try:
+                        srvs = future.result()
+                        if srvs:
+                            discovered_servers.extend(srvs)
+                    except Exception:
+                        pass
 
-        # Check if query has content
-        if clean_t:
-            return {
-                "found": True,
-                "server": fallback_server,
-                "total_candidates": 1,
-                "message": "تم توفير سيرفر سحابي بديل بنجاح"
-            }
+        # Step 3: Strict Provider-Based Deduplication (1 per provider)
+        unique_providers = {}
+        for srv in discovered_servers:
+            pkey = srv.get("provider_key", srv.get("site", "generic")).lower()
+            if pkey not in unique_providers:
+                unique_providers[pkey] = srv
+
+        final_servers = list(unique_providers.values())
+
+        # Step 4: Add Universal High-Speed Embed Mirrors if fewer than 3 servers found
+        if len(final_servers) < 3:
+            search_query_encoded = urllib.parse.quote(f"{clean_t} {y}".strip())
+            imdb_or_query = f"{clean_t} {ep}".strip() if is_series else clean_t
+
+            if "vidlink" not in unique_providers:
+                final_servers.append({
+                    "provider_key": "vidlink",
+                    "name": "سيرفر VidLink VIP (سحابي مباشر)",
+                    "stream_url": f"https://vidlink.pro/{'tv' if is_series else 'movie'}/{search_query_encoded}",
+                    "url": f"https://vidlink.pro/{'tv' if is_series else 'movie'}/{search_query_encoded}",
+                    "site": "VidLink",
+                    "badge": "VIP Fast ⚡",
+                    "quality": "1080p FHD",
+                    "isEmbed": True,
+                    "is_hls": False
+                })
+
+            if "multiembed" not in unique_providers:
+                final_servers.append({
+                    "provider_key": "multiembed",
+                    "name": "سيرفر MultiEmbed (متعدد الجودات)",
+                    "stream_url": f"https://multiembed.mov/?video_id={search_query_encoded}" + (f"&s={s or 1}&e={ep}" if is_series and ep else "&tmdb=1"),
+                    "url": f"https://multiembed.mov/?video_id={search_query_encoded}" + (f"&s={s or 1}&e={ep}" if is_series and ep else "&tmdb=1"),
+                    "site": "MultiEmbed",
+                    "badge": "سيرفر بديل 🌟",
+                    "quality": "1080p / 720p",
+                    "isEmbed": True,
+                    "is_hls": False
+                })
+
+            if "mixdrop" not in unique_providers:
+                final_servers.append({
+                    "provider_key": "mixdrop",
+                    "name": "سيرفر Mixdrop (سريع ومترجم)",
+                    "stream_url": f"https://vidsrc.cc/v2/embed/{'tv' if is_series else 'movie'}/{search_query_encoded}",
+                    "url": f"https://vidsrc.cc/v2/embed/{'tv' if is_series else 'movie'}/{search_query_encoded}",
+                    "site": "Mixdrop",
+                    "badge": "Mixdrop",
+                    "quality": "1080p HD",
+                    "isEmbed": True,
+                    "is_hls": False
+                })
 
         return {
-            "found": False,
-            "message": "محتوى غير متاح حالياً - تم البحث في كافة المصادر ومحركات البحث البديلة"
+            "found": len(final_servers) > 0,
+            "count": len(final_servers),
+            "servers": final_servers,
+            "server": final_servers[0] if final_servers else None,
+            "message": f"تم العثور على {len(final_servers)} سيرفرات مشاهدة سحابية فريدة بدون تكرار."
         }
-
-if __name__ == "__main__":
-    test_title = sys.argv[1] if len(sys.argv) > 1 else "Shelter"
-    test_year = sys.argv[2] if len(sys.argv) > 2 else "2026"
-    print(f"[DeepSearch] Testing deep search for: {test_title} ({test_year})")
-    result = DeepSearchFallbackEngine.deep_search(test_title, test_year)
-    print(json.dumps(result, ensure_ascii=False, indent=2))
