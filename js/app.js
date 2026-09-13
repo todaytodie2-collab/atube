@@ -463,9 +463,9 @@ function createMediaCard(m, index = 0) {
 
   card.innerHTML = `
     <div class="program-thumb">
-      <img src="${fallbackSvg}"
-           data-src="${posterSrc}"
+      <img src="${posterSrc}"
            alt="${cleanAlt}"
+           loading="lazy"
            decoding="async"
            class="lazy-poster-img">
       <span class="program-card-badge">${cleanRating}</span>

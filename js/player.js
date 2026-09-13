@@ -1848,24 +1848,17 @@ const InAppPlayer = (function () {
     }, 200);
   }
 
-  // Load Stream Source with Direct Stream Extractor & HTML5/HLS Player (Zero-Iframe)
+  // Load Stream Source with Direct Stream Extractor, Internal Proxy & HTML5/HLS Player
   async function loadStreamSource(serverObj, startTime = 0) {
     if (!videoEl) return;
     let targetUrl = serverObj.stream_url || serverObj.url || '';
 
-    // Completely deactivate and hide any iframe
-    if (iframeEl) {
-      iframeEl.style.display = 'none';
-      iframeEl.src = 'about:blank';
-    }
-    if (modalEl) modalEl.classList.remove('is-embed-active');
-    hideEmbedGuideHint();
-    videoEl.style.display = 'block';
-
     showFailoverHUD('⚡ جاري تجهيز واستخراج البث المباشر الصافي...');
 
     // Resolve direct stream from backend if not already direct .m3u8 or .mp4
-    const isDirectMedia = targetUrl.includes('.m3u8') || targetUrl.endsWith('.mp4') || targetUrl.endsWith('.mkv');
+    let isDirectMedia = targetUrl.includes('.m3u8') || targetUrl.endsWith('.mp4') || targetUrl.endsWith('.mkv') || targetUrl.includes('/stream/') || targetUrl.includes('.webm');
+    let resolvedData = null;
+
     if (targetUrl && !isDirectMedia) {
       try {
         const controller = new AbortController();
@@ -1875,9 +1868,10 @@ const InAppPlayer = (function () {
         });
         clearTimeout(tId);
         if (resp.ok) {
-          const data = await resp.json();
-          if (data && data.success && data.stream_url) {
-            targetUrl = data.stream_url;
+          resolvedData = await resp.json();
+          if (resolvedData && resolvedData.success && resolvedData.stream_url) {
+            targetUrl = resolvedData.stream_url;
+            isDirectMedia = true;
             console.log('[A Tube Player] Direct Stream successfully resolved:', targetUrl);
           }
         }
@@ -1891,117 +1885,104 @@ const InAppPlayer = (function () {
       return;
     }
 
-    const isHls = serverObj.is_hls || targetUrl.includes('.m3u8');
+    // CASE 1: Direct Raw Media (.m3u8 / .mp4 / .webm) -> Native HTML5 & Hls.js
+    if (isDirectMedia || targetUrl.includes('.m3u8') || targetUrl.includes('.mp4')) {
+      if (iframeEl) {
+        iframeEl.style.display = 'none';
+        iframeEl.src = 'about:blank';
+      }
+      if (modalEl) modalEl.classList.remove('is-embed-active');
+      hideEmbedGuideHint();
+      videoEl.style.display = 'block';
 
-    if (isHls && window.Hls && window.Hls.isSupported()) {
-      hlsInstance = new window.Hls({
-        enableWorker: true,
-        lowLatencyMode: false, // Disabling aggressive low-latency edge-chasing prevents continuous buffer starvation and video stuttering!
-        backBufferLength: 20,
-        maxBufferLength: 30,
-        maxMaxBufferLength: 60,
-        liveSyncDurationCount: 3,
-        liveMaxLatencyDurationCount: 10,
-        capLevelToPlayerSize: true, // Optimizes video decoder performance based on player viewport
-        nudgeOffset: 0.2,
-        nudgeMaxRetry: 5
-      });
+      const isHls = serverObj.is_hls || targetUrl.includes('.m3u8') || (resolvedData && resolvedData.is_hls);
 
-      // Direct, fast stream loading without bottleneck rewriting
+      // Route through local internal proxy to eliminate CORS and referer blocking
       let playUrl = targetUrl;
-      if (window.location.protocol === 'https:' && targetUrl.startsWith('http://')) {
-        playUrl = `https://corsproxy.io/?url=${encodeURIComponent(targetUrl)}`;
+      if (window.location.protocol !== 'file:' && !targetUrl.includes('/api/stream/proxy')) {
+        playUrl = `/api/stream/proxy?url=${encodeURIComponent(targetUrl)}&referer=${encodeURIComponent(serverObj.url || targetUrl)}`;
       }
 
-      hlsInstance.loadSource(playUrl);
-      hlsInstance.attachMedia(videoEl);
-
-      hlsInstance.on(window.Hls.Events.MANIFEST_PARSED, () => {
-        if (startTime > 0) {
-          videoEl.currentTime = startTime;
+      if (isHls && window.Hls && window.Hls.isSupported()) {
+        if (hlsInstance) {
+          try { hlsInstance.destroy(); } catch (_) {}
         }
-        videoEl.play().catch(e => console.log('Autoplay handled:', e));
-        if (currentPlayingItem && isLiveMediaItem(currentPlayingItem)) {
-          startStreamHealthMonitoring();
-        }
-      });
+        hlsInstance = new window.Hls({
+          enableWorker: true,
+          lowLatencyMode: false,
+          backBufferLength: 20,
+          maxBufferLength: 30,
+          maxMaxBufferLength: 60,
+          capLevelToPlayerSize: true,
+          nudgeOffset: 0.2,
+          nudgeMaxRetry: 5
+        });
 
-      // CORS Proxy chain: tries 3 proxies before triggering server failover
-      const CORS_PROXIES = [
-        (u) => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
-        (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-        (u) => `https://cors-anywhere.herokuapp.com/${u}`
-      ];
-      let proxyAttempt = 0;
-      hlsInstance.on(window.Hls.Events.ERROR, (event, data) => {
-        if (data.fatal) {
-          switch (data.type) {
-            case window.Hls.ErrorTypes.NETWORK_ERROR:
-              console.warn('[A Tube Player] HLS Network error:', data.details);
-              if (proxyAttempt < CORS_PROXIES.length && !playUrl.includes('corsproxy.io') && !playUrl.includes('allorigins') && !playUrl.includes('cors-anywhere')) {
-                const proxyUrl = CORS_PROXIES[proxyAttempt++](targetUrl);
-                console.log(`[A Tube Player] Retrying via CORS proxy #${proxyAttempt}: ${proxyUrl.slice(0, 60)}`);
-                showFailoverHUD(`🔄 جاري المحاولة عبر بروكسي بديل (${proxyAttempt}/3)...`);
-                hlsInstance.loadSource(proxyUrl);
-                hlsInstance.startLoad();
-              } else if (proxyAttempt >= CORS_PROXIES.length) {
-                // All proxies failed — try embed fallback for live channels
-                if (currentPlayingItem && isLiveMediaItem(currentPlayingItem) && currentPlayingItem.embedUrl) {
-                  console.log('[A Tube Player] All HLS proxies failed. Falling back to embed player...');
-                  showFailoverHUD('🔄 التحويل للمشغل البديل...');
-                  flushDecoderBuffer();
-                  setTimeout(() => {
-                    loadStreamSource({ url: currentPlayingItem.embedUrl, isEmbed: true, name: 'مشغل الويب البديل' }, 0);
-                  }, 300);
+        hlsInstance.loadSource(playUrl);
+        hlsInstance.attachMedia(videoEl);
+
+        hlsInstance.on(window.Hls.Events.MANIFEST_PARSED, () => {
+          if (startTime > 0) {
+            videoEl.currentTime = startTime;
+          }
+          videoEl.play().catch(e => console.log('Autoplay handled:', e));
+          if (currentPlayingItem && isLiveMediaItem(currentPlayingItem)) {
+            startStreamHealthMonitoring();
+          }
+        });
+
+        hlsInstance.on(window.Hls.Events.ERROR, (event, data) => {
+          if (data.fatal) {
+            switch (data.type) {
+              case window.Hls.ErrorTypes.NETWORK_ERROR:
+                console.warn('[A Tube Player] HLS Network error, attempting direct URL fallback...');
+                // Fallback to direct playUrl without proxy
+                if (playUrl.includes('/api/stream/proxy')) {
+                  hlsInstance.loadSource(targetUrl);
+                  hlsInstance.startLoad();
                 } else {
-                  triggerStatelessFailover('خطأ شبكة - انتهت كل البروكسيات');
+                  triggerStatelessFailover('خطأ شبكة في سيرفر البث');
                 }
-              } else {
-                hlsInstance.startLoad();
-              }
-              break;
-            case window.Hls.ErrorTypes.MEDIA_ERROR:
-              console.warn('[A Tube Player] HLS Media error, attempting recovery...');
-              hlsInstance.recoverMediaError();
-              break;
-            default:
-              console.warn('[A Tube Player] Unrecoverable HLS error. Triggering Failover...');
-              triggerStatelessFailover('خطأ في حزمة البث المباشر');
-              break;
+                break;
+              case window.Hls.ErrorTypes.MEDIA_ERROR:
+                hlsInstance.recoverMediaError();
+                break;
+              default:
+                triggerStatelessFailover('خطأ في حزمة البث المباشر');
+                break;
+            }
           }
-        }
-      });
+        });
+      } else {
+        // Direct MP4 / Native HLS (iOS Safari / Android TV WebView)
+        videoEl.src = playUrl;
+        videoEl.addEventListener('loadedmetadata', function onLoaded() {
+          if (startTime > 0) {
+            videoEl.currentTime = startTime;
+          }
+          videoEl.removeEventListener('loadedmetadata', onLoaded);
+        });
+
+        videoEl.play().catch(() => {
+          // Fallback to direct raw URL if proxy had an issue
+          if (playUrl !== targetUrl) {
+            videoEl.src = targetUrl;
+            videoEl.play().catch(e => console.warn('Direct play error:', e));
+          }
+        });
+      }
     } else {
-      // Direct MP4 / Native HLS (iOS Safari / Android TV WebView)
-      videoEl.src = targetUrl;
-      videoEl.addEventListener('loadedmetadata', function onLoaded() {
-        if (startTime > 0) {
-          videoEl.currentTime = startTime;
-        }
-        videoEl.removeEventListener('loadedmetadata', onLoaded);
-      });
-
-      const playTimeout = setTimeout(() => {
-        if (videoEl.paused || videoEl.readyState < 2) {
-          console.warn('[A Tube Player] Direct play timeout - stream may be unavailable');
-          if (typeof showPlayerError === 'function') {
-            showPlayerError('فشل تشغيل الفيديو - قد يكون السيرفر غير متاح');
-          }
-        }
-      }, 8000);
-
-      videoEl.play().then(() => {
-        clearTimeout(playTimeout);
-        if (currentPlayingItem && isLiveMediaItem(currentPlayingItem)) {
-          startStreamHealthMonitoring();
-        }
-      }).catch(e => {
-        clearTimeout(playTimeout);
-        console.warn('[A Tube Player] Direct play failed:', e);
-        if (typeof showPlayerError === 'function') {
-          showPlayerError('فشل تشغيل الفيديو تلقائياً - اضغط للمحاولة مرة أخرى');
-        }
-      });
+      // CASE 2: External Clean Embed Player (VidLink, MultiEmbed, Hgcloud Embed)
+      videoEl.style.display = 'none';
+      if (hlsInstance) {
+        try { hlsInstance.destroy(); hlsInstance = null; } catch (_) {}
+      }
+      if (iframeEl) {
+        iframeEl.style.display = 'block';
+        iframeEl.src = targetUrl;
+      }
+      if (modalEl) modalEl.classList.add('is-embed-active');
+      showFailoverHUD(`⚡ تشغيل السيرفر السحابي المباشر: ${serverObj.name || serverObj.site || 'A Tube Cloud'}`);
     }
   }
 
