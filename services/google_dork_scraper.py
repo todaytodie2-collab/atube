@@ -13,33 +13,38 @@ import ssl
 import json
 import urllib.request
 import urllib.parse
+import importlib
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Any, Optional
-
-try:
-    import diskcache
-    CACHE_DIR = os.path.join(BASE_DIR, "config", "dork_cache")
-    _DORK_CACHE = diskcache.Cache(CACHE_DIR)
-except Exception:
-    _DORK_CACHE = None
-
-try:
-    from selectolax.parser import HTMLParser
-    HAS_SELECTOLAX = True
-except Exception:
-    HAS_SELECTOLAX = False
-
-try:
-    import httpx
-    HAS_HTTPX = True
-except Exception:
-    HAS_HTTPX = False
 
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, "services"))
+
+# Safe dynamic library loaders (zero-crash fallback)
+try:
+    diskcache_mod = importlib.import_module("diskcache")
+    CACHE_DIR = os.path.join(BASE_DIR, "config", "dork_cache")
+    _DORK_CACHE = diskcache_mod.Cache(CACHE_DIR)
+except Exception:
+    _DORK_CACHE = None
+
+try:
+    selectolax_mod = importlib.import_module("selectolax.parser")
+    HTMLParser = selectolax_mod.HTMLParser
+    HAS_SELECTOLAX = True
+except Exception:
+    HTMLParser = None
+    HAS_SELECTOLAX = False
+
+try:
+    httpx = importlib.import_module("httpx")
+    HAS_HTTPX = True
+except Exception:
+    httpx = None
+    HAS_HTTPX = False
 
 from stream_extractor import DirectStreamExtractor
 

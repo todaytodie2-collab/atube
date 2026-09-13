@@ -13,12 +13,14 @@ import base64
 import urllib.parse
 import urllib.request
 import ssl
+import importlib
 from typing import Dict, Any, Optional, List
 
 try:
-    import m3u8
+    m3u8 = importlib.import_module("m3u8")
     HAS_M3U8 = True
 except Exception:
+    m3u8 = None
     HAS_M3U8 = False
 
 class DirectStreamExtractor:
