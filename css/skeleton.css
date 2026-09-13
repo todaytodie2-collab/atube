@@ -1,0 +1,162 @@
+/* ==========================================================================
+   A TuBe High-Performance Skeleton Shimmer & Modern Boot UI
+   ========================================================================== */
+
+@keyframes shimmerAnimation {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-bg {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.6s infinite ease-in-out;
+}
+
+/* Skeleton Billboard */
+.skeleton-hero {
+  width: 100%;
+  height: 420px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.skeleton-hero-content {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-title {
+  width: 320px;
+  height: 38px;
+  border-radius: 8px;
+}
+
+.skeleton-desc {
+  width: 480px;
+  height: 18px;
+  border-radius: 6px;
+}
+
+.skeleton-desc-short {
+  width: 300px;
+  height: 18px;
+  border-radius: 6px;
+}
+
+.skeleton-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.skeleton-btn {
+  width: 130px;
+  height: 44px;
+  border-radius: 24px;
+}
+
+/* Skeleton Carousel Row */
+.skeleton-row {
+  margin-bottom: 30px;
+}
+
+.skeleton-row-header {
+  width: 200px;
+  height: 24px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+
+.skeleton-cards-track {
+  display: flex;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.skeleton-card {
+  flex: 0 0 160px;
+  height: 240px;
+  border-radius: 12px;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (min-width: 1024px) {
+  .skeleton-card {
+    flex: 0 0 180px;
+    height: 270px;
+  }
+}
+
+/* Connection Health Pill */
+.system-health-pill {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 16, 26, 0.88);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #e2e8f0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+
+.system-health-pill.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.system-health-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981; /* Green ok */
+  box-shadow: 0 0 8px #10b981;
+}
+
+.system-health-dot.offline {
+  background: #ef4444; /* Red */
+  box-shadow: 0 0 8px #ef4444;
+}
+
+.system-health-dot.syncing {
+  background: #f59e0b; /* Yellow/Orange */
+  box-shadow: 0 0 8px #f59e0b;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.4; }
+  100% { opacity: 1; }
+}

@@ -18,16 +18,17 @@
   <link rel="stylesheet" href="css/tv-navigation.css">
   <link rel="stylesheet" href="css/movie-details.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/skeleton.css">
 
   <!-- HLS.js for direct .m3u8 Live Streams inside the app -->
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" defer></script>
 </head>
 <body>
 
   <!-- ====================================================================
        A TUBE SMART SPLASH SCREEN & BACKGROUND INITIALIZATION HUB
        ==================================================================== -->
-  <div id="app-splash-screen" class="app-splash-screen">
+  <div id="app-splash-screen" class="app-splash-screen" onclick="this.classList.add('is-hidden'); setTimeout(()=>{this.style.display='none'}, 400);">
     <div class="splash-background-image"></div>
     <div class="splash-overlay-gradient"></div>
     
@@ -45,6 +46,21 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // Inline autonomous failsafe to ensure splash screen is never stuck
+    (function() {
+      function dismissEarly() {
+        var splash = document.getElementById('app-splash-screen');
+        if (splash && !splash.classList.contains('is-hidden')) {
+          splash.classList.add('is-hidden');
+          setTimeout(function() { if (splash) splash.style.display = 'none'; }, 450);
+        }
+      }
+      setTimeout(dismissEarly, 1200);
+      window.addEventListener('load', function() { setTimeout(dismissEarly, 400); });
+    })();
+  </script>
 
   <div id="app-root">
     
@@ -1349,9 +1365,19 @@
       </div>
     </div>
 
+    <!-- ====================================================================
+         SYSTEM HEALTH & SELF-HEALING STATUS PILL
+         ==================================================================== -->
+    <div id="system-health-pill" class="system-health-pill">
+      <div class="system-health-dot"></div>
+      <span class="health-text">النظام متصل ويعمل بكفاءة</span>
+    </div>
+
   </div>
 
   <!-- App Scripts -->
+  <script src="js/db-storage.js"></script>
+  <script src="js/system-orchestrator.js"></script>
   <script src="js/bundled-data.js"></script>
   <script src="js/media-catalog.js"></script>
   <script src="js/iptv-engine.js"></script>

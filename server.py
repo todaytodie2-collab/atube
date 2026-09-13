@@ -15,6 +15,7 @@ import threading
 import urllib.parse
 import urllib.request
 import datetime
+import time
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 
 # Force UTF-8 for stdout and stderr on Windows
@@ -126,6 +127,18 @@ class ATubeHandler(SimpleHTTPRequestHandler):
             parsed = urllib.parse.urlparse(self.path)
             path = parsed.path
             query = urllib.parse.parse_qs(parsed.query)
+
+            # 0. API: Health & Diagnostic Watchdog Endpoint
+            if path in ["/api/health", "/api/ping"]:
+                self.send_cors_json({
+                    "status": "ok",
+                    "system": "A TuBe Ultra HD Backend",
+                    "version": "2.5.0",
+                    "timestamp": time.time(),
+                    "has_services": HAS_SERVICES,
+                    "active_resolvers": 8
+                })
+                return
 
             # 1. API: Legacy Multi-Category Feed (backward compatible alias)
             if path == "/api/movies/feed":

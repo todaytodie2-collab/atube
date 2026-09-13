@@ -238,15 +238,28 @@ const MediaCatalog = (function () {
   }
 
   async function loadCatalog() {
-    // 1. Always prioritize window.ATUBE_STATIC_CATALOG first for instant 0ms offline availability
-    if (Array.isArray(window.ATUBE_STATIC_CATALOG) && window.ATUBE_STATIC_CATALOG.length > 0) {
+    // 1. Instant 0ms IndexedDB retrieval
+    if (window.DBStorage) {
+      try {
+        const cached = await window.DBStorage.getCatalog();
+        if (Array.isArray(cached) && cached.length > 0) {
+          _inMemoryCatalog = cached;
+          cached.forEach(item => {
+            if (item && item.id) _ramCache.set(item.id, item);
+          });
+        }
+      } catch (_) {}
+    }
+
+    // 2. Fallback to bundled static data if memory cache still empty
+    if (_inMemoryCatalog.length === 0 && Array.isArray(window.ATUBE_STATIC_CATALOG) && window.ATUBE_STATIC_CATALOG.length > 0) {
       _inMemoryCatalog = window.ATUBE_STATIC_CATALOG.slice();
       _inMemoryCatalog.forEach(item => {
         if (item && item.id) _ramCache.set(item.id, item);
       });
     }
 
-    // 2. If running under HTTP/HTTPS web server, try fetching fresh catalog.json
+    // 3. Stale-While-Revalidate: fetch fresh catalog from server and cache to IndexedDB
     if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
       try {
         const res = await fetch('catalog.json?t=' + Date.now());
@@ -257,10 +270,13 @@ const MediaCatalog = (function () {
             data.forEach(item => {
               if (item && item.id) _ramCache.set(item.id, item);
             });
+            if (window.DBStorage) {
+              window.DBStorage.saveCatalog(data).catch(() => {});
+            }
           }
         }
       } catch (e) {
-        console.warn('[MediaCatalog] Remote fetch fallback to bundled static data:', e);
+        console.warn('[MediaCatalog] Remote fetch fallback to cached/bundled data:', e);
       }
     }
 

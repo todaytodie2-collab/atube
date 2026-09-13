@@ -169,22 +169,35 @@ const SplashManager = (function () {
 })();
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 0. Initialize Splash Orchestrator
-  SplashManager.init();
-  SplashManager.setProgress(20, 'تهيئة مشغل الفيديو وقاعدة البيانات...');
-
-  // 0b. Register Service Worker for Offline Resilience & PWA Support
-  if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+  // 0. Initialize System Orchestrator (0ms Boot, Worker, Health Watchdog)
+  try {
+    if (window.SystemOrchestrator && typeof SystemOrchestrator.init === 'function') {
+      SystemOrchestrator.init();
+    }
+  } catch (e) {
+    console.warn('SystemOrchestrator init note:', e);
   }
 
+  // 0a. Initialize Splash Orchestrator
+  try {
+    SplashManager.init();
+    SplashManager.setProgress(30, 'تهيئة مشغل الفيديو وقاعدة البيانات...');
+  } catch (_) {}
+
+  // 0b. Register Service Worker for Offline Resilience & PWA Support
+  try {
+    if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  } catch (_) {}
+
   // 1. Initialize Video Player & Movie Details
-  InAppPlayer.init();
-  MovieDetails.init();
+  try { InAppPlayer.init(); } catch (e) { console.warn('InAppPlayer init:', e); }
+  try { MovieDetails.init(); } catch (e) { console.warn('MovieDetails init:', e); }
 
   // 2. Perform Storage Maintenance (Prune obsolete history/playhead tokens)
-  cleanupOldStorage();
-  SplashManager.setProgress(45, 'مزامنة الكتالوج والأقسام الحصرية...');
+  try { cleanupOldStorage(); } catch (_) {}
+  try { SplashManager.setProgress(60, 'مزامنة الكتالوج والأقسام الحصرية...'); } catch (_) {}
 
   // 3. Load Real Catalog from Server
   if (window.MediaCatalog && typeof MediaCatalog.loadCatalog === 'function') {
@@ -194,61 +207,70 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.warn('Catalog load note:', e);
     }
   }
-  SplashManager.setProgress(75, 'تجهيز القنوات والصفحة الرئيسية...');
+  try { SplashManager.setProgress(85, 'تجهيز القنوات والصفحة الرئيسية...'); } catch (_) {}
 
   // 4. Render Hero Billboard Banner, Quick Feeds & Category Carousels
-  renderHeroBillboard();
-  renderContinueWatching();
-  renderTrendingTop10();
-  renderHomeCarousels();
+  try { renderHeroBillboard(); } catch (e) { console.warn('HeroBillboard:', e); }
+  try { renderContinueWatching(); } catch (e) { console.warn('ContinueWatching:', e); }
+  try { renderTrendingTop10(); } catch (e) { console.warn('TrendingTop10:', e); }
+  try { renderHomeCarousels(); } catch (e) { console.warn('HomeCarousels:', e); }
 
-  // 4b. Background-preload API feeds for every home category, then re-render
-  //     so the carousels reflect live /api/media/feed data (one card per series).
-  preloadHomeFeeds().then(() => {
-    renderHomeCarousels();
-    renderContinueWatching();
-    renderTrendingTop10();
-    if (window.RemoteControl && typeof RemoteControl.refresh === 'function') {
-      setTimeout(() => RemoteControl.refresh(), 100);
-    }
-  }).catch(() => {});
+  // 4b. Background-preload API feeds for every home category
+  try {
+    preloadHomeFeeds().then(() => {
+      try { renderHomeCarousels(); } catch (_) {}
+      try { renderContinueWatching(); } catch (_) {}
+      try { renderTrendingTop10(); } catch (_) {}
+      if (window.RemoteControl && typeof RemoteControl.refresh === 'function') {
+        setTimeout(() => { try { RemoteControl.refresh(); } catch (_) {} }, 100);
+      }
+    }).catch(() => {});
+  } catch (_) {}
 
   // 5. Setup App Navigation (Sidebar, Category Internal Pages, Quick Tabs)
-  setupSidebarNavigation();
-  setupFilterTabs();
+  try { setupSidebarNavigation(); } catch (e) { console.warn('SidebarNav:', e); }
+  try { setupFilterTabs(); } catch (e) { console.warn('FilterTabs:', e); }
 
   // 6. Setup Header Actions (Search, Modals, Language)
-  setupHeaderActions();
+  try { setupHeaderActions(); } catch (e) { console.warn('HeaderActions:', e); }
 
   // 7. Setup IPTVSettings Modal
-  setupIPTVModal();
+  try { setupIPTVModal(); } catch (e) { console.warn('IPTVModal:', e); }
 
   // 8. Next-Gen Features: Moods, Quiz, Watch Together, Themes, Gamepad, Screensaver
-  setupMoodFilter();
-  setupCinemaQuiz();
-  setupWatchTogether();
-  setupThemesCustomizer();
-  setupShortcutsHUD();
-  setupAerialScreensaver();
-  setupGamepadSupport();
-  setupHapticFeedback();
-  setupKidsSafeMode();
+  try { setupMoodFilter(); } catch (_) {}
+  try { setupCinemaQuiz(); } catch (_) {}
+  try { setupWatchTogether(); } catch (_) {}
+  try { setupThemesCustomizer(); } catch (_) {}
+  try { setupShortcutsHUD(); } catch (_) {}
+  try { setupAerialScreensaver(); } catch (_) {}
+  try { setupGamepadSupport(); } catch (_) {}
+  try { setupHapticFeedback(); } catch (_) {}
+  try { setupKidsSafeMode(); } catch (_) {}
 
-  SplashManager.setProgress(95, 'جاهز للتصفح والتشغيل...');
+  try { SplashManager.setProgress(100, 'جاهز للتصفح والتشغيل...'); } catch (_) {}
 
-  // 8. Dismiss Splash smoothly once UI is completely ready
-  SplashManager.dismiss(() => {
-    RemoteControl.init();
-  });
+  // 9. Dismiss Splash smoothly once UI is ready
+  try {
+    SplashManager.dismiss(() => {
+      if (window.RemoteControl && typeof RemoteControl.init === 'function') {
+        try { RemoteControl.init(); } catch (_) {}
+      }
+    });
+  } catch (_) {}
 
-  // Failsafe watchdog: Under no circumstances should splash screen stay longer than 1.8s
+  // Failsafe watchdog: Under no circumstances should splash screen stay longer than 800ms
   setTimeout(() => {
-    if (!SplashManager.isDone()) {
-      SplashManager.dismiss(() => {
-        RemoteControl.init();
-      });
-    }
-  }, 1800);
+    try {
+      if (!SplashManager.isDone()) {
+        SplashManager.dismiss(() => {
+          if (window.RemoteControl && typeof RemoteControl.init === 'function') {
+            try { RemoteControl.init(); } catch (_) {}
+          }
+        });
+      }
+    } catch (_) {}
+  }, 800);
 });
 
 // Storage Maintenance: Prevent localStorage bloat on Android TV
