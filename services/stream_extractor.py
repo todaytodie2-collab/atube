@@ -13,7 +13,13 @@ import base64
 import urllib.parse
 import urllib.request
 import ssl
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
+
+try:
+    import m3u8
+    HAS_M3U8 = True
+except Exception:
+    HAS_M3U8 = False
 
 class DirectStreamExtractor:
     USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"

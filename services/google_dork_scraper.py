@@ -16,6 +16,25 @@ import urllib.parse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Any, Optional
 
+try:
+    import diskcache
+    CACHE_DIR = os.path.join(BASE_DIR, "config", "dork_cache")
+    _DORK_CACHE = diskcache.Cache(CACHE_DIR)
+except Exception:
+    _DORK_CACHE = None
+
+try:
+    from selectolax.parser import HTMLParser
+    HAS_SELECTOLAX = True
+except Exception:
+    HAS_SELECTOLAX = False
+
+try:
+    import httpx
+    HAS_HTTPX = True
+except Exception:
+    HAS_HTTPX = False
+
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
@@ -112,20 +131,38 @@ class GoogleDorkScraper:
 
     @classmethod
     def probe_stream_servers(cls, page_url: str) -> List[Dict[str, Any]]:
-        """Parses watch/download page to extract active video servers."""
+        """Parses watch/download page to extract active video servers using Selectolax & Regex."""
         html = cls.fetch_page(page_url, referer=page_url, timeout=6.0)
         if not html:
             return []
 
-        discovered = []
-        # Find all iframe sources
+        candidates = set()
+
+        # High-speed DOM parsing via Selectolax
+        if HAS_SELECTOLAX:
+            try:
+                tree = HTMLParser(html)
+                for node in tree.css('iframe[src]'):
+                    src = node.attributes.get('src')
+                    if src: candidates.add(src)
+                for node in tree.css('[data-src], [data-url], [data-href], source[src]'):
+                    for attr in ['data-src', 'data-url', 'data-href', 'src']:
+                        val = node.attributes.get(attr)
+                        if val: candidates.add(val)
+                for node in tree.css('a[href]'):
+                    href = node.attributes.get('href')
+                    if href and any(h in href.lower() for h in ['vidmoly', 'mixdrop', 'hgcloud', 'uqload', 'streamwish', 'dood', 'filemoon', 'vidsrc']):
+                        candidates.add(href)
+            except Exception:
+                pass
+
+        # Regex fallback to extract embedded patterns
         iframes = re.findall(r'<iframe[^>]+src=["\'](https?://[^"\']+)["\']', html, re.IGNORECASE)
-        # Find all data-src or source links
-        data_sources = re.findall(r'(?:data-src|data-url|source)=["\'](https?://[^"\']+)["\']', html, re.IGNORECASE)
-        # Find raw URL patterns
+        data_sources = re.findall(r'(?:data-src|data-url|data-href|source)=["\'](https?://[^"\']+)["\']', html, re.IGNORECASE)
         raw_urls = re.findall(r'(https?://[a-zA-Z0-9_\-\./]+(?:\.m3u8|\.mp4|[a-zA-Z0-9_\-\./]*(?:embed|player|video|watch)[a-zA-Z0-9_\-\./]*))', html, re.IGNORECASE)
 
-        candidates = set(iframes + data_sources + raw_urls)
+        candidates.update(iframes + data_sources + raw_urls)
+        discovered = []
 
         for raw_url in candidates:
             clean_u = raw_url.strip().replace('&amp;', '&').replace('\\"', '').replace("'", "")
@@ -154,12 +191,23 @@ class GoogleDorkScraper:
     def scrape_servers(cls, title_en: str, title_ar: str = "", year: str = "",
                        content_type: str = "movie", season: str = "", episode: str = "") -> Dict[str, Any]:
         """
-        Main pipeline for /api/scrape-servers:
-        1. Executes Google Dorking search in background.
-        2. Probes pages in parallel.
-        3. Deduplicates servers (1 clean server per provider).
-        4. Returns verified server list.
+        Main pipeline for /api/scrape-servers with 24-hour DiskCache:
+        1. Checks local DiskCache for 0ms instant response.
+        2. Executes Google Dorking search in background if cache miss.
+        3. Probes pages in parallel via ThreadPoolExecutor & Selectolax.
+        4. Deduplicates servers (1 clean server per provider).
+        5. Saves to DiskCache and returns.
         """
+        cache_key = f"dork_{title_en}_{title_ar}_{year}_{season}_{episode}".strip().lower()
+        if _DORK_CACHE:
+            try:
+                cached_res = _DORK_CACHE.get(cache_key)
+                if cached_res and isinstance(cached_res, dict) and cached_res.get("servers"):
+                    cached_res["cached"] = True
+                    return cached_res
+            except Exception:
+                pass
+
         candidate_pages = cls.search_google_dork(title_en, title_ar, year, season, episode)
 
         all_servers = []
@@ -225,7 +273,7 @@ class GoogleDorkScraper:
                     "is_hls": False
                 })
 
-        return {
+        res = {
             "success": True,
             "found": len(final_servers) > 0,
             "count": len(final_servers),
@@ -238,3 +286,11 @@ class GoogleDorkScraper:
                 "episode": episode
             }
         }
+
+        if _DORK_CACHE and final_servers:
+            try:
+                _DORK_CACHE.set(cache_key, res, expire=86400)
+            except Exception:
+                pass
+
+        return res
