@@ -719,3 +719,33 @@
   color: var(--primary-cyan);
   margin-top: 2px;
 }
+
+/* File Size & Download Badges */
+.server-size-tag {
+  background: rgba(0, 229, 255, 0.12);
+  color: var(--primary-cyan, #00e5ff);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.download-btn {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+}
+
+.download-btn:hover, .download-btn:focus {
+  border-color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.22) !important;
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35) !important;
+  transform: translateY(-2px);
+}
+
+.download-badge {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #10b981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+}

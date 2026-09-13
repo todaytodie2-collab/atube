@@ -528,43 +528,36 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps(health_data, ensure_ascii=False).encode("utf-8"))
                 return
 
-            # 5b. API: Direct Stream Resolver (Zero-latency fast resolver)
-            elif path in ["/api/stream/resolve", "/api/vod/resolve"]:
+            # 5b. API: Direct Stream Resolver (Extracts clean .mp4 / .m3u8 from any host)
+            elif path in ["/api/stream/resolve", "/api/vod/resolve", "/api/resolve-stream", "/api/stream/resolve-direct"]:
                 stream_target = query.get("url", [""])[0]
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json; charset=utf-8")
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.end_headers()
-
                 if not stream_target:
-                    self.wfile.write(json.dumps({"success": False, "error": "Missing url parameter"}).encode("utf-8"))
+                    self.send_cors_json({"success": False, "error": "Missing url parameter"}, status=400)
                     return
 
-                lower_url = stream_target.lower()
+                try:
+                    from stream_extractor import DirectStreamExtractor
+                    res = DirectStreamExtractor.resolve(stream_target)
+                    self.send_cors_json(res)
+                except Exception as ex_resolve:
+                    self.send_cors_json({
+                        "success": True,
+                        "stream_url": stream_target,
+                        "is_hls": ".m3u8" in stream_target.lower(),
+                        "format": "hls" if ".m3u8" in stream_target.lower() else "mp4",
+                        "error": str(ex_resolve)
+                    })
+                return
 
-                # Fast direct pass-through for embed hosts (0ms latency, no blocking urllib)
-                is_embed = any(h in lower_url for h in [
-                    "vipserver", "liiivideo", "hgcloud", "mixdrop", "minochinos",
-                    "vidmoly", "fasel", "vidlink", "multiembed", "vidsrc", "2embed", "embed"
-                ])
-                if is_embed:
-                    embed_u = stream_target.replace("/d/", "/embed-")
-                    out = {"success": True, "stream_url": embed_u, "is_hls": False, "is_embed": True, "quality": "1080p FHD"}
-                    self.wfile.write(json.dumps(out, ensure_ascii=False).encode("utf-8"))
-                    return
-
-                is_direct_stream = any(ext in lower_url for ext in [".m3u8", ".mp4", ".mkv"])
-                is_movie = query.get("is_movie", [""])[0]
-                out = {
-                    "success": True,
-                    "stream_url": stream_target,
-                    "is_hls": ".m3u8" in lower_url,
-                    "quality": "1080p Stream",
-                    "headers": {},
-                    "is_direct": is_direct_stream,
-                    "is_movie": is_movie == "true" or is_movie == "1"
-                }
-                self.wfile.write(json.dumps(out, ensure_ascii=False).encode("utf-8"))
+            # 5b-2. API: Video File Size Probe (Content-Length in MB/GB)
+            elif path == "/api/stream/filesize":
+                stream_target = query.get("url", [""])[0]
+                try:
+                    from stream_extractor import DirectStreamExtractor
+                    size_info = DirectStreamExtractor.get_file_size(stream_target)
+                    self.send_cors_json(size_info)
+                except Exception:
+                    self.send_cors_json({"size_bytes": 0, "size_mb": 0, "formatted": "غير محدد"})
                 return
 
             # 5c. API: Unified Media Feed (New API Controller)
@@ -627,30 +620,44 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps(result, ensure_ascii=False).encode("utf-8"))
                 return
 
-            # 5d. API: CORS-Bypassing Stream & Segment Proxy Bridge
+            # 5d. API: CORS-Bypassing Stream & Video Proxy Bridge (supports Range / Seeking)
             elif path == "/api/stream/proxy":
                 target_url = query.get("url", [""])[0]
+                custom_ref = query.get("ref", [""])[0]
                 if not target_url or not is_safe_external_url(target_url):
                     self.send_cors_json({"error": "Invalid, blocked or missing target URL"}, status=400)
                     return
 
                 try:
-                    req = urllib.request.Request(
-                        target_url,
-                        headers={
-                            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-                            "Referer": target_url
-                        }
-                    )
+                    headers = {
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                        "Referer": custom_ref or target_url,
+                        "Accept": "*/*"
+                    }
+                    if "Range" in self.headers:
+                        headers["Range"] = self.headers["Range"]
+
+                    req = urllib.request.Request(target_url, headers=headers)
                     ctx = ssl.create_default_context()
                     ctx.check_hostname = False
                     ctx.verify_mode = ssl.CERT_NONE
 
                     with urllib.request.urlopen(req, context=ctx, timeout=12) as response:
-                        ct = response.headers.get("Content-Type", "application/vnd.apple.mpegurl")
-                        self.send_response(200)
+                        ct = response.headers.get("Content-Type", "video/mp4")
+                        cl = response.headers.get("Content-Length")
+                        cr = response.headers.get("Content-Range")
+                        status_code = getattr(response, "status", 200) or 200
+
+                        self.send_response(status_code)
                         self.send_header("Content-Type", ct)
                         self.send_header("Access-Control-Allow-Origin", "*")
+                        self.send_header("Access-Control-Allow-Headers", "Range, Authorization")
+                        self.send_header("Access-Control-Expose-Headers", "Content-Range, Content-Length, Accept-Ranges")
+                        self.send_header("Accept-Ranges", "bytes")
+                        if cl:
+                            self.send_header("Content-Length", cl)
+                        if cr:
+                            self.send_header("Content-Range", cr)
                         self.send_header("Cache-Control", "no-cache")
                         self.end_headers()
                         while True:

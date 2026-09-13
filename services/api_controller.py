@@ -485,32 +485,11 @@ class APIController:
                 cls.send_error(handler, "Missing url parameter", 400)
                 return
 
-            # Decode URL if it has HTML entities
             clean_url = TextSanitizer.decode_html_entities(stream_url)
-
-            # Check if it's a direct stream
-            lower_url = clean_url.lower()
-            is_direct = any(ext in lower_url for ext in ['.m3u8', '.mp4', '.mkv', '.avi'])
-
-            # Check if it's an embed
-            is_embed = any(h in lower_url for h in [
-                'vipserver', 'liiivideo', 'hgcloud', 'mixdrop',
-                'minochinos', 'vidmoly', 'vidlink', 'multiembed',
-                'vidsrc', '2embed', 'embed', 'fasel'
-            ])
-
-            response = {
-                "success": True,
-                "stream_url": clean_url,
-                "is_hls": '.m3u8' in lower_url,
-                "is_embed": is_embed,
-                "is_direct": is_direct,
-                "is_movie": is_movie,
-                "quality": "1080p FHD",
-                "headers": StreamSanitizer.get_spoofed_headers(clean_url) if is_direct or is_embed else {}
-            }
-
-            cls.send_cors_json(handler, response)
+            from stream_extractor import DirectStreamExtractor
+            result = DirectStreamExtractor.resolve(clean_url)
+            result["is_movie"] = is_movie
+            cls.send_cors_json(handler, result)
 
         except Exception as e:
             cls.send_error(handler, f"Stream resolve error: {str(e)}", 500)
@@ -540,29 +519,57 @@ class APIController:
                 cls.send_error(handler, "Media not found", 404)
                 return
 
+            # If seasons are empty in DB, build dynamically from TMDB
+            seasons = details.get('seasons', [])
+            if not seasons:
+                try:
+                    from series_completer import get_tmdb_tv_seasons
+                    from tmdb_client import TMDBClient
+                    title = details.get('title') or details.get('arabic_title', '')
+                    tmdb_id = details.get('tmdb_id')
+                    if not tmdb_id and title:
+                        match = TMDBClient.search_media(title, "series")
+                        if match:
+                            tmdb_id = match.get('id')
+                    if tmdb_id:
+                        tmdb_seasons = get_tmdb_tv_seasons(int(tmdb_id))
+                        if tmdb_seasons:
+                            seasons = tmdb_seasons
+                            details['seasons'] = seasons
+                except Exception as ex_tmdb_s:
+                    print(f"[APIController] TMDB episodes tree error: {ex_tmdb_s}")
+
             # Find the requested season
             try:
                 season_number = int(season_num)
             except ValueError:
                 season_number = 1
 
-            season_data = next((s for s in details.get('seasons', [])
-                              if s['season_number'] == season_number), None)
+            season_data = next((s for s in seasons
+                              if s.get('season_number') == season_number), None)
+
+            if not season_data and seasons:
+                season_data = seasons[0]
+                season_number = season_data.get('season_number', 1)
 
             if not season_data:
                 cls.send_error(handler, f"Season {season_num} not found", 404)
                 return
 
-            # Sanitize episode data
+            # Sanitize episode data and guarantee strict 1..N order
+            raw_eps = season_data.get('episodes', [])
+            raw_eps.sort(key=lambda x: int(x.get('episode_number', 0)))
+
             episodes = []
-            for ep in season_data.get('episodes', []):
+            for ep in raw_eps:
                 episodes.append({
                     'episode_number': ep.get('episode_number'),
-                    'title': TextSanitizer.sanitize(ep.get('title', ''), max_length=100),
-                    'thumbnail': ep.get('thumbnail', ''),
-                    'duration': ep.get('duration', ''),
+                    'title': TextSanitizer.sanitize(ep.get('title', ''), max_length=100) or f"الحلقة {ep.get('episode_number')}",
+                    'thumbnail': ep.get('thumbnail', '') or details.get('poster', ''),
+                    'duration': ep.get('duration', '45 دقيقة'),
+                    'air_date': ep.get('air_date', ''),
                     'synopsis': TextSanitizer.sanitize(ep.get('synopsis', ''), max_length=200),
-                    'server_count': len(ep.get('servers', []))
+                    'server_count': len(ep.get('servers', [])) or len(details.get('servers', []))
                 })
 
             cls.send_cors_json(handler, {

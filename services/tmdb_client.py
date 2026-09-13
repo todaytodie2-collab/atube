@@ -123,6 +123,37 @@ class TMDBClient:
         return poster_url, backdrop_url, stills
 
     @classmethod
+    def get_cast_and_crew(cls, tmdb_id: int, content_type: str = "movie") -> List[Dict[str, Any]]:
+        """Fetches cast and crew list with circular photo profile URLs and character roles."""
+        media_type = "tv" if content_type == "series" else "movie"
+        api_key = cls.get_api_key()
+        if not api_key:
+            return []
+
+        url = f"https://api.themoviedb.org/3/{media_type}/{tmdb_id}/credits?api_key={api_key}&language=ar-SA"
+        cast_list = []
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+                for actor in data.get('cast', [])[:15]:
+                    name = actor.get('name') or actor.get('original_name', '')
+                    character = actor.get('character', 'شخصية رئيسية')
+                    profile_path = actor.get('profile_path')
+                    photo_url = f"https://image.tmdb.org/t/p/w185{profile_path}" if profile_path else "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&q=80"
+                    
+                    cast_list.append({
+                        "name": name,
+                        "arabic_name": name,
+                        "role": "actor",
+                        "character_name": character,
+                        "photo": photo_url
+                    })
+        except Exception:
+            pass
+        return cast_list
+
+    @classmethod
     def enrich_entry(cls, media_entry: Dict[str, Any]) -> Dict[str, Any]:
         """Enriches a media entry dictionary in-place with TMDB poster, backdrop, stills, rating, overview."""
         if not media_entry or not isinstance(media_entry, dict):

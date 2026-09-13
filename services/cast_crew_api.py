@@ -274,6 +274,25 @@ class CastCrewAPI:
 
         cast = details.get('cast', [])
 
+        # If cast is empty, fetch immediately from TMDB as live fallback
+        if not cast:
+            try:
+                from tmdb_client import TMDBClient
+                title = details.get('title') or details.get('arabic_title', '')
+                c_type = details.get('content_type', 'movie')
+                tmdb_id = details.get('tmdb_id')
+                if not tmdb_id and title:
+                    match = TMDBClient.search_media(title, c_type)
+                    if match:
+                        tmdb_id = match.get('id')
+                if tmdb_id:
+                    tmdb_cast = TMDBClient.get_cast_and_crew(int(tmdb_id), c_type)
+                    if tmdb_cast:
+                        cast = tmdb_cast
+                        cls.save_cast_for_media(media_id, cast)
+            except Exception as ex_tmdb:
+                print(f"[CastCrewAPI] TMDB fallback note: {ex_tmdb}")
+
         # Enrich with director info if available
         director = details.get('director', '')
         if director and not any(c.get('role') == 'director' for c in cast):

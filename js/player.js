@@ -1848,65 +1848,29 @@ const InAppPlayer = (function () {
     }, 200);
   }
 
-  // Load Stream Source with Ad-Sanitizer and In-Memory Buffer
+  // Load Stream Source with Direct Stream Extractor & HTML5/HLS Player (Zero-Iframe)
   async function loadStreamSource(serverObj, startTime = 0) {
     if (!videoEl) return;
-    let targetUrl = serverObj.url;
+    let targetUrl = serverObj.stream_url || serverObj.url || '';
 
-    // Fast-path: Check if this is a direct media stream or an embed player
-    const isDirectMedia = targetUrl.includes('.m3u8') || targetUrl.endsWith('.mp4') || targetUrl.endsWith('.mkv');
-    const isLiveEmbed = !isDirectMedia && (
-      targetUrl.includes('player.eishha.com') || targetUrl.includes('/p/') || 
-      (targetUrl.includes('.html') && !targetUrl.includes('localhost') && !targetUrl.includes('127.0.0.1'))
-    );
-    const isEmbedUrl = !isDirectMedia && (
-      serverObj.isEmbed || isLiveEmbed ||
-      targetUrl.includes('/embed') || targetUrl.includes('/e/') || 
-      targetUrl.includes('vidsrc') || targetUrl.includes('vidlink') || 
-      targetUrl.includes('multiembed') || targetUrl.includes('2embed') ||
-      targetUrl.includes('mixdrop') || targetUrl.includes('hgcloud') || 
-      targetUrl.includes('minochinos') || targetUrl.includes('vidmoly') || 
-      targetUrl.includes('liiivideo') || targetUrl.includes('fasel-hd') ||
-      targetUrl.includes('video_player')
-    );
-
-    // If it's an embed player, load immediately with ZERO latency (no blocking fetch!)
-    if (isEmbedUrl) {
-      if (iframeEl) {
-        // ALL embeds (VOD & Live): Completely remove sandbox & referrerpolicy attributes!
-        // Third-party embed video servers (VidLink, Multiembed, VidSrc, AutoEmbed, Eishha) actively detect
-        // and reject iframes with the 'sandbox' attribute by displaying "Sandboxing is not allowed!".
-        // Popups and ad redirects are instead completely intercepted and neutralized at the parent window and Android WebView levels.
-        iframeEl.removeAttribute('sandbox');
-        iframeEl.removeAttribute('referrerpolicy');
-        iframeEl.setAttribute('allowfullscreen', 'true');
-        iframeEl.setAttribute('webkitallowfullscreen', 'true');
-        iframeEl.setAttribute('mozallowfullscreen', 'true');
-        iframeEl.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
-
-        // Robust multi-layered popup suppressor
-        suppressPopups();
-
-        videoEl.style.display = 'none';
-        videoEl.pause();
-        iframeEl.style.display = 'block';
-        iframeEl.src = targetUrl;
-        isPlaying = true;
-        updatePlayIcons(true);
-        hideFailoverOverlay();
-        if (modalEl) modalEl.classList.add('is-embed-active');
-        showEmbedGuideHint();
-      }
-      return;
+    // Completely deactivate and hide any iframe
+    if (iframeEl) {
+      iframeEl.style.display = 'none';
+      iframeEl.src = 'about:blank';
     }
+    if (modalEl) modalEl.classList.remove('is-embed-active');
+    hideEmbedGuideHint();
+    videoEl.style.display = 'block';
 
-    // Stream URL Resolution for non-embed, raw redirect links (with strict 1200ms non-blocking timeout)
-    const isLocalBackend = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-    if (targetUrl && !isDirectMedia && isLocalBackend) {
+    showFailoverHUD('⚡ جاري تجهيز واستخراج البث المباشر الصافي...');
+
+    // Resolve direct stream from backend if not already direct .m3u8 or .mp4
+    const isDirectMedia = targetUrl.includes('.m3u8') || targetUrl.endsWith('.mp4') || targetUrl.endsWith('.mkv');
+    if (targetUrl && !isDirectMedia) {
       try {
         const controller = new AbortController();
-        const tId = setTimeout(() => controller.abort(), 1200);
-        const resp = await fetch(`/api/stream/resolve?url=${encodeURIComponent(targetUrl)}`, {
+        const tId = setTimeout(() => controller.abort(), 3500);
+        const resp = await fetch(`/api/resolve-stream?url=${encodeURIComponent(targetUrl)}`, {
           signal: controller.signal
         });
         clearTimeout(tId);
@@ -1914,22 +1878,18 @@ const InAppPlayer = (function () {
           const data = await resp.json();
           if (data && data.success && data.stream_url) {
             targetUrl = data.stream_url;
+            console.log('[A Tube Player] Direct Stream successfully resolved:', targetUrl);
           }
         }
       } catch (e) {
-        console.warn('[A Tube Player] Resolve error/timeout:', e);
+        console.warn('[A Tube Player] Stream resolve warning:', e);
       }
     }
 
-
-    // Native Video Mode
-    if (modalEl) modalEl.classList.remove('is-embed-active');
-    hideEmbedGuideHint();
-    if (iframeEl) {
-      iframeEl.style.display = 'none';
-      iframeEl.src = 'about:blank';
+    if (!targetUrl) {
+      triggerStatelessFailover('رابط السيرفر غير متوفر حالياً');
+      return;
     }
-    videoEl.style.display = 'block';
 
     const isHls = serverObj.is_hls || targetUrl.includes('.m3u8');
 
