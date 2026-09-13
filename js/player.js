@@ -58,8 +58,8 @@ const InAppPlayer = (function () {
 
     // Enforce anti-popup & strict security attributes on embed iframe
     if (iframeEl) {
-      iframeEl.removeAttribute('sandbox'); // Removed sandbox attribute to allow Minochinos, Mixdrop & Vidmoly embeds without iframe restrictions
-      iframeEl.removeAttribute('referrerpolicy'); // Remove no-referrer: player.eishha.com blocks iframes with strict referrer policy
+      // Excludes allow-popups & allow-popups-to-escape-sandbox -> completely kills Chrome popups!
+      iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
       iframeEl.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
     }
 
@@ -1751,24 +1751,18 @@ const InAppPlayer = (function () {
       }
     }
 
-    // 3. Guaranteed Procedural Fallback Mirrors ONLY for VOD movies & series!
-    // NEVER EVER push external VOD embed servers for live broadcast channels!
-    if (!isLive && pool.length < 2) {
-      const cleanTarget = item.tmdb_id || item.imdb_id || 'tt6263850';
-      const cleanImdb = item.imdb_id || 'tt6263850';
+    // 3. Fallback Mirrors ONLY when no servers exist
+    if (!isLive && pool.length === 0) {
       const isSeries = item.content_type === 'series' || item.content_type === 'anime';
-      pool.push({
-        name: 'سيرفر VidLink Ultra (مترجم عربي • بدون إعلانات)',
-        url: isSeries ? `https://vidlink.pro/tv/${cleanTarget}/1/1?primaryColor=00e5ff&secondaryColor=ff0055` : `https://vidlink.pro/movie/${cleanTarget}?primaryColor=00e5ff&secondaryColor=ff0055`,
-        is_hls: false,
-        isEmbed: true
-      });
-      pool.push({
-        name: 'سيرفر MultiEmbed FHD (سيرفرات متعددة وسريعة)',
-        url: isSeries ? `https://multiembed.mov/?video_id=${cleanImdb}&s=1&e=1` : `https://multiembed.mov/?video_id=${cleanImdb}&tmdb=1`,
-        is_hls: false,
-        isEmbed: true
-      });
+      const cleanTarget = item.tmdb_id || item.imdb_id || encodeURIComponent(`${item.title || item.name || ''} ${item.year || ''}`.trim());
+      if (cleanTarget) {
+        pool.push({
+          name: 'سيرفر VidLink Ultra (مترجم عربي • بدون إعلانات)',
+          url: isSeries ? `https://vidlink.pro/tv/${cleanTarget}/1/1?primaryColor=00e5ff&secondaryColor=ff0055` : `https://vidlink.pro/movie/${cleanTarget}?primaryColor=00e5ff&secondaryColor=ff0055`,
+          is_hls: false,
+          isEmbed: true
+        });
+      }
     }
 
     return pool;
