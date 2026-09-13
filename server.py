@@ -69,22 +69,34 @@ def is_safe_external_url(url: str) -> bool:
         return False
 
 try:
-    from remote_config import RemoteConfigManager
-    from vod_db import VODDatabase
-    from rss_manager import RSSManager
-    from procedural_manifest import ProceduralManifestEngine
-    from stream_sanitizer import StreamSanitizer
-    from api_controller import APIController
-    from stream_extractor import DirectStreamExtractor
-    from google_dork_scraper import GoogleDorkScraper
+    from services.remote_config import RemoteConfigManager
+    from services.vod_db import VODDatabase
+    from services.rss_manager import RSSManager
+    from services.procedural_manifest import ProceduralManifestEngine
+    from services.stream_sanitizer import StreamSanitizer
+    from services.api_controller import APIController
+    from services.stream_extractor import DirectStreamExtractor
+    from services.google_dork_scraper import GoogleDorkScraper
+    from services.iptv_manager import IPTVManager
+    from services.live_tv_service import LiveTVService
+    from services.catalog_sync import CatalogSync, ContentIngestEngine, ContinuousSyncEngine
+    from services.deep_search_fallback import DeepSearchFallbackEngine
     HAS_SERVICES = True
 except Exception as e:
     print(f"[A Tube Server] Note: Services loaded with fallback: {e}")
     try:
+        from remote_config import RemoteConfigManager
+        from vod_db import VODDatabase
+        from rss_manager import RSSManager
         from procedural_manifest import ProceduralManifestEngine
         from stream_sanitizer import StreamSanitizer
+        from api_controller import APIController
         from stream_extractor import DirectStreamExtractor
         from google_dork_scraper import GoogleDorkScraper
+        from iptv_manager import IPTVManager
+        from live_tv_service import LiveTVService
+        from catalog_sync import CatalogSync, ContentIngestEngine, ContinuousSyncEngine
+        from deep_search_fallback import DeepSearchFallbackEngine
         HAS_SERVICES = True
     except Exception:
         HAS_SERVICES = False
@@ -498,7 +510,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.send_header("Access-Control-Allow-Origin", "*")
                 self.end_headers()
                 try:
-                    from remote_config import RemoteConfigManager
                     cfg = RemoteConfigManager.get_instance()
                     resp = {
                         "domains": cfg.get_domain("akwam", ""),
@@ -519,7 +530,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.send_header("Access-Control-Allow-Origin", "*")
                 self.end_headers()
                 try:
-                    from remote_config import RemoteConfigManager
                     cfg = RemoteConfigManager.get_instance()
                     oscar = cfg.get_oscar_vod_config()
                     base_url = oscar.get("base_url", "")
@@ -606,7 +616,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.end_headers()
                 channels_data = []
                 try:
-                    from iptv_manager import IPTVManager
                     channels_data = IPTVManager.get_active_channels(cat if cat != "all" else None)
                 except Exception as ex:
                     channels_data = {"error": str(ex)}
@@ -620,7 +629,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.end_headers()
                 res = {"status": "started"}
                 try:
-                    from iptv_manager import IPTVManager
                     threading.Thread(target=IPTVManager.refresh_now, daemon=True).start()
                     res = {"status": "refresh_in_progress"}
                 except Exception as ex:
@@ -636,7 +644,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.end_headers()
                 health_data = {"valid": False}
                 try:
-                    from iptv_manager import IPTVManager
                     health_data = IPTVManager.check_stream(stream_url)
                 except Exception as ex:
                     health_data = {"valid": False, "error": str(ex)}
@@ -651,7 +658,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     return
 
                 try:
-                    from stream_extractor import DirectStreamExtractor
                     res = DirectStreamExtractor.resolve(stream_target)
                     self.send_cors_json(res)
                 except Exception as ex_resolve:
@@ -668,7 +674,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
             elif path == "/api/stream/filesize":
                 stream_target = query.get("url", [""])[0]
                 try:
-                    from stream_extractor import DirectStreamExtractor
                     size_info = DirectStreamExtractor.get_file_size(stream_target)
                     self.send_cors_json(size_info)
                 except Exception:
@@ -720,7 +725,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 season = query.get("season", [""])[0]
 
                 try:
-                    from google_dork_scraper import GoogleDorkScraper
                     result = GoogleDorkScraper.scrape_servers(
                         title_en=title_en,
                         title_ar=title_ar,
@@ -729,9 +733,8 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                         season=season,
                         episode=ep
                     )
-                except Exception as e:
+                except Exception:
                     try:
-                        from deep_search_fallback import DeepSearchFallbackEngine
                         result = DeepSearchFallbackEngine.deep_search(title_en or title_ar, year=year, content_type=c_type, episode=ep, season=season)
                     except Exception as ex2:
                         result = {
@@ -833,7 +836,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
                 def run_harvest_bg():
                     try:
-                        from catalog_sync import ContentIngestEngine
                         ContentIngestEngine.harvest_all_years(start_year=start_yr, end_year=end_yr, max_items_per_year=2)
                     except Exception as ex:
                         print(f"[Crawler Background] Error: {ex}")
@@ -854,7 +856,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
                 def run_harvest_all_bg():
                     try:
-                        from catalog_sync import ContentIngestEngine
                         if source in ["all", "multi", "faselhd"]:
                             ContentIngestEngine.harvest_multi_portal(items_per_portal=items_per_cat)
                         if source in ["all", "cimawbas"]:
@@ -1011,8 +1012,7 @@ class ATubeHandler(SimpleHTTPRequestHandler):
     def get_real_channels(self, category=None):
         channels = []
         try:
-            from live_tv_service import LiveTVManager
-            verified = LiveTVManager.get_verified_channels(category)
+            verified = LiveTVService.get_verified_channels(category)
             for ch in verified:
                 channels.append({
                     "id": ch.get("id"),
@@ -1059,7 +1059,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
             return []
         if HAS_SERVICES:
             try:
-                from vod_db import VODDatabase
                 return VODDatabase.search_movies(q)
             except Exception:
                 pass
@@ -1122,14 +1121,12 @@ def run(port=8085):
     # Start Continuous 60s Automated Harvester & Episode Completer
     if HAS_SERVICES:
         try:
-            from catalog_sync import ContinuousSyncEngine
             ContinuousSyncEngine.start_background_worker(interval_seconds=60)
             print("[Continuous Harvester Startup] 60s background worker active & polling.")
         except Exception as ex_sync:
             print(f"[Continuous Harvester Startup] Warning: {ex_sync}")
 
         try:
-            from iptv_manager import IPTVManager
             IPTVManager.start_background(interval_seconds=1800)
             print("[IPTV Manager Startup] Stream Health Checker & M3U Harvester active.")
         except Exception as ex_iptv:
