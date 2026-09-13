@@ -595,29 +595,38 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 APIController.handle_cast_crew(self, query)
                 return
 
-            # 5c. API: Universal Deep-Search Stream Discovery & Smart Failover
-            elif path == "/api/stream/deep-search":
-                title = query.get("title", [""])[0]
+            # 5c. API: Universal Deep-Search & Google Dorking Multi-Portal Live Scraper
+            elif path in ["/api/stream/deep-search", "/api/scrape-servers", "/api/stream/scrape-servers"]:
+                title_en = query.get("title_en", [""])[0] or query.get("title", [""])[0]
+                title_ar = query.get("title_ar", [""])[0] or query.get("arabic_title", [""])[0]
                 year = query.get("year", [""])[0]
                 c_type = query.get("type", ["movie"])[0]
                 ep = query.get("episode", [""])[0]
                 season = query.get("season", [""])[0]
 
                 try:
-                    from deep_search_fallback import DeepSearchFallbackEngine
-                    result = DeepSearchFallbackEngine.deep_search(title, year=year, content_type=c_type, episode=ep, season=season)
+                    from google_dork_scraper import GoogleDorkScraper
+                    result = GoogleDorkScraper.scrape_servers(
+                        title_en=title_en,
+                        title_ar=title_ar,
+                        year=year,
+                        content_type=c_type,
+                        season=season,
+                        episode=ep
+                    )
                 except Exception as e:
-                    result = {
-                        "found": False,
-                        "error": str(e),
-                        "message": "محتوى غير متاح حالياً - تم البحث في كافة المصادر البديلة"
-                    }
+                    try:
+                        from deep_search_fallback import DeepSearchFallbackEngine
+                        result = DeepSearchFallbackEngine.deep_search(title_en or title_ar, year=year, content_type=c_type, episode=ep, season=season)
+                    except Exception as ex2:
+                        result = {
+                            "success": False,
+                            "found": False,
+                            "error": str(ex2),
+                            "message": "محتوى غير متاح حالياً - تم فحص كافة المصادر البديلة"
+                        }
 
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json; charset=utf-8")
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.end_headers()
-                self.wfile.write(json.dumps(result, ensure_ascii=False).encode("utf-8"))
+                self.send_cors_json(result)
                 return
 
             # 5d. API: CORS-Bypassing Stream & Video Proxy Bridge (supports Range / Seeking)

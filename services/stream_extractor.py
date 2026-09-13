@@ -85,9 +85,17 @@ class DirectStreamExtractor:
                 return cls._extract_doodstream(stream_url)
 
             # 7. فك تشفير عام (Generic m3u8/mp4 regex parser)
-            return cls._extract_generic(stream_url)
+            generic_res = cls._extract_generic(stream_url)
+            if generic_res.get("success"):
+                return generic_res
+
+            # 8. محاولة عبر yt-dlp للاستخراج العميق
+            return cls._extract_with_ytdlp(stream_url)
 
         except Exception as ex:
+            ytdl_res = cls._extract_with_ytdlp(stream_url)
+            if ytdl_res.get("success"):
+                return ytdl_res
             return {
                 "success": False,
                 "error": f"فشل الاستخراج: {str(ex)}",
@@ -95,6 +103,38 @@ class DirectStreamExtractor:
                 "fallback_url": stream_url,
                 "is_hls": ".m3u8" in stream_url
             }
+
+    @classmethod
+    def _extract_with_ytdlp(cls, url: str) -> Dict[str, Any]:
+        """Deep stream extraction using yt-dlp."""
+        try:
+            import yt_dlp
+            ydl_opts = {
+                'quiet': True,
+                'no_warnings': True,
+                'skip_download': True,
+                'extract_flat': False,
+                'socket_timeout': 5,
+                'http_headers': {
+                    'User-Agent': cls.USER_AGENT,
+                    'Referer': url
+                }
+            }
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(url, download=False)
+                if info and info.get('url'):
+                    direct_url = info['url']
+                    return {
+                        "success": True,
+                        "stream_url": direct_url,
+                        "is_hls": ".m3u8" in direct_url or info.get('protocol') == 'm3u8_native',
+                        "format": "hls" if (".m3u8" in direct_url or info.get('protocol') == 'm3u8_native') else "mp4",
+                        "headers": info.get('http_headers', {}),
+                        "server_name": f"{info.get('extractor_key', 'Cloud')} Direct Stream"
+                    }
+        except Exception:
+            pass
+        return {"success": False, "stream_url": url}
 
     @classmethod
     def _extract_vidmoly(cls, url: str) -> Dict[str, Any]:

@@ -498,47 +498,47 @@ const MovieDetails = (function () {
     }
 
     function renderServersList(servers, mediaTitle) {
-      if (!serversContainer) return;
-      serversContainer.innerHTML = '';
+      const watchGrid = document.getElementById('md-watch-grid');
+      const downloadGrid = document.getElementById('md-download-grid');
+      const loaderEl = document.getElementById('md-servers-loader');
+      const headerTitleEl = document.getElementById('md-servers-header-title');
 
-      const serversTitle = document.querySelector('#md-servers-section .servers-hub-title span');
-      if (serversTitle) {
-        serversTitle.textContent = `سيرفرات المشاهدة والتحميل المباشر - ${mediaTitle || movie.arabic_title || movie.title || 'A Tube Ultra HD'}`;
+      if (!watchGrid || !downloadGrid) return;
+
+      watchGrid.innerHTML = '';
+      downloadGrid.innerHTML = '';
+      if (loaderEl) loaderEl.classList.add('is-hidden');
+
+      if (headerTitleEl) {
+        headerTitleEl.textContent = `سيرفرات المشاهدة والتحميل - ${mediaTitle || movie.arabic_title || movie.title || 'A Tube Cloud Hub'}`;
       }
-      
+
+      // Tab switcher wiring
+      const watchTab = document.getElementById('tab-watch-btn');
+      const downloadTab = document.getElementById('tab-download-btn');
+
+      if (watchTab && downloadTab) {
+        watchTab.onclick = () => {
+          watchTab.classList.add('active');
+          downloadTab.classList.remove('active');
+          watchGrid.classList.remove('is-hidden');
+          downloadGrid.classList.add('is-hidden');
+        };
+        downloadTab.onclick = () => {
+          downloadTab.classList.add('active');
+          watchTab.classList.remove('active');
+          downloadGrid.classList.remove('is-hidden');
+          watchGrid.classList.add('is-hidden');
+        };
+      }
+
       let allServers = [...(servers || [])];
       if (allServers.length === 0) {
         allServers = [
-          { site: 'A Tube VIP', quality: '1080p FHD', stream_url: '', badge: 'VIP Fast ⚡' },
-          { site: 'A Tube Cloud', quality: '720p HD', stream_url: '', badge: 'توفير باقة' }
+          { site: 'A Tube VIP', quality: '1080p FHD', stream_url: '', badge: 'VIP Fast ⚡', size: '1.4 GB' },
+          { site: 'A Tube Cloud', quality: '720p HD', stream_url: '', badge: 'توفير باقة', size: '680 MB' }
         ];
       }
-
-      // 1. Direct Streaming Section (Watch Online)
-      const watchBlock = document.createElement('div');
-      watchBlock.className = 'servers-sub-block';
-      watchBlock.style.marginBottom = '20px';
-      watchBlock.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-          <span style="font-size: 18px;">▶</span>
-          <h4 style="margin: 0; font-size: 15px; color: var(--primary-cyan); font-weight: 700;">سيرفرات المشاهدة المباشرة (فائقة السرعة وبدون إعلانات):</h4>
-        </div>
-      `;
-      const watchGrid = document.createElement('div');
-      watchGrid.className = 'servers-grid-layout';
-
-      // 2. Direct Downloads Section (Download Links with MB/GB sizes)
-      const downloadBlock = document.createElement('div');
-      downloadBlock.className = 'servers-sub-block download-sub-block';
-      downloadBlock.style.marginTop = '24px';
-      downloadBlock.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-          <span style="font-size: 18px;">📥</span>
-          <h4 style="margin: 0; font-size: 15px; color: #10b981; font-weight: 700;">روابط التحميل المباشر وحفظ الفيديو (Download Links):</h4>
-        </div>
-      `;
-      const downloadGrid = document.createElement('div');
-      downloadGrid.className = 'servers-grid-layout';
 
       const qualitySizes = [
         { quality: '1080p FHD', size: '1.4 GB', tagClass: 'quality-1080p' },
@@ -550,25 +550,27 @@ const MovieDetails = (function () {
         const qInfo = qualitySizes[idx % qualitySizes.length];
         const quality = srv.quality || qInfo.quality;
         const sizeTag = srv.size || qInfo.size;
-        const serverBadge = srv.badge || (idx === 0 ? 'A Tube VIP' : 'A Tube Fast');
-        const serverTitle = `سيرفر مشاهدة ${idx + 1} - A Tube Direct`;
+        const serverBadge = srv.badge || (idx === 0 ? 'A Tube VIP ⚡' : 'A Tube Direct');
+        const serverTitle = srv.name || `سيرفر مشاهدة ${idx + 1} - A Tube Direct`;
 
-        // Watch Online Button
-        const watchBtn = document.createElement('button');
-        watchBtn.className = 'server-card-btn dpad-focusable';
-        watchBtn.tabIndex = 0;
-        watchBtn.innerHTML = `
-          <div style="display: flex; flex-direction: column; gap: 2px;">
-            <span class="server-site-badge">${serverBadge}</span>
-            <span class="server-name-label">${serverTitle}</span>
+        // 1. Redesigned Watch Card Component (Full Width Grid)
+        const watchCard = document.createElement('button');
+        watchCard.className = 'server-card-component dpad-focusable';
+        watchCard.tabIndex = 0;
+        watchCard.innerHTML = `
+          <div class="server-card-top-row">
+            <span class="server-site-badge">${safeHtml(serverBadge)}</span>
+            <div class="server-action-icon">▶</div>
           </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="server-size-tag">${sizeTag}</span>
-            <span class="server-quality-tag ${qInfo.tagClass}">${quality}</span>
-            <span style="color: var(--primary-cyan); font-size: 16px;">▶</span>
+          <div class="server-card-middle-row">
+            <span class="server-name-label">${safeHtml(serverTitle)}</span>
+          </div>
+          <div class="server-card-bottom-row">
+            <span class="server-size-tag">💾 ${safeHtml(sizeTag)}</span>
+            <span class="server-quality-tag ${qInfo.tagClass}">${safeHtml(quality)}</span>
           </div>
         `;
-        watchBtn.onclick = () => {
+        watchCard.onclick = () => {
           closeModal();
           const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
           if (player && typeof player.playMedia === 'function') {
@@ -582,24 +584,26 @@ const MovieDetails = (function () {
             });
           }
         };
-        watchGrid.appendChild(watchBtn);
+        watchGrid.appendChild(watchCard);
 
-        // Download Link Button
-        const dlBtn = document.createElement('button');
-        dlBtn.className = 'server-card-btn download-btn dpad-focusable';
-        dlBtn.tabIndex = 0;
-        dlBtn.innerHTML = `
-          <div style="display: flex; flex-direction: column; gap: 2px;">
+        // 2. Redesigned Download Card Component (Full Width Grid)
+        const dlCard = document.createElement('button');
+        dlCard.className = 'server-card-component download-card dpad-focusable';
+        dlCard.tabIndex = 0;
+        dlCard.innerHTML = `
+          <div class="server-card-top-row">
             <span class="server-site-badge download-badge">تحميل مباشر 📥</span>
-            <span class="server-name-label">تحميل بدقة (${quality})</span>
+            <div class="server-action-icon">⬇</div>
           </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="server-size-tag">${sizeTag}</span>
-            <span class="server-quality-tag ${qInfo.tagClass}">${quality}</span>
-            <span style="color: #10b981; font-size: 16px;">⬇</span>
+          <div class="server-card-middle-row">
+            <span class="server-name-label">تحميل بدقة (${safeHtml(quality)})</span>
+          </div>
+          <div class="server-card-bottom-row">
+            <span class="server-size-tag">💾 ${safeHtml(sizeTag)}</span>
+            <span class="server-quality-tag ${qInfo.tagClass}">${safeHtml(quality)}</span>
           </div>
         `;
-        dlBtn.onclick = () => {
+        dlCard.onclick = () => {
           const rawUrl = srv.url || srv.stream_url;
           if (rawUrl && (rawUrl.startsWith('http://') || rawUrl.startsWith('https://'))) {
             window.open(rawUrl, '_blank');
@@ -607,27 +611,30 @@ const MovieDetails = (function () {
             alert('⚡ جاري فك وتجهيز رابط التحميل السحابي المباشر...');
           }
         };
-        downloadGrid.appendChild(dlBtn);
+        downloadGrid.appendChild(dlCard);
       });
 
-      // 3. Multi-Portal Live Harvester Action Button
-      const deepSearchBtn = document.createElement('button');
-      deepSearchBtn.className = 'server-card-btn dpad-focusable deep-search-trigger-btn';
-      deepSearchBtn.style.cssText = 'background: rgba(0, 229, 255, 0.08); border: 1px dashed rgba(0, 229, 255, 0.45); justify-content: center; width: 100%; margin-top: 18px; padding: 12px;';
-      deepSearchBtn.tabIndex = 0;
-      deepSearchBtn.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 18px;">🔍</span>
-          <span style="color: var(--primary-cyan); font-weight: 700;">بحث وسحب مباشر من المواقع العربية (أكوام • عرب سيد • فاصل إعلاني • وي سيما)</span>
+      // 3. Multi-Portal Live Deep Search Card (Appended to Watch Grid)
+      const deepSearchCard = document.createElement('button');
+      deepSearchCard.className = 'server-card-component dpad-focusable';
+      deepSearchCard.style.cssText = 'background: rgba(0, 229, 255, 0.08); border: 1px dashed rgba(0, 229, 255, 0.45); justify-content: center; align-items: center; min-height: 100px;';
+      deepSearchCard.tabIndex = 0;
+      deepSearchCard.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;">
+          <span style="font-size: 22px;">🔍</span>
+          <span style="color: var(--primary-cyan); font-weight: 800; font-size: 12px;">البحث عن المزيد من السيرفرات السحابية...</span>
         </div>
       `;
 
-      deepSearchBtn.onclick = async () => {
-        deepSearchBtn.innerHTML = `<span>⏳ جاري البحث في كافة المواقع وسحب السيرفرات بدون تكرار...</span>`;
-        const title = movie.title || movie.arabic_title || '';
+      deepSearchCard.onclick = async () => {
+        if (loaderEl) loaderEl.classList.remove('is-hidden');
+        watchGrid.classList.add('is-hidden');
+        downloadGrid.classList.add('is-hidden');
+
+        const titleEn = movie.title || '';
+        const titleAr = movie.arabic_title || '';
         const year = movie.year || '';
-        const isSeries = (movie.content_type === 'series' || movie.content_type === 'anime');
-        
+
         let epNum = '';
         let sNum = '';
         const activeEpCard = document.querySelector('.episode-card.active');
@@ -638,83 +645,21 @@ const MovieDetails = (function () {
         }
 
         try {
-          const res = await fetch(`/api/stream/deep-search?title=${encodeURIComponent(title)}&year=${encodeURIComponent(year)}&type=${encodeURIComponent(movie.content_type || 'movie')}&episode=${encodeURIComponent(epNum)}&season=${encodeURIComponent(sNum)}`);
+          const res = await fetch(`/api/scrape-servers?title_en=${encodeURIComponent(titleEn)}&title_ar=${encodeURIComponent(titleAr)}&year=${encodeURIComponent(year)}&type=${encodeURIComponent(movie.content_type || 'movie')}&episode=${encodeURIComponent(epNum)}&season=${encodeURIComponent(sNum)}`);
           if (res.ok) {
             const data = await res.json();
             if (data && data.servers && data.servers.length > 0) {
-              deepSearchBtn.innerHTML = `<span>✅ تم سحب ${data.servers.length} سيرفرات مشاهدة حصرية جديدة!</span>`;
-              deepSearchBtn.style.borderColor = '#10b981';
-
-              data.servers.forEach((srv, sIdx) => {
-                // Add to watch grid
-                const newWatchBtn = document.createElement('button');
-                newWatchBtn.className = 'server-card-btn dpad-focusable';
-                newWatchBtn.style.borderColor = '#00e5ff';
-                newWatchBtn.innerHTML = `
-                  <div style="display: flex; flex-direction: column; gap: 2px;">
-                    <span class="server-site-badge">${srv.badge || 'سيرفر حصري ⚡'}</span>
-                    <span class="server-name-label">${srv.name || `سيرفر A Tube مكتشف ${sIdx + 1}`}</span>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span class="server-size-tag">${srv.quality.includes('1080') ? '1.4 GB' : '680 MB'}</span>
-                    <span class="server-quality-tag quality-1080p">${srv.quality || '1080p FHD'}</span>
-                    <span style="color: var(--primary-cyan); font-size: 16px;">▶</span>
-                  </div>
-                `;
-                newWatchBtn.onclick = () => {
-                  closeModal();
-                  if (window.InAppPlayer && typeof InAppPlayer.playMedia === 'function') {
-                    InAppPlayer.playMedia({
-                      name: `${mediaTitle} - ${srv.name}`,
-                      title: mediaTitle,
-                      category: movie.category_name || movie.category || 'A Tube Ultra HD',
-                      streamUrl: srv.url || srv.stream_url,
-                      quality: srv.quality || '1080p FHD',
-                      content_type: movie.content_type
-                    });
-                  }
-                };
-                watchGrid.appendChild(newWatchBtn);
-
-                // Add to download grid
-                const newDlBtn = document.createElement('button');
-                newDlBtn.className = 'server-card-btn download-btn dpad-focusable';
-                newDlBtn.innerHTML = `
-                  <div style="display: flex; flex-direction: column; gap: 2px;">
-                    <span class="server-site-badge download-badge">تحميل مباشر 📥</span>
-                    <span class="server-name-label">تحميل بدقة (${srv.quality || '1080p'})</span>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span class="server-size-tag">${srv.quality.includes('1080') ? '1.4 GB' : '680 MB'}</span>
-                    <span class="server-quality-tag quality-1080p">${srv.quality || '1080p'}</span>
-                    <span style="color: #10b981; font-size: 16px;">⬇</span>
-                  </div>
-                `;
-                newDlBtn.onclick = () => {
-                  const rawUrl = srv.url || srv.stream_url;
-                  if (rawUrl) window.open(rawUrl, '_blank');
-                };
-                downloadGrid.appendChild(newDlBtn);
-              });
-
-              if (window.RemoteControl && typeof RemoteControl.refresh === 'function') {
-                setTimeout(() => RemoteControl.refresh(), 100);
-              }
-            } else {
-              deepSearchBtn.innerHTML = `<span style="color: #ff3344;">لم يتم العثور على سيرفرات إضافية</span>`;
+              renderServersList(data.servers, mediaTitle);
+              return;
             }
           }
-        } catch (err) {
-          deepSearchBtn.innerHTML = `<span style="color: #ff3344;">خطأ في الاتصال بالشبكة</span>`;
-        }
+        } catch (_) {}
+
+        if (loaderEl) loaderEl.classList.add('is-hidden');
+        watchGrid.classList.remove('is-hidden');
       };
 
-      watchBlock.appendChild(watchGrid);
-      downloadBlock.appendChild(downloadGrid);
-
-      serversContainer.appendChild(watchBlock);
-      serversContainer.appendChild(downloadBlock);
-      serversContainer.appendChild(deepSearchBtn);
+      watchGrid.appendChild(deepSearchCard);
     }
 
     // Stills Gallery

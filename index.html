@@ -888,10 +888,34 @@
             <div class="servers-hub-header">
               <h3 class="servers-hub-title">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="#00e5ff"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
-                <span>سيرفرات المشاهدة السحابية فائقة السرعة - A Tube Cloud Servers</span>
+                <span id="md-servers-header-title">سيرفرات المشاهدة والتحميل السحابية - A Tube Cloud Hub</span>
               </h3>
+
+              <!-- Tab Switcher: Watch vs Download -->
+              <div class="server-tabs-switcher">
+                <button id="tab-watch-btn" class="server-tab-btn active dpad-focusable">
+                  <span>▶ سيرفرات المشاهدة</span>
+                </button>
+                <button id="tab-download-btn" class="server-tab-btn dpad-focusable">
+                  <span>📥 روابط التحميل</span>
+                </button>
+              </div>
             </div>
-            <div id="md-servers-list" class="servers-grid-layout"></div>
+
+            <!-- Server Lists Containers -->
+            <div class="servers-content-area">
+              <div id="md-watch-grid" class="servers-grid-layout"></div>
+              <div id="md-download-grid" class="servers-grid-layout is-hidden"></div>
+            </div>
+
+            <!-- Centered Deep Search Loader -->
+            <div id="md-servers-loader" class="centered-servers-loader is-hidden">
+              <div class="loader-spinner-neon"></div>
+              <div class="loader-text-group">
+                <div class="loader-title">🔍 جاري البحث في كافة المواقع والسيرفرات السحابية...</div>
+                <div class="loader-progress-bar"><div class="loader-progress-fill"></div></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
