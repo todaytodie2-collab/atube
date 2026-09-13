@@ -1458,11 +1458,22 @@ const InAppPlayer = (function () {
     const canvas = document.getElementById('radio-visualizer-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    let isVisualizerRunning = false;
 
     function draw() {
-      if (!modalEl || !modalEl.classList.contains('active')) return;
+      if (!modalEl || !modalEl.classList.contains('active')) {
+        isVisualizerRunning = false;
+        return;
+      }
+      // Only run RAF loop if current playing item is an audio/radio station and canvas is visible
+      const isRadio = currentPlayingItem && (currentPlayingItem.category === 'راديو' || currentPlayingItem.id === 'radio_9090');
+      if (!isRadio || !audioAnalyserNode) {
+        isVisualizerRunning = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        return;
+      }
+
       requestAnimationFrame(draw);
-      if (!audioAnalyserNode) return;
 
       const bufferLength = audioAnalyserNode.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
@@ -1490,7 +1501,6 @@ const InAppPlayer = (function () {
     });
     canvas.width = canvas.parentElement ? canvas.parentElement.clientWidth : 800;
     canvas.height = canvas.parentElement ? canvas.parentElement.clientHeight : 450;
-    draw();
   }
 
   async function requestScreenWakeLock() {
@@ -1926,18 +1936,20 @@ const InAppPlayer = (function () {
     if (isHls && window.Hls && window.Hls.isSupported()) {
       hlsInstance = new window.Hls({
         enableWorker: true,
-        lowLatencyMode: true,
-        backBufferLength: 15,
+        lowLatencyMode: false, // Disabling aggressive low-latency edge-chasing prevents continuous buffer starvation and video stuttering!
+        backBufferLength: 20,
         maxBufferLength: 30,
-        maxMaxBufferLength: 60
+        maxMaxBufferLength: 60,
+        liveSyncDurationCount: 3,
+        liveMaxLatencyDurationCount: 10,
+        capLevelToPlayerSize: true, // Optimizes video decoder performance based on player viewport
+        nudgeOffset: 0.2,
+        nudgeMaxRetry: 5
       });
 
-      // Sanitizer hook: Only query local sanitizer when running on localhost backend
+      // Direct, fast stream loading without bottleneck rewriting
       let playUrl = targetUrl;
-      if (isLocalBackend && targetUrl.startsWith('http')) {
-        playUrl = `/api/stream/sanitize?url=${encodeURIComponent(targetUrl)}`;
-      } else if (window.location.protocol === 'https:' && targetUrl.startsWith('http://')) {
-        // Upgrade HTTP stream to CORS proxy to prevent browser mixed-content block
+      if (window.location.protocol === 'https:' && targetUrl.startsWith('http://')) {
         playUrl = `https://corsproxy.io/?url=${encodeURIComponent(targetUrl)}`;
       }
 
