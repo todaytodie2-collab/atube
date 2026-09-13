@@ -69,6 +69,10 @@ public class MainActivity extends ComponentActivity {
         settings.setTextZoom(100);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         
+        // Anti-Popup and Anti-Ad Shield: Disallow popups and multi-window spawning
+        settings.setSupportMultipleWindows(false);
+        settings.setJavaScriptCanOpenWindowsAutomatically(false);
+
         // Performance caching optimizations
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         
@@ -78,7 +82,12 @@ public class MainActivity extends ComponentActivity {
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+                if (url == null) return true;
+                // Allow internal app navigation
+                if (url.startsWith("file://") || url.startsWith("http://localhost") || url.startsWith("https://localhost")) {
+                    return false;
+                }
+                // Block external ad redirects from hijacking the main app WebView
                 return true;
             }
 
@@ -91,6 +100,12 @@ public class MainActivity extends ComponentActivity {
         });
 
         mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, android.os.Message resultMsg) {
+                // Completely block third-party ad scripts from opening new windows/popups
+                return false;
+            }
+
             @Override
             public void onShowCustomView(View view, CustomViewCallback callback) {
                 if (mCustomView != null) {

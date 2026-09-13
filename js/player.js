@@ -1510,32 +1510,50 @@ const InAppPlayer = (function () {
     }
   }
 
-  // Ultra-Strict Popup & Ad-redirect Suppressor
+  // Ultra-Strict Anti-Popup, Anti-Ad, and Navigation-Hijack Suppressor
   function suppressPopups() {
     if (typeof window !== 'undefined') {
       if (!originalWindowOpen) {
         originalWindowOpen = window.open;
       }
-      // Completely block window.open when player modal is active or globally during streaming
-      window.open = function () {
-        console.warn('[A Tube Anti-Popup] Intercepted and blocked popup attempt');
-        return null;
-      };
 
-      // Override window.showModalDialog if present
+      // 1. Tamper-proof freeze of window.open to prevent ads from re-binding it
+      try {
+        Object.defineProperty(window, 'open', {
+          configurable: true,
+          writable: true,
+          value: function () {
+            console.warn('[A Tube Anti-Popup] Intercepted and neutralized popup attempt');
+            return null;
+          }
+        });
+      } catch (_) {
+        window.open = function () { return null; };
+      }
+
+      // 2. Override window.showModalDialog if present
       if (typeof window.showModalDialog === 'function') {
         window.showModalDialog = function () { return null; };
       }
 
-      // Prevent malicious page redirection attempts
+      // 3. Prevent malicious top-level page redirection attempts
       window.addEventListener('beforeunload', (e) => {
         if (modalEl && modalEl.classList.contains('active')) {
           e.preventDefault();
-          return '';
+          return (e.returnValue = '');
         }
       });
 
-      // Intercept and prevent popup clicks on links (target="_blank" or ad redirects)
+      // 4. Focus Guard: Instantly reclaim focus if an ad attempts a background window blur hijack
+      window.addEventListener('blur', () => {
+        if (modalEl && modalEl.classList.contains('active')) {
+          setTimeout(() => {
+            try { window.focus(); } catch (_) {}
+          }, 60);
+        }
+      });
+
+      // 5. Intercept and prevent popup clicks on links (target="_blank" or ad redirects)
       window.addEventListener('click', (e) => {
         if (modalEl && modalEl.classList.contains('active')) {
           const anchor = e.target && e.target.closest ? e.target.closest('a') : null;
@@ -1845,30 +1863,19 @@ const InAppPlayer = (function () {
     // If it's an embed player, load immediately with ZERO latency (no blocking fetch!)
     if (isEmbedUrl) {
       if (iframeEl) {
-        // Live channel web players (player.eishha.com, .html embeds) block sandbox & no-referrer!
-        // Only apply sandbox/referrer restrictions to non-live VOD embeds.
-        if (isLiveEmbed) {
-          // For live channel web players: NO sandbox, NO referrerpolicy restriction
-          iframeEl.removeAttribute('sandbox');
-          iframeEl.removeAttribute('referrerpolicy');
-        } else {
-          // For VOD embeds: apply limited sandbox to block popup ads
-          iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
-          iframeEl.setAttribute('referrerpolicy', 'no-referrer');
-        }
+        // ALL embeds (VOD & Live): Completely remove sandbox & referrerpolicy attributes!
+        // Third-party embed video servers (VidLink, Multiembed, VidSrc, AutoEmbed, Eishha) actively detect
+        // and reject iframes with the 'sandbox' attribute by displaying "Sandboxing is not allowed!".
+        // Popups and ad redirects are instead completely intercepted and neutralized at the parent window and Android WebView levels.
+        iframeEl.removeAttribute('sandbox');
+        iframeEl.removeAttribute('referrerpolicy');
         iframeEl.setAttribute('allowfullscreen', 'true');
         iframeEl.setAttribute('webkitallowfullscreen', 'true');
         iframeEl.setAttribute('mozallowfullscreen', 'true');
         iframeEl.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
 
-        // Block popups globally while embed player is running
-        if (!window._origWindowOpen) {
-          window._origWindowOpen = window.open;
-          window.open = function() {
-            console.warn('[A Tube AdBlock] Blocked popup attempt');
-            return null;
-          };
-        }
+        // Robust multi-layered popup suppressor
+        suppressPopups();
 
         videoEl.style.display = 'none';
         videoEl.pause();
