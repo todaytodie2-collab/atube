@@ -92,6 +92,33 @@ public class MainActivity extends ComponentActivity {
             }
 
             @Override
+            public android.webkit.WebResourceResponse shouldInterceptRequest(WebView view, android.webkit.WebResourceRequest request) {
+                if (request != null && request.getUrl() != null) {
+                    String url = request.getUrl().toString();
+                    if (url.contains("vidmoly") || url.contains("mixdrop") || url.contains("hgcloud") || url.contains("minochinos") || url.contains("liiivideo") || url.contains("m3u8")) {
+                        try {
+                            java.net.URL requestUrl = new java.net.URL(url);
+                            java.net.HttpURLConnection conn = (java.net.HttpURLConnection) requestUrl.openConnection();
+                            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+                            conn.setRequestProperty("Referer", "https://egydead.net/");
+                            conn.setConnectTimeout(5000);
+                            conn.setReadTimeout(5000);
+                            
+                            String contentType = conn.getContentType();
+                            if (contentType == null) contentType = "video/mp4";
+                            
+                            return new android.webkit.WebResourceResponse(
+                                contentType,
+                                conn.getContentEncoding() != null ? conn.getContentEncoding() : "UTF-8",
+                                conn.getInputStream()
+                            );
+                        } catch (Exception ignored) {}
+                    }
+                }
+                return super.shouldInterceptRequest(view, request);
+            }
+
+            @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 try {
                     view.loadUrl("file:///android_asset/index.html");

@@ -2017,6 +2017,23 @@ const InAppPlayer = (function () {
     }
   }
 
+  function saveToHistory(item) {
+    if (!item || !item.id) return;
+    try {
+      let history = JSON.parse(localStorage.getItem('atube_history') || '[]');
+      history = history.filter(x => x && x.id !== item.id);
+      history.unshift({
+        id: item.id,
+        title: item.title,
+        arabic_title: item.arabic_title || item.title,
+        poster: item.poster,
+        category: item.category,
+        content_type: item.content_type
+      });
+      localStorage.setItem('atube_history', JSON.stringify(history.slice(0, 20)));
+    } catch (_) {}
+  }
+
   // Play Media Item
   async function playMedia(item) {
     if (!videoEl || !modalEl) return;
@@ -2025,6 +2042,8 @@ const InAppPlayer = (function () {
     savedPlayheadTime = 0;
     currentServerIndex = 0;
     candidateServers = buildCandidateServerPool(item);
+
+    saveToHistory(item);
 
     const isLive = isLiveMediaItem(item);
     const serverBtn = document.getElementById('player-header-server-btn');
