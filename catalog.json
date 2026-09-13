@@ -22145,11 +22145,7 @@
                 "site": "Vipserver",
                 "badge": "VIP ⭐",
                 "quality": "1080p FHD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -22157,11 +22153,7 @@
                 "site": "Mixdrop",
                 "badge": "Mixdrop",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -22169,11 +22161,7 @@
                 "site": "Hgcloud",
                 "badge": "Hgcloud ⚡",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Minochinos (بديل فائق)",
@@ -22181,11 +22169,7 @@
                 "site": "Minochinos",
                 "badge": "Minochinos",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -22193,14 +22177,9 @@
                 "site": "Vidmoly",
                 "badge": "Vidmoly",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               }
-            ],
-            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/ae25f4f90-1.jpg"
+            ]
           },
           {
             "id": "انت-من-احب-الحلقة-17-السابعة-عشر-2026-d27c7d820",
@@ -22216,11 +22195,7 @@
                 "site": "Vipserver",
                 "badge": "VIP ⭐",
                 "quality": "1080p FHD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -22228,11 +22203,7 @@
                 "site": "Mixdrop",
                 "badge": "Mixdrop",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -22240,11 +22211,7 @@
                 "site": "Hgcloud",
                 "badge": "Hgcloud ⚡",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Minochinos (بديل فائق)",
@@ -22252,11 +22219,7 @@
                 "site": "Minochinos",
                 "badge": "Minochinos",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -22264,14 +22227,9 @@
                 "site": "Vidmoly",
                 "badge": "Vidmoly",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               }
-            ],
-            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/d27c7d820-1.jpg"
+            ]
           }
         ]
       }
@@ -22324,11 +22282,7 @@
                 "site": "Vipserver",
                 "badge": "VIP ⭐",
                 "quality": "1080p FHD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -22336,11 +22290,7 @@
                 "site": "Mixdrop",
                 "badge": "Mixdrop",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -22348,11 +22298,7 @@
                 "site": "Hgcloud",
                 "badge": "Hgcloud ⚡",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Minochinos (بديل فائق)",
@@ -22360,11 +22306,7 @@
                 "site": "Minochinos",
                 "badge": "Minochinos",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -22372,14 +22314,9 @@
                 "site": "Vidmoly",
                 "badge": "Vidmoly",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               }
-            ],
-            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/5d2a88430-1.jpg"
+            ]
           },
           {
             "id": "ورود-وذنوب-الحلقة-34-الرابعة-والثلاثون-2026-a080f7250",
@@ -22395,11 +22332,7 @@
                 "site": "Vipserver",
                 "badge": "VIP ⭐",
                 "quality": "1080p FHD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -22407,11 +22340,7 @@
                 "site": "Mixdrop",
                 "badge": "Mixdrop",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -22419,11 +22348,7 @@
                 "site": "Hgcloud",
                 "badge": "Hgcloud ⚡",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Minochinos (بديل فائق)",
@@ -22431,11 +22356,7 @@
                 "site": "Minochinos",
                 "badge": "Minochinos",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -22443,14 +22364,9 @@
                 "site": "Vidmoly",
                 "badge": "Vidmoly",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               }
-            ],
-            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/a080f7250-1.jpg"
+            ]
           }
         ]
       }
@@ -22503,11 +22419,7 @@
                 "site": "Vipserver",
                 "badge": "VIP ⭐",
                 "quality": "1080p FHD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -22515,11 +22427,7 @@
                 "site": "Mixdrop",
                 "badge": "Mixdrop",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -22527,11 +22435,7 @@
                 "site": "Hgcloud",
                 "badge": "Hgcloud ⚡",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Minochinos (بديل فائق)",
@@ -22539,11 +22443,7 @@
                 "site": "Minochinos",
                 "badge": "Minochinos",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -22551,14 +22451,9 @@
                 "site": "Vidmoly",
                 "badge": "Vidmoly",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               }
-            ],
-            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/8f29afabd-1.jpg"
+            ]
           },
           {
             "id": "اخي-الحلقة-20-العشرون-2026-1bb1e84b4",
@@ -22574,11 +22469,7 @@
                 "site": "Vipserver",
                 "badge": "VIP ⭐",
                 "quality": "1080p FHD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -22586,11 +22477,7 @@
                 "site": "Mixdrop",
                 "badge": "Mixdrop",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -22598,11 +22485,7 @@
                 "site": "Hgcloud",
                 "badge": "Hgcloud ⚡",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Minochinos (بديل فائق)",
@@ -22610,11 +22493,7 @@
                 "site": "Minochinos",
                 "badge": "Minochinos",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               },
               {
                 "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -22622,14 +22501,9 @@
                 "site": "Vidmoly",
                 "badge": "Vidmoly",
                 "quality": "1080p HD",
-                "isEmbed": true,
-                "is_hls": false,
-                "duration_minutes": 120,
-                "start_verified": true,
-                "end_verified": true
+                "isEmbed": true
               }
-            ],
-            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/1bb1e84b4-1.jpg"
+            ]
           }
         ]
       }
