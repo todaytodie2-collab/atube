@@ -60,7 +60,8 @@ class GoogleDorkScraper:
     SSL_CTX.check_hostname = False
     SSL_CTX.verify_mode = ssl.CERT_NONE
 
-    STREAM_HOSTS = [
+    STREAM_HOST_PATTERNS = [
+        (r'megamax', 'MegaMax', 'MegaMax 1080p ⚡'),
         (r'vidmoly', 'Vidmoly', 'VIP Fast ⚡'),
         (r'mixdrop', 'Mixdrop', 'Mixdrop Direct'),
         (r'hgcloud', 'Hgcloud', 'Hgcloud Ultra'),

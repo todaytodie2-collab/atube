@@ -88,7 +88,11 @@ class DirectStreamExtractor:
             elif "vidlink" in lower_url or "multiembed" in lower_url:
                 return cls._extract_vidlink(stream_url)
 
-            # 6. فك تشفير Doodstream / Streamtape
+            # 6. فك تشفير سيرفر MegaMax
+            elif "megamax" in lower_url:
+                return cls._extract_megamax(stream_url)
+
+            # 7. فك تشفير Doodstream / Streamtape
             elif "dood" in lower_url or "ds2play" in lower_url:
                 return cls._extract_doodstream(stream_url)
 
@@ -239,6 +243,38 @@ class DirectStreamExtractor:
                 "server_name": "Vidlink Direct Master"
             }
         return cls._extract_generic(url)
+
+    @classmethod
+    def _extract_megamax(cls, url: str) -> Dict[str, Any]:
+        """فك تشفير سيرفر MegaMax المباشر والـ mirrors"""
+        clean_url = url
+        if "megamax.me" in clean_url:
+            clean_url = clean_url.replace("megamax.me", "eg.megamax.cam")
+        
+        try:
+            html = cls._fetch_html(clean_url, referer="https://egydead.live/", timeout=5.0)
+            m3u8_match = re.search(r'file\s*:\s*["\'](https?://[^"\']+\.m3u8[^"\']*)["\']', html)
+            if m3u8_match:
+                return {
+                    "success": True,
+                    "stream_url": m3u8_match.group(1),
+                    "is_hls": True,
+                    "format": "hls",
+                    "headers": {"User-Agent": cls.USER_AGENT, "Referer": "https://egydead.live/"},
+                    "server_name": "MegaMax Direct FHD"
+                }
+        except Exception:
+            pass
+
+        return {
+            "success": True,
+            "stream_url": clean_url,
+            "is_hls": False,
+            "format": "mp4",
+            "isEmbed": True,
+            "headers": {"User-Agent": cls.USER_AGENT, "Referer": "https://egydead.live/"},
+            "server_name": "MegaMax Cloud"
+        }
 
     @classmethod
     def _extract_doodstream(cls, url: str) -> Dict[str, Any]:

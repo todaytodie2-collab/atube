@@ -1719,13 +1719,13 @@ const InAppPlayer = (function () {
             return;
           }
           const sIsHls = sUrl.includes('.m3u8');
-          const sIsEmbed = !sIsHls && (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('/p/') || sUrl.includes('.html') || sUrl.includes('player.eishha.com') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo'));
+          const sIsEmbed = !sIsHls && (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('/p/') || sUrl.includes('/iframe/') || sUrl.includes('.html') || sUrl.includes('player.eishha.com') || sUrl.includes('megamax') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo'));
           pool.push({
             name: s.name || (isLive ? 'سيرفر بث حي' : 'سيرفر تشغيل'),
             url: sUrl,
             quality: s.quality || (isLive ? 'بث مباشر HD' : '1080p FHD'),
             is_hls: s.is_hls ?? sIsHls,
-            isEmbed: isLive ? sIsEmbed : (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo'))
+            isEmbed: isLive ? sIsEmbed : (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('/iframe/') || sUrl.includes('megamax') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo'))
           });
         }
       });
@@ -1972,17 +1972,28 @@ const InAppPlayer = (function () {
         });
       }
     } else {
-      // CASE 2: External Clean Embed Player (VidLink, MultiEmbed, Hgcloud Embed)
+      // CASE 2: External Clean Embed Player (MegaMax, VidLink, MultiEmbed, Hgcloud Embed)
       videoEl.style.display = 'none';
       if (hlsInstance) {
         try { hlsInstance.destroy(); hlsInstance = null; } catch (_) {}
       }
+      
+      // Automatic domain mirror resolution for MegaMax
+      if (targetUrl.includes('megamax.me')) {
+        targetUrl = targetUrl.replace('megamax.me', 'eg.megamax.cam');
+      }
+
       if (iframeEl) {
         iframeEl.style.display = 'block';
+        iframeEl.onload = function() {
+          setTimeout(hideFailoverOverlay, 1500);
+          showEmbedGuideHint();
+        };
         iframeEl.src = targetUrl;
       }
       if (modalEl) modalEl.classList.add('is-embed-active');
       showFailoverHUD(`⚡ تشغيل السيرفر السحابي المباشر: ${serverObj.name || serverObj.site || 'A Tube Cloud'}`);
+      setTimeout(hideFailoverOverlay, 4000);
     }
   }
 
