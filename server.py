@@ -25,9 +25,15 @@ if hasattr(sys.stdout, 'reconfigure'):
 if hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
-# Add services path
+# Add services and root paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, BASE_DIR)
 sys.path.insert(0, os.path.join(BASE_DIR, "services"))
+sys.path.insert(0, os.path.join(BASE_DIR, "scripts"))
+
+# In-Memory Cache for EPG (prevents CPU spikes on repeated schedule requests)
+_EPG_CACHE = {"ts": 0.0, "data": {}}
+_EPG_CACHE_TTL = 600.0  # 10 minutes cache
 
 # Security Guard: Blocked internal networks for SSRF prevention
 BLOCKED_IP_NETWORKS = [
@@ -56,13 +62,19 @@ def is_safe_external_url(url: str) -> bool:
         # Block localhost strings explicitly
         if hostname.lower() in ("localhost", "127.0.0.1", "::1", "0.0.0.0", "internal", "local"):
             return False
-        # Resolve hostname to IP to prevent DNS rebinding
+        # Resolve hostname to IP to prevent DNS rebinding attacks
         try:
-            ip_str = socket.gethostbyname(hostname)
-            ip_obj = ipaddress.ip_address(ip_str)
-            for net in BLOCKED_IP_NETWORKS:
-                if ip_obj in net:
+            addr_info = socket.getaddrinfo(hostname, None)
+            for item in addr_info:
+                ip_str = item[4][0]
+                ip_obj = ipaddress.ip_address(ip_str)
+                if (ip_obj.is_private or ip_obj.is_loopback or 
+                    ip_obj.is_link_local or ip_obj.is_reserved or 
+                    ip_obj.is_multicast):
                     return False
+                for net in BLOCKED_IP_NETWORKS:
+                    if ip_obj in net:
+                        return False
         except Exception:
             return False
         return True
@@ -79,35 +91,18 @@ try:
     from services.stream_extractor import DirectStreamExtractor
     from services.google_dork_scraper import GoogleDorkScraper
     from services.iptv_manager import IPTVManager
-    from services.live_tv_service import LiveTVService
+    from services.live_tv_service import LiveTVService, LiveTVManager
     from services.catalog_sync import CatalogSync, ContentIngestEngine, ContinuousSyncEngine
     from services.deep_search_fallback import DeepSearchFallbackEngine
     from services.stream_bridge import InvisibleStreamBridge
     from services.universal_crawler_daemon import UniversalCrawlerDaemon
+    from services.mycima_harvester import MyCimaHarvester
     HAS_SERVICES = True
 except Exception as e:
-    print(f"[A Tube Server] Note: Services loaded with fallback: {e}")
-    try:
-        from remote_config import RemoteConfigManager
-        from vod_db import VODDatabase
-        from rss_manager import RSSManager
-        from procedural_manifest import ProceduralManifestEngine
-        from stream_sanitizer import StreamSanitizer
-        from api_controller import APIController
-        from stream_extractor import DirectStreamExtractor
-        from google_dork_scraper import GoogleDorkScraper
-        from iptv_manager import IPTVManager
-        from live_tv_service import LiveTVService
-        from catalog_sync import CatalogSync, ContentIngestEngine, ContinuousSyncEngine
-        from deep_search_fallback import DeepSearchFallbackEngine
-        from stream_bridge import InvisibleStreamBridge
-        from universal_crawler_daemon import UniversalCrawlerDaemon
-        HAS_SERVICES = True
-    except Exception:
-        HAS_SERVICES = False
+    print(f"[A Tube Server] Note: Services loading exception: {e}")
+    HAS_SERVICES = False
 
 try:
-    sys.path.insert(0, os.path.join(BASE_DIR, "scripts"))
     from auto_git_sync import AutoGitSync
 except Exception:
     AutoGitSync = None
