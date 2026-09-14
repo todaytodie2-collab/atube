@@ -501,20 +501,7 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
             # 2. API: Unified Media Details (Trailer, Cast, Seasons, Episodes, Servers)
             elif path in ["/api/movies/details", "/api/media/details"]:
-                media_id = query.get("id", [""])[0]
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json; charset=utf-8")
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.end_headers()
-
-                details = None
-                if HAS_SERVICES:
-                    details = VODDatabase.get_media_details(media_id)
-
-                if details:
-                    self.wfile.write(json.dumps(details, ensure_ascii=False).encode("utf-8"))
-                else:
-                    self.wfile.write(json.dumps({"error": "Media not found"}, ensure_ascii=False).encode("utf-8"))
+                APIController.handle_details(self, query)
                 return
 
             # 3. API: Real Live IPTV Channels (Verified, Legal & Free)
@@ -568,18 +555,29 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
                 def run_iptv_refresh_bg():
                     try:
-                        from live_tv_service import LiveTVManager
-                        LiveTVManager.harvest_and_verify_m3u_sources(max_channels_to_verify=30)
-                    except Exception as ex:
-                        print(f"[LiveTV Background] Error: {ex}")
+                        if 'IPTVManager' in globals() and IPTVManager:
+                            IPTVManager.refresh_now()
+                    except Exception as ex_iptv:
+                        print(f"[IPTV Refresh Background] Error: {ex_iptv}")
+                    try:
+                        if 'LiveTVManager' in globals() and LiveTVManager:
+                            LiveTVManager.harvest_and_verify_m3u_sources(max_channels_to_verify=30)
+                    except Exception as ex_live:
+                        print(f"[LiveTV Background] Error: {ex_live}")
 
                 threading.Thread(target=run_iptv_refresh_bg, daemon=True).start()
-                self.wfile.write(json.dumps({"status": "started", "message": "جاري فحص وتحديث قنوات البث المباشر في الخلفية"}, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(json.dumps({"status": "refresh_in_progress", "message": "جاري فحص وتحديث قنوات البث المباشر في الخلفية"}, ensure_ascii=False).encode("utf-8"))
                 return
 
             # 3c-2. API: EPG Guide Program Schedule
             elif path == "/api/iptv/epg":
                 ch_id = query.get("channel_id", [""])[0]
+
+                # Return from memory cache if requesting full EPG and still within TTL
+                if not ch_id and (time.time() - _EPG_CACHE["ts"]) < _EPG_CACHE_TTL and _EPG_CACHE["data"]:
+                    self.send_cors_json(_EPG_CACHE["data"])
+                    return
+
                 now = datetime.datetime.now()
                 channels = []
                 if HAS_SERVICES:
@@ -649,6 +647,10 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                         "channel_name": c_name,
                         "programs": schedules
                     }
+
+                if not ch_id:
+                    _EPG_CACHE["data"] = epg_result
+                    _EPG_CACHE["ts"] = time.time()
 
                 self.send_cors_json(epg_result)
                 return
