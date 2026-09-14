@@ -845,10 +845,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 APIController.handle_feed(self, query)
                 return
 
-            # 5d. API: Unified Media Details (New API Controller)
-            elif path == "/api/media/details":
-                APIController.handle_details(self, query)
-                return
 
             # 5e. API: Media Search (New API Controller)
             elif path == "/api/media/search":
