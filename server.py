@@ -903,86 +903,8 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.send_cors_json(result)
                 return
 
-            # 5d. API: CORS-Bypassing Stream & Video Proxy Bridge (supports Range / Seeking)
-            elif path == "/api/stream/proxy":
-                target_url = query.get("url", [""])[0]
-                custom_ref = query.get("ref", [""])[0]
-                if not target_url or not is_safe_external_url(target_url):
-                    self.send_cors_json({"error": "Invalid, blocked or missing target URL"}, status=400)
-                    return
-
-                try:
-                    headers = {
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                        "Referer": custom_ref or target_url,
-                        "Accept": "*/*"
-                    }
-                    if "Range" in self.headers:
-                        headers["Range"] = self.headers["Range"]
-
-                    req = urllib.request.Request(target_url, headers=headers)
-                    ctx = ssl.create_default_context()
-                    ctx.check_hostname = False
-                    ctx.verify_mode = ssl.CERT_NONE
-
-                    with urllib.request.urlopen(req, context=ctx, timeout=12) as response:
-                        ct = response.headers.get("Content-Type", "video/mp4")
-                        cl = response.headers.get("Content-Length")
-                        cr = response.headers.get("Content-Range")
-                        status_code = getattr(response, "status", 200) or 200
-
-                        self.send_response(status_code)
-                        self.send_header("Content-Type", ct)
-                        self.send_header("Access-Control-Allow-Origin", "*")
-                        self.send_header("Access-Control-Allow-Headers", "Range, Authorization")
-                        self.send_header("Access-Control-Expose-Headers", "Content-Range, Content-Length, Accept-Ranges")
-                        self.send_header("Accept-Ranges", "bytes")
-                        if cl:
-                            self.send_header("Content-Length", cl)
-                        if cr:
-                            self.send_header("Content-Range", cr)
-                        self.send_header("Cache-Control", "no-cache")
-                        self.end_headers()
-                        while True:
-                            chunk = response.read(65536)
-                            if not chunk:
-                                break
-                            self.wfile.write(chunk)
-                except Exception as ex:
-                    self.send_cors_json({"error": f"Proxy upstream error: {str(ex)}"}, status=502)
-                return
-
-            # 5e. API: System Health & Performance Diagnostics
-            elif path == "/api/health":
-                vod_count = 0
-                iptv_count = 0
-                if HAS_SERVICES:
-                    try:
-                        conn = VODDatabase.get_connection()
-                        vod_count = conn.execute("SELECT COUNT(*) FROM vod_media").fetchone()[0]
-                        conn.close()
-                    except Exception:
-                        pass
-                    try:
-                        iptv_count = len(IPTVManager.get_active_channels())
-                    except Exception:
-                        pass
-
-                self.send_cors_json({
-                    "status": "healthy",
-                    "platform": "A TuBe Ultra HD Media Experience",
-                    "version": "2.5.0",
-                    "timestamp": datetime.datetime.now().isoformat(),
-                    "stats": {
-                        "vod_titles": vod_count,
-                        "iptv_channels": iptv_count,
-                        "engine": "SQLite 3 WAL Mode"
-                    }
-                })
-                return
-
             # 6. API: Multi-Year Universal Harvester Trigger
-            elif path in ["/api/crawler/run", "/api/crawler/harvest-years"]:
+            elif path == "/api/crawler/harvest-years":
                 start_yr = int(query.get("start_year", ["2000"])[0])
                 end_yr = int(query.get("end_year", ["2026"])[0])
                 self.send_response(200)
