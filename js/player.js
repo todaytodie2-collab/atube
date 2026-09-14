@@ -1904,9 +1904,11 @@ const InAppPlayer = (function () {
         hlsInstance = new window.Hls({
           enableWorker: true,
           lowLatencyMode: false,
-          backBufferLength: 20,
-          maxBufferLength: 30,
-          maxMaxBufferLength: 60,
+          backBufferLength: 30,
+          maxBufferLength: 45,
+          maxMaxBufferLength: 90,
+          maxBufferSize: 60 * 1000 * 1000,
+          startLevel: -1,
           capLevelToPlayerSize: true,
           nudgeOffset: 0.2,
           nudgeMaxRetry: 5
