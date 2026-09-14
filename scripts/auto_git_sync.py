@@ -59,8 +59,8 @@ class AutoGitSync:
                 msg = f"auto(sync): update codebase and assets [{now_str}]"
                 subprocess.run(["git", "commit", "-m", msg], cwd=BASE_DIR, check=True)
 
-                # 3. Pull rebase to handle remote bot updates
-                subprocess.run(["git", "pull", "--rebase", "origin", "main"], cwd=BASE_DIR, check=False)
+                # 3. Pull rebase to handle remote bot updates with automatic conflict resolution
+                subprocess.run(["git", "pull", "--rebase", "-X", "theirs", "origin", "main"], cwd=BASE_DIR, check=False)
 
                 # 4. Push to origin main
                 push_res = subprocess.run(["git", "push", "origin", "main"], cwd=BASE_DIR, capture_output=True, text=True)
