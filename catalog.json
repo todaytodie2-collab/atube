@@ -313926,5 +313926,94 @@
     ],
     "servers": [],
     "cast": []
+  },
+  {
+    "id": "stuart-fails-to-save-the-universe-الحلقة-8-الثامنة-2026-8a6849908",
+    "title": "Stuart Fails to Save the Universe الحلقة 8 الثامنة",
+    "arabic_title": "Stuart Fails to Save the Universe الحلقة 8 الثامنة",
+    "content_type": "series",
+    "category": "foreign",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/8a6849908-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/8a6849908-1.jpg",
+    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة من مسلسل &quot; Stuart Fails to Save the Universe الموسم الاول&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 0,
+    "servers": [
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-r89ivn3oqcyl.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/nl0jog8ef3xo08",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/7200dibp5l24",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/r7mmtsnwmzz4",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-vtrkhoxe4nyv.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      }
+    ]
   }
 ]
