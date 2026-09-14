@@ -779,8 +779,8 @@ function renderHeroBillboard() {
             <span>تشغيل فوري ⚡</span>
           </button>
           <button class="btn-secondary dpad-focusable" id="hero-details-btn">
-            <span>🎬</span>
-            <span>تفاصيل والسيرفرات (${(featured.servers || []).length})</span>
+            <span>ℹ️</span>
+            <span>المزيد من التفاصيل</span>
           </button>
         </div>
       `;
@@ -792,6 +792,15 @@ function renderHeroBillboard() {
 
       if (watchBtn) {
         watchBtn.addEventListener('click', () => {
+          const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
+          if (player && typeof player.playMedia === 'function') {
+            player.playMedia(featured);
+          }
+        });
+      }
+
+      if (detailsBtn) {
+        detailsBtn.addEventListener('click', () => {
           const details = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
           if (details && typeof details.open === 'function') {
             details.open(featured);

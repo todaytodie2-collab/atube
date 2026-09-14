@@ -482,7 +482,19 @@ const MovieDetails = (function () {
           `;
           epCard.onclick = () => {
             epCard.classList.add('active');
-            selectEpisode(ep);
+            closeModal();
+            const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
+            if (player && typeof player.playMedia === 'function') {
+              player.playMedia({
+                ...movie,
+                name: `${movie.title} - ${ep.title || 'الحلقة ' + ep.episode_number}`,
+                title: `${movie.title} - ${ep.title || 'الحلقة ' + ep.episode_number}`,
+                episode: ep.episode_number,
+                season: activeSeason.season_number || (seasonIndex + 1),
+                servers: ep.servers && ep.servers.length > 0 ? ep.servers : movie.servers,
+                streamUrl: (ep.servers && ep.servers[0] && (ep.servers[0].url || ep.servers[0].stream_url)) || ''
+              });
+            }
           };
           episodesTrack.appendChild(epCard);
         });
