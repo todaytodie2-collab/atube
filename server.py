@@ -795,19 +795,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(json.dumps(channels_data, ensure_ascii=False).encode("utf-8"))
                 return
 
-            elif path == "/api/iptv/refresh":
-                self.send_response(200)
-                self.send_header("Content-Type", "application/json; charset=utf-8")
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.end_headers()
-                res = {"status": "started"}
-                try:
-                    threading.Thread(target=IPTVManager.refresh_now, daemon=True).start()
-                    res = {"status": "refresh_in_progress"}
-                except Exception as ex:
-                    res = {"error": str(ex)}
-                self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
-                return
 
             elif path == "/api/iptv/health":
                 stream_url = query.get("url", [""])[0]
