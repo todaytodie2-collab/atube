@@ -345,16 +345,31 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     parsed_target = urllib.parse.urlparse(target_url)
                     base_origin = f"{parsed_target.scheme}://{parsed_target.netloc}"
 
-                    cmd = [
-                        "curl.exe", "-s", "--max-time", "10",
-                        "-H", f"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                        "-H", f"Referer: {referer}",
-                        "-H", f"Origin: {referer}",
-                        "--compressed",
-                        target_url
-                    ]
-                    fetch_res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
-                    content = fetch_res.stdout or ""
+                    embed_headers = {
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                        "Referer": referer,
+                        "Origin": referer,
+                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                        "Accept-Encoding": "gzip, deflate"
+                    }
+                    embed_req = urllib.request.Request(target_url, headers=embed_headers)
+                    embed_ctx = ssl.create_default_context()
+                    embed_ctx.check_hostname = False
+                    embed_ctx.verify_mode = ssl.CERT_NONE
+                    content = ""
+                    try:
+                        with urllib.request.urlopen(embed_req, context=embed_ctx, timeout=10.0) as fetch_res:
+                            raw_data = fetch_res.read()
+                            enc = fetch_res.headers.get("Content-Encoding", "").lower()
+                            if enc == "gzip":
+                                import gzip
+                                raw_data = gzip.decompress(raw_data)
+                            elif enc == "deflate":
+                                import zlib
+                                raw_data = zlib.decompress(raw_data)
+                            content = raw_data.decode("utf-8", errors="replace")
+                    except Exception:
+                        content = ""
 
                     if not content or len(content) < 50:
                         self.send_response(302)
