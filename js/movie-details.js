@@ -265,18 +265,25 @@ const MovieDetails = (function () {
         currentMovie = MediaCatalog.getDetails(movieOrId);
       }
       if (!currentMovie) {
-        currentMovie = getFallbackMovie(movieOrId);
+        const isFileProto = window.location.protocol === 'file:';
+        if (!isFileProto) {
+          try {
+            const resp = await fetch(`/api/media/details?id=${encodeURIComponent(movieOrId)}`);
+            if (resp.ok) {
+              const freshData = await resp.json();
+              if (freshData && freshData.id) {
+                currentMovie = freshData;
+              }
+            }
+          } catch (e) {}
+        }
       }
 
-      // Background revalidation from server if online
-      const isFileProto = window.location.protocol === 'file:';
-      if (!isFileProto) {
-        fetch(`/api/media/details?id=${encodeURIComponent(movieOrId)}`)
-          .then(r => r.ok ? r.json() : null)
-          .then(freshData => {
-            if (freshData && freshData.id) mergeFromApi(freshData);
-          })
-          .catch(() => {});
+      if (!currentMovie) {
+        if (typeof showToast === 'function') {
+          showToast('⚠️ هذا العمل غير متاح حالياً');
+        }
+        return;
       }
     } else if (movieOrId && typeof movieOrId === 'object') {
       currentMovie = movieOrId;
