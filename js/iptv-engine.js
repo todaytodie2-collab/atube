@@ -587,24 +587,35 @@ const IPTVEngine = (function () {
     }
 
     function generateProgramsForChannel(ch, curHour) {
-      const template = [
-        { h: 8, title: 'صباح الخير والمنوعات ☀️' },
-        { h: 10, title: 'برنامج وثائقي واستكشافي 🌍' },
-        { h: 12, title: 'النشرة الإخبارية الرئيسية 🎙️' },
-        { h: 14, title: 'جولة حول العالم وأحدث الأحداث 🌐' },
-        { h: 16, title: 'استوديو التحليل الرياضي ⚽' },
-        { h: 18, title: 'حوار خاص مع كبار النجوم 🌟' },
-        { h: 20, title: 'حصاد اليوم وأبرز القضايا 📰' },
-        { h: 22, title: 'سهرة سينمائية ووثائقية كبرى 🎬' }
-      ];
+      const chName = ch.name || 'قناة بث مباشر';
+      const cat = (ch.category || '').toLowerCase();
+      let streamType = 'البث الفضائي الحي المباشر';
+      let icon = '📡';
+      if (cat.includes('رياض') || cat.includes('sport')) {
+        streamType = 'التغطية الرياضية المباشرة والمباريات';
+        icon = '⚽';
+      } else if (cat.includes('أخبار') || cat.includes('news')) {
+        streamType = 'التغطية الإخبارية الحية والموجز الإخباري';
+        icon = '🎙️';
+      } else if (cat.includes('وثائق') || cat.includes('doc')) {
+        streamType = 'البث الوثائقي والاستكشافي';
+        icon = '🌍';
+      } else if (cat.includes('إسلام') || cat.includes('قرآن') || cat.includes('دين')) {
+        streamType = 'البث القرآني والبرامج الدينية المباشرة';
+        icon = '📖';
+      } else if (cat.includes('أطفال') || cat.includes('kids') || cat.includes('كرتون')) {
+        streamType = 'بث برامج ورسوم الأطفال';
+        icon = '🎨';
+      }
 
-      return template.map(t => {
-        const isCurrent = (curHour >= t.h && curHour < t.h + 2);
-        const startStr = `${String(t.h).padStart(2, '0')}:00`;
-        const endStr = `${String(t.h + 2).padStart(2, '0')}:00`;
+      const slots = [0, 4, 8, 12, 16, 20];
+      return slots.map(h => {
+        const isCurrent = (curHour >= h && curHour < h + 4);
+        const startStr = `${String(h).padStart(2, '0')}:00`;
+        const endStr = `${String((h + 4) % 24).padStart(2, '0')}:00`;
         return {
           time: `${startStr} - ${endStr}`,
-          title: t.title,
+          title: isCurrent ? `${chName} - ${streamType} ${icon}` : `${chName} - جدول البث الرسمي (${startStr})`,
           isCurrent
         };
       });
