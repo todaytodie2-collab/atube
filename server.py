@@ -644,6 +644,7 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 if ch_id:
                     channels = [c for c in channels if str(c.get("id")) == str(ch_id)]
 
+                epg_result = {}
                 current_hour = now.hour
                 for ch in channels[:30]:
                     c_id = str(ch.get("id"))
