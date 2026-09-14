@@ -508,8 +508,44 @@ const MediaCatalog = (function () {
     clearCatalog: clearCatalog,
     loadCatalog: loadCatalog,
     count: () => _inMemoryCatalog.length,
-    generateProceduralPosterSVG: () => 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450" fill="%230b0f19"/%3E',
-    generatePosterSVG: () => 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450" fill="%230b0f19"/%3E',
+    generateProceduralPosterSVG: function(title, arabicTitle, year, category, rating) {
+      const displayTitle = (arabicTitle || title || 'A TuBe Cinema').slice(0, 32);
+      const displayYear = year ? String(year).slice(0, 4) : '';
+      const displayCat = category || 'سينما';
+      const displayRating = rating || '★ 8.5';
+      const safeTitle = displayTitle.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const safeCat = displayCat.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="100%" stop-color="#4facfe" />
+    </linearGradient>
+  </defs>
+  <rect width="300" height="450" fill="url(#g)" />
+  <circle cx="150" cy="180" r="70" fill="none" stroke="url(#accent)" stroke-width="2" opacity="0.3" />
+  <g transform="translate(115, 145)" fill="url(#accent)">
+    <path d="M60 10H10C4.48 10 0 14.48 0 20v30c0 5.52 4.48 10 10 10h50c5.52 0 10-4.48 10-10V20c0-5.52-4.48-10-10-10zM20 20h10v10H20V20zm0 20h10v10H20V40zm20-20h10v10H40V20zm0 20h10v10H40V40z" opacity="0.8"/>
+  </g>
+  <rect x="20" y="24" width="70" height="22" rx="6" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)"/>
+  <text x="55" y="39" fill="#94a3b8" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="bold">${safeCat}</text>
+  <rect x="210" y="24" width="70" height="22" rx="6" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.3)"/>
+  <text x="245" y="39" fill="#fbbf24" font-size="11" font-family="sans-serif" text-anchor="middle" font-weight="bold">${displayRating}</text>
+  <text x="150" y="320" fill="#64748b" font-size="14" font-family="sans-serif" text-anchor="middle" font-weight="bold">${displayYear}</text>
+  <text x="150" y="360" fill="#f8fafc" font-size="18" font-family="sans-serif" text-anchor="middle" font-weight="bold">${safeTitle}</text>
+  <text x="150" y="420" fill="#38bdf8" font-size="12" font-family="sans-serif" text-anchor="middle" letter-spacing="2" opacity="0.6">A TUBE ULTRA HD</text>
+</svg>`;
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    },
+    generatePosterSVG: function(title, arabicTitle, year, category, rating) {
+      return this.generateProceduralPosterSVG(title, arabicTitle, year, category, rating);
+    },
     fetchFeed: fetchFeed,
     getCachedFeed: getCachedFeed,
     consolidateSeriesItems: consolidateSeriesItems,
