@@ -199,23 +199,21 @@ const MovieDetails = (function () {
     modalEl.classList.remove('active');
     modalEl.style.display = 'none';
 
-    const homeView = document.getElementById('home-page-view');
-    const catView = document.getElementById('category-page-view');
+    // When returning from Movie Details, return to the Movies category view, NOT Home!
+    const targetCat = window.currentCategoryViewName || (currentMovie && (currentMovie.category_name || currentMovie.category)) || 'أفلام أجنبي';
 
-    // Restore previous view seamlessly without resetting category context!
-    if (window.currentCategoryViewName && catView) {
-      catView.classList.remove('is-hidden');
-      catView.style.display = 'block';
+    if (window.showCategoryView && typeof window.showCategoryView === 'function') {
+      window.showCategoryView(targetCat);
+    } else {
+      const homeView = document.getElementById('home-page-view');
+      const catView = document.getElementById('category-page-view');
+      if (catView) {
+        catView.classList.remove('is-hidden');
+        catView.style.display = 'block';
+      }
       if (homeView) {
         homeView.classList.add('is-hidden');
         homeView.style.display = 'none';
-      }
-    } else if (homeView) {
-      homeView.classList.remove('is-hidden');
-      homeView.style.display = 'block';
-      if (catView) {
-        catView.classList.add('is-hidden');
-        catView.style.display = 'none';
       }
     }
 
@@ -276,19 +274,23 @@ const MovieDetails = (function () {
       });
     }
 
-    // Trailer Button Action (Opens YouTube Trailer or First Server)
+    // Trailer Button Action (Plays official trailer seamlessly inside InAppPlayer)
     const trailerBtn = document.getElementById('md-trailer-btn');
     if (trailerBtn) {
       trailerBtn.onclick = () => {
         const ytId = movie.trailer_youtube_id;
-        if (ytId && window.open) {
-          window.open(`https://www.youtube.com/watch?v=${ytId}`, '_blank');
-        } else if (movie.servers && movie.servers.length > 0) {
-          const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
-          if (player && typeof player.playMedia === 'function') {
+        const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
+        if (player && typeof player.playMedia === 'function') {
+          if (ytId) {
+            player.playMedia({
+              name: `الإعلان الرسمي: ${movie.arabic_title || movie.title}`,
+              category: 'برومو وتريلر سينمائي 🎬',
+              streamUrl: `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`
+            });
+          } else if (movie.servers && movie.servers.length > 0) {
             player.playMedia({
               name: `إعلان: ${movie.arabic_title || movie.title}`,
-              category: 'تريلر رسمي',
+              category: 'تريلر رسمي 🎬',
               streamUrl: movie.servers[0].stream_url || movie.servers[0].url || ''
             });
           }

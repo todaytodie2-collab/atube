@@ -180,18 +180,22 @@ public class MainActivity extends ComponentActivity {
             }
         });
 
-        // Modern Back Button Handling (replaces deprecated onKeyDown)
+        // Modern Back Button Handling delegating to A TuBe's multi-tier navigation
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (mCustomView != null) {
                     // Exit fullscreen video first
                     mWebView.getWebChromeClient().onHideCustomView();
-                } else if (mWebView != null && mWebView.canGoBack()) {
-                    // Go back in webview history
-                    mWebView.goBack();
+                } else if (mWebView != null) {
+                    // Delegate to A TuBe layered SPA back navigation
+                    mWebView.evaluateJavascript(
+                        "if (window.RemoteControl && typeof window.RemoteControl.handleBackKey === 'function') { " +
+                        "    window.RemoteControl.handleBackKey(); " +
+                        "} else { " +
+                        "    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', keyCode: 27, bubbles: true})); " +
+                        "}", null);
                 } else {
-                    // Exit app
                     finish();
                 }
             }
@@ -217,7 +221,7 @@ public class MainActivity extends ComponentActivity {
     
     /**
      * Native Bridge to allow Web JS to communicate with Android seamlessly.
-     * Use in JS: AndroidBridge.showToast("Hello"); or AndroidBridge.closeApp();
+     * Use in JS: AndroidBridge.showToast("Hello"); or AndroidBridge.exitApp();
      */
     public class ATubeNativeBridge {
         @JavascriptInterface
@@ -227,6 +231,11 @@ public class MainActivity extends ComponentActivity {
 
         @JavascriptInterface
         public void closeApp() {
+            finish();
+        }
+
+        @JavascriptInterface
+        public void exitApp() {
             finish();
         }
     }

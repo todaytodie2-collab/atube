@@ -955,6 +955,7 @@ function renderHomeCarousels() {
 
 // Show Dedicated Category Internal Page
 function showCategoryView(categoryName) {
+  window.currentCategoryViewName = categoryName;
   currentCategoryViewName = categoryName;
 
   const homeView = document.getElementById('home-page-view');
@@ -1336,6 +1337,7 @@ function sortAndRenderCategoryItems(sortType, categoryKey) {
 
 // Return to Home View
 function showHomeView() {
+  window.currentCategoryViewName = null;
   currentCategoryViewName = null;
   const homeView = document.getElementById('home-page-view');
   const catView = document.getElementById('category-page-view');
@@ -1365,6 +1367,9 @@ function showHomeView() {
 
   if (window.RemoteControl) setTimeout(() => RemoteControl.refresh(), 100);
 }
+
+window.showCategoryView = showCategoryView;
+window.showHomeView = showHomeView;
 
 // Sidebar & App Navigation
 function setupSidebarNavigation() {

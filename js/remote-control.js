@@ -201,26 +201,82 @@ const RemoteControl = (function () {
     }
   }
 
+  function handleBackKey() {
+    const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
+    const isPlayerActive = player && typeof player.isModalActive === 'function' && player.isModalActive();
+
+    // 1. If Video Player is active: Close player and ensure Movie Details is returned to (for VOD/movies)
+    if (isPlayerActive) {
+      const currentMedia = player.getCurrentPlaying();
+      player.closePlayer();
+      if (currentMedia && !currentMedia.is_live && window.MovieDetails) {
+        if (!window.MovieDetails.isOpen()) {
+          window.MovieDetails.open(currentMedia);
+        }
+      }
+      refreshFocusableElements();
+      setTimeout(() => refreshFocusableElements(), 150);
+      return;
+    }
+
+    // 2. If Movie Details modal is open: Return to Category View (Not Home!)
+    const movieDet = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
+    if (movieDet && typeof movieDet.isOpen === 'function' && movieDet.isOpen()) {
+      movieDet.close();
+      refreshFocusableElements();
+      setTimeout(() => refreshFocusableElements(), 150);
+      return;
+    }
+
+    // 3. If any other overlay modal is open: Close it
+    const modal = document.querySelector('.modal-backdrop.active, .movie-modal-backdrop.active, #night-quiz-modal.active, #qr-remote-modal.active, #satellite-freq-modal.active, #multiview-modal.active, #sports-match-center-modal.active, #ai-concierge-modal.active');
+    if (modal) {
+      modal.classList.remove('active');
+      if (modal.classList.contains('modal-backdrop')) modal.style.display = 'none';
+      setTimeout(() => refreshFocusableElements(), 150);
+      return;
+    }
+
+    // 4. If in Category View or Search: Return to Home View
+    const catView = document.getElementById('category-page-view');
+    const homeView = document.getElementById('home-page-view');
+    if (catView && !catView.classList.contains('is-hidden') && catView.style.display !== 'none') {
+      if (window.showHomeView) {
+        window.showHomeView();
+      } else {
+        catView.classList.add('is-hidden');
+        catView.style.display = 'none';
+        if (homeView) {
+          homeView.classList.remove('is-hidden');
+          homeView.style.display = 'block';
+        }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => refreshFocusableElements(), 150);
+      return;
+    }
+
+    // 5. If at Home root: Double-Back Exit confirmation
+    const now = Date.now();
+    if (now - lastBackPressTime < 2500) {
+      if (window.AndroidBridge) {
+        if (typeof window.AndroidBridge.exitApp === 'function') {
+          window.AndroidBridge.exitApp();
+        } else if (typeof window.AndroidBridge.closeApp === 'function') {
+          window.AndroidBridge.closeApp();
+        }
+      }
+    } else {
+      lastBackPressTime = now;
+      showExitToast();
+    }
+  }
+
   function handleKeyDown(e) {
     // Android TV KeyCodes:
     // 19: UP, 20: DOWN, 21: LEFT, 22: RIGHT, 23: CENTER (OK), 4: BACK
     const key = e.key;
     const code = e.keyCode;
-
-    const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
-    const isPlayerActive = player && typeof player.isModalActive === 'function' && player.isModalActive();
-
-    // If Video Player is active, delegate playback controls to player engine
-    if (isPlayerActive) {
-      if (key === 'Escape' || key === 'Backspace' || code === 27 || code === 4 || code === 8) {
-        e.preventDefault();
-        player.closePlayer();
-        refreshFocusableElements();
-        setTimeout(() => refreshFocusableElements(), 150);
-      }
-      // Return so InAppPlayer's own keyboard shortcuts handle Seek, Volume, Play/Pause
-      return;
-    }
 
     if (key === 'ArrowUp' || code === 19) {
       e.preventDefault();
@@ -240,52 +296,8 @@ const RemoteControl = (function () {
         focusableElements[currentFocusedIndex].click();
       }
     } else if (key === 'Escape' || key === 'Backspace' || code === 27 || code === 4 || code === 8) {
-      const movieDet = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
-      if (movieDet && typeof movieDet.isOpen === 'function' && movieDet.isOpen()) {
-        e.preventDefault();
-        movieDet.close();
-        refreshFocusableElements();
-        setTimeout(() => refreshFocusableElements(), 150);
-        return;
-      }
-
-      // 1. Check if any overlay modal is open
-      const modal = document.querySelector('.modal-backdrop.active, .movie-modal-backdrop.active, #night-quiz-modal.active, #qr-remote-modal.active, #satellite-freq-modal.active, #multiview-modal.active');
-      if (modal) {
-        e.preventDefault();
-        modal.classList.remove('active');
-        if (modal.classList.contains('modal-backdrop')) modal.style.display = 'none';
-        setTimeout(() => refreshFocusableElements(), 150);
-        return;
-      }
-
-      // 2. Check if Category or Search view is open -> Return to Home
-      const catView = document.getElementById('category-page-view');
-      const homeView = document.getElementById('home-page-view');
-      if (catView && !catView.classList.contains('is-hidden') && catView.style.display !== 'none') {
-        e.preventDefault();
-        catView.classList.add('is-hidden');
-        catView.style.display = 'none';
-        if (homeView) {
-          homeView.classList.remove('is-hidden');
-          homeView.style.display = 'block';
-        }
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        setTimeout(() => refreshFocusableElements(), 150);
-        return;
-      }
-
-      // 3. At Home root: Prevent abrupt app exit with Double-Back confirmation
-      const now = Date.now();
-      if (now - lastBackPressTime < 2500) {
-        if (window.AndroidBridge && typeof window.AndroidBridge.exitApp === 'function') {
-          window.AndroidBridge.exitApp();
-        }
-      } else {
-        e.preventDefault();
-        lastBackPressTime = now;
-        showExitToast();
-      }
+      e.preventDefault();
+      handleBackKey();
     }
   }
 
@@ -337,7 +349,8 @@ const RemoteControl = (function () {
     init,
     refresh: refreshFocusableElements,
     setFocus,
-    moveFocus
+    moveFocus,
+    handleBackKey
   };
 })();
 

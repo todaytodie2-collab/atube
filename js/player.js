@@ -2323,6 +2323,7 @@ const InAppPlayer = (function () {
   // Immediate RAM & GPU Video Buffer Deallocation on Player Close
   function closePlayer() {
     if (!modalEl) return;
+    const itemClosed = currentPlayingItem;
     modalEl.classList.remove('active', 'pip-minimized');
     modalEl.style.left = '';
     modalEl.style.top = '';
@@ -2338,6 +2339,15 @@ const InAppPlayer = (function () {
     currentServerIndex = 0;
     savedPlayheadTime = 0;
     updatePlayIcons(false);
+
+    // If closing a VOD movie or series, return to the Movie Details modal
+    if (itemClosed && !isLiveMediaItem(itemClosed)) {
+      if (window.MovieDetails && typeof window.MovieDetails.open === 'function') {
+        if (!window.MovieDetails.isOpen()) {
+          window.MovieDetails.open(itemClosed);
+        }
+      }
+    }
 
     // Prompt garbage collection in WebView
     if (window.gc) {
