@@ -644,35 +644,29 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 if ch_id:
                     channels = [c for c in channels if str(c.get("id")) == str(ch_id)]
 
-                epg_result = {}
-                program_templates = {
-                    "news": ["نشرة الأخبار الحادية عشرة", "عين على العالم", "حوار خاص ومباشر", "حصاد اليوم الإخباري", "ما وراء الخبر", "الصحافة اليوم"],
-                    "sports": ["استوديو الدوري الممتاز", "ملخص أهداف الجولة", "عالم الرياضة والسرعة", "برنامج الصافرة والهدف", "أبطال الملاعب المفتوحة"],
-                    "documentary": ["أسرار الطبيعة البرية", "حضارات قديمة لا تنسى", "في أعماق البحار والمحيطات", "وثائقي: رواد الفضاء", "عالم التكنولوجيا الحديث"],
-                    "general": ["صباح الخير والنشاط", "اللقاء المفتوح مع الجمهور", "بانوراما المنوعات", "سهرة المساء والسينما", "روائع الطرب الأصيل"]
-                }
-
                 current_hour = now.hour
                 for ch in channels[:30]:
                     c_id = str(ch.get("id"))
-                    c_name = ch.get("name", "")
+                    c_name = ch.get("name", "قناة بث مباشر")
                     c_cat = str(ch.get("category", "")).lower()
+                    c_quality = ch.get("quality", "1080p FHD")
 
                     if any(w in c_cat or w in c_name.lower() for w in ["أخبار", "news", "جزيرة", "حدث", "عربية"]):
-                        prog_list = program_templates["news"]
+                        desc_type = "التغطية الإخبارية الحية والموجز الإخباري"
                     elif any(w in c_cat or w in c_name.lower() for w in ["رياضة", "sport", "كأس", "كرة"]):
-                        prog_list = program_templates["sports"]
+                        desc_type = "التغطية الرياضية المباشرة والمباريات"
                     elif any(w in c_cat or w in c_name.lower() for w in ["وثائقي", "doc", "طبيعة"]):
-                        prog_list = program_templates["documentary"]
+                        desc_type = "البث الوثائقي والاستكشافي المباشر"
+                    elif any(w in c_cat or w in c_name.lower() for w in ["قرآن", "دين", "إسلام"]):
+                        desc_type = "البث القرآني الشريف والبرامج الدينية"
+                    elif any(w in c_cat or w in c_name.lower() for w in ["أطفال", "kids", "كرتون"]):
+                        desc_type = "بث برامج وأفلام الكارتون"
                     else:
-                        prog_list = program_templates["general"]
+                        desc_type = "البث الفضائي الحي المباشر"
 
                     schedules = []
                     for offset in range(-1, 5):
                         slot_hour = (current_hour + offset) % 24
-                        prog_idx = (abs(hash(c_id)) + slot_hour) % len(prog_list)
-                        prog_title = prog_list[prog_idx]
-
                         start_time = now.replace(hour=slot_hour, minute=0, second=0, microsecond=0)
                         if offset < 0 and current_hour == 0:
                             start_time -= datetime.timedelta(days=1)
@@ -685,6 +679,11 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                         if is_current:
                             elapsed = (now - start_time).total_seconds()
                             prog_percent = min(100, max(0, int((elapsed / 3600.0) * 100)))
+
+                        if is_current:
+                            prog_title = f"{c_name} - {desc_type} ({c_quality})"
+                        else:
+                            prog_title = f"{c_name} - البث الفضائي الرسمي ({start_time.strftime('%H:%M')})"
 
                         schedules.append({
                             "id": f"{c_id}_{slot_hour}",
