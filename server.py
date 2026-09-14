@@ -151,13 +151,32 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
             # 0. API: Health & Diagnostic Watchdog Endpoint
             if path in ["/api/health", "/api/ping"]:
+                vod_count = 0
+                iptv_count = 0
+                if HAS_SERVICES:
+                    try:
+                        conn = VODDatabase.get_connection()
+                        vod_count = conn.execute("SELECT COUNT(*) FROM vod_media").fetchone()[0]
+                        conn.close()
+                    except Exception:
+                        pass
+                    try:
+                        iptv_count = len(IPTVManager.get_active_channels())
+                    except Exception:
+                        pass
+
                 self.send_cors_json({
-                    "status": "ok",
+                    "status": "healthy",
                     "system": "A TuBe Ultra HD Backend",
+                    "platform": "A TuBe Ultra HD Media Experience",
                     "version": "2.5.0",
-                    "timestamp": time.time(),
+                    "timestamp": datetime.datetime.now().isoformat(),
                     "has_services": HAS_SERVICES,
-                    "active_resolvers": 8
+                    "stats": {
+                        "vod_titles": vod_count,
+                        "iptv_channels": iptv_count,
+                        "engine": "SQLite 3 WAL Mode"
+                    }
                 })
                 return
 
@@ -172,7 +191,7 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     self.send_error(403, "URL target blocked by SSRF security rules")
                     return
 
-                req_referer = query.get("referer", [None])[0]
+                req_referer = query.get("referer", [None])[0] or query.get("ref", [None])[0]
                 if not req_referer:
                     if "megamax" in target_url:
                         req_referer = "https://egydead.live/"
@@ -211,8 +230,11 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                             if h_key.lower() in ["content-type", "content-length", "content-range", "accept-ranges", "last-modified", "etag"]:
                                 self.send_header(h_key, h_val)
                         self.send_header("Access-Control-Allow-Origin", "*")
-                        self.send_header("Access-Control-Allow-Headers", "*")
+                        self.send_header("Access-Control-Allow-Headers", "Range, Authorization, *")
+                        self.send_header("Access-Control-Expose-Headers", "Content-Range, Content-Length, Accept-Ranges")
                         self.send_header("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS")
+                        self.send_header("Accept-Ranges", "bytes")
+                        self.send_header("Cache-Control", "no-cache")
                         self.end_headers()
 
                         while True:
@@ -243,21 +265,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     self.send_cors_json(res)
                 except Exception as ex:
                     self.send_cors_json({"success": False, "error": str(ex)})
-                return
-
-            # 0.3 API: Live Google Dorking Scraper
-            if path == "/api/scrape-servers":
-                t_en = query.get("title_en", [""])[0]
-                t_ar = query.get("title_ar", [""])[0]
-                year = query.get("year", [""])[0]
-                c_type = query.get("type", ["movie"])[0]
-                season = query.get("season", [""])[0]
-                episode = query.get("episode", [""])[0]
-                try:
-                    res = GoogleDorkScraper.scrape_servers(t_en, t_ar, year, c_type, season, episode)
-                    self.send_cors_json(res)
-                except Exception as ex:
-                    self.send_cors_json({"success": False, "error": str(ex), "servers": []})
                 return
 
             # 0.4 API: Invisible Stream Bridge (Zero-Click Auto-Play direct link resolver)
