@@ -612,19 +612,117 @@ const InAppPlayer = (function () {
     }, 1100);
   }
 
+  function toggleMiniPlayer(forceState) {
+    if (!modalEl || !modalEl.classList.contains('active')) return;
+    const shouldMinimize = typeof forceState === 'boolean' ? forceState : !modalEl.classList.contains('pip-minimized');
+    if (shouldMinimize) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+      modalEl.classList.add('pip-minimized');
+      const miniTitle = document.getElementById('mini-player-title');
+      const curTitle = document.getElementById('player-title');
+      if (miniTitle && curTitle) miniTitle.textContent = curTitle.textContent;
+      showGestureFeedback('مشغل مصغر عائم 🗕');
+    } else {
+      modalEl.classList.remove('pip-minimized');
+      modalEl.style.left = '';
+      modalEl.style.top = '';
+      modalEl.style.bottom = '';
+      modalEl.style.right = '';
+      showGestureFeedback('تكبير المشغل ⛶');
+    }
+  }
+
+  function setupMiniPlayerDraggable() {
+    if (!modalEl) return;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let initialLeft = 0;
+    let initialTop = 0;
+
+    const overlay = document.getElementById('mini-player-overlay');
+    if (!overlay) return;
+
+    overlay.addEventListener('dblclick', () => {
+      if (modalEl.classList.contains('pip-minimized')) {
+        toggleMiniPlayer(false);
+      }
+    });
+
+    const onStart = (e) => {
+      if (!modalEl.classList.contains('pip-minimized')) return;
+      if (e.target.closest('button')) return;
+      isDragging = true;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const rect = modalEl.getBoundingClientRect();
+      startX = clientX;
+      startY = clientY;
+      initialLeft = rect.left;
+      initialTop = rect.top;
+      modalEl.style.bottom = 'auto';
+      modalEl.style.right = 'auto';
+      modalEl.style.left = initialLeft + 'px';
+      modalEl.style.top = initialTop + 'px';
+    };
+
+    const onMove = (e) => {
+      if (!isDragging || !modalEl.classList.contains('pip-minimized')) return;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const deltaX = clientX - startX;
+      const deltaY = clientY - startY;
+      const newLeft = Math.max(10, Math.min(window.innerWidth - modalEl.offsetWidth - 10, initialLeft + deltaX));
+      const newTop = Math.max(10, Math.min(window.innerHeight - modalEl.offsetHeight - 10, initialTop + deltaY));
+      modalEl.style.left = newLeft + 'px';
+      modalEl.style.top = newTop + 'px';
+    };
+
+    const onEnd = () => {
+      isDragging = false;
+    };
+
+    overlay.addEventListener('mousedown', onStart);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onEnd);
+    overlay.addEventListener('touchstart', onStart, { passive: true });
+    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('touchend', onEnd);
+  }
+
   function bindPiPAndAmbientGlow() {
+    const minimizeBtn = document.getElementById('player-minimize-btn');
+    if (minimizeBtn) {
+      minimizeBtn.addEventListener('click', () => toggleMiniPlayer(true));
+    }
+
+    const miniExpandBtn = document.getElementById('mini-player-expand-btn');
+    if (miniExpandBtn) {
+      miniExpandBtn.addEventListener('click', () => toggleMiniPlayer(false));
+    }
+
+    const miniCloseBtn = document.getElementById('mini-player-close-btn');
+    if (miniCloseBtn) {
+      miniCloseBtn.addEventListener('click', () => closePlayer());
+    }
+
+    const miniPlayBtn = document.getElementById('mini-player-play-btn');
+    if (miniPlayBtn) {
+      miniPlayBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlay();
+        miniPlayBtn.textContent = isPlaying ? '⏸' : '▶';
+      });
+    }
+
+    setupMiniPlayerDraggable();
+
     const pipBtn = document.getElementById('player-pip-btn');
     if (pipBtn) {
       pipBtn.addEventListener('click', async () => {
-        try {
-          if (document.pictureInPictureElement) {
-            await document.exitPictureInPicture();
-          } else if (videoEl && document.pictureInPictureEnabled) {
-            await videoEl.requestPictureInPicture();
-          }
-        } catch (err) {
-          console.warn('[A Tube Player] PiP note:', err);
-        }
+        toggleMiniPlayer();
       });
     }
 
@@ -856,6 +954,20 @@ const InAppPlayer = (function () {
       audioCompressorNode.release.setValueAtTime(0.25, audioCtx.currentTime);
       audioGainNode.gain.setValueAtTime(1.2, audioCtx.currentTime);
       showGestureFeedback('وضع المشاهدة الليلية 🌙');
+    } else if (fx === 'vocal') {
+      // Vocal Clarity Dialogue Booster
+      audioCompressorNode.threshold.setValueAtTime(-20, audioCtx.currentTime);
+      audioCompressorNode.knee.setValueAtTime(30, audioCtx.currentTime);
+      audioCompressorNode.ratio.setValueAtTime(6, audioCtx.currentTime);
+      audioGainNode.gain.setValueAtTime(1.3, audioCtx.currentTime);
+      if (eqFilters && eqFilters.length >= 8) {
+        eqFilters[5].gain.setValueAtTime(5.0, audioCtx.currentTime); // 1000Hz
+        eqFilters[6].gain.setValueAtTime(6.0, audioCtx.currentTime); // 2000Hz
+        eqFilters[7].gain.setValueAtTime(3.5, audioCtx.currentTime); // 4000Hz
+        eqFilters[0].gain.setValueAtTime(-3.5, audioCtx.currentTime); // 32Hz
+        eqFilters[1].gain.setValueAtTime(-2.5, audioCtx.currentTime); // 64Hz
+      }
+      showGestureFeedback('مُعزز وضوح الحوار الصوتي 🎙️✨');
     } else if (fx === 'boost150') {
       audioCompressorNode.threshold.setValueAtTime(-12, audioCtx.currentTime);
       audioGainNode.gain.setValueAtTime(1.5, audioCtx.currentTime);
@@ -925,6 +1037,32 @@ const InAppPlayer = (function () {
         btn.classList.add('active');
         const col = btn.getAttribute('data-subcolor');
         document.documentElement.style.setProperty('--sub-font-color', col);
+      });
+    });
+
+    // Subtitle background options
+    document.querySelectorAll('.sub-bg-options .sub-opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sub-bg-options .sub-opt-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const bg = btn.getAttribute('data-subbg');
+        let val = 'transparent';
+        if (bg === 'semi') val = 'rgba(0, 0, 0, 0.75)';
+        else if (bg === 'solid') val = '#000000';
+        document.documentElement.style.setProperty('--sub-bg-color', val);
+      });
+    });
+
+    // Subtitle shadow / outline options
+    document.querySelectorAll('.sub-shadow-options .sub-opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.sub-shadow-options .sub-opt-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const sh = btn.getAttribute('data-subshadow');
+        let val = '0 2px 4px rgba(0, 0, 0, 0.95), 0 0 2px #000';
+        if (sh === 'outline') val = '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000';
+        else if (sh === 'glow') val = '0 0 8px rgba(0, 229, 255, 0.8), 0 2px 4px #000';
+        document.documentElement.style.setProperty('--sub-shadow-style', val);
       });
     });
   }
@@ -2185,7 +2323,11 @@ const InAppPlayer = (function () {
   // Immediate RAM & GPU Video Buffer Deallocation on Player Close
   function closePlayer() {
     if (!modalEl) return;
-    modalEl.classList.remove('active');
+    modalEl.classList.remove('active', 'pip-minimized');
+    modalEl.style.left = '';
+    modalEl.style.top = '';
+    modalEl.style.bottom = '';
+    modalEl.style.right = '';
 
     hideFailoverOverlay();
     flushDecoderBuffer();
@@ -2243,7 +2385,9 @@ const InAppPlayer = (function () {
     closePlayer,
     toggleFullscreen,
     triggerStatelessFailover,
-    isModalActive: () => modalEl && modalEl.classList.contains('active'),
+    isModalActive: () => modalEl && modalEl.classList.contains('active') && !modalEl.classList.contains('pip-minimized'),
+    isMiniPlayerActive: () => modalEl && modalEl.classList.contains('pip-minimized'),
+    toggleMiniPlayer: (forceState) => toggleMiniPlayer(forceState),
     getCurrentPlaying: () => currentPlayingItem,
     getCandidateServers: () => candidateServers,
     getCurrentServerIndex: () => currentServerIndex,

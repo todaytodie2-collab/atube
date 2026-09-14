@@ -262,6 +262,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   try { setupGamepadSupport(); } catch (_) {}
   try { setupHapticFeedback(); } catch (_) {}
   try { setupKidsSafeMode(); } catch (_) {}
+  try { setupSportsMatchCenter(); } catch (e) { console.warn('SportsMatchCenter:', e); }
+  try { setupAIConcierge(); } catch (e) { console.warn('AIConcierge:', e); }
 
   try { SplashManager.setProgress(100, 'جاهز للتصفح والتشغيل...'); } catch (_) {}
 
@@ -2966,6 +2968,385 @@ function setupKidsSafeMode() {
   const isKids = localStorage.getItem('atube_kids_mode') === 'true';
   if (isKids) {
     document.body.classList.add('kids-mode-active');
+  }
+}
+
+// ==========================================================================
+// LIVE SPORTS MATCH CENTER
+// ==========================================================================
+const SPORTS_FIXTURES = [
+  {
+    id: 'm1',
+    sport: 'ucl',
+    tournament: 'دوري أبطال أوروبا 🏆',
+    status: 'live',
+    minute: "72'",
+    score: '2 - 1',
+    team1: { name: 'ريال مدريد', logo: '👑' },
+    team2: { name: 'مانشستر سيتي', logo: '🔵' },
+    channelName: 'beIN Sports 1 HD',
+    commentator: 'حفيظ دراجي'
+  },
+  {
+    id: 'm2',
+    sport: 'epl',
+    tournament: 'الدوري الإنجليزي 🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+    status: 'live',
+    minute: "38'",
+    score: '1 - 0',
+    team1: { name: 'ليفربول', logo: '🔴' },
+    team2: { name: 'أرسنال', logo: '⚪' },
+    channelName: 'beIN Sports 2 HD',
+    commentator: 'عصام الشوالي'
+  },
+  {
+    id: 'm3',
+    sport: 'laliga',
+    tournament: 'الدوري الإسباني 🇪🇸',
+    status: 'upcoming',
+    minute: 'اليوم 22:00',
+    score: 'VS',
+    team1: { name: 'برشلونة', logo: '🔵🔴' },
+    team2: { name: 'أتلتيكو مدريد', logo: '🔴⚪' },
+    channelName: 'beIN Sports 1 HD',
+    commentator: 'خليل البلوشي'
+  },
+  {
+    id: 'm4',
+    sport: 'spl',
+    tournament: 'دوري روشن السعودي 🇸🇦',
+    status: 'live',
+    minute: "55'",
+    score: '3 - 2',
+    team1: { name: 'الهلال', logo: '💙' },
+    team2: { name: 'النصر', logo: '💛' },
+    channelName: 'SSC 1 HD',
+    commentator: 'فهد العتيبي'
+  },
+  {
+    id: 'm5',
+    sport: 'caf',
+    tournament: 'دوري أبطال أفريقيا 🌍',
+    status: 'upcoming',
+    minute: 'اليوم 20:00',
+    score: 'VS',
+    team1: { name: 'الأهلي المصري', logo: '🦅' },
+    team2: { name: 'الترجي التونسي', logo: '🟡🔴' },
+    channelName: 'beIN Sports 6 HD',
+    commentator: 'علي محمد علي'
+  },
+  {
+    id: 'm6',
+    sport: 'epl',
+    tournament: 'الدوري الإنجليزي 🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+    status: 'upcoming',
+    minute: 'اليوم 19:30',
+    score: 'VS',
+    team1: { name: 'تشيلسي', logo: '🦁' },
+    team2: { name: 'مانشستر يونايتد', logo: '👹' },
+    channelName: 'beIN Sports 1 HD',
+    commentator: 'عامر عبد الله'
+  }
+];
+
+function setupSportsMatchCenter() {
+  const modal = document.getElementById('sports-match-center-modal');
+  const openBtn = document.getElementById('open-sports-modal-btn');
+  const closeBtn = document.getElementById('close-sports-modal-btn');
+  const container = document.getElementById('sports-matches-container');
+  const pills = document.querySelectorAll('.sports-filter-pills .sports-pill');
+
+  if (!modal || !openBtn) return;
+
+  function renderMatches(filter = 'all') {
+    if (!container) return;
+    const matches = filter === 'all' 
+      ? SPORTS_FIXTURES 
+      : SPORTS_FIXTURES.filter(m => m.sport === filter);
+
+    container.innerHTML = '';
+    matches.forEach(m => {
+      const card = document.createElement('div');
+      card.className = `match-card ${m.status === 'live' ? 'is-live' : ''} dpad-focusable`;
+      card.tabIndex = 0;
+      card.innerHTML = `
+        <div class="match-header-row">
+          <div class="tournament-badge">
+            <span>${escapeHtml(m.tournament)}</span>
+          </div>
+          <span class="match-status-badge ${m.status}">
+            ${m.status === 'live' ? 'مباشر الآن 🔴' : 'قريباً ⏳'}
+          </span>
+        </div>
+        <div class="match-teams-row">
+          <div class="match-team">
+            <div class="team-logo-placeholder">${m.team1.logo}</div>
+            <span class="team-name">${escapeHtml(m.team1.name)}</span>
+          </div>
+          <div class="match-score-box">
+            <span class="match-score">${m.score}</span>
+            <span class="match-minute">${m.minute}</span>
+          </div>
+          <div class="match-team">
+            <div class="team-logo-placeholder">${m.team2.logo}</div>
+            <span class="team-name">${escapeHtml(m.team2.name)}</span>
+          </div>
+        </div>
+        <div class="match-footer-row">
+          <div class="match-channel-info">
+            <span class="match-channel-name">📺 ${escapeHtml(m.channelName)}</span>
+            <span>🎙️ ${escapeHtml(m.commentator)}</span>
+          </div>
+          <button class="match-watch-btn dpad-focusable" data-channel="${escapeHtml(m.channelName)}">
+            <span>مشاهدة البث ▶</span>
+          </button>
+        </div>
+      `;
+
+      const watchBtn = card.querySelector('.match-watch-btn');
+      if (watchBtn) {
+        watchBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          playSportsChannel(m.channelName);
+        });
+      }
+
+      card.addEventListener('click', () => {
+        playSportsChannel(m.channelName);
+      });
+
+      container.appendChild(card);
+    });
+
+    if (window.RemoteControl && typeof RemoteControl.refresh === 'function') {
+      RemoteControl.refresh();
+    }
+  }
+
+  function playSportsChannel(channelName) {
+    if (modal) {
+      modal.classList.remove('active');
+      modal.style.display = 'none';
+    }
+    const allItems = MediaCatalog.getItems();
+    let found = allItems.find(it => it.is_live && (
+      (it.name && it.name.toLowerCase().includes(channelName.toLowerCase())) ||
+      (it.title && it.title.toLowerCase().includes(channelName.toLowerCase()))
+    ));
+
+    if (!found) {
+      found = allItems.find(it => it.is_live && (
+        (it.name && it.name.includes('beIN Sports')) ||
+        (it.category && it.category.includes('رياضة'))
+      )) || allItems.find(it => it.is_live);
+    }
+
+    if (found && window.InAppPlayer) {
+      InAppPlayer.playMedia(found);
+    }
+  }
+
+  openBtn.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    modal.classList.add('active');
+    renderMatches('all');
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+      modal.style.display = 'none';
+    });
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const sport = pill.getAttribute('data-sport');
+      renderMatches(sport);
+    });
+  });
+}
+
+// ==========================================================================
+// AI MOVIE & MOOD CONCIERGE
+// ==========================================================================
+function setupAIConcierge() {
+  const modal = document.getElementById('ai-concierge-modal');
+  const openBtn = document.getElementById('open-ai-concierge-btn');
+  const closeBtn = document.getElementById('close-ai-concierge-btn');
+  const generateBtn = document.getElementById('generate-ai-recommendations-btn');
+  const resultsSec = document.getElementById('ai-results-section');
+  const grid = document.getElementById('ai-recommendations-grid');
+  const reasonSummary = document.getElementById('ai-reason-summary');
+
+  if (!modal || !openBtn) return;
+
+  // Single select for Mood
+  document.querySelectorAll('#ai-mood-selector .ai-mood-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#ai-mood-selector .ai-mood-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Single select for Time
+  document.querySelectorAll('#ai-time-selector .ai-time-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#ai-time-selector .ai-time-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Single select for Origin
+  document.querySelectorAll('#ai-origin-selector .ai-origin-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#ai-origin-selector .ai-origin-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  openBtn.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    modal.classList.add('active');
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+      modal.style.display = 'none';
+    });
+  }
+
+  if (generateBtn) {
+    generateBtn.addEventListener('click', () => {
+      const selectedMoodEl = document.querySelector('#ai-mood-selector .ai-mood-pill.active');
+      const selectedTimeEl = document.querySelector('#ai-time-selector .ai-time-pill.active');
+      const selectedOriginEl = document.querySelector('#ai-origin-selector .ai-origin-pill.active');
+
+      const mood = selectedMoodEl ? selectedMoodEl.getAttribute('data-mood') : 'action';
+      const time = selectedTimeEl ? selectedTimeEl.getAttribute('data-time') : 'medium';
+      const origin = selectedOriginEl ? selectedOriginEl.getAttribute('data-origin') : 'all';
+
+      const moodText = selectedMoodEl ? selectedMoodEl.textContent.trim() : 'حماس وتشويق';
+      
+      const allItems = MediaCatalog.getItems().filter(it => !it.is_live);
+      let pool = allItems;
+
+      // Filter by origin
+      if (origin === 'arabic') {
+        pool = pool.filter(it => it.category && (it.category.includes('عربي') || it.category.includes('مصر')));
+      } else if (origin === 'foreign') {
+        pool = pool.filter(it => it.category && (it.category.includes('أجنبي') || it.category.includes('هوليوود')));
+      } else if (origin === 'asian') {
+        pool = pool.filter(it => it.category && (it.category.includes('آسيو') || it.category.includes('كوري')));
+      } else if (origin === 'turkish') {
+        pool = pool.filter(it => it.category && it.category.includes('ترك'));
+      }
+
+      if (pool.length < 5) pool = allItems;
+
+      // Filter by time / format
+      if (time === 'binge') {
+        const seriesPool = pool.filter(it => it.is_series || (it.category && it.category.includes('مسلسلات')));
+        if (seriesPool.length >= 3) pool = seriesPool;
+      } else {
+        const moviesPool = pool.filter(it => !it.is_series && (it.category && it.category.includes('أفلام')));
+        if (moviesPool.length >= 3) pool = moviesPool;
+      }
+
+      // Filter by mood keywords
+      const moodKeywords = {
+        action: ['أكشن', 'حركة', 'إثارة', 'تشويق', 'action', 'thriller', 'مغامرة'],
+        comedy: ['كوميديا', 'مضحك', 'comedy', 'ضحك', 'فكاهة'],
+        drama: ['دراما', 'رومانسي', 'اجتماعي', 'drama', 'مشاعر'],
+        horror: ['رعب', 'غموض', 'horror', 'mystery', 'جريمة', 'crime'],
+        family: ['عائلي', 'خيال', 'أنيميشن', 'family', 'animation', 'اطفال'],
+        anime: ['أنمي', 'كرتون', 'anime', 'مغامرة']
+      };
+
+      const keys = moodKeywords[mood] || moodKeywords.action;
+      let matched = pool.filter(it => {
+        const str = `${it.title || ''} ${it.arabic_title || ''} ${it.genre || ''} ${it.description || ''}`.toLowerCase();
+        return keys.some(k => str.includes(k.toLowerCase()));
+      });
+
+      if (matched.length < 4) {
+        matched = pool;
+      }
+
+      matched.sort((a, b) => (parseFloat(b.rating || 8.0) - parseFloat(a.rating || 8.0)));
+      const topRecs = matched.slice(0, 6);
+
+      if (resultsSec) resultsSec.classList.remove('is-hidden');
+      if (reasonSummary) {
+        reasonSummary.textContent = `بناءً على اختيارك لمزاج (${moodText})، إليك أفضل 6 أعمال منتقاة بالذكاء الاصطناعي:`;
+      }
+
+      if (grid) {
+        grid.innerHTML = '';
+        topRecs.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'ai-rec-card dpad-focusable';
+          card.tabIndex = 0;
+          const title = escapeHtml(item.arabic_title || item.title || item.name || 'عمل سينمائي');
+          const poster = item.poster || item.backdrop || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 300\' fill=\'%230b1320\'/%3E';
+          const rating = item.rating || item.vote_average || '8.5';
+          const year = item.year || '2024';
+
+          card.innerHTML = `
+            <img class="ai-card-poster" src="${poster}" alt="${title}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 200 300\\' fill=\\'%230b1320\\'/%3E'">
+            <div class="ai-card-meta">
+              <span class="ai-card-title">${title}</span>
+              <div class="ai-card-sub">
+                <span>⭐ ${rating}</span>
+                <span>📅 ${year}</span>
+              </div>
+              <div class="ai-card-match-reason">
+                💡 تطابق تام مع مزاج ${moodText} ومعدل تقييم جماهيري مرتفع
+              </div>
+            </div>
+            <div class="ai-card-actions">
+              <button class="ai-card-btn watch dpad-focusable">مشاهدة ▶</button>
+              <button class="ai-card-btn details dpad-focusable">التفاصيل ℹ</button>
+            </div>
+          `;
+
+          const watchBtn = card.querySelector('.ai-card-btn.watch');
+          if (watchBtn) {
+            watchBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              modal.classList.remove('active');
+              modal.style.display = 'none';
+              if (window.InAppPlayer) InAppPlayer.playMedia(item);
+            });
+          }
+
+          const detailsBtn = card.querySelector('.ai-card-btn.details');
+          if (detailsBtn) {
+            detailsBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              modal.classList.remove('active');
+              modal.style.display = 'none';
+              if (window.MovieDetails) MovieDetails.open(item);
+            });
+          }
+
+          card.addEventListener('click', () => {
+            modal.classList.remove('active');
+            modal.style.display = 'none';
+            if (window.MovieDetails) MovieDetails.open(item);
+          });
+
+          grid.appendChild(card);
+        });
+
+        if (window.RemoteControl && typeof RemoteControl.refresh === 'function') {
+          RemoteControl.refresh();
+        }
+      }
+    });
   }
 }
 

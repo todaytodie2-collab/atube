@@ -4410,3 +4410,676 @@ html[dir="ltr"] .epg-event-card.current::before {
   right: 8px;
 }
 
+/* ==========================================================================
+   A TuBe Floating PiP Mini-Player Mode
+   ========================================================================== */
+.player-minimize-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 8px;
+}
+
+.player-minimize-btn:hover,
+.player-minimize-btn:focus {
+  background: rgba(0, 229, 255, 0.2);
+  border-color: #00e5ff;
+  color: #00e5ff;
+  transform: scale(1.08);
+}
+
+.video-player-modal.pip-minimized {
+  position: fixed !important;
+  inset: auto !important;
+  bottom: 24px !important;
+  left: 24px !important;
+  right: auto !important;
+  top: auto !important;
+  width: 350px !important;
+  max-width: calc(100vw - 32px) !important;
+  height: 205px !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 229, 255, 0.5), 0 0 24px rgba(0, 229, 255, 0.25) !important;
+  z-index: 10000 !important;
+  background: #060b13 !important;
+  overflow: hidden !important;
+  pointer-events: auto !important;
+  animation: pipPopup 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pipPopup {
+  0% { transform: scale(0.7) translateY(40px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.video-player-modal.pip-minimized .player-overlay-top,
+.video-player-modal.pip-minimized .player-overlay-bottom,
+.video-player-modal.pip-minimized .player-ambient-glow-layer,
+.video-player-modal.pip-minimized .player-skip-intro-btn,
+.video-player-modal.pip-minimized .player-next-ep-banner,
+.video-player-modal.pip-minimized .player-resume-banner,
+.video-player-modal.pip-minimized .player-zapping-drawer,
+.video-player-modal.pip-minimized .touch-lock-overlay,
+.video-player-modal.pip-minimized .sub-drop-zone {
+  display: none !important;
+}
+
+.video-player-modal.pip-minimized .video-element-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.mini-player-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.85) 100%);
+  z-index: 30;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 12px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: auto;
+}
+
+.video-player-modal.pip-minimized .mini-player-overlay {
+  display: flex;
+}
+
+.video-player-modal.pip-minimized:hover .mini-player-overlay,
+.video-player-modal.pip-minimized:focus-within .mini-player-overlay {
+  opacity: 1;
+}
+
+.mini-player-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mini-player-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 210px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.mini-player-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.mini-player-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mini-player-btn:hover,
+.mini-player-btn:focus {
+  background: rgba(0, 229, 255, 0.3);
+  border-color: #00e5ff;
+  color: #00e5ff;
+  transform: scale(1.1);
+}
+
+.mini-player-center-play {
+  align-self: center;
+  background: rgba(0, 229, 255, 0.25);
+  border: 1px solid #00e5ff;
+  color: #00e5ff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+  transition: all 0.2s ease;
+}
+
+.mini-player-center-play:hover,
+.mini-player-center-play:focus {
+  background: #00e5ff;
+  color: #050811;
+  transform: scale(1.12);
+}
+
+/* ==========================================================================
+   Live Sports Match Center Modal & Cards
+   ========================================================================== */
+.sports-match-modal-card {
+  background: rgba(13, 20, 33, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 20px;
+  width: 920px;
+  max-width: 95vw;
+  max-height: 88vh;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.15);
+  overflow: hidden;
+}
+
+.sports-icon {
+  margin-left: 8px;
+  font-size: 22px;
+}
+
+.sports-filter-pills {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin: 16px 0 14px 0;
+}
+
+.sports-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.sports-pill:hover,
+.sports-pill:focus {
+  background: rgba(0, 229, 255, 0.18);
+  border-color: #00e5ff;
+  color: #ffffff;
+}
+
+.sports-pill.active {
+  background: linear-gradient(135deg, #00e5ff 0%, #0077ff 100%);
+  border-color: #00e5ff;
+  color: #050811;
+  font-weight: 800;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.4);
+}
+
+.sports-matches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+  overflow-y: auto;
+  padding-right: 4px;
+  padding-bottom: 10px;
+}
+
+.match-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.match-card:hover,
+.match-card:focus-within {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(0, 229, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.match-card.is-live {
+  border-color: rgba(255, 42, 109, 0.5);
+  box-shadow: 0 0 18px rgba(255, 42, 109, 0.15);
+}
+
+.match-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.tournament-badge {
+  color: #94a3b8;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.match-status-badge {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.match-status-badge.live {
+  background: rgba(255, 42, 109, 0.2);
+  border: 1px solid #ff2a6d;
+  color: #ff2a6d;
+  animation: pulseBadge 1.8s infinite ease-in-out;
+}
+
+.match-status-badge.upcoming {
+  background: rgba(0, 229, 255, 0.15);
+  border: 1px solid #00e5ff;
+  color: #00e5ff;
+}
+
+@keyframes pulseBadge {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.match-teams-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.match-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  text-align: center;
+}
+
+.team-logo-placeholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.team-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.match-score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0 16px;
+}
+
+.match-score {
+  font-size: 22px;
+  font-weight: 900;
+  color: #00e5ff;
+  letter-spacing: 2px;
+}
+
+.match-minute {
+  font-size: 11px;
+  color: #ff2a6d;
+  font-weight: 700;
+}
+
+.match-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 10px;
+  font-size: 12px;
+}
+
+.match-channel-info {
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.match-channel-name {
+  color: #00e5ff;
+  font-weight: 700;
+}
+
+.match-watch-btn {
+  background: linear-gradient(135deg, #00e5ff 0%, #0088ff 100%);
+  border: none;
+  color: #050811;
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.match-watch-btn:hover,
+.match-watch-btn:focus {
+  transform: scale(1.05);
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.5);
+}
+
+/* ==========================================================================
+   AI Movie & Mood Concierge Modal
+   ========================================================================== */
+.ai-concierge-modal-card {
+  background: rgba(10, 16, 28, 0.97);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 22px;
+  width: 880px;
+  max-width: 95vw;
+  max-height: 88vh;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(168, 85, 247, 0.2);
+  overflow-y: auto;
+}
+
+.ai-icon {
+  color: #c084fc;
+  margin-left: 8px;
+}
+
+.ai-concierge-intro {
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 10px 0 18px 0;
+  padding: 10px 14px;
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: 12px;
+}
+
+.ai-step-group {
+  margin-bottom: 18px;
+}
+
+.ai-step-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 10px;
+}
+
+.ai-mood-options,
+.ai-time-options,
+.ai-origin-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ai-mood-pill,
+.ai-time-pill,
+.ai-origin-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.ai-mood-pill:hover,
+.ai-time-pill:hover,
+.ai-origin-pill:hover,
+.ai-mood-pill:focus,
+.ai-time-pill:focus,
+.ai-origin-pill:focus {
+  background: rgba(168, 85, 247, 0.2);
+  border-color: #c084fc;
+  color: #ffffff;
+}
+
+.ai-mood-pill.active,
+.ai-time-pill.active,
+.ai-origin-pill.active {
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+  border-color: #c084fc;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+}
+
+.ai-action-row {
+  margin: 16px 0 20px 0;
+}
+
+.ai-generate-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #a855f7 0%, #00e5ff 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.ai-generate-btn:hover,
+.ai-generate-btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px rgba(168, 85, 247, 0.6);
+}
+
+.ai-results-container {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 18px;
+}
+
+.ai-results-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ai-badge {
+  background: rgba(168, 85, 247, 0.2);
+  border: 1px solid #c084fc;
+  color: #c084fc;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.ai-reason-text {
+  font-size: 13px;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.ai-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.ai-rec-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.ai-rec-card:hover,
+.ai-rec-card:focus-within {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: #a855f7;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.ai-card-poster {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #111827;
+}
+
+.ai-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ai-card-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ai-card-sub {
+  font-size: 12px;
+  color: #94a3b8;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ai-card-match-reason {
+  font-size: 11px;
+  color: #c084fc;
+  background: rgba(168, 85, 247, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  line-height: 1.4;
+}
+
+.ai-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.ai-card-btn {
+  flex: 1;
+  padding: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.ai-card-btn.watch {
+  background: linear-gradient(135deg, #a855f7 0%, #00e5ff 100%);
+  color: #ffffff;
+}
+
+.ai-card-btn.details {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+}
+
+.ai-card-btn:hover {
+  transform: scale(1.04);
+}
+
+/* ==========================================================================
+   Subtitle Customizer Options
+   ========================================================================== */
+.sub-bg-options,
+.sub-shadow-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Subtitle Rendering Container Styles */
+.dual-subtitles-container {
+  font-size: var(--sub-font-size, 100%);
+  color: var(--sub-font-color, #ffffff);
+  background-color: var(--sub-bg-color, transparent);
+  text-shadow: var(--sub-shadow-style, 0 2px 4px rgba(0, 0, 0, 0.95), 0 0 2px #000);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+  .video-player-modal.pip-minimized {
+    width: 270px !important;
+    height: 155px !important;
+    bottom: 74px !important;
+    left: 12px !important;
+  }
+  .sports-matches-grid {
+    grid-template-columns: 1fr;
+  }
+  .sports-match-modal-card,
+  .ai-concierge-modal-card {
+    padding: 16px;
+  }
+}
+
+
