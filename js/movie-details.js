@@ -1028,41 +1028,7 @@ const MovieDetails = (function () {
   }
 
   function getFallbackMovie(id) {
-    if (id && id.includes('girl')) {
-      return {
-        id: "the-girl-in-the-river-2026",
-        title: "The Girl in the River",
-        arabic_title: "الفتاة في النهر",
-        year: "2026",
-        rating: "4.1 / 10 IMDb",
-        duration: "92 دقيقة",
-        quality: "WEB-DL - 720p / 1080p",
-        language: "الإنجليزية",
-        translation: "مترجم للعربية",
-        production: "الولايات المتحدة الأمريكية",
-        genres: ["غموض", "دراما", "جريمة"],
-        poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500&q=80",
-        backdrop: "https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=1200&q=80",
-        synopsis: "يقدم فيلم الجريمة والغموض والإثارة 'الفتاة في النهر' (The Girl in the River) قصة بوليسية مشحونة بالتوتر والترقب المستمر، حيث يغوص في العقول المظلمة للقتلة المتسلسلين وصراعات المحققين.",
-        trailer_youtube_id: "kJQP7kiw5Fk",
-        cast: [
-          { name: "Devon Sawa", role: "Alan Kramer", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80" },
-          { name: "Maggie Grace", role: "Amelia Pambrock", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80" },
-          { name: "Tiffany Haddish", role: "Erica Grissom", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&q=80" },
-          { name: "Ralph Macchio", role: "Sheriff Miller", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80" }
-        ],
-        stills: [
-          "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=400&q=80",
-          "https://images.unsplash.com/photo-1518173946687-a4c8a383392e?w=400&q=80"
-        ],
-        servers: [
-          { site: "A Tube Cloud", quality: "1080p FHD", name: "سيرفر A Tube فائق السرعة - 1080p", stream_url: "https://flu.systemnet.tv/CBCDrama/index.m3u8", badge: "A Tube VIP" },
-          { site: "A Tube Cloud", quality: "1080p", name: "سيرفر A Tube السحابي - 1080p", stream_url: "https://flu.systemnet.tv/CBC/index.m3u8", badge: "A Tube Cloud" },
-          { site: "A Tube Cloud", quality: "720p", name: "سيرفر A Tube السريع - 720p", stream_url: "https://eazyvwqssi.erbvr.com/alghadtv/alghadtv.m3u8", badge: "A Tube Fast" },
-          { site: "A Tube Cloud", quality: "4K UHD", name: "سيرفر A Tube 4K فائق السرعة", stream_url: "https://static.france24.com/live/F24_AR_HI_HLS/live_tv.m3u8", badge: "A Tube 4K" }
-        ]
-      };
-    }
+    // Purged: No fabricated dummy movie data with television channels.
     return null;
   }
 
