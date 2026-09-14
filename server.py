@@ -81,6 +81,8 @@ try:
     from services.live_tv_service import LiveTVService
     from services.catalog_sync import CatalogSync, ContentIngestEngine, ContinuousSyncEngine
     from services.deep_search_fallback import DeepSearchFallbackEngine
+    from services.stream_bridge import InvisibleStreamBridge
+    from services.universal_crawler_daemon import UniversalCrawlerDaemon
     HAS_SERVICES = True
 except Exception as e:
     print(f"[A Tube Server] Note: Services loaded with fallback: {e}")
@@ -97,6 +99,8 @@ except Exception as e:
         from live_tv_service import LiveTVService
         from catalog_sync import CatalogSync, ContentIngestEngine, ContinuousSyncEngine
         from deep_search_fallback import DeepSearchFallbackEngine
+        from stream_bridge import InvisibleStreamBridge
+        from universal_crawler_daemon import UniversalCrawlerDaemon
         HAS_SERVICES = True
     except Exception:
         HAS_SERVICES = False
@@ -252,6 +256,56 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     self.send_cors_json(res)
                 except Exception as ex:
                     self.send_cors_json({"success": False, "error": str(ex), "servers": []})
+                return
+
+            # 0.4 API: Invisible Stream Bridge (Zero-Click Auto-Play direct link resolver)
+            if path == "/api/stream/bridge":
+                title = query.get("title", [query.get("title_ar", [query.get("title_en", [""])])])[0]
+                year = query.get("year", [""])[0]
+                c_type = query.get("type", ["movie"])[0]
+                media_id = query.get("media_id", [query.get("id", [""])])[0]
+                season = query.get("season", [None])[0]
+                episode = query.get("episode", [None])[0]
+                s_int = int(season) if season and season.isdigit() else None
+                e_int = int(episode) if episode and episode.isdigit() else None
+
+                try:
+                    if 'InvisibleStreamBridge' in globals() and InvisibleStreamBridge:
+                        res = InvisibleStreamBridge.resolve_clean_stream(
+                            title=title,
+                            year=year,
+                            content_type=c_type,
+                            season=s_int,
+                            episode=e_int,
+                            media_id=media_id
+                        )
+                        self.send_cors_json(res)
+                    else:
+                        self.send_cors_json({"success": False, "error": "Stream Bridge service unavailable"})
+                except Exception as ex:
+                    self.send_cors_json({"success": False, "error": str(ex)})
+                return
+
+            # 0.5 API: Universal Crawler Status & Control
+            if path == "/api/crawler/status":
+                try:
+                    stats = UniversalCrawlerDaemon.get_stats() if 'UniversalCrawlerDaemon' in globals() else {}
+                    self.send_cors_json({"success": True, "stats": stats})
+                except Exception as ex:
+                    self.send_cors_json({"success": False, "error": str(ex)})
+                return
+
+            if path == "/api/crawler/run":
+                limit_q = query.get("limit", ["20"])[0]
+                limit_val = int(limit_q) if limit_q.isdigit() else 20
+                try:
+                    if 'UniversalCrawlerDaemon' in globals():
+                        threading.Thread(target=UniversalCrawlerDaemon.crawl_all, kwargs={"max_items": limit_val}, daemon=True).start()
+                        self.send_cors_json({"success": True, "message": f"Crawler started in background for up to {limit_val} items"})
+                    else:
+                        self.send_cors_json({"success": False, "error": "Crawler unavailable"})
+                except Exception as ex:
+                    self.send_cors_json({"success": False, "error": str(ex)})
                 return
 
             # 1. API: Legacy Multi-Category Feed (backward compatible alias)

@@ -56,21 +56,83 @@ class TMDBClient:
         return bool(cls.get_api_key())
 
     @classmethod
-    def search_media(cls, title: str, content_type: str = "movie") -> Optional[Dict[str, Any]]:
+    def normalize_title(cls, t: str) -> str:
+        if not t:
+            return ""
+        t = re.sub(r'[\u064B-\u065F\u0670]', '', t)
+        t = re.sub(r'[أإآا]', 'ا', t)
+        t = re.sub(r'[ة]', 'ه', t)
+        t = re.sub(r'[ى]', 'ي', t)
+        t = re.sub(r'[^a-zA-Z0-9\u0600-\u06FF\s]', '', t)
+        return t.strip().lower()
+
+    @classmethod
+    def score_candidate(cls, cand: Dict[str, Any], query_clean: str, expected_year: Optional[str]) -> int:
+        score = 0
+        cand_title = cand.get("title") or cand.get("name") or ""
+        cand_orig = cand.get("original_title") or cand.get("original_name") or ""
+        rel_date = cand.get("release_date") or cand.get("first_air_date") or ""
+        cand_year = rel_date.split("-")[0] if rel_date else ""
+
+        norm_q = cls.normalize_title(query_clean)
+        norm_t = cls.normalize_title(cand_title)
+        norm_o = cls.normalize_title(cand_orig)
+
+        if norm_q == norm_t or norm_q == norm_o:
+            score += 100
+        elif norm_t.startswith(norm_q) or norm_o.startswith(norm_q):
+            score += 50
+        elif norm_q in norm_t or norm_q in norm_o:
+            score += 30
+
+        # Word difference penalty (e.g. query "اسد" vs candidate "اسد واربع قطط")
+        words_q = set(norm_q.split())
+        words_c = set((norm_t + " " + norm_o).split())
+        extra = words_c - words_q
+        if len(extra) > 1 and len(words_q) <= 2:
+            score -= 40 * len(extra)
+
+        # Strict year guard
+        if expected_year and cand_year and expected_year.isdigit() and cand_year.isdigit():
+            diff = abs(int(expected_year) - int(cand_year))
+            if diff == 0:
+                score += 80
+            elif diff == 1:
+                score += 40
+            elif diff > 3:
+                score -= 150
+
+        return score
+
+    @classmethod
+    def search_media(cls, title: str, content_type: str = "movie", expected_year: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        # Extract explicit year from title if not passed
+        if not expected_year:
+            y_m = re.search(r'\b(202[0-9]|201[0-9]|19[0-9]{2})\b', title)
+            if y_m:
+                expected_year = y_m.group(1)
+
         clean_title = re.sub(r'\(.*?\)|202[0-9]|201[0-9]|مترجم|مدبلج|انمي|أنمي|فيلم|مسلسل|حلقة|\b[SE]\d+\b', '', title, flags=re.IGNORECASE).strip()
         media_type = "tv" if content_type == "series" else "movie"
         api_key = cls.get_api_key()
         if not api_key:
             return None
 
-        url = f"https://api.themoviedb.org/3/search/{media_type}?api_key={api_key}&query={urllib.parse.quote(clean_title)}"
+        year_param = f"&primary_release_year={expected_year}" if (expected_year and media_type == "movie") else ""
+        if media_type == "tv" and expected_year:
+            year_param = f"&first_air_date_year={expected_year}"
+
+        url = f"https://api.themoviedb.org/3/search/{media_type}?api_key={api_key}&query={urllib.parse.quote(clean_title)}{year_param}"
         try:
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
             with urllib.request.urlopen(req, timeout=6) as resp:
                 data = json.loads(resp.read().decode('utf-8'))
                 results = data.get('results', [])
                 if results:
-                    return results[0]
+                    scored = [(r, cls.score_candidate(r, clean_title, expected_year)) for r in results]
+                    scored.sort(key=lambda x: x[1], reverse=True)
+                    if scored[0][1] > 0:
+                        return scored[0][0]
         except Exception:
             pass
 
@@ -82,7 +144,10 @@ class TMDBClient:
                 data = json.loads(resp.read().decode('utf-8'))
                 results = [r for r in data.get('results', []) if r.get('media_type') in ('movie', 'tv')]
                 if results:
-                    return results[0]
+                    scored = [(r, cls.score_candidate(r, clean_title, expected_year)) for r in results]
+                    scored.sort(key=lambda x: x[1], reverse=True)
+                    if scored[0][1] > 0:
+                        return scored[0][0]
         except Exception:
             pass
         return None

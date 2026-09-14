@@ -671,6 +671,8 @@ class ContinuousSyncEngine:
                     pass
 
 
+CatalogSync = ContinuousSyncEngine
+
 if __name__ == "__main__":
     ContentIngestEngine.seed_initial_verified_content()
 

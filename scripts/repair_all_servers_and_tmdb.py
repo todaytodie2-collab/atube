@@ -41,21 +41,78 @@ def clean_query(text):
     t = re.sub(r'[-_]', ' ', t)
     return t.strip()
 
-def search_tmdb(title, c_type='movie'):
+def normalize_title_for_scoring(t):
+    if not t:
+        return ""
+    t = re.sub(r'[\u064B-\u065F\u0670]', '', t)
+    t = re.sub(r'[أإآا]', 'ا', t)
+    t = re.sub(r'[ة]', 'ه', t)
+    t = re.sub(r'[ى]', 'ي', t)
+    t = re.sub(r'[^a-zA-Z0-9\u0600-\u06FF\s]', '', t)
+    return t.strip().lower()
+
+def score_tmdb_candidate(candidate, query_clean, expected_year, c_type):
+    score = 0
+    cand_title = candidate.get("title") or candidate.get("name") or ""
+    cand_ar_title = candidate.get("original_title") or candidate.get("original_name") or ""
+    release_date = candidate.get("release_date") or candidate.get("first_air_date") or ""
+    cand_year = release_date.split("-")[0] if release_date else ""
+
+    norm_q = normalize_title_for_scoring(query_clean)
+    norm_c1 = normalize_title_for_scoring(cand_title)
+    norm_c2 = normalize_title_for_scoring(cand_ar_title)
+
+    if norm_q == norm_c1 or norm_q == norm_c2:
+        score += 100
+    elif norm_c1.startswith(norm_q) or norm_c2.startswith(norm_q):
+        score += 50
+    elif norm_q in norm_c1 or norm_q in norm_c2:
+        score += 30
+
+    words_q = set(norm_q.split())
+    words_c = set((norm_c1 + " " + norm_c2).split())
+    extra_words = words_c - words_q
+    if len(extra_words) > 1 and len(words_q) <= 2:
+        score -= 40 * len(extra_words)
+
+    if expected_year and cand_year and str(expected_year).isdigit() and str(cand_year).isdigit():
+        diff = abs(int(expected_year) - int(cand_year))
+        if diff == 0:
+            score += 80
+        elif diff == 1:
+            score += 40
+        elif diff > 3:
+            score -= 150
+
+    return score
+
+def search_tmdb(title, c_type='movie', expected_year=None):
+    if not expected_year:
+        y_m = re.search(r'\b(202[0-9]|201[0-9]|19[0-9]{2})\b', str(title))
+        if y_m:
+            expected_year = y_m.group(1)
+
     query = clean_query(title)
     if not query:
         return None
     media_type = 'tv' if c_type in ['series', 'anime', 'tv_show'] else 'movie'
     
+    year_param = f"&primary_release_year={expected_year}" if (expected_year and media_type == 'movie') else ""
+    if media_type == 'tv' and expected_year:
+        year_param = f"&first_air_date_year={expected_year}"
+
     # 1. Direct search
-    url = f"{BASE_URL}/search/{media_type}?api_key={TMDB_KEY}&query={urllib.parse.quote(query)}&language=ar"
+    url = f"{BASE_URL}/search/{media_type}?api_key={TMDB_KEY}&query={urllib.parse.quote(query)}&language=ar{year_param}"
     try:
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(req, timeout=5) as resp:
             data = json.loads(resp.read().decode('utf-8'))
             results = data.get('results', [])
             if results:
-                return results[0].get('id')
+                scored = [(r, score_tmdb_candidate(r, query, expected_year, c_type)) for r in results]
+                scored.sort(key=lambda x: x[1], reverse=True)
+                if scored[0][1] > 0:
+                    return scored[0][0].get('id')
     except Exception:
         pass
         
@@ -67,7 +124,10 @@ def search_tmdb(title, c_type='movie'):
             data = json.loads(resp.read().decode('utf-8'))
             results = [r for r in data.get('results', []) if r.get('media_type') in ['movie', 'tv']]
             if results:
-                return results[0].get('id')
+                scored = [(r, score_tmdb_candidate(r, query, expected_year, c_type)) for r in results]
+                scored.sort(key=lambda x: x[1], reverse=True)
+                if scored[0][1] > 0:
+                    return scored[0][0].get('id')
     except Exception:
         pass
 
@@ -209,7 +269,8 @@ def run():
         for it in missing_items:
             t = it.get("title") or it.get("arabic_title") or it.get("id")
             c = it.get("content_type", "movie")
-            futures[executor.submit(search_tmdb, t, c)] = it
+            y = it.get("year")
+            futures[executor.submit(search_tmdb, t, c, y)] = it
 
         for future in as_completed(futures):
             item = futures[future]

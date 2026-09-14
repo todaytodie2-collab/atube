@@ -482,3 +482,5 @@ class LiveTVManager:
         if not category or category in ["all", "الكل", ""]:
             return channels
         return [c for c in channels if c.get("category") == category]
+
+LiveTVService = LiveTVManager

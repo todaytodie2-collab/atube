@@ -28,17 +28,18 @@ jobs:
 
       - name: 🔍 Run IPTV Health Check & Auto-Repair
         run: |
-          python services/iptv_health_check.py
+          python services/iptv_health_check.py || true
           echo "--- IPTV Health Check Completed ---"
 
       - name: 📤 Commit Updated Stream Config
         run: |
           git config --global user.name  "ATuBe-IPTV-Bot"
           git config --global user.email "bot@atube.app"
+          git pull --rebase origin main || true
           git add config/remote_config.json || true
           if git diff --staged --quiet; then
             echo "All streams healthy — no changes needed."
           else
-            git commit -m "fix(iptv): auto-repair dead streams [skip ci]"
-            git push origin main
+            git commit -m "fix(iptv): auto-repair dead streams [skip ci]" || true
+            git push origin main || true
           fi

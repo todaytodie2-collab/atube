@@ -1088,7 +1088,7 @@
             <div class="profile-backup-actions">
               <button id="export-backup-btn" class="btn-secondary dpad-focusable">تصدير المفضلة والسجل 📥</button>
               <button id="import-backup-btn" class="btn-secondary dpad-focusable">استيراد المفضلة والسجل 📤</button>
-              <input type="file" id="import-backup-input" accept=".json" class="is-hidden">
+              <input type="file" id="import-backup-input" accept=".json" class="is-hidden" title="اختيار ملف النسخة الاحتياطية" placeholder="اختيار ملف النسخة الاحتياطية" aria-label="اختيار ملف النسخة الاحتياطية">
             </div>
           </div>
 
@@ -1442,6 +1442,26 @@
         </div>
         <div id="freq-modal-content" class="freq-modal-body">
           <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         ZERO-CLICK AUTO-PLAY & INVISIBLE STREAM BRIDGE MODAL
+         ==================================================================== -->
+    <div id="auto-launch-modal" class="modal-backdrop is-hidden">
+      <div class="auto-launch-card">
+        <div class="auto-launch-pulse-ring">
+          <div class="auto-launch-countdown-number" id="auto-launch-timer">10</div>
+        </div>
+        <h3 class="auto-launch-title" id="auto-launch-title">جاري تجهيز البث الصافي...</h3>
+        <p class="auto-launch-subtitle" id="auto-launch-status">الاتصال بالجسر السحابي الخفي واستخراج سيرفرات المشاهدة المباشرة</p>
+        <div class="auto-launch-progress-bar">
+          <div class="auto-launch-progress-fill" id="auto-launch-progress-fill"></div>
+        </div>
+        <div class="auto-launch-actions">
+          <button id="auto-launch-now-btn" class="btn-primary dpad-focusable">تشغيل فوري الآن 🚀</button>
+          <button id="auto-launch-cancel-btn" class="btn-secondary dpad-focusable">إلغاء ✕</button>
         </div>
       </div>
     </div>

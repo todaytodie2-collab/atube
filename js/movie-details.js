@@ -6,6 +6,128 @@
 const MovieDetails = (function () {
   let modalEl = null;
   let currentMovie = null;
+  let autoPlayTimer = null;
+  let autoPlayAbortController = null;
+
+  function startZeroClickAutoPlay(movie, seasonNum, episodeNum) {
+    const autoModal = document.getElementById('auto-launch-modal');
+    if (!autoModal) {
+      closeModal();
+      const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
+      if (player && typeof player.playMedia === 'function') {
+        player.playMedia(movie);
+      }
+      return;
+    }
+
+    const timerEl = document.getElementById('auto-launch-timer');
+    const titleEl = document.getElementById('auto-launch-title');
+    const statusEl = document.getElementById('auto-launch-status');
+    const progressFill = document.getElementById('auto-launch-progress-fill');
+    const nowBtn = document.getElementById('auto-launch-now-btn');
+    const cancelBtn = document.getElementById('auto-launch-cancel-btn');
+
+    if (autoPlayTimer) {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = null;
+    }
+    if (autoPlayAbortController) {
+      autoPlayAbortController.abort();
+      autoPlayAbortController = null;
+    }
+
+    const movieTitle = movie.arabic_title || movie.title || 'العمل السينمائي';
+    if (titleEl) titleEl.textContent = `جاري تجهيز: ${movieTitle}`;
+    if (statusEl) statusEl.textContent = 'الاتصال بالجسر السحابي واستخراج سيرفرات المشاهدة المباشرة الصافية...';
+    if (progressFill) progressFill.style.width = '100%';
+
+    autoModal.classList.remove('is-hidden');
+    autoModal.style.display = 'flex';
+
+    let secondsLeft = 10;
+    if (timerEl) timerEl.textContent = secondsLeft;
+
+    let targetMovie = { ...movie };
+    if (seasonNum) targetMovie.season = seasonNum;
+    if (episodeNum) targetMovie.episode = episodeNum;
+
+    // Launch direct stream fetch via Invisible Bridge in parallel
+    autoPlayAbortController = new AbortController();
+    const queryParams = new URLSearchParams({
+      title: movie.title || '',
+      title_ar: movie.arabic_title || '',
+      year: movie.year || '',
+      type: movie.content_type || movie.type || 'movie',
+      media_id: movie.id || ''
+    });
+    if (seasonNum) queryParams.set('season', seasonNum);
+    if (episodeNum) queryParams.set('episode', episodeNum);
+
+    fetch(`/api/stream/bridge?${queryParams.toString()}`, { signal: autoPlayAbortController.signal })
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.success && data.stream_url) {
+          const resolvedServer = {
+            name: data.server_name || 'سيرفر البث المباشر الصافي ⚡',
+            stream_url: data.stream_url,
+            url: data.stream_url,
+            quality: data.quality || '1080p FHD',
+            is_hls: !!data.is_hls,
+            isEmbed: !data.is_direct,
+            badge: data.badge || 'VIP Direct ⚡'
+          };
+          if (!Array.isArray(targetMovie.servers)) targetMovie.servers = [];
+          targetMovie.servers.unshift(resolvedServer);
+          targetMovie.streamUrl = data.stream_url;
+          if (statusEl) statusEl.textContent = '⚡ تم استخراج السيرفر الصافي فائق السرعة! جاري بدء العرض...';
+          if (secondsLeft > 2) secondsLeft = 2;
+        }
+      })
+      .catch(() => {});
+
+    const triggerPlay = () => {
+      if (autoPlayTimer) {
+        clearInterval(autoPlayTimer);
+        autoPlayTimer = null;
+      }
+      autoModal.classList.add('is-hidden');
+      autoModal.style.display = 'none';
+      closeModal();
+      const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
+      if (player && typeof player.playMedia === 'function') {
+        player.playMedia(targetMovie);
+      }
+    };
+
+    if (nowBtn) {
+      nowBtn.onclick = (e) => {
+        e.stopPropagation();
+        triggerPlay();
+      };
+    }
+
+    if (cancelBtn) {
+      cancelBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (autoPlayTimer) clearInterval(autoPlayTimer);
+        if (autoPlayAbortController) autoPlayAbortController.abort();
+        autoModal.classList.add('is-hidden');
+        autoModal.style.display = 'none';
+      };
+    }
+
+    // 10-second automatic countdown
+    const totalDuration = 10;
+    autoPlayTimer = setInterval(() => {
+      secondsLeft--;
+      if (timerEl) timerEl.textContent = secondsLeft;
+      if (progressFill) progressFill.style.width = `${(secondsLeft / totalDuration) * 100}%`;
+
+      if (secondsLeft <= 0) {
+        triggerPlay();
+      }
+    }, 1000);
+  }
 
   function init() {
     modalEl = document.getElementById('movie-details-modal');
@@ -327,15 +449,11 @@ const MovieDetails = (function () {
       };
     }
 
-    // Direct Watch Button (Launches Video Player immediately without forcing manual server picking)
+    // Direct Watch Button (Auto-Plays within 10s via Zero-Click Invisible Stream Bridge)
     const watchBtn = document.getElementById('md-watch-btn');
     if (watchBtn) {
       watchBtn.onclick = () => {
-        closeModal();
-        const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
-        if (player && typeof player.playMedia === 'function') {
-          player.playMedia(movie);
-        }
+        startZeroClickAutoPlay(movie);
       };
     }
 
@@ -634,24 +752,7 @@ const MovieDetails = (function () {
         <span>تشغيل ذكي فوري (أفضل جودة وأسرع استجابة تلقائياً)</span>
       `;
       autoPlayBestBtn.onclick = () => {
-        const bestServer = allServers[0] || {};
-        const q = bestServer.quality || '1080p FHD';
-        closeModal();
-        const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
-        if (player && typeof player.playMedia === 'function') {
-          player.playMedia({
-            ...movie,
-            id: movie.id,
-            tmdb_id: movie.tmdb_id,
-            name: `${mediaTitle} (${q})`,
-            title: mediaTitle,
-            category: movie.category_name || movie.category || 'A Tube Ultra HD',
-            streamUrl: bestServer.url || bestServer.stream_url,
-            quality: q,
-            content_type: movie.content_type,
-            servers: allServers
-          });
-        }
+        startZeroClickAutoPlay(movie);
       };
       watchGrid.appendChild(autoPlayBestBtn);
 
@@ -1124,7 +1225,8 @@ const MovieDetails = (function () {
     open,
     close: closeModal,
     isOpen: () => modalEl && modalEl.classList.contains('active'),
-    openActorFilmography
+    openActorFilmography,
+    startZeroClickAutoPlay
   };
 })();
 
