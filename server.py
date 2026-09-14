@@ -105,6 +105,12 @@ except Exception as e:
     except Exception:
         HAS_SERVICES = False
 
+try:
+    sys.path.insert(0, os.path.join(BASE_DIR, "scripts"))
+    from auto_git_sync import AutoGitSync
+except Exception:
+    AutoGitSync = None
+
 
 class ATubeHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -573,6 +579,27 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 except Exception as ex:
                     resp = {"error": str(ex)}
                 self.wfile.write(json.dumps(resp, ensure_ascii=False).encode("utf-8"))
+                return
+
+            # 3d2. API: Real-time Git Synchronization
+            elif path == "/api/sync/git":
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Access-Control-Allow-Origin", "*")
+                self.end_headers()
+                status_res = {"status": "unsupported", "synced": False}
+                if AutoGitSync:
+                    try:
+                        synced = AutoGitSync.sync_once()
+                        status_res = {
+                            "status": "success",
+                            "synced": synced,
+                            "pending": bool(AutoGitSync.get_status()),
+                            "timestamp": time.time()
+                        }
+                    except Exception as ex_sync:
+                        status_res = {"status": "error", "error": str(ex_sync)}
+                self.wfile.write(json.dumps(status_res, ensure_ascii=False).encode("utf-8"))
                 return
 
             # 3e. API: Oscar VOD Servers Resolver
@@ -1185,6 +1212,15 @@ def run(port=8085):
             print("[IPTV Manager Startup] Stream Health Checker & M3U Harvester active.")
         except Exception as ex_iptv:
             print(f"[IPTV Manager Startup] Note: {ex_iptv}")
+
+    # Start Real-Time Git Auto-Sync Watcher
+    if AutoGitSync:
+        try:
+            sync_thread = threading.Thread(target=AutoGitSync.start_watcher, kwargs={"interval_seconds": 30}, daemon=True)
+            sync_thread.start()
+            print("[Git Auto-Sync Startup] Real-time Git watcher daemon active & monitoring.")
+        except Exception as ex_git:
+            print(f"[Git Auto-Sync Startup] Note: {ex_git}")
 
     server_address = ("", port)
     httpd = ThreadingHTTPServer(server_address, ATubeHandler)
