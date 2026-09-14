@@ -259,25 +259,42 @@ const MediaCatalog = (function () {
       });
     }
 
-    // 3. Stale-While-Revalidate: fetch fresh catalog from server and cache to IndexedDB
+    // 3. Ultra-Fast Zero-Latency initial feed from SQLite backend
     if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
       try {
-        const res = await fetch('catalog.json?t=' + Date.now());
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            _inMemoryCatalog = data;
-            data.forEach(item => {
+        const fastFeed = await fetch('/api/media/feed?page=1&limit=60');
+        if (fastFeed.ok) {
+          const feedJson = await fastFeed.json();
+          const items = Array.isArray(feedJson) ? feedJson : (feedJson.items || []);
+          if (items.length > 0) {
+            _inMemoryCatalog = items;
+            items.forEach(item => {
               if (item && item.id) _ramCache.set(item.id, item);
             });
-            if (window.DBStorage) {
-              window.DBStorage.saveCatalog(data).catch(() => {});
-            }
           }
         }
-      } catch (e) {
-        console.warn('[MediaCatalog] Remote fetch fallback to cached/bundled data:', e);
-      }
+      } catch (e) {}
+
+      // 4. Background non-blocking sync for full catalog
+      setTimeout(async () => {
+        try {
+          const res = await fetch('catalog.json?t=' + Date.now());
+          if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) {
+              _inMemoryCatalog = data;
+              data.forEach(item => {
+                if (item && item.id) _ramCache.set(item.id, item);
+              });
+              if (window.DBStorage) {
+                window.DBStorage.saveCatalog(data).catch(() => {});
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('[MediaCatalog] Background catalog sync note:', e);
+        }
+      }, 1000);
     }
 
     return _inMemoryCatalog;
