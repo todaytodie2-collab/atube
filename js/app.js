@@ -290,13 +290,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 10. Autonomous Autoplay via URL parameter (e.g. ?autoplay=spider-man-no-way-home-2021-634649 or ?channel=france24_ar)
   try {
     const urlParams = new URLSearchParams(window.location.search);
-    const autoPlayId = urlParams.get('autoplay') || (urlParams.get('play') ? 'spider-man-no-way-home-2021-634649' : null);
-    const channelId = urlParams.get('channel');
+    const autoPlayId = urlParams.get('autoplay') || urlParams.get('play') || urlParams.get('movie') || urlParams.get('id');
+    const channelId = urlParams.get('channel') || urlParams.get('ch');
+    const detailsId = urlParams.get('details');
+    const seekTime = parseFloat(urlParams.get('t') || '0');
 
     if (channelId) {
       setTimeout(() => {
         if (window.IPTVEngine && typeof IPTVEngine.getDefaultChannels === 'function') {
-          const ch = IPTVEngine.getDefaultChannels().find(x => x.id === channelId) || IPTVEngine.getDefaultChannels()[0];
+          const ch = IPTVEngine.getDefaultChannels().find(x => x.id === channelId || x.name === channelId) || IPTVEngine.getDefaultChannels()[0];
           if (ch && window.InAppPlayer) {
             console.log('[Autoplay Live Channel Triggered]', ch.name);
             InAppPlayer.playMedia({
@@ -311,6 +313,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         }
       }, 700);
+    } else if (detailsId) {
+      setTimeout(() => {
+        if (window.MovieDetails && typeof MovieDetails.open === 'function') {
+          MovieDetails.open(detailsId);
+        }
+      }, 700);
     } else if (autoPlayId) {
       setTimeout(() => {
         let target = null;
@@ -318,15 +326,21 @@ document.addEventListener('DOMContentLoaded', async () => {
           target = MediaCatalog.getItemById(autoPlayId);
         }
         if (!target && window.BUNDLED_CATALOG) {
-          target = window.BUNDLED_CATALOG.find(x => x && x.id === autoPlayId);
+          target = window.BUNDLED_CATALOG.find(x => x && (x.id === autoPlayId || x.title === autoPlayId));
         }
         if (!target && window.MediaCatalog && typeof MediaCatalog.getAllItems === 'function') {
           const all = MediaCatalog.getAllItems();
-          target = all.find(x => x && (x.id === autoPlayId || (x.title && x.title.toLowerCase().includes(autoPlayId.toLowerCase())))) || all[0];
+          target = all.find(x => x && (x.id === autoPlayId || (x.title && x.title.toLowerCase().includes(autoPlayId.toLowerCase()))));
         }
         if (target && window.InAppPlayer && typeof InAppPlayer.playMedia === 'function') {
           console.log('[Autoplay Triggered]', target.title);
           InAppPlayer.playMedia(target);
+          if (seekTime > 0) {
+            setTimeout(() => {
+              const v = document.getElementById('main-video');
+              if (v) v.currentTime = seekTime;
+            }, 1000);
+          }
         }
       }, 700);
     }
@@ -1857,6 +1871,66 @@ function setupProfileModal() {
         alert('تم مسح الذاكرة المؤقتة بنجاح!');
         location.reload();
       }
+    });
+  }
+
+  // Backup & Restore Handlers (JSON Sync)
+  const exportBtn = document.getElementById('export-backup-btn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      let favs = [], hist = [], pinned = [];
+      try { favs = JSON.parse(localStorage.getItem('atube_favorites') || '[]'); } catch(_) {}
+      try { hist = JSON.parse(localStorage.getItem('atube_history') || '[]'); } catch(_) {}
+      try { pinned = JSON.parse(localStorage.getItem('atube_pinned_channels') || '[]'); } catch(_) {}
+
+      const backupObj = {
+        app: 'A TuBe Ultra HD',
+        version: '2.7.0',
+        exported_at: new Date().toISOString(),
+        favorites: favs,
+        history: hist,
+        pinned_channels: pinned
+      };
+
+      const blob = new Blob([JSON.stringify(backupObj, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `atube_backup_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+      alert('تم تصدير ملف النسخة الاحتياطية بنجاح! 📥\nيمكنك نقله واستيراده على أي شاشة تلفزيون أو متصفح.');
+    });
+  }
+
+  const importBtn = document.getElementById('import-backup-btn');
+  const importInput = document.getElementById('import-backup-input');
+  if (importBtn && importInput) {
+    importBtn.addEventListener('click', () => importInput.click());
+    importInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const data = JSON.parse(event.target.result);
+          if (Array.isArray(data.favorites)) {
+            localStorage.setItem('atube_favorites', JSON.stringify(data.favorites));
+          }
+          if (Array.isArray(data.history)) {
+            localStorage.setItem('atube_history', JSON.stringify(data.history));
+          }
+          if (Array.isArray(data.pinned_channels)) {
+            localStorage.setItem('atube_pinned_channels', JSON.stringify(data.pinned_channels));
+          }
+          alert('تم استيراد المفضلة وسجل المشاهدة بنجاح! 📤\nسيتم تحديث الصفحة الآن لعرض بياناتك المستوردة.');
+          location.reload();
+        } catch (err) {
+          alert('فشل قراءة الملف: يرجى التأكد من اختيار ملف atube_backup.json صالح.');
+        }
+      };
+      reader.readAsText(file);
     });
   }
 }

@@ -2450,6 +2450,48 @@ body {
   box-shadow: 0 0 14px rgba(0, 229, 255, 0.4);
 }
 
+/* Profile Backup & Sync Controls */
+.profile-backup-group {
+  margin-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 16px;
+}
+
+.profile-backup-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #00e5ff;
+  margin-bottom: 10px;
+}
+
+.profile-backup-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.profile-backup-actions button {
+  flex: 1;
+  font-size: 12px;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.profile-backup-actions button:hover,
+.profile-backup-actions button:focus {
+  background: rgba(0, 229, 255, 0.2);
+  border-color: #00e5ff;
+  color: #00e5ff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+}
+
 /* Satellite Frequencies Table & Modal */
 .freq-modal-card {
   max-width: 580px;

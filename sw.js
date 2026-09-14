@@ -3,7 +3,7 @@
    Provides instant-boot asset caching, offline resilience & streaming bypass
    ========================================================================== */
 
-const CACHE_NAME = 'atube-v2.6.0-live-tv';
+const CACHE_NAME = 'atube-v2.7.0-master';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -12,6 +12,8 @@ const STATIC_ASSETS = [
   './css/tv-navigation.css',
   './css/movie-details.css',
   './css/responsive.css',
+  './css/skeleton.css',
+  './data/verified_live_channels.json',
   './js/bundled-data.js',
   './js/media-catalog.js',
   './js/iptv-engine.js',

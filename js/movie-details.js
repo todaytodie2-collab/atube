@@ -346,6 +346,29 @@ const MovieDetails = (function () {
       };
     }
 
+    // Share Button
+    const shareBtn = document.getElementById('md-share-btn');
+    if (shareBtn) {
+      shareBtn.onclick = () => {
+        const shareUrl = `${window.location.origin}${window.location.pathname}?play=${movie.id}`;
+        if (navigator.share) {
+          navigator.share({
+            title: movie.arabic_title || movie.title,
+            text: `شاهد "${movie.arabic_title || movie.title}" بجودة Ultra HD على A TuBe:`,
+            url: shareUrl
+          }).catch(() => {});
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            alert('تم نسخ رابط العمل لمشاركته بنجاح! 🔗\n' + shareUrl);
+          }).catch(() => {
+            prompt('انسخ الرابط التالي:', shareUrl);
+          });
+        } else {
+          prompt('انسخ الرابط التالي:', shareUrl);
+        }
+      };
+    }
+
     // Dynamic Headings based on content type
     const isSeries = (
       movie.content_type === 'series' || 
