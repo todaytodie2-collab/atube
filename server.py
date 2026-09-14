@@ -143,6 +143,17 @@ class ATubeHandler(SimpleHTTPRequestHandler):
         except Exception:
             pass
 
+    def is_admin_authorized(self):
+        """Authorizes administrative endpoints: permits loopback/localhost or valid X-Admin-Token."""
+        client_ip = getattr(self, 'client_address', ['127.0.0.1'])[0]
+        if client_ip in ("127.0.0.1", "::1", "localhost"):
+            return True
+        parsed = urllib.parse.urlparse(self.path)
+        query = urllib.parse.parse_qs(parsed.query)
+        token = self.headers.get("X-Admin-Token") or query.get("token", [None])[0]
+        expected_token = os.environ.get("ATUBE_ADMIN_TOKEN", "atube-secure-admin-2026")
+        return bool(token and token == expected_token)
+
     def do_GET(self):
         try:
             parsed = urllib.parse.urlparse(self.path)
@@ -178,6 +189,33 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                         "engine": "SQLite 3 WAL Mode"
                     }
                 })
+                return
+
+            # 0.05 API: Secure Server-Side TMDB Proxy (Protects API Key from frontend exposure)
+            if path == "/api/tmdb/proxy":
+                endpoint = query.get("endpoint", [""])[0]
+                if not endpoint or ".." in endpoint:
+                    self.send_cors_json({"error": "Invalid endpoint"}, status=400)
+                    return
+                cfg_key = "cabefb963ee5db1ecd2c5778bda9b6d0"
+                if HAS_SERVICES:
+                    try:
+                        cfg_key = RemoteConfigManager.get_instance().get_tmdb_api_key() or cfg_key
+                    except Exception:
+                        pass
+                tmdb_key = os.environ.get("TMDB_API_KEY", cfg_key)
+                forward_params = {k: v[0] for k, v in query.items() if k != "endpoint"}
+                forward_params["api_key"] = tmdb_key
+                if "language" not in forward_params:
+                    forward_params["language"] = "ar"
+                tmdb_url = f"https://api.themoviedb.org/3/{endpoint.lstrip('/')}?{urllib.parse.urlencode(forward_params)}"
+                try:
+                    req = urllib.request.Request(tmdb_url, headers={"User-Agent": "A-TuBe/2.5"})
+                    with urllib.request.urlopen(req, timeout=8.0) as resp:
+                        data = json.loads(resp.read().decode("utf-8"))
+                    self.send_cors_json(data)
+                except Exception as ex_tmdb:
+                    self.send_cors_json({"error": str(ex_tmdb)}, status=502)
                 return
 
             # 0.1 API: High-Performance Universal Stream Proxy (Anti-CORS & Anti-403)
