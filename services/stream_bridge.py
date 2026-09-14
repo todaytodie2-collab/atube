@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, "services"))
 
 from stream_extractor import DirectStreamExtractor
 from deep_search_fallback import DeepSearchFallbackEngine
+from mycima_harvester import MyCimaHarvester
 
 DB_PATH = os.path.join(BASE_DIR, "config", "atube_data.sqlite")
 
@@ -95,6 +96,67 @@ class InvisibleStreamBridge:
             if cached:
                 cached["elapsed_ms"] = int((time.time() - start_time) * 1000)
                 return cached
+
+        # 1b. Query MyCima & Cima4U Portal First (Priority Source for 5 Core Servers)
+        try:
+            mycima_res = MyCimaHarvester.search_and_harvest(title, year)
+            if mycima_res.get("success") and mycima_res.get("servers"):
+                mycima_servers = mycima_res["servers"]
+                processed_matrix: List[Dict[str, Any]] = []
+
+                for srv in mycima_servers:
+                    raw_u = srv.get("url", "")
+                    # Try resolving direct video (.m3u8 / .mp4)
+                    res_direct = DirectStreamExtractor.resolve(raw_u)
+                    if res_direct and res_direct.get("success") and res_direct.get("stream_url"):
+                        processed_matrix.append({
+                            "name": srv.get("name") or "سيرفر مباشر فائق السرعة",
+                            "raw_name": srv.get("raw_name") or "",
+                            "url": res_direct["stream_url"],
+                            "stream_url": res_direct["stream_url"],
+                            "quality": srv.get("quality") or "1080p FHD",
+                            "is_direct": True,
+                            "is_hls": res_direct.get("is_hls", False),
+                            "isEmbed": False,
+                            "badge": "سحابي صافٍ ⚡"
+                        })
+                    else:
+                        # Route through Ghost Embed Proxy & Ad Absorber
+                        ghost_proxy_url = f"/api/watch/embed?url={urllib.parse.quote(raw_u)}&referer={urllib.parse.quote('https://vid.mycima.cc/')}"
+                        processed_matrix.append({
+                            "name": srv.get("name") or "سيرفر مشاهدة سحابي",
+                            "raw_name": srv.get("raw_name") or "",
+                            "url": ghost_proxy_url,
+                            "stream_url": ghost_proxy_url,
+                            "original_url": raw_u,
+                            "quality": srv.get("quality") or "1080p FHD",
+                            "is_direct": False,
+                            "is_hls": False,
+                            "isEmbed": True,
+                            "badge": "درع خفي 🛡️"
+                        })
+
+                if processed_matrix:
+                    top_stream = processed_matrix[0]
+                    if media_id and top_stream.get("is_direct"):
+                        cls.save_server_to_db(media_id, top_stream["name"], top_stream["url"], top_stream["quality"], season, episode)
+
+                    return {
+                        "success": True,
+                        "stream_url": top_stream["url"],
+                        "server_name": top_stream["name"],
+                        "quality": top_stream["quality"],
+                        "is_direct": top_stream.get("is_direct", False),
+                        "is_hls": top_stream.get("is_hls", False),
+                        "isEmbed": top_stream.get("isEmbed", True),
+                        "badge": top_stream.get("badge", "VIP ⚡"),
+                        "servers_matrix": processed_matrix,
+                        "downloads": mycima_res.get("downloads", []),
+                        "elapsed_ms": int((time.time() - start_time) * 1000),
+                        "source": "mycima_portal"
+                    }
+        except Exception as ex_mc:
+            print(f"[StreamBridge] MyCima harvest notice: {ex_mc}")
 
         # 2. Search Arabic portals in parallel (Akwam, ArabSeed, FaselHD)
         search_query = title.strip()

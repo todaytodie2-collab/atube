@@ -67,19 +67,23 @@ const MovieDetails = (function () {
       .then(r => r.json())
       .then(data => {
         if (data && data.success && data.stream_url) {
-          const resolvedServer = {
-            name: data.server_name || 'سيرفر البث المباشر الصافي ⚡',
-            stream_url: data.stream_url,
-            url: data.stream_url,
-            quality: data.quality || '1080p FHD',
-            is_hls: !!data.is_hls,
-            isEmbed: !data.is_direct,
-            badge: data.badge || 'VIP Direct ⚡'
-          };
-          if (!Array.isArray(targetMovie.servers)) targetMovie.servers = [];
-          targetMovie.servers.unshift(resolvedServer);
+          if (Array.isArray(data.servers_matrix) && data.servers_matrix.length > 0) {
+            targetMovie.servers = data.servers_matrix;
+          } else {
+            const resolvedServer = {
+              name: data.server_name || 'سيرفر البث المباشر الصافي ⚡',
+              stream_url: data.stream_url,
+              url: data.stream_url,
+              quality: data.quality || '1080p FHD',
+              is_hls: !!data.is_hls,
+              isEmbed: !data.is_direct,
+              badge: data.badge || 'VIP Direct ⚡'
+            };
+            if (!Array.isArray(targetMovie.servers)) targetMovie.servers = [];
+            targetMovie.servers.unshift(resolvedServer);
+          }
           targetMovie.streamUrl = data.stream_url;
-          if (statusEl) statusEl.textContent = '⚡ تم استخراج السيرفر الصافي فائق السرعة! جاري بدء العرض...';
+          if (statusEl) statusEl.textContent = '🛡️ تم استخراج السيرفر وتفعيل درع إخماد النوافذ المنبثقة! جاري بدء العرض...';
           if (secondsLeft > 2) secondsLeft = 2;
         }
       })

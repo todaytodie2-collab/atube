@@ -1964,30 +1964,12 @@ const InAppPlayer = (function () {
       tmdbId = 969681; // Universal safe fallback ID
     }
 
-    // Sanitizer function: repairs any slug or corrupt parameters into numeric tmdbId
+    // Sanitizer function: ensures clean embed or stream URLs
     function sanitizeEmbedUrl(rawUrl) {
       if (!rawUrl) return '';
       let url = String(rawUrl).trim();
-      if (url.includes('vidlink.pro/')) {
-        url = isSeries
-          ? `https://vidlink.pro/tv/${tmdbId}/${sNum}/${eNum}?primaryColor=00e5ff&secondaryColor=ff0055`
-          : `https://vidlink.pro/movie/${tmdbId}?primaryColor=00e5ff&secondaryColor=ff0055`;
-      } else if (url.includes('multiembed.mov')) {
-        url = isSeries
-          ? `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=${sNum}&e=${eNum}`
-          : `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1`;
-      } else if (url.includes('vidsrc.cc/')) {
-        url = isSeries
-          ? `https://vidsrc.cc/v2/embed/tv/${tmdbId}/${sNum}/${eNum}`
-          : `https://vidsrc.cc/v2/embed/movie/${tmdbId}`;
-      } else if (url.includes('autoembed.co/')) {
-        url = isSeries
-          ? `https://autoembed.co/tv/tmdb/${tmdbId}/${sNum}/${eNum}`
-          : `https://autoembed.co/movie/tmdb/${tmdbId}`;
-      } else if (url.includes('vidsrc.to/')) {
-        url = isSeries
-          ? `https://vidsrc.to/embed/tv/${tmdbId}/${sNum}/${eNum}`
-          : `https://vidsrc.to/embed/movie/${tmdbId}`;
+      if (url.startsWith('http') && !url.includes('/api/watch/embed') && !url.includes('.m3u8') && !url.includes('.mp4')) {
+        return `/api/watch/embed?url=${encodeURIComponent(url)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`;
       }
       return url;
     }
@@ -2002,6 +1984,7 @@ const InAppPlayer = (function () {
           if (!pool.some(p => p.url === sUrl)) {
             pool.push({
               name: s.name || 'سيرفر تشغيل سحابي',
+              raw_name: s.raw_name || s.name || '',
               url: sUrl,
               quality: s.quality || '1080p FHD',
               is_hls: s.is_hls ?? sIsHls,
@@ -2026,6 +2009,7 @@ const InAppPlayer = (function () {
               if (!pool.some(p => p.url === sUrl)) {
                 pool.push({
                   name: s.name || `سيرفر ${activeEp.title || 'الحلقة ' + eNum}`,
+                  raw_name: s.raw_name || s.name || '',
                   url: sUrl,
                   quality: s.quality || '1080p FHD',
                   is_hls: sIsHls,
@@ -2038,59 +2022,59 @@ const InAppPlayer = (function () {
       }
     }
 
-    // 2. Guarantee 5-Tier Redundant Server Architecture
+    // 2. Guarantee 5-Tier Arabic Core Server Architecture (Vidmoly, Mixdrop, Hgcloud, Bysebuho, Vipserver)
     const standardTiers = [
       {
-        name: 'سيرفر VidLink Ultra (سحابي FHD • VIP Fast ⚡)',
-        url: isSeries
-          ? `https://vidlink.pro/tv/${tmdbId}/${sNum}/${eNum}?primaryColor=00e5ff&secondaryColor=ff0055`
-          : `https://vidlink.pro/movie/${tmdbId}?primaryColor=00e5ff&secondaryColor=ff0055`,
+        name: 'سيرفر Vidmoly (فائق السرعة 🚀)',
+        raw_name: 'Vidmoly',
+        url: `/api/watch/embed?url=${encodeURIComponent('https://vidmoly.net/')}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
         quality: '1080p FHD',
         is_hls: false,
-        isEmbed: true
+        isEmbed: true,
+        badge: 'فائق السرعة 🚀'
       },
       {
-        name: 'سيرفر MultiEmbed Cloud (متعدد الجودات • مدبلج/مترجم 🌟)',
-        url: isSeries
-          ? `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=${sNum}&e=${eNum}`
-          : `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1`,
+        name: 'سيرفر Mixdrop (سحابي مباشر ⚡)',
+        raw_name: 'Mixdrop',
+        url: `/api/watch/embed?url=${encodeURIComponent('https://mixdrop.top/')}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
         quality: '1080p HD',
         is_hls: false,
-        isEmbed: true
+        isEmbed: true,
+        badge: 'سحابي مباشر ⚡'
       },
       {
-        name: 'سيرفر VidSrc Cloud (سريع وبدون تقطيع 🚀)',
-        url: isSeries
-          ? `https://vidsrc.cc/v2/embed/tv/${tmdbId}/${sNum}/${eNum}`
-          : `https://vidsrc.cc/v2/embed/movie/${tmdbId}`,
-        quality: '720p HD',
-        is_hls: false,
-        isEmbed: true
-      },
-      {
-        name: 'سيرفر AutoEmbed Prime (سيرفر عالمي احتياطي 💎)',
-        url: isSeries
-          ? `https://autoembed.co/tv/tmdb/${tmdbId}/${sNum}/${eNum}`
-          : `https://autoembed.co/movie/tmdb/${tmdbId}`,
+        name: 'سيرفر Hgcloud (سيرفر VIP 💎)',
+        raw_name: 'Hgcloud',
+        url: `/api/watch/embed?url=${encodeURIComponent('https://hgcloud.to/')}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
         quality: '1080p FHD',
         is_hls: false,
-        isEmbed: true
+        isEmbed: true,
+        badge: 'VIP 💎'
       },
       {
-        name: 'سيرفر VidSrc TO (سيرفر بديل بدون تقطيع 🎬)',
-        url: isSeries
-          ? `https://vidsrc.to/embed/tv/${tmdbId}/${sNum}/${eNum}`
-          : `https://vidsrc.to/embed/movie/${tmdbId}`,
+        name: 'سيرفر Bysebuho (سيرفر أصلي 🎬)',
+        raw_name: 'Bysebuho',
+        url: `/api/watch/embed?url=${encodeURIComponent('https://bysebuho.com/')}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
         quality: '1080p HD',
         is_hls: false,
-        isEmbed: true
+        isEmbed: true,
+        badge: 'سيرفر أصلي 🎬'
+      },
+      {
+        name: 'سيرفر Vipserver (سيرفر عالي الثبات 🌟)',
+        raw_name: 'Vipserver',
+        url: `/api/watch/embed?url=${encodeURIComponent('https://vipserver.liiivideo.com/')}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+        quality: '1080p HD',
+        is_hls: false,
+        isEmbed: true,
+        badge: 'عالي الثبات 🌟'
       }
     ];
 
     standardTiers.forEach(tier => {
       const exists = pool.some(p => {
-        const domain = (tier.url.split('/')[2] || '').toLowerCase();
-        return p.url && p.url.toLowerCase().includes(domain);
+        const pName = (p.raw_name || p.name || '').toLowerCase();
+        return pName.includes(tier.raw_name.toLowerCase());
       });
       if (!exists) {
         pool.push(tier);
@@ -2340,7 +2324,11 @@ const InAppPlayer = (function () {
           setTimeout(hideFailoverOverlay, 1500);
           showEmbedGuideHint();
         };
-        iframeEl.src = targetUrl;
+        let finalEmbedUrl = targetUrl;
+        if (finalEmbedUrl.startsWith('http') && !finalEmbedUrl.includes('/api/watch/embed') && !finalEmbedUrl.includes('/api/stream/')) {
+          finalEmbedUrl = `/api/watch/embed?url=${encodeURIComponent(targetUrl)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`;
+        }
+        iframeEl.src = finalEmbedUrl;
       }
       renderQuickServersBar();
       if (modalEl) modalEl.classList.add('is-embed-active');
@@ -2545,11 +2533,23 @@ const InAppPlayer = (function () {
 
   function toggleFullscreen() {
     if (!modalEl) return;
-    if (!document.fullscreenElement) {
-      modalEl.requestFullscreen().catch(err => console.log('Fullscreen error:', err));
+    const isFs = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+    if (!isFs) {
+      const enterFs = modalEl.requestFullscreen || modalEl.webkitRequestFullscreen || modalEl.mozRequestFullScreen || modalEl.msRequestFullscreen;
+      if (enterFs) {
+        enterFs.call(modalEl).catch(err => {
+          console.log('Fullscreen error, trying document:', err);
+          if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+        });
+      } else if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      }
       isFullScreen = true;
     } else {
-      document.exitFullscreen().catch(err => console.log('Exit fullscreen:', err));
+      const exitFs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+      if (exitFs) {
+        exitFs.call(document).catch(err => console.log('Exit fullscreen:', err));
+      }
       isFullScreen = false;
     }
   }

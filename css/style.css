@@ -1563,6 +1563,35 @@ body {
   opacity: 1;
 }
 
+/* True Native 100% Fullscreen Coverage */
+#video-modal:fullscreen,
+#video-modal:-webkit-full-screen,
+#video-modal:-moz-full-screen,
+#video-modal:-ms-fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999999 !important;
+}
+
+#video-modal:fullscreen #player-canvas-container,
+#video-modal:fullscreen #main-video,
+#video-modal:fullscreen #main-embed-frame,
+#video-modal:-webkit-full-screen #player-canvas-container,
+#video-modal:-webkit-full-screen #main-video,
+#video-modal:-webkit-full-screen #main-embed-frame {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+}
+
 .video-element-container {
   width: 100%;
   height: 100%;

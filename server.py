@@ -292,6 +292,94 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     self.send_cors_json({"success": False, "error": str(ex)})
                 return
 
+            # 0.45 API: Ghost Embed Proxy & Sandbox Trap (Neutralizes Popups, Strips Clutter)
+            if path == "/api/watch/embed":
+                target_url = query.get("url", [""])[0]
+                referer = query.get("referer", ["https://vid.mycima.cc/"])[0]
+                if not target_url:
+                    self.send_error(400, "Missing target URL")
+                    return
+
+                try:
+                    import subprocess, urllib.parse
+                    parsed_target = urllib.parse.urlparse(target_url)
+                    base_origin = f"{parsed_target.scheme}://{parsed_target.netloc}"
+
+                    cmd = [
+                        "curl.exe", "-s", "--max-time", "10",
+                        "-H", f"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                        "-H", f"Referer: {referer}",
+                        "-H", f"Origin: {referer}",
+                        "--compressed",
+                        target_url
+                    ]
+                    fetch_res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+                    content = fetch_res.stdout or ""
+
+                    if not content or len(content) < 50:
+                        self.send_response(302)
+                        self.send_header("Location", target_url)
+                        self.end_headers()
+                        return
+
+                    base_tag = f'<base href="{base_origin}/">'
+                    ghost_script = """
+                    <script>
+                    (function() {
+                        // Ghost window.open trap: satisfies anti-adblock detection, immediately neutralizes popup in background
+                        window.open = function(url, target, features) {
+                            console.log('[A TuBe Ghost Trap] Absorbed popup:', url);
+                            var dummy = {
+                                closed: false,
+                                close: function() { this.closed = true; },
+                                focus: function() {},
+                                blur: function() {},
+                                location: { href: url || '' }
+                            };
+                            setTimeout(function() { dummy.close(); }, 20);
+                            return dummy;
+                        };
+                        // Intercept target=_blank link clicks during seeking/playing
+                        document.addEventListener('click', function(e) {
+                            var a = e.target && e.target.closest ? e.target.closest('a') : null;
+                            if (a && (a.target === '_blank' || a.target === '_new')) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                console.log('[A TuBe Ghost Trap] Blocked target=_blank link');
+                            }
+                        }, true);
+                        window.alert = function() {};
+                        window.confirm = function() { return true; };
+                        window.prompt = function() { return null; };
+                        window.onbeforeunload = null;
+                    })();
+                    </script>
+                    <style>
+                        body, html { width: 100vw !important; height: 100vh !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; background: #000 !important; }
+                        #header, header, footer, .header, .footer, .navbar, .site-header, .top-bar, .breadcrumb, .sidebar, .comments, .related-posts, .list_servers { display: none !important; }
+                        #player, .player, video, iframe, .jwplayer, .video-js, .embedded { width: 100vw !important; height: 100vh !important; max-width: 100vw !important; max-height: 100vh !important; position: fixed !important; top: 0 !important; left: 0 !important; }
+                    </style>
+                    """
+
+                    if "<head>" in content:
+                        content = content.replace("<head>", f"<head>{base_tag}{ghost_script}", 1)
+                    elif "<HEAD>" in content:
+                        content = content.replace("<HEAD>", f"<HEAD>{base_tag}{ghost_script}", 1)
+                    else:
+                        content = f"{base_tag}{ghost_script}{content}"
+
+                    raw_bytes = content.encode("utf-8")
+                    self.send_response(200)
+                    self.send_header("Content-Type", "text/html; charset=utf-8")
+                    self.send_header("Content-Length", str(len(raw_bytes)))
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Cache-Control", "no-cache, no-store")
+                    self.end_headers()
+                    self.wfile.write(raw_bytes)
+                except Exception as ex_emb:
+                    self.send_error(502, f"Ghost embed error: {ex_emb}")
+                return
+
             # 0.5 API: Universal Crawler Status & Control
             if path == "/api/crawler/status":
                 try:
