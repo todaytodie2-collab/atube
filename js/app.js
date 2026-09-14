@@ -564,15 +564,12 @@ function createMediaCard(m, index = 0) {
       imgEl.onerror = null; // Prevent infinite loop
       const tmdbId = m.tmdb_id;
       const mediaType = (m.content_type === 'series' || m.content_type === 'anime' || m.content_type === 'tv_show') ? 'tv' : 'movie';
-      const TMDB_KEY = '4e44d9029b1270a757cddc766a1bcb63'; // verified working public read-only key
-      const BASE = 'https://api.themoviedb.org/3';
-
       try {
         let posterPath = null;
 
-        // Tier 1: Direct TMDB ID lookup (instant, no search needed)
+        // Tier 1: Direct TMDB ID lookup via secure server proxy
         if (tmdbId) {
-          const res = await fetch(`${BASE}/${mediaType}/${tmdbId}?api_key=${TMDB_KEY}&language=ar`);
+          const res = await fetch(`/api/tmdb/proxy?endpoint=${mediaType}/${tmdbId}&language=ar`);
           if (res.ok) {
             const data = await res.json();
             posterPath = data.poster_path;
@@ -583,7 +580,7 @@ function createMediaCard(m, index = 0) {
         if (!posterPath) {
           const searchTitle = (m.title || m.arabic_title || '').replace(/^انمي\s*/,'').replace(/^أنمي\s*/,'');
           const yearParam = m.year ? `&year=${String(m.year).slice(0,4)}` : '';
-          const res = await fetch(`${BASE}/search/${mediaType}?api_key=${TMDB_KEY}&query=${encodeURIComponent(searchTitle)}&language=ar${yearParam}`);
+          const res = await fetch(`/api/tmdb/proxy?endpoint=search/${mediaType}&query=${encodeURIComponent(searchTitle)}&language=ar${yearParam}`);
           if (res.ok) {
             const data = await res.json();
             if (data.results && data.results[0] && data.results[0].poster_path) {
