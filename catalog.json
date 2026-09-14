@@ -4299,6 +4299,14 @@
         "badge": "FaselHD ⭐",
         "quality": "1080p FHD",
         "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=NnZYT2VpL0c4T0QzL1IrVTkyRmt3amh2U0RMTjhGeEdOM0p4S3V6L0ZoQXJCRlczL1RKRit5RzFIaEpuYzg2OHRzTWJZZ1BvRlV4eEZiTU82ZkxrM3RKZnhqZ3ZVYmRpS0xCZ1BRVEdrRitpdTNhU0FORUtaakZZZWVnVU10RVpOangwS1l0NXhoQ01CWW5XM0xwVkZmOHpEU0NDa2pPVk5pNVJXVlJGTmhLQTlBOWNmOXZKUzVQazUzWk5RbTlnWlhkN2R4TmwydVZjM1dhQzl1V1BNTlpsR3RHSm01bTg3UzJCWk83L0IvQT06OlzSOvW9ZaLiftZPG2JXo0M%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ],
     "stills": [
@@ -4388,6 +4396,14 @@
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
         "stream_url": "https://www.fasel-hd.co/video_player?player_token=TEIvMjc1ckxXZC92dm15OVEzSFJ1VVEzemhkY1dCN2Y1cXBTS2lTbHZGOTJsSEdKVjdUeW8yQ1dTbTJ4MTJiM25yWFl5QXNkb1FJdG5kQ1dxM0EvTmJRU3VhdXV1RGRhTWtKSHJGZWoxYkhJT2Fybk1rQmk5MDJpQ09GOHhUanFPRXR1empNNUZrUVdyN1lhTGt1RitIMjhsUnl6aUZuaXRNRSt4SWt3ZVBkc1VtV3FuYzJxWlozL2hLWk5PRDJzanBlS01XbGhpWXlZejRvcTNtN3J5aWxiVHVkTTBFTkgrcTBPUjBTM2poYz06OraGAeBt02PNsYyTKcgBGFw%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=OU51OEs2czQ1UUcxaGpxbTYzaFFBVGluVFpEMFlLZnJPK2pDdGRGZGVxbTYvZzJEL1J0eDVNWk5sVkJQZkJQTE9tTThLWW5jWXAwRXRQcGtZMDhGZHdYVjVwWnpzbGp0VGRIYWc2d3lCMngwdmlUTmRzRVU5aGprNkJqMUdQdUhKR0NwODZMYzNaS1VCcW0zck94dVFqV1Y5UytjSCtkb0ZEdi8zL3dxSzUvTHJFeXo2TjZ6MWlhdnNXbGF2MkgvclppQjhobTFzaE1OSkRWai95Rm05Nm5JSkJRTTdsSzRqc3FrMEpaZHlZMD06OhV3MXgjunFm5e4s8B986tE%3D",
         "site": "FaselHD",
         "badge": "FaselHD ⭐",
         "quality": "1080p FHD",
@@ -199829,7 +199845,589 @@
         "badge": "FaselHD ⭐",
         "quality": "1080p FHD",
         "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=djBNcDRVaFVFNUo4emgxTC8rY0RpVFFueTZkaUVMN1FEZEpWMXZMbG50UGhpN0tkOFo3MGhYVTVpWUQvUGM2RXc2TXN2VXhvRXltWEJYT3ZPY3hOd0V2ZXRYWHRaRFpxV3REbUhQZC94Yk43QUkwREdTdzh4NDRrM3lyMWY5UjRpKzF6NnhtZktTUVhHdmJUV2J3WkExV1lHUktsb2tHS0toTmE1dGR6QnI1Tml4ZC9PczhqYWY2QUFyTXVCb2VKVnhPdUNLNGNwNk1iVkNrM2F6enVDaXYrK0lCbUZOUTZ3UnBuSHV2dUhJdz06OtFRmlQDu4CAHiG%2FQoTmh74%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ]
+  },
+  {
+    "id": "the-walking-dead-dead-city-2026",
+    "title": "The Walking Dead Dead City",
+    "arabic_title": "The Walking Dead Dead City",
+    "content_type": "series",
+    "category": "foreign_series",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/0d951b8e5-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/0d951b8e5-1.jpg",
+    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" The Walking Dead: Dead City الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع ح...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 1,
+    "seasons": [
+      {
+        "season_number": 3,
+        "title": "الموسم 3",
+        "episodes": [
+          {
+            "id": "the-walking-dead-dead-city-الموسم-الثالث-الحلقة-8-الثامنة-والاخيرة-2026-0d951b8e5",
+            "episode_number": 8,
+            "title": "The Walking Dead Dead City الموسم الثالث الحلقة 8 الثامنة والاخيرة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/0d951b8e5-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" The Walking Dead: Dead City الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع ح...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-m9hoepva54yc.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/03vxpjzmcklo804",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/umnupfykjztv",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/m4jdczkinqqd",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-y8n13bvar4cb.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/0d951b8e5-1.jpg"
+          }
+        ]
+      }
+    ],
+    "servers": [],
+    "cast": []
+  },
+  {
+    "id": "lioness-2026",
+    "title": "Lioness",
+    "arabic_title": "Lioness",
+    "content_type": "series",
+    "category": "foreign_series",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/002668413-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/002668413-1.jpg",
+    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" Lioness الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"الع...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 1,
+    "seasons": [
+      {
+        "season_number": 3,
+        "title": "الموسم 3",
+        "episodes": [
+          {
+            "id": "lioness-الموسم-الثالث-الحلقة-7-السابعة-2026-3073affc4",
+            "episode_number": 7,
+            "title": "Lioness الموسم الثالث الحلقة 7 السابعة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/3073affc4-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 7 السابعة من مسلسل \" Lioness الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"العمليات الخ...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-4xnuqr6brrmd.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/vknm6zqwtnd9rd",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/bqzia1hjnbsx",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/p7fecaqt0ww3",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-tq2ba1ua1sa8.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/3073affc4-1.jpg"
+          },
+          {
+            "id": "lioness-الموسم-الثالث-الحلقة-8-الثامنة-والاخيرة-2026-002668413",
+            "episode_number": 8,
+            "title": "Lioness الموسم الثالث الحلقة 8 الثامنة والاخيرة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/002668413-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" Lioness الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"الع...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-4xnuqr6brrmd.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/vknm6zqwtnd9rd",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/bqzia1hjnbsx",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/p7fecaqt0ww3",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-tq2ba1ua1sa8.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/002668413-1.jpg"
+          }
+        ]
+      }
+    ],
+    "servers": [],
+    "cast": []
+  },
+  {
+    "id": "حب-ع-ورق-2026",
+    "title": "حب ع ورق",
+    "arabic_title": "حب ع ورق",
+    "content_type": "series",
+    "category": "foreign",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/6a307cf7f-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/6a307cf7f-1.jpg",
+    "synopsis": "مشاهدة وتحميل الحلقة 67 السابعة والستون من مسلسل \"حب ع ورق Hob Ala Waraq\" بطولة أنس طيارة اون لاين HD يوتيوب ايجي بست، شاهد جميع حلقات مسلسل...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 1,
+    "seasons": [
+      {
+        "season_number": 1,
+        "title": "الموسم الأول",
+        "episodes": [
+          {
+            "id": "حب-ع-ورق-الحلقة-67-السابعة-والستون-2026-6a307cf7f",
+            "episode_number": 67,
+            "title": "حب ع ورق الحلقة 67 السابعة والستون",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/6a307cf7f-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 67 السابعة والستون من مسلسل \"حب ع ورق Hob Ala Waraq\" بطولة أنس طيارة اون لاين HD يوتيوب ايجي بست، شاهد جميع حلقات مسلسل...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-7d1oqs9fth8d.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/67qvdqp9s9k8pw",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/5676j3fr85jk",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/sq710wfcbydm",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-f5h2cqnq7tj9.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/6a307cf7f-1.jpg"
+          }
+        ]
+      }
+    ],
+    "servers": [],
+    "cast": []
+  },
+  {
+    "id": "انت-من-احب-2026",
+    "title": "انت من احب",
+    "arabic_title": "انت من احب",
+    "content_type": "series",
+    "category": "foreign",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/d27c7d820-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/d27c7d820-1.jpg",
+    "synopsis": "مشاهدة وتحميل الحلقة 17 السابعة عشر من مسلسل \"انت من احب الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل الدراما التر...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 1,
+    "seasons": [
+      {
+        "season_number": 1,
+        "title": "الموسم الأول",
+        "episodes": [
+          {
+            "id": "انت-من-احب-الحلقة-16-السادسة-عشر-2026-ae25f4f90",
+            "episode_number": 16,
+            "title": "انت من احب الحلقة 16 السادسة عشر",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/ae25f4f90-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 16 السادسة عشر من مسلسل \"انت من احب الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل الدراما التر...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-dsut6eztg7eg.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/z1p489onbg8qon9",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/nw3q8b5mza72",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/5xufuf9orsgh",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-xujqmwyj5g03.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/ae25f4f90-1.jpg"
+          },
+          {
+            "id": "انت-من-احب-الحلقة-17-السابعة-عشر-2026-d27c7d820",
+            "episode_number": 17,
+            "title": "انت من احب الحلقة 17 السابعة عشر",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/d27c7d820-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 17 السابعة عشر من مسلسل \"انت من احب الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل الدراما التر...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-dsut6eztg7eg.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/z1p489onbg8qon9",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/nw3q8b5mza72",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/5xufuf9orsgh",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-xujqmwyj5g03.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/d27c7d820-1.jpg"
+          }
+        ]
+      }
+    ],
+    "servers": [],
+    "cast": []
   }
 ]
