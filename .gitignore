@@ -31,5 +31,6 @@ config/backups/
 config/dork_cache/
 *.bak
 *.db-shm
-*.db-wal
-
+# Android signing keystore & local release folder
+*.keystore
+releases/

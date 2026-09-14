@@ -1,0 +1,46 @@
+{
+  "appId": "com.atube.media",
+  "appName": "A TuBe",
+  "webDir": "./",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true,
+    "allowNavigation": [
+      "*.vidlink.pro",
+      "*.multiembed.mov",
+      "*.vidsrc.to",
+      "*.vidsrc.cc",
+      "*.2embed.cc",
+      "*.tmdb.org",
+      "*.themoviedb.org",
+      "*.googleapis.com",
+      "*.gstatic.com",
+      "*.aljazeera.net",
+      "*.dw.com",
+      "*.france24.com",
+      "*.skynewsarabia.com",
+      "*.alarabiya.net"
+    ]
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": true,
+    "backgroundColor": "#04090e"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "launchAutoHide": true,
+      "backgroundColor": "#04090e",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#04090e"
+    }
+  }
+}
