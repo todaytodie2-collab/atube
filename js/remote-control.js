@@ -8,6 +8,8 @@ const RemoteControl = (function () {
   let currentFocusedIndex = -1;
   let focusableElements = [];
   let indicatorEl = null;
+  let exitToastEl = null;
+  let lastBackPressTime = 0;
 
   function init() {
     createRemoteToast();
@@ -33,6 +35,11 @@ const RemoteControl = (function () {
     indicatorEl.className = 'remote-indicator-toast';
     indicatorEl.innerHTML = `<span>🎮</span> <span>وضع التحكم بالريموت نشط</span>`;
     document.body.appendChild(indicatorEl);
+
+    exitToastEl = document.createElement('div');
+    exitToastEl.className = 'remote-indicator-toast tv-exit-toast';
+    exitToastEl.innerHTML = `<span>🚪</span> <span>اضغط زر الرجوع مرة أخرى للخروج من A TuBe</span>`;
+    document.body.appendChild(exitToastEl);
   }
 
   function showIndicator() {
@@ -42,6 +49,15 @@ const RemoteControl = (function () {
     indicatorEl._timer = setTimeout(() => {
       indicatorEl.classList.remove('visible');
     }, 2000);
+  }
+
+  function showExitToast() {
+    if (!exitToastEl) return;
+    exitToastEl.classList.add('visible');
+    clearTimeout(exitToastEl._timer);
+    exitToastEl._timer = setTimeout(() => {
+      exitToastEl.classList.remove('visible');
+    }, 2500);
   }
 
   function refreshFocusableElements() {
@@ -230,13 +246,45 @@ const RemoteControl = (function () {
         movieDet.close();
         refreshFocusableElements();
         setTimeout(() => refreshFocusableElements(), 150);
-      } else {
-        const modal = document.querySelector('.modal-backdrop.active, .movie-modal-backdrop.active');
-        if (modal) {
-          e.preventDefault();
-          modal.classList.remove('active');
-          setTimeout(() => refreshFocusableElements(), 150);
+        return;
+      }
+
+      // 1. Check if any overlay modal is open
+      const modal = document.querySelector('.modal-backdrop.active, .movie-modal-backdrop.active, #night-quiz-modal.active, #qr-remote-modal.active, #satellite-freq-modal.active, #multiview-modal.active');
+      if (modal) {
+        e.preventDefault();
+        modal.classList.remove('active');
+        if (modal.classList.contains('modal-backdrop')) modal.style.display = 'none';
+        setTimeout(() => refreshFocusableElements(), 150);
+        return;
+      }
+
+      // 2. Check if Category or Search view is open -> Return to Home
+      const catView = document.getElementById('category-page-view');
+      const homeView = document.getElementById('home-page-view');
+      if (catView && !catView.classList.contains('is-hidden') && catView.style.display !== 'none') {
+        e.preventDefault();
+        catView.classList.add('is-hidden');
+        catView.style.display = 'none';
+        if (homeView) {
+          homeView.classList.remove('is-hidden');
+          homeView.style.display = 'block';
         }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => refreshFocusableElements(), 150);
+        return;
+      }
+
+      // 3. At Home root: Prevent abrupt app exit with Double-Back confirmation
+      const now = Date.now();
+      if (now - lastBackPressTime < 2500) {
+        if (window.AndroidBridge && typeof window.AndroidBridge.exitApp === 'function') {
+          window.AndroidBridge.exitApp();
+        }
+      } else {
+        e.preventDefault();
+        lastBackPressTime = now;
+        showExitToast();
       }
     }
   }

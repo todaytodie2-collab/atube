@@ -33,7 +33,7 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://imn-live.esite-lab.com/hls/iraqia-sports-1.m3u8",
+    "streamUrl": "https://player.eishha.com/p/iraqia-sports.html",
     "directHls": "https://imn-live.esite-lab.com/hls/iraqia-sports-1.m3u8",
     "embedUrl": "https://player.eishha.com/p/iraqia-sports.html",
     "frequencies": [
@@ -1255,7 +1255,7 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://playlist.fasttvcdn.com/pl/toa2uuhhygheuly7xtuqrg/roya-comedy/playlist.m3u8",
+    "streamUrl": "https://player.eishha.com/p/roya-comedy.html",
     "directHls": "https://playlist.fasttvcdn.com/pl/toa2uuhhygheuly7xtuqrg/roya-comedy/playlist.m3u8",
     "embedUrl": "https://player.eishha.com/p/roya-comedy.html",
     "frequencies": [
@@ -1286,7 +1286,7 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://playlist.fasttvcdn.com/pl/a2le4pbpa6rpzv147haf4w/drama/playlist.m3u8",
+    "streamUrl": "https://player.eishha.com/p/roya-drama.html",
     "directHls": "https://playlist.fasttvcdn.com/pl/a2le4pbpa6rpzv147haf4w/drama/playlist.m3u8",
     "embedUrl": "https://player.eishha.com/p/roya-drama.html",
     "frequencies": [
@@ -2030,7 +2030,7 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://flu.systemnet.tv/CBCSofra/index.m3u8",
+    "streamUrl": "https://player.eishha.com/p/cbc-extra.html",
     "directHls": "https://flu.systemnet.tv/CBCSofra/index.m3u8",
     "embedUrl": "https://player.eishha.com/p/cbc-extra.html",
     "frequencies": [
@@ -2650,7 +2650,7 @@
     "quality": "1080p FHD",
     "resolution": "FHD",
     "duration": "بث حي ومباشر",
-    "streamUrl": "https://playlist.fasttvcdn.com/pl/ptllxjd03j6g9oxxjdfapg/roya-kids/playlist.m3u8",
+    "streamUrl": "https://player.eishha.com/p/roya-kids.html",
     "directHls": "https://playlist.fasttvcdn.com/pl/ptllxjd03j6g9oxxjdfapg/roya-kids/playlist.m3u8",
     "embedUrl": "https://player.eishha.com/p/roya-kids.html",
     "frequencies": [

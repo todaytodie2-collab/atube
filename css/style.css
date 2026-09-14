@@ -2380,6 +2380,76 @@ body {
   background: transparent;
 }
 
+/* Category Multi-Filter Toolbar (Genre & Year) */
+.category-filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+  background: rgba(10, 18, 30, 0.6);
+  padding: 12px 16px;
+  border-radius: var(--radius-md, 12px);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.category-filters-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0;
+  -ms-overflow-style: none;
+}
+
+.category-filters-row::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-row-label {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 700;
+  margin-left: 6px;
+  white-space: nowrap;
+  min-width: 65px;
+}
+
+.filter-genre-pill,
+.filter-year-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  font-family: inherit;
+}
+
+.filter-genre-pill:hover,
+.filter-year-pill:hover,
+.filter-genre-pill:focus,
+.filter-year-pill:focus {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: #00e5ff;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.filter-genre-pill.active,
+.filter-year-pill.active {
+  background: linear-gradient(135deg, #00e5ff 0%, #0088ff 100%);
+  border-color: #00e5ff;
+  color: #050811;
+  font-weight: 800;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.4);
+}
+
 /* Satellite Frequencies Table & Modal */
 .freq-modal-card {
   max-width: 580px;

@@ -1043,22 +1043,90 @@ function showCategoryView(categoryName) {
 
   // Setup search inside category
   const filterInput = document.getElementById('category-filter-input');
+  let activeGenreFilter = 'all';
+  let activeYearFilter = 'all';
+
+  function applyCategoryFilters() {
+    const q = (filterInput?.value || '').toLowerCase().trim();
+    let result = [...currentCategoryItems];
+
+    // 1. Text search
+    if (q) {
+      result = result.filter(item => {
+        const t1 = (item.title || item.name || '').toLowerCase();
+        const t2 = (item.arabic_title || '').toLowerCase();
+        const t3 = (item.synopsis || item.desc || '').toLowerCase();
+        return t1.includes(q) || t2.includes(q) || t3.includes(q);
+      });
+    }
+
+    // 2. Genre filter
+    if (activeGenreFilter !== 'all') {
+      const gMap = {
+        action: ['أكشن', 'حركة', 'action'],
+        drama: ['دراما', 'drama'],
+        comedy: ['كوميدي', 'كوميديا', 'comedy'],
+        horror: ['رعب', 'تشويق', 'إثارة', 'horror', 'thriller'],
+        scifi: ['خيال علمي', 'خيال', 'sci-fi', 'fantasy'],
+        anime: ['أنمي', 'انمي', 'كرتون', 'anime', 'animation']
+      };
+      const targets = gMap[activeGenreFilter] || [activeGenreFilter];
+      result = result.filter(item => {
+        const itemGenres = (Array.isArray(item.genres) ? item.genres.join(' ') : (item.genre || item.genres || '')).toLowerCase();
+        const itemCat = (item.category || '').toLowerCase();
+        const itemTitle = (item.title || item.arabic_title || '').toLowerCase();
+        return targets.some(t => itemGenres.includes(t) || itemCat.includes(t) || itemTitle.includes(t));
+      });
+    }
+
+    // 3. Year filter
+    if (activeYearFilter !== 'all') {
+      if (activeYearFilter === 'classic') {
+        result = result.filter(item => {
+          const y = parseInt(item.year, 10);
+          return !isNaN(y) && y <= 2023;
+        });
+      } else {
+        result = result.filter(item => String(item.year) === activeYearFilter);
+      }
+    }
+
+    renderCategoryGrid(result, def.key);
+    const countEl = document.getElementById('category-page-count');
+    if (countEl) countEl.textContent = `${result.length} عملاً`;
+  }
+
   if (filterInput) {
     filterInput.value = '';
-    filterInput.oninput = (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      if (!q) {
-        renderCategoryGrid(currentCategoryItems, def.key);
-      } else {
-        const filtered = currentCategoryItems.filter(item => {
-          const t1 = (item.title || item.name || '').toLowerCase();
-          const t2 = (item.arabic_title || '').toLowerCase();
-          const t3 = (item.synopsis || item.desc || '').toLowerCase();
-          return t1.includes(q) || t2.includes(q) || t3.includes(q);
-        });
-        renderCategoryGrid(filtered, def.key);
-      }
+    filterInput.oninput = () => applyCategoryFilters();
+  }
+
+  // Genre pills
+  const genrePills = document.querySelectorAll('#category-genre-filter-row .filter-genre-pill');
+  genrePills.forEach(pill => {
+    pill.onclick = () => {
+      genrePills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      activeGenreFilter = pill.getAttribute('data-genre') || 'all';
+      applyCategoryFilters();
     };
+  });
+
+  // Year pills
+  const yearPills = document.querySelectorAll('#category-year-filter-row .filter-year-pill');
+  yearPills.forEach(pill => {
+    pill.onclick = () => {
+      yearPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      activeYearFilter = pill.getAttribute('data-year') || 'all';
+      applyCategoryFilters();
+    };
+  });
+
+  // Toggle multi-filter row visibility based on category type
+  const filtersContainer = document.getElementById('category-filters-container');
+  if (filtersContainer) {
+    filtersContainer.style.display = (def.key === 'قنوات مباشرة' || def.key === 'channels') ? 'none' : 'flex';
   }
 
   // Setup sort pills

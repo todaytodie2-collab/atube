@@ -106,3 +106,29 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+.remote-indicator-toast.tv-exit-toast {
+  right: 50%;
+  transform: translateX(50%) translateY(20px);
+  background: rgba(14, 21, 37, 0.96);
+  border: 1px solid rgba(255, 75, 75, 0.5);
+  color: #ff6b6b;
+  font-size: 13px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 16px rgba(255, 75, 75, 0.3);
+}
+
+.remote-indicator-toast.tv-exit-toast.visible {
+  opacity: 1;
+  transform: translateX(50%) translateY(0);
+}
+
+@keyframes tvFocusPulse {
+  0% { box-shadow: 0 0 0 3px #00f0ff, 0 0 20px rgba(0, 240, 255, 0.7); }
+  50% { box-shadow: 0 0 0 4px #00f0ff, 0 0 32px rgba(0, 240, 255, 0.95); }
+  100% { box-shadow: 0 0 0 3px #00f0ff, 0 0 20px rgba(0, 240, 255, 0.7); }
+}
+
+.dpad-focusable.tv-focused {
+  animation: tvFocusPulse 2s infinite ease-in-out;
+}
+
