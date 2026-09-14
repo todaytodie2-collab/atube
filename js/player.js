@@ -2436,6 +2436,7 @@ const InAppPlayer = (function () {
       iframeEl.src = 'about:blank';
       iframeEl.style.display = 'none';
     }
+    destroyWebAudio();
   }
 
   function saveToHistory(item) {
