@@ -1166,9 +1166,33 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 return []
             media = VODDatabase.get_media_details(item_id) if item_id else None
             if media and not media.get("is_live") and media.get("type") not in ("live", "iptv", "channel", "channels") and media.get("category") not in ("channels", "قنوات مباشرة"):
-                return media.get("servers", [])
+                srvs = media.get("servers", [])
+                if srvs:
+                    return srvs
         except Exception:
             pass
+
+        # Dynamic fallback: If DB has no servers, resolve via InvisibleStreamBridge & MyCima
+        try:
+            if (title or item_id) and 'InvisibleStreamBridge' in globals() and InvisibleStreamBridge:
+                bridge_res = InvisibleStreamBridge.resolve_clean_stream(
+                    title=title or item_id,
+                    content_type=content_type or "movie",
+                    media_id=item_id
+                )
+                if bridge_res and bridge_res.get("servers_matrix"):
+                    return bridge_res["servers_matrix"]
+                elif bridge_res and bridge_res.get("stream_url"):
+                    return [{
+                        "name": bridge_res.get("server_name", "سيرفر البث المباشر الفوري"),
+                        "url": bridge_res["stream_url"],
+                        "quality": bridge_res.get("quality", "1080p FHD"),
+                        "is_direct": bridge_res.get("is_direct", True),
+                        "badge": bridge_res.get("badge", "سريع ⚡")
+                    }]
+        except Exception:
+            pass
+
         return []
 
 
