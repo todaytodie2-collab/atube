@@ -16,6 +16,7 @@ import urllib.parse
 import urllib.request
 import datetime
 import time
+import subprocess
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 
 # Force UTF-8 for stdout and stderr on Windows
