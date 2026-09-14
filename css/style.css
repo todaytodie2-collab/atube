@@ -4132,8 +4132,6 @@ kbd {
   gap: 10px;
   overflow-x: auto;
   padding-bottom: 4px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 229, 255, 0.3) transparent;
 }
 
 .epg-events-col::-webkit-scrollbar {

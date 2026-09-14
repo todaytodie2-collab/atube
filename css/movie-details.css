@@ -349,6 +349,10 @@
 /* ==========================================================================
    Multi-Source Redesigned Servers Hub & Tabs Switcher (A TuBe Ultra HD)
    ========================================================================== */
+#md-servers-section.is-hidden {
+  display: none !important;
+}
+
 .servers-hub-container {
   background: rgba(8, 22, 30, 0.85);
   -webkit-backdrop-filter: blur(12px);
@@ -1015,7 +1019,7 @@
   margin-bottom: 18px;
   overflow-x: auto;
   padding-bottom: 6px;
-  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .quality-filter-bar::-webkit-scrollbar {

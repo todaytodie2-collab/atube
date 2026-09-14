@@ -9,7 +9,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <meta name="theme-color" content="#04090e">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="assets/aljazeera.svg">
 
@@ -521,7 +520,7 @@
 
         <div class="player-top-actions">
           <!-- Quick Server Dropdown in Header (Hidden for clean experience) -->
-          <div class="player-dropdown-wrap" style="display: none !important;">
+          <div class="player-dropdown-wrap is-hidden">
             <button id="player-header-server-btn" class="player-action-btn dpad-focusable" title="اختيار سيرفر البث">
               <span>⚡ السيرفرات</span>
             </button>
@@ -900,7 +899,7 @@
           </div>
 
           <!-- Multi-Source Unified Servers Grid (Hidden completely from user - managed seamlessly in background) -->
-          <div id="md-servers-section" class="servers-hub-container" style="display: none !important;">
+          <div id="md-servers-section" class="servers-hub-container is-hidden">
             <div class="servers-hub-header">
               <h3 class="servers-hub-title">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="#00e5ff"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
@@ -1065,7 +1064,7 @@
                 <button class="mv-mute-btn dpad-focusable" data-tile="1">🔊</button>
               </div>
             </div>
-            <video id="mv-video-1" playsinline muted class="mv-video-player"></video>
+            <video id="mv-video-1" muted class="mv-video-player"></video>
           </div>
           <div class="multiview-screen-tile" id="mv-tile-2">
             <div class="mv-tile-header">
@@ -1075,7 +1074,7 @@
                 <button class="mv-mute-btn dpad-focusable" data-tile="2">🔇</button>
               </div>
             </div>
-            <video id="mv-video-2" playsinline muted class="mv-video-player"></video>
+            <video id="mv-video-2" muted class="mv-video-player"></video>
           </div>
           <div class="multiview-screen-tile" id="mv-tile-3">
             <div class="mv-tile-header">
@@ -1085,7 +1084,7 @@
                 <button class="mv-mute-btn dpad-focusable" data-tile="3">🔇</button>
               </div>
             </div>
-            <video id="mv-video-3" playsinline muted class="mv-video-player"></video>
+            <video id="mv-video-3" muted class="mv-video-player"></video>
           </div>
           <div class="multiview-screen-tile" id="mv-tile-4">
             <div class="mv-tile-header">
@@ -1095,7 +1094,7 @@
                 <button class="mv-mute-btn dpad-focusable" data-tile="4">🔇</button>
               </div>
             </div>
-            <video id="mv-video-4" playsinline muted class="mv-video-player"></video>
+            <video id="mv-video-4" muted class="mv-video-player"></video>
           </div>
         </div>
       </div>
@@ -1341,7 +1340,7 @@
          AERIAL 4K SCREENSAVER (INACTIVITY TRIGGER)
          ==================================================================== -->
     <div id="aerial-screensaver" class="aerial-screensaver is-hidden">
-      <video id="screensaver-video" playsinline muted loop class="screensaver-video-bg"></video>
+      <video id="screensaver-video" muted loop class="screensaver-video-bg"></video>
       <div class="screensaver-overlay">
         <div class="screensaver-clock" id="screensaver-clock">12:00</div>
         <div class="screensaver-tagline">A TuBe Ultra HD • اضغط أي زر للمتابعة</div>

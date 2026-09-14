@@ -169,6 +169,21 @@ const SplashManager = (function () {
 })();
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Setup Dynamic Theme-Color and Universal Video Inline Playback (Universal Cross-Browser Support)
+  try {
+    if (!document.querySelector('meta[name="theme-color"]')) {
+      const metaTheme = document.createElement('meta');
+      metaTheme.name = 'theme-color';
+      metaTheme.content = '#04090e';
+      document.head.appendChild(metaTheme);
+    }
+    document.querySelectorAll('video').forEach(v => {
+      v.playsInline = true;
+      v.setAttribute('playsinline', '');
+      v.setAttribute('webkit-playsinline', '');
+    });
+  } catch (_) {}
+
   // 0. Initialize System Orchestrator (0ms Boot, Worker, Health Watchdog)
   try {
     if (window.SystemOrchestrator && typeof SystemOrchestrator.init === 'function') {
