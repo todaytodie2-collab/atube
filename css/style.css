@@ -5077,9 +5077,212 @@ html[dir="ltr"] .epg-event-card.current::before {
     grid-template-columns: 1fr;
   }
   .sports-match-modal-card,
-  .ai-concierge-modal-card {
+  .ai-concierge-modal-card,
+  .actor-filmography-modal-card {
     padding: 16px;
   }
+  .actor-works-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+  }
+  .actor-work-poster {
+    height: 190px !important;
+  }
 }
+
+/* ==========================================================================
+   Actor & Star Filmography Explorer Modal
+   ========================================================================== */
+#actor-filmography-modal {
+  z-index: 3000;
+}
+
+.actor-filmography-modal-card {
+  background: rgba(10, 16, 28, 0.98);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  border-radius: 22px;
+  width: 920px;
+  max-width: 95vw;
+  max-height: 88vh;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 229, 255, 0.2);
+  overflow: hidden;
+}
+
+.actor-header-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.actor-modal-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #00e5ff;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+}
+
+.actor-header-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.actor-modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+}
+
+.actor-modal-badges {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.actor-role-badge {
+  background: rgba(0, 229, 255, 0.15);
+  border: 1px solid #00e5ff;
+  color: #00e5ff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.actor-works-count {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.actor-filmography-body {
+  margin-top: 18px;
+  overflow-y: auto;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.actor-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #00e5ff;
+}
+
+.actor-works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  padding-bottom: 12px;
+}
+
+.actor-work-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.actor-work-card:hover,
+.actor-work-card:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #00e5ff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6), 0 0 14px rgba(0, 229, 255, 0.3);
+}
+
+.actor-work-poster {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #111827;
+}
+
+.actor-work-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actor-work-char {
+  font-size: 11px;
+  color: #00e5ff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actor-work-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.actor-pill-card {
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.actor-pill-card:hover,
+.actor-pill-card:focus {
+  background: rgba(0, 229, 255, 0.15) !important;
+  border-color: #00e5ff !important;
+  transform: translateY(-2px);
+}
+
+.actor-explore-arrow {
+  color: #00e5ff;
+  font-size: 12px;
+  margin-right: auto;
+  padding-left: 8px;
+  opacity: 0.8;
+  transition: transform 0.2s ease;
+}
+
+.actor-pill-card:hover .actor-explore-arrow,
+.actor-pill-card:focus .actor-explore-arrow {
+  transform: translateX(-3px);
+}
+
+.actor-works-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #94a3b8;
+  padding: 40px 10px;
+}
+
+.actor-works-empty-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.actor-work-rating {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
 
 

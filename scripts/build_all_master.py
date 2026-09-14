@@ -50,10 +50,18 @@ def step_2_sync_catalog_and_db():
         catalog = json.load(f)
     print(f"  ✓ Loaded catalog.json ({len(catalog)} works)")
 
+    filmography_path = os.path.join(BASE_DIR, "data", "cast_filmography.json")
+    filmography_data = {}
+    if os.path.exists(filmography_path):
+        with open(filmography_path, "r", encoding="utf-8") as f:
+            filmography_data = json.load(f)
+        print(f"  ✓ Loaded data/cast_filmography.json ({len(filmography_data):,} stars indexed)")
+
     # Update bundled-data.js
     with open(bundled_js, "w", encoding="utf-8") as f:
         f.write("/* Auto-generated Bundled Data for Instant Offline Startup */\n")
         f.write("window.BUNDLED_CATALOG = " + json.dumps(catalog, ensure_ascii=False) + ";\n")
+        f.write("window.BUNDLED_FILMOGRAPHY = " + json.dumps(filmography_data, ensure_ascii=False) + ";\n")
     print(f"  ✓ Generated js/bundled-data.js ({os.path.getsize(bundled_js):,} bytes)")
 
     # Update SQLite

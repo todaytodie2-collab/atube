@@ -27,6 +27,28 @@ const MovieDetails = (function () {
         closeModal();
       }
     });
+
+    // Actor filmography modal close listeners
+    const actorModal = document.getElementById('actor-filmography-modal');
+    const closeActorBtn = document.getElementById('close-actor-modal-btn');
+    if (closeActorBtn && actorModal) {
+      closeActorBtn.addEventListener('click', () => {
+        actorModal.classList.remove('active');
+        actorModal.style.display = 'none';
+        const rc = window.RemoteControl || (typeof RemoteControl !== 'undefined' ? RemoteControl : null);
+        if (rc && typeof rc.refreshFocusableElements === 'function') rc.refreshFocusableElements();
+      });
+    }
+    if (actorModal) {
+      actorModal.addEventListener('click', (e) => {
+        if (e.target === actorModal) {
+          actorModal.classList.remove('active');
+          actorModal.style.display = 'none';
+          const rc = window.RemoteControl || (typeof RemoteControl !== 'undefined' ? RemoteControl : null);
+          if (rc && typeof rc.refreshFocusableElements === 'function') rc.refreshFocusableElements();
+        }
+      });
+    }
   }
 
   // Resolve whether a media object represents an episodic series
@@ -198,6 +220,13 @@ const MovieDetails = (function () {
     }
     modalEl.classList.remove('active');
     modalEl.style.display = 'none';
+
+    // Also close actor filmography modal if open
+    const actorModal = document.getElementById('actor-filmography-modal');
+    if (actorModal) {
+      actorModal.classList.remove('active');
+      actorModal.style.display = 'none';
+    }
 
     // When returning from Movie Details, return to the Movies category view, NOT Home!
     const targetCat = window.currentCategoryViewName || (currentMovie && (currentMovie.category_name || currentMovie.category)) || 'أفلام أجنبي';
@@ -417,6 +446,7 @@ const MovieDetails = (function () {
           const card = document.createElement('div');
           card.className = 'actor-pill-card dpad-focusable';
           card.tabIndex = 0;
+          card.title = `استكشف أعمال ${actor.name || actor.arabic_name || ''}`;
           const photoUrl = actor.photo ? decodeHtmlEntities(actor.photo) : '';
           const fallbackPhoto = photoUrl || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&q=80';
           card.innerHTML = `
@@ -427,7 +457,18 @@ const MovieDetails = (function () {
               <span class="actor-name-text">${safeHtml(actor.name || actor.arabic_name || '')}</span>
               <span class="actor-role-text">${safeHtml(actor.character_name || actor.role || actor.arabic_name || 'ممثل')}</span>
             </div>
+            <div class="actor-explore-arrow" aria-hidden="true">‹</div>
           `;
+          const handleOpenActor = () => {
+            openActorFilmography(actor);
+          };
+          card.addEventListener('click', handleOpenActor);
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+              e.preventDefault();
+              handleOpenActor();
+            }
+          });
           castContainer.appendChild(card);
         });
       }
@@ -914,11 +955,170 @@ const MovieDetails = (function () {
     return null;
   }
 
+  // Open Actor & Star Filmography Explorer Modal
+  function openActorFilmography(actor) {
+    if (!actor) return;
+    const actorModal = document.getElementById('actor-filmography-modal');
+    if (!actorModal) return;
+
+    const photoEl = document.getElementById('actor-modal-photo');
+    const nameEl = document.getElementById('actor-modal-name');
+    const roleBadgeEl = document.getElementById('actor-modal-role-badge');
+    const worksCountEl = document.getElementById('actor-modal-works-count');
+    const worksGrid = document.getElementById('actor-works-grid');
+    const closeBtn = document.getElementById('close-actor-modal-btn');
+
+    const actorName = actor.arabic_name || actor.name || 'النجم';
+    const photoUrl = actor.photo ? decodeHtmlEntities(actor.photo) : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&q=80';
+    const roleText = actor.character_name || actor.character || actor.role || '⭐ نجم العمل';
+
+    if (photoEl) {
+      photoEl.src = photoUrl;
+      photoEl.onerror = () => { photoEl.src = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&q=80'; };
+    }
+    if (nameEl) nameEl.textContent = actorName;
+    if (roleBadgeEl) roleBadgeEl.textContent = roleText;
+
+    let works = [];
+    const filmography = window.BUNDLED_FILMOGRAPHY || {};
+    const normName = (actor.name || '').trim().toLowerCase();
+    const normArName = (actor.arabic_name || '').trim().toLowerCase();
+
+    // 1. Direct match in BUNDLED_FILMOGRAPHY by key or person id
+    let entry = (normName && filmography[normName]) || (normArName && filmography[normArName]);
+    if (!entry && actor.id) {
+      for (const k in filmography) {
+        if (filmography[k] && filmography[k].id === actor.id) {
+          entry = filmography[k];
+          break;
+        }
+      }
+    }
+
+    if (entry && Array.isArray(entry.works) && entry.works.length > 0) {
+      works = [...entry.works];
+    }
+
+    // 2. Comprehensive search across client MediaCatalog / BUNDLED_CATALOG
+    const allCatalog = (window.MediaCatalog && typeof window.MediaCatalog.getAll === 'function')
+      ? window.MediaCatalog.getAll()
+      : (window.BUNDLED_CATALOG || []);
+
+    if (allCatalog && allCatalog.length > 0) {
+      allCatalog.forEach(m => {
+        if (!m || !Array.isArray(m.cast)) return;
+        const matchedCast = m.cast.find(c => {
+          if (!c) return false;
+          if (actor.id && c.id === actor.id) return true;
+          const cName = (c.name || '').trim().toLowerCase();
+          const cArName = (c.arabic_name || '').trim().toLowerCase();
+          return (normName && (cName === normName || cArName === normName)) ||
+                 (normArName && (cName === normArName || cArName === normArName));
+        });
+        if (matchedCast && !works.some(w => w.id === m.id)) {
+          works.push({
+            id: m.id,
+            title: m.title,
+            arabic_title: m.arabic_title || m.title,
+            poster: m.poster,
+            year: m.year,
+            rating: m.rating,
+            category: m.category,
+            content_type: m.content_type,
+            character: matchedCast.character || matchedCast.character_name || ''
+          });
+        }
+      });
+    }
+
+    // 3. Guarantee current movie is present if this actor is listed in it
+    if (currentMovie && currentMovie.id && !works.some(w => w.id === currentMovie.id)) {
+      works.unshift({
+        id: currentMovie.id,
+        title: currentMovie.title,
+        arabic_title: currentMovie.arabic_title || currentMovie.title,
+        poster: currentMovie.poster,
+        year: currentMovie.year,
+        rating: currentMovie.rating,
+        category: currentMovie.category,
+        content_type: currentMovie.content_type,
+        character: actor.character_name || actor.character || ''
+      });
+    }
+
+    if (worksCountEl) {
+      worksCountEl.textContent = `${works.length} أعمال متوفرة`;
+    }
+
+    function closeActorFilmography() {
+      actorModal.classList.remove('active');
+      actorModal.style.display = 'none';
+      const rc = window.RemoteControl || (typeof RemoteControl !== 'undefined' ? RemoteControl : null);
+      if (rc && typeof rc.refreshFocusableElements === 'function') {
+        rc.refreshFocusableElements();
+      }
+    }
+
+    if (closeBtn) {
+      closeBtn.onclick = closeActorFilmography;
+    }
+
+    if (worksGrid) {
+      worksGrid.innerHTML = '';
+      if (works.length === 0) {
+        worksGrid.innerHTML = `
+          <div class="actor-works-empty">
+            <div class="actor-works-empty-icon">🎬</div>
+            <div>لا توجد أعمال أخرى مسجلة حالياً لهذا النجم في المكتبة.</div>
+          </div>
+        `;
+      } else {
+        works.forEach(work => {
+          const workCard = document.createElement('div');
+          workCard.className = 'actor-work-card dpad-focusable';
+          workCard.tabIndex = 0;
+          const charHtml = work.character ? `<div class="actor-work-char">بدور: ${safeHtml(work.character)}</div>` : '';
+          const categoryBadge = work.category === 'foreign' ? 'أجنبي' : (work.category === 'arabic' ? 'عربي' : (work.category || 'سينما'));
+          workCard.innerHTML = `
+            <img src="${work.poster}" alt="${safeHtml(work.arabic_title || work.title)}" class="actor-work-poster" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 130 190\\' fill=\\'%2308101a\\'/%3E'">
+            <div class="actor-work-title" title="${safeHtml(work.arabic_title || work.title)}">${safeHtml(work.arabic_title || work.title)}</div>
+            ${charHtml}
+            <div class="actor-work-meta">
+              <span>${safeHtml(work.year || '')} • ${categoryBadge}</span>
+              <span class="actor-work-rating">${safeHtml(work.rating || '★ 8.5')}</span>
+            </div>
+          `;
+          const handleSelectWork = () => {
+            closeActorFilmography();
+            open(work.id || work);
+          };
+          workCard.addEventListener('click', handleSelectWork);
+          workCard.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+              e.preventDefault();
+              handleSelectWork();
+            }
+          });
+          worksGrid.appendChild(workCard);
+        });
+      }
+    }
+
+    actorModal.classList.add('active');
+    actorModal.style.display = 'flex';
+
+    const rc = window.RemoteControl || (typeof RemoteControl !== 'undefined' ? RemoteControl : null);
+    if (rc && typeof rc.refreshFocusableElements === 'function') {
+      setTimeout(() => rc.refreshFocusableElements(), 100);
+    }
+  }
+
   return {
     init,
     open,
     close: closeModal,
-    isOpen: () => modalEl && modalEl.classList.contains('active')
+    isOpen: () => modalEl && modalEl.classList.contains('active'),
+    openActorFilmography
   };
 })();
 

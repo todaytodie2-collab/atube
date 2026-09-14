@@ -1544,6 +1544,36 @@
       </div>
     </div>
 
+    <!-- ====================================================================
+         ACTOR & STAR FILMOGRAPHY EXPLORER MODAL
+         ==================================================================== -->
+    <div id="actor-filmography-modal" class="modal-backdrop">
+      <div class="actor-filmography-modal-card">
+        <div class="modal-header">
+          <div class="actor-header-profile">
+            <img id="actor-modal-photo" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&q=80" alt="Actor Profile" class="actor-modal-avatar">
+            <div class="actor-header-meta">
+              <h3 id="actor-modal-name" class="actor-modal-title">اسم النجم</h3>
+              <div class="actor-modal-badges">
+                <span id="actor-modal-role-badge" class="actor-role-badge">⭐ نجم العمل</span>
+                <span id="actor-modal-works-count" class="actor-works-count">0 أعمال متوفرة</span>
+              </div>
+            </div>
+          </div>
+          <button id="close-actor-modal-btn" class="icon-btn dpad-focusable" title="إغلاق والعودة">✕</button>
+        </div>
+
+        <div class="actor-filmography-body">
+          <div class="actor-section-title">
+            <span>🎬 جميع الأعمال المتوفرة لهذا النجم في مكتبة A TuBe:</span>
+          </div>
+          <div id="actor-works-grid" class="actor-works-grid">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- App Scripts -->

@@ -219,6 +219,16 @@ const RemoteControl = (function () {
       return;
     }
 
+    // 1b. If Actor Filmography modal is open: Close it and stay on Movie Details!
+    const actorModal = document.getElementById('actor-filmography-modal');
+    if (actorModal && (actorModal.classList.contains('active') || actorModal.style.display === 'flex' || actorModal.style.display === 'block')) {
+      actorModal.classList.remove('active');
+      actorModal.style.display = 'none';
+      refreshFocusableElements();
+      setTimeout(() => refreshFocusableElements(), 150);
+      return;
+    }
+
     // 2. If Movie Details modal is open: Return to Category View (Not Home!)
     const movieDet = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
     if (movieDet && typeof movieDet.isOpen === 'function' && movieDet.isOpen()) {
