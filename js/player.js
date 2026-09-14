@@ -1712,23 +1712,57 @@ const InAppPlayer = (function () {
     // 1. Direct item servers if provided
     if (Array.isArray(item.servers) && item.servers.length > 0) {
       item.servers.forEach(s => {
-        const sUrl = s.url || s.streamUrl || s.stream_url;
+        let sUrl = s.url || s.streamUrl || s.stream_url;
         if (sUrl) {
           // If this is a live channel, NEVER include external VOD embed servers
           if (isLive && (s.isEmbed || sUrl.includes('vidlink') || sUrl.includes('multiembed') || sUrl.includes('vidsrc') || sUrl.includes('2embed') || sUrl.includes('/embed/'))) {
             return;
           }
+          // Normalize series URLs if needed
+          const isSeriesType = item.content_type === 'series' || item.content_type === 'anime' || item.content_type === 'tv_show';
+          if (isSeriesType) {
+            if (sUrl.includes('vidlink.pro/movie/')) {
+              sUrl = sUrl.replace('vidlink.pro/movie/', 'vidlink.pro/tv/') + '/1/1';
+            } else if (sUrl.includes('vidsrc.cc/v2/embed/movie/')) {
+              sUrl = sUrl.replace('vidsrc.cc/v2/embed/movie/', 'vidsrc.cc/v2/embed/tv/') + '/1/1';
+            } else if (sUrl.includes('multiembed.mov') && !sUrl.includes('&s=')) {
+              sUrl += '&s=1&e=1';
+            }
+          }
+
           const sIsHls = sUrl.includes('.m3u8');
-          const sIsEmbed = !sIsHls && (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('/p/') || sUrl.includes('/iframe/') || sUrl.includes('.html') || sUrl.includes('player.eishha.com') || sUrl.includes('megamax') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo'));
+          const sIsEmbed = !sIsHls && (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('/p/') || sUrl.includes('/iframe/') || sUrl.includes('.html') || sUrl.includes('player.eishha.com') || sUrl.includes('megamax') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo') || sUrl.includes('vidlink') || sUrl.includes('multiembed'));
           pool.push({
             name: s.name || (isLive ? 'سيرفر بث حي' : 'سيرفر تشغيل'),
             url: sUrl,
             quality: s.quality || (isLive ? 'بث مباشر HD' : '1080p FHD'),
             is_hls: s.is_hls ?? sIsHls,
-            isEmbed: isLive ? sIsEmbed : (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('/iframe/') || sUrl.includes('megamax') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo'))
+            isEmbed: isLive ? sIsEmbed : (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('/iframe/') || sUrl.includes('megamax') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo') || sUrl.includes('vidlink') || sUrl.includes('multiembed'))
           });
         }
       });
+    }
+
+    // 1b. If item is a series and pool is still empty, look into seasons/episodes
+    if (pool.length === 0 && Array.isArray(item.seasons) && item.seasons.length > 0) {
+      const firstSeason = item.seasons[0];
+      if (Array.isArray(firstSeason.episodes) && firstSeason.episodes.length > 0) {
+        const ep0 = firstSeason.episodes[0];
+        if (Array.isArray(ep0.servers) && ep0.servers.length > 0) {
+          ep0.servers.forEach(s => {
+            const sUrl = s.url || s.stream_url || s.streamUrl;
+            if (sUrl) {
+              pool.push({
+                name: s.name || `سيرفر ${ep0.title || 'الحلقة 1'}`,
+                url: sUrl,
+                quality: s.quality || '1080p FHD',
+                is_hls: sUrl.includes('.m3u8'),
+                isEmbed: s.isEmbed || sUrl.includes('vidlink') || sUrl.includes('multiembed') || sUrl.includes('vidsrc')
+              });
+            }
+          });
+        }
+      }
     }
 
     // 2. If user clicked a specific server, ensure it is at index 0
