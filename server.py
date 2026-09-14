@@ -445,6 +445,9 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 return
 
             if path == "/api/crawler/run":
+                if not self.is_admin_authorized():
+                    self.send_cors_json({"success": False, "error": "Unauthorized: Admin access required"}, status=403)
+                    return
                 limit_q = query.get("limit", ["20"])[0]
                 limit_val = int(limit_q) if limit_q.isdigit() else 20
                 try:
@@ -728,6 +731,9 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
             # 3d2. API: Real-time Git Synchronization
             elif path == "/api/sync/git":
+                if not self.is_admin_authorized():
+                    self.send_cors_json({"status": "error", "error": "Unauthorized: Admin access required"}, status=403)
+                    return
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json; charset=utf-8")
                 self.send_header("Access-Control-Allow-Origin", "*")
@@ -958,6 +964,9 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
             # 6. API: Multi-Year Universal Harvester Trigger
             elif path == "/api/crawler/harvest-years":
+                if not self.is_admin_authorized():
+                    self.send_cors_json({"status": "error", "error": "Unauthorized: Admin access required"}, status=403)
+                    return
                 start_yr = int(query.get("start_year", ["2000"])[0])
                 end_yr = int(query.get("end_year", ["2026"])[0])
                 self.send_response(200)
@@ -977,6 +986,9 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
             # 6b. API: Bulk Multi-Portal & Multi-Category Deep Harvester Trigger
             elif path in ["/api/crawler/harvest-all", "/api/crawler/harvest-multi"]:
+                if not self.is_admin_authorized():
+                    self.send_cors_json({"status": "error", "error": "Unauthorized: Admin access required"}, status=403)
+                    return
                 items_per_cat = int(query.get("items", ["10"])[0])
                 pages = int(query.get("pages", ["2"])[0])
                 source = query.get("source", ["all"])[0]
