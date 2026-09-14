@@ -28,5 +28,8 @@ vod_catalog.db
 # Temporary catalog write files (atomic write artifacts)
 catalog_*.tmp
 config/backups/
+config/dork_cache/
 *.bak
+*.db-shm
+*.db-wal
 
