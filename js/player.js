@@ -1074,6 +1074,67 @@ const InAppPlayer = (function () {
     });
   }
 
+  // 10-Band EQ State and Web Audio Context
+  const EQ_FREQUENCIES = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
+  let audioCtx = null;
+  let audioSourceNode = null;
+  let eqFilters = [];
+
+  function initWebAudio() {
+    if (audioCtx && eqFilters.length === 10) return;
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass || !videoEl) return;
+      if (!audioCtx) {
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      if (!audioSourceNode) {
+        audioSourceNode = audioCtx.createMediaElementSource(videoEl);
+      }
+      eqFilters = EQ_FREQUENCIES.map((freq, idx) => {
+        const filter = audioCtx.createBiquadFilter();
+        if (idx === 0) {
+          filter.type = 'lowshelf';
+        } else if (idx === EQ_FREQUENCIES.length - 1) {
+          filter.type = 'highshelf';
+        } else {
+          filter.type = 'peaking';
+          filter.Q.value = 1.4;
+        }
+        filter.frequency.value = freq;
+        filter.gain.value = 0;
+        return filter;
+      });
+
+      let lastNode = audioSourceNode;
+      for (const filter of eqFilters) {
+        lastNode.connect(filter);
+        lastNode = filter;
+      }
+      lastNode.connect(audioCtx.destination);
+    } catch (e) {
+      console.warn('[A TuBe Equalizer] Web Audio init note:', e);
+    }
+  }
+
+  function destroyWebAudio() {
+    try {
+      if (eqFilters && eqFilters.length) {
+        eqFilters.forEach(f => {
+          try { f.disconnect(); } catch (e) {}
+        });
+        eqFilters = [];
+      }
+      if (audioSourceNode) {
+        try { audioSourceNode.disconnect(); } catch (e) {}
+      }
+      audioSourceNode = null;
+    } catch (e) {}
+  }
+
   function applySubtitlesDelay(offset) {
     if (!videoEl || !videoEl.textTracks) return;
     for (let i = 0; i < videoEl.textTracks.length; i++) {
@@ -1081,8 +1142,12 @@ const InAppPlayer = (function () {
       if (track && track.cues) {
         for (let j = 0; j < track.cues.length; j++) {
           const cue = track.cues[j];
-          cue.startTime += offset;
-          cue.endTime += offset;
+          if (cue._origStart === undefined) {
+            cue._origStart = cue.startTime;
+            cue._origEnd = cue.endTime;
+          }
+          cue.startTime = Math.max(0, cue._origStart + offset);
+          cue.endTime = Math.max(cue.startTime + 0.1, cue._origEnd + offset);
         }
       }
     }
