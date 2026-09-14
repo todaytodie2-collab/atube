@@ -271,6 +271,53 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     } catch (_) {}
   }, 800);
+
+  // 10. Autonomous Autoplay via URL parameter (e.g. ?autoplay=spider-man-no-way-home-2021-634649 or ?channel=france24_ar)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const autoPlayId = urlParams.get('autoplay') || (urlParams.get('play') ? 'spider-man-no-way-home-2021-634649' : null);
+    const channelId = urlParams.get('channel');
+
+    if (channelId) {
+      setTimeout(() => {
+        if (window.IPTVEngine && typeof IPTVEngine.getDefaultChannels === 'function') {
+          const ch = IPTVEngine.getDefaultChannels().find(x => x.id === channelId) || IPTVEngine.getDefaultChannels()[0];
+          if (ch && window.InAppPlayer) {
+            console.log('[Autoplay Live Channel Triggered]', ch.name);
+            InAppPlayer.playMedia({
+              id: ch.id,
+              title: ch.name,
+              category: ch.category || 'مباشر',
+              is_live: true,
+              servers: [
+                { name: 'سيرفر HLS فائق السرعة', stream_url: ch.streamUrl, is_hls: true, isEmbed: false }
+              ]
+            });
+          }
+        }
+      }, 700);
+    } else if (autoPlayId) {
+      setTimeout(() => {
+        let target = null;
+        if (window.MediaCatalog && typeof MediaCatalog.getItemById === 'function') {
+          target = MediaCatalog.getItemById(autoPlayId);
+        }
+        if (!target && window.BUNDLED_CATALOG) {
+          target = window.BUNDLED_CATALOG.find(x => x && x.id === autoPlayId);
+        }
+        if (!target && window.MediaCatalog && typeof MediaCatalog.getAllItems === 'function') {
+          const all = MediaCatalog.getAllItems();
+          target = all.find(x => x && (x.id === autoPlayId || (x.title && x.title.toLowerCase().includes(autoPlayId.toLowerCase())))) || all[0];
+        }
+        if (target && window.InAppPlayer && typeof InAppPlayer.playMedia === 'function') {
+          console.log('[Autoplay Triggered]', target.title);
+          InAppPlayer.playMedia(target);
+        }
+      }, 700);
+    }
+  } catch (e) {
+    console.warn('Autoplay error:', e);
+  }
 });
 
 // Storage Maintenance: Prevent localStorage bloat on Android TV

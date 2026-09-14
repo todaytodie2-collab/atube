@@ -56,11 +56,11 @@ const InAppPlayer = (function () {
 
     videoEl.playsInline = true;
 
-    // Enforce anti-popup & strict security attributes on embed iframe
+    // Allow embeds full streaming capability without breaking VidLink/MegaMax sandbox checks
     if (iframeEl) {
-      // Excludes allow-popups & allow-popups-to-escape-sandbox -> completely kills Chrome popups!
-      iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
+      iframeEl.removeAttribute('sandbox');
       iframeEl.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+      iframeEl.setAttribute('allowfullscreen', 'true');
     }
 
     // Suppress unwanted third-party ad popups
