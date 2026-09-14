@@ -986,21 +986,24 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     return
 
                 try:
-                    import requests
                     headers = StreamSanitizer.get_spoofed_headers(target_url)
-                    resp = requests.get(target_url, headers=headers, timeout=6.0)
-
-                    if resp.status_code in [200, 206]:
-                        clean_manifest = StreamSanitizer.sanitize_m3u8(resp.text, base_url=target_url)
+                    req = urllib.request.Request(target_url, headers=headers)
+                    ssl_ctx = ssl.create_default_context()
+                    ssl_ctx.check_hostname = False
+                    ssl_ctx.verify_mode = ssl.CERT_NONE
+                    with urllib.request.urlopen(req, context=ssl_ctx, timeout=8.0) as resp:
+                        content_bytes = resp.read()
+                        raw_text = content_bytes.decode("utf-8", errors="replace")
+                        clean_manifest = StreamSanitizer.sanitize_m3u8(raw_text, base_url=target_url)
                         self.send_response(200)
                         self.send_header("Content-Type", "application/vnd.apple.mpegurl")
                         self.send_header("Access-Control-Allow-Origin", "*")
                         self.send_header("Cache-Control", "no-cache, no-store")
                         self.end_headers()
                         self.wfile.write(clean_manifest.encode("utf-8"))
-                    else:
-                        self.send_response(resp.status_code)
-                        self.end_headers()
+                except urllib.error.HTTPError as he:
+                    self.send_response(he.code)
+                    self.end_headers()
                 except Exception as ex:
                     self.send_response(502)
                     self.send_header("Content-Type", "application/json")
