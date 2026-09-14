@@ -5284,5 +5284,105 @@ html[dir="ltr"] .epg-event-card.current::before {
   font-weight: 700;
 }
 
+/* ==========================================================================
+   In-Player Floating Quick Server Switcher Bar (5-Tier Resilient Matrix)
+   ========================================================================== */
+.player-quick-servers-bar {
+  position: absolute;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 200;
+  max-width: 95vw;
+  flex-wrap: wrap;
+  padding: 6px 14px;
+  background: rgba(6, 12, 22, 0.88);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 24px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 229, 255, 0.15);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.player-quick-servers-bar.is-hidden {
+  display: none !important;
+}
+
+.player-quick-server-pill {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  white-space: nowrap;
+}
+
+.player-quick-server-pill:hover,
+.player-quick-server-pill:focus {
+  background: rgba(0, 229, 255, 0.18);
+  border-color: #00e5ff;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 229, 255, 0.35);
+}
+
+.player-quick-server-pill.active {
+  background: #00e5ff;
+  color: #030c14;
+  border-color: #00e5ff;
+  font-weight: 800;
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.6);
+}
+
+.player-quick-next-btn {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  padding: 5px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.player-quick-next-btn:hover,
+.player-quick-next-btn:focus {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.5);
+}
+
+@media (max-width: 768px) {
+  .player-quick-servers-bar {
+    top: 68px;
+    gap: 6px;
+    padding: 4px 8px;
+  }
+  .player-quick-server-pill,
+  .player-quick-next-btn {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+}
+
 
 

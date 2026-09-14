@@ -640,13 +640,16 @@ const MovieDetails = (function () {
         const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
         if (player && typeof player.playMedia === 'function') {
           player.playMedia({
+            ...movie,
+            id: movie.id,
+            tmdb_id: movie.tmdb_id,
             name: `${mediaTitle} (${q})`,
             title: mediaTitle,
             category: movie.category_name || movie.category || 'A Tube Ultra HD',
             streamUrl: bestServer.url || bestServer.stream_url,
             quality: q,
             content_type: movie.content_type,
-            candidateServers: allServers
+            servers: allServers
           });
         }
       };
@@ -719,13 +722,16 @@ const MovieDetails = (function () {
           const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
           if (player && typeof player.playMedia === 'function') {
             player.playMedia({
+              ...movie,
+              id: movie.id,
+              tmdb_id: movie.tmdb_id,
               name: `${mediaTitle} (${quality})`,
               title: mediaTitle,
               category: movie.category_name || movie.category || 'A Tube Ultra HD',
               streamUrl: srv.url || srv.stream_url,
               quality: quality,
               content_type: movie.content_type,
-              candidateServers: allServers
+              servers: allServers
             });
           }
         };

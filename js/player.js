@@ -539,6 +539,13 @@ const InAppPlayer = (function () {
           e.preventDefault();
           closePlayer();
           break;
+        case 's':
+        case 'S':
+        case 'n':
+        case 'N':
+          e.preventDefault();
+          triggerStatelessFailover('التبديل إلى السيرفر التالي');
+          break;
       }
     });
   }
@@ -1841,98 +1848,270 @@ const InAppPlayer = (function () {
     return false;
   }
 
+  // Helper to escape text for safe HTML rendering
+  function safePlayerHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Render floating quick server switcher bar in video player
+  function renderQuickServersBar() {
+    const bar = document.getElementById('player-quick-servers-bar');
+    if (!bar) return;
+    const isLive = isLiveMediaItem(currentPlayingItem);
+    if (isLive || !candidateServers || candidateServers.length <= 1) {
+      bar.classList.add('is-hidden');
+      bar.innerHTML = '';
+      return;
+    }
+
+    bar.innerHTML = '';
+    bar.classList.remove('is-hidden');
+
+    candidateServers.forEach((srv, idx) => {
+      const pill = document.createElement('button');
+      pill.className = `player-quick-server-pill dpad-focusable ${idx === currentServerIndex ? 'active' : ''}`;
+      pill.tabIndex = 0;
+      let shortName = srv.name.replace(/سيرفر\s*/g, '').replace(/\(.*\)/g, '').trim();
+      if (!shortName) shortName = `سيرفر ${idx + 1}`;
+      pill.innerHTML = `<span>⚡ ${safePlayerHtml(shortName)}</span>`;
+      pill.onclick = (e) => {
+        e.stopPropagation();
+        if (idx !== currentServerIndex) {
+          currentServerIndex = idx;
+          flushDecoderBuffer();
+          loadStreamSource(candidateServers[currentServerIndex], savedPlayheadTime);
+          showGestureFeedback(`⚡ تم التبديل إلى: ${srv.name}`);
+          renderQuickServersBar();
+          renderServerMenuOptions();
+        }
+      };
+      bar.appendChild(pill);
+    });
+
+    // Next server fallback button
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'player-quick-next-btn dpad-focusable';
+    nextBtn.tabIndex = 0;
+    nextBtn.title = 'التبديل التلقائي إلى السيرفر التالي عند حدوث أي خطأ';
+    nextBtn.innerHTML = `<span>🔄 السيرفر التالي</span>`;
+    nextBtn.onclick = (e) => {
+      e.stopPropagation();
+      triggerStatelessFailover('طلب المشاهد سيرفر بديل');
+    };
+    bar.appendChild(nextBtn);
+  }
+
   // Build stateless list of candidate servers for media item
   function buildCandidateServerPool(item) {
     const pool = [];
     const selectedUrl = item.streamUrl || item.videoUrl || '';
     const isLive = isLiveMediaItem(item);
 
-    // 1. Direct item servers if provided
+    if (isLive) {
+      // 1. Direct item servers if provided (for live channels)
+      if (Array.isArray(item.servers) && item.servers.length > 0) {
+        item.servers.forEach(s => {
+          const sUrl = s.url || s.streamUrl || s.stream_url;
+          if (sUrl && !s.isEmbed && !sUrl.includes('vidlink') && !sUrl.includes('multiembed') && !sUrl.includes('vidsrc')) {
+            pool.push({
+              name: s.name || 'سيرفر بث حي',
+              url: sUrl,
+              quality: s.quality || 'بث مباشر HD',
+              is_hls: s.is_hls ?? sUrl.includes('.m3u8'),
+              isEmbed: false
+            });
+          }
+        });
+      }
+      if (selectedUrl && !pool.some(s => s.url === selectedUrl)) {
+        pool.unshift({
+          name: item.name || 'بث القناة المباشر',
+          url: selectedUrl,
+          quality: 'بث حي HD',
+          is_hls: selectedUrl.includes('.m3u8'),
+          isEmbed: false
+        });
+      }
+      return pool;
+    }
+
+    // --- VOD (Movies & Series) Hardened Server Matrix ---
+    const isSeries = item.content_type === 'series' || item.content_type === 'anime' || item.content_type === 'tv_show' || (item.total_seasons > 0) || (item.seasons && item.seasons.length > 0);
+    const sNum = item.season || 1;
+    const eNum = item.episode || 1;
+
+    // Resolve numeric TMDB ID with comprehensive fallbacks
+    let tmdbId = item.tmdb_id || null;
+    if (!tmdbId && item.id && /^\d+$/.test(item.id)) tmdbId = item.id;
+    if (!tmdbId && item.id && /-(\d{5,8})$/.test(String(item.id))) {
+      const m = String(item.id).match(/-(\d{5,8})$/);
+      if (m) tmdbId = m[1];
+    }
+    if (!tmdbId && window.MediaCatalog && typeof window.MediaCatalog.getDetails === 'function') {
+      const found = window.MediaCatalog.getDetails(item.id);
+      if (found && found.tmdb_id) tmdbId = found.tmdb_id;
+    }
+    if (!tmdbId && window.BUNDLED_CATALOG) {
+      const bFound = window.BUNDLED_CATALOG.find(x => x && (x.id === item.id || (x.title && x.title === item.title)));
+      if (bFound && bFound.tmdb_id) tmdbId = bFound.tmdb_id;
+    }
+    if (!tmdbId) {
+      tmdbId = 969681; // Universal safe fallback ID
+    }
+
+    // Sanitizer function: repairs any slug or corrupt parameters into numeric tmdbId
+    function sanitizeEmbedUrl(rawUrl) {
+      if (!rawUrl) return '';
+      let url = String(rawUrl).trim();
+      if (url.includes('vidlink.pro/')) {
+        url = isSeries
+          ? `https://vidlink.pro/tv/${tmdbId}/${sNum}/${eNum}?primaryColor=00e5ff&secondaryColor=ff0055`
+          : `https://vidlink.pro/movie/${tmdbId}?primaryColor=00e5ff&secondaryColor=ff0055`;
+      } else if (url.includes('multiembed.mov')) {
+        url = isSeries
+          ? `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=${sNum}&e=${eNum}`
+          : `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1`;
+      } else if (url.includes('vidsrc.cc/')) {
+        url = isSeries
+          ? `https://vidsrc.cc/v2/embed/tv/${tmdbId}/${sNum}/${eNum}`
+          : `https://vidsrc.cc/v2/embed/movie/${tmdbId}`;
+      } else if (url.includes('autoembed.co/')) {
+        url = isSeries
+          ? `https://autoembed.co/tv/tmdb/${tmdbId}/${sNum}/${eNum}`
+          : `https://autoembed.co/movie/tmdb/${tmdbId}`;
+      } else if (url.includes('vidsrc.to/')) {
+        url = isSeries
+          ? `https://vidsrc.to/embed/tv/${tmdbId}/${sNum}/${eNum}`
+          : `https://vidsrc.to/embed/movie/${tmdbId}`;
+      }
+      return url;
+    }
+
+    // 1. Add servers from item.servers (sanitized)
     if (Array.isArray(item.servers) && item.servers.length > 0) {
       item.servers.forEach(s => {
         let sUrl = s.url || s.streamUrl || s.stream_url;
         if (sUrl) {
-          // If this is a live channel, NEVER include external VOD embed servers
-          if (isLive && (s.isEmbed || sUrl.includes('vidlink') || sUrl.includes('multiembed') || sUrl.includes('vidsrc') || sUrl.includes('2embed') || sUrl.includes('/embed/'))) {
-            return;
-          }
-          // Normalize series URLs if needed
-          const isSeriesType = item.content_type === 'series' || item.content_type === 'anime' || item.content_type === 'tv_show';
-          if (isSeriesType) {
-            if (sUrl.includes('vidlink.pro/movie/')) {
-              sUrl = sUrl.replace('vidlink.pro/movie/', 'vidlink.pro/tv/') + '/1/1';
-            } else if (sUrl.includes('vidsrc.cc/v2/embed/movie/')) {
-              sUrl = sUrl.replace('vidsrc.cc/v2/embed/movie/', 'vidsrc.cc/v2/embed/tv/') + '/1/1';
-            } else if (sUrl.includes('multiembed.mov') && !sUrl.includes('&s=')) {
-              sUrl += '&s=1&e=1';
-            }
-          }
-
+          sUrl = sanitizeEmbedUrl(sUrl);
           const sIsHls = sUrl.includes('.m3u8');
-          const sIsEmbed = !sIsHls && (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('/p/') || sUrl.includes('/iframe/') || sUrl.includes('.html') || sUrl.includes('player.eishha.com') || sUrl.includes('megamax') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo') || sUrl.includes('vidlink') || sUrl.includes('multiembed'));
-          pool.push({
-            name: s.name || (isLive ? 'سيرفر بث حي' : 'سيرفر تشغيل'),
-            url: sUrl,
-            quality: s.quality || (isLive ? 'بث مباشر HD' : '1080p FHD'),
-            is_hls: s.is_hls ?? sIsHls,
-            isEmbed: isLive ? sIsEmbed : (s.isEmbed || sUrl.includes('/embed') || sUrl.includes('/e/') || sUrl.includes('/iframe/') || sUrl.includes('megamax') || sUrl.includes('mixdrop') || sUrl.includes('hgcloud') || sUrl.includes('vidmoly') || sUrl.includes('minochinos') || sUrl.includes('liiivideo') || sUrl.includes('vidlink') || sUrl.includes('multiembed'))
-          });
+          if (!pool.some(p => p.url === sUrl)) {
+            pool.push({
+              name: s.name || 'سيرفر تشغيل سحابي',
+              url: sUrl,
+              quality: s.quality || '1080p FHD',
+              is_hls: s.is_hls ?? sIsHls,
+              isEmbed: !sIsHls
+            });
+          }
         }
       });
     }
 
-    // 1b. If item is a series and pool is still empty, look into seasons/episodes
-    if (pool.length === 0 && Array.isArray(item.seasons) && item.seasons.length > 0) {
-      const firstSeason = item.seasons[0];
-      if (Array.isArray(firstSeason.episodes) && firstSeason.episodes.length > 0) {
-        const ep0 = firstSeason.episodes[0];
-        if (Array.isArray(ep0.servers) && ep0.servers.length > 0) {
-          ep0.servers.forEach(s => {
-            const sUrl = s.url || s.stream_url || s.streamUrl;
+    // 1b. Episode servers if episode list provided
+    if (isSeries && Array.isArray(item.seasons) && item.seasons.length > 0) {
+      const activeSeason = item.seasons.find(s => (s.season_number || 1) == sNum) || item.seasons[0];
+      if (activeSeason && Array.isArray(activeSeason.episodes)) {
+        const activeEp = activeSeason.episodes.find(e => (e.episode_number || 1) == eNum) || activeSeason.episodes[0];
+        if (activeEp && Array.isArray(activeEp.servers) && activeEp.servers.length > 0) {
+          activeEp.servers.forEach(s => {
+            let sUrl = s.url || s.stream_url || s.streamUrl;
             if (sUrl) {
-              pool.push({
-                name: s.name || `سيرفر ${ep0.title || 'الحلقة 1'}`,
-                url: sUrl,
-                quality: s.quality || '1080p FHD',
-                is_hls: sUrl.includes('.m3u8'),
-                isEmbed: s.isEmbed || sUrl.includes('vidlink') || sUrl.includes('multiembed') || sUrl.includes('vidsrc')
-              });
+              sUrl = sanitizeEmbedUrl(sUrl);
+              const sIsHls = sUrl.includes('.m3u8');
+              if (!pool.some(p => p.url === sUrl)) {
+                pool.push({
+                  name: s.name || `سيرفر ${activeEp.title || 'الحلقة ' + eNum}`,
+                  url: sUrl,
+                  quality: s.quality || '1080p FHD',
+                  is_hls: sIsHls,
+                  isEmbed: !sIsHls
+                });
+              }
             }
           });
         }
       }
     }
 
-    // 2. If user clicked a specific server, ensure it is at index 0
+    // 2. Guarantee 5-Tier Redundant Server Architecture
+    const standardTiers = [
+      {
+        name: 'سيرفر VidLink Ultra (سحابي FHD • VIP Fast ⚡)',
+        url: isSeries
+          ? `https://vidlink.pro/tv/${tmdbId}/${sNum}/${eNum}?primaryColor=00e5ff&secondaryColor=ff0055`
+          : `https://vidlink.pro/movie/${tmdbId}?primaryColor=00e5ff&secondaryColor=ff0055`,
+        quality: '1080p FHD',
+        is_hls: false,
+        isEmbed: true
+      },
+      {
+        name: 'سيرفر MultiEmbed Cloud (متعدد الجودات • مدبلج/مترجم 🌟)',
+        url: isSeries
+          ? `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=${sNum}&e=${eNum}`
+          : `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1`,
+        quality: '1080p HD',
+        is_hls: false,
+        isEmbed: true
+      },
+      {
+        name: 'سيرفر VidSrc Cloud (سريع وبدون تقطيع 🚀)',
+        url: isSeries
+          ? `https://vidsrc.cc/v2/embed/tv/${tmdbId}/${sNum}/${eNum}`
+          : `https://vidsrc.cc/v2/embed/movie/${tmdbId}`,
+        quality: '720p HD',
+        is_hls: false,
+        isEmbed: true
+      },
+      {
+        name: 'سيرفر AutoEmbed Prime (سيرفر عالمي احتياطي 💎)',
+        url: isSeries
+          ? `https://autoembed.co/tv/tmdb/${tmdbId}/${sNum}/${eNum}`
+          : `https://autoembed.co/movie/tmdb/${tmdbId}`,
+        quality: '1080p FHD',
+        is_hls: false,
+        isEmbed: true
+      },
+      {
+        name: 'سيرفر VidSrc TO (سيرفر بديل بدون تقطيع 🎬)',
+        url: isSeries
+          ? `https://vidsrc.to/embed/tv/${tmdbId}/${sNum}/${eNum}`
+          : `https://vidsrc.to/embed/movie/${tmdbId}`,
+        quality: '1080p HD',
+        is_hls: false,
+        isEmbed: true
+      }
+    ];
+
+    standardTiers.forEach(tier => {
+      const exists = pool.some(p => {
+        const domain = (tier.url.split('/')[2] || '').toLowerCase();
+        return p.url && p.url.toLowerCase().includes(domain);
+      });
+      if (!exists) {
+        pool.push(tier);
+      }
+    });
+
+    // 3. User Selected URL Priority
     if (selectedUrl) {
-      const matchIdx = pool.findIndex(s => s.url === selectedUrl);
+      const sanitizedSelected = sanitizeEmbedUrl(selectedUrl);
+      const matchIdx = pool.findIndex(s => s.url === sanitizedSelected || s.url === selectedUrl);
       if (matchIdx > 0) {
-        // Move the clicked server to the absolute top of the list
         const [chosen] = pool.splice(matchIdx, 1);
         pool.unshift(chosen);
       } else if (matchIdx === -1) {
-        const selIsHls = selectedUrl.includes('.m3u8');
-        const selIsEmbed = !selIsHls && (item.isEmbed || selectedUrl.includes('/embed') || selectedUrl.includes('/e/') || selectedUrl.includes('/p/') || selectedUrl.includes('.html') || selectedUrl.includes('player.eishha.com'));
+        const selIsHls = sanitizedSelected.includes('.m3u8');
         pool.unshift({
-          name: isLive ? 'بث القناة المباشر' : (item.name || 'السيرفر المختار'),
-          url: selectedUrl,
-          quality: isLive ? 'بث حي HD' : '1080p FHD',
+          name: item.name || 'السيرفر المختار',
+          url: sanitizedSelected,
+          quality: '1080p FHD',
           is_hls: selIsHls,
-          isEmbed: isLive ? selIsEmbed : selIsEmbed
-        });
-      }
-    }
-
-    // 3. Fallback Mirrors ONLY when no servers exist
-    if (!isLive && pool.length === 0) {
-      const isSeries = item.content_type === 'series' || item.content_type === 'anime';
-      const cleanTarget = item.tmdb_id || item.imdb_id || encodeURIComponent(`${item.title || item.name || ''} ${item.year || ''}`.trim());
-      if (cleanTarget) {
-        pool.push({
-          name: 'سيرفر VidLink Ultra (مترجم عربي • بدون إعلانات)',
-          url: isSeries ? `https://vidlink.pro/tv/${cleanTarget}/1/1?primaryColor=00e5ff&secondaryColor=ff0055` : `https://vidlink.pro/movie/${cleanTarget}?primaryColor=00e5ff&secondaryColor=ff0055`,
-          is_hls: false,
-          isEmbed: true
+          isEmbed: !selIsHls
         });
       }
     }
@@ -2153,12 +2332,17 @@ const InAppPlayer = (function () {
 
       if (iframeEl) {
         iframeEl.style.display = 'block';
+        iframeEl.onerror = function() {
+          console.warn('[A Tube Player] Iframe error, attempting next server...');
+          triggerStatelessFailover('خطأ في تحميل السيرفر');
+        };
         iframeEl.onload = function() {
           setTimeout(hideFailoverOverlay, 1500);
           showEmbedGuideHint();
         };
         iframeEl.src = targetUrl;
       }
+      renderQuickServersBar();
       if (modalEl) modalEl.classList.add('is-embed-active');
       showFailoverHUD(`⚡ تشغيل السيرفر السحابي المباشر: ${serverObj.name || serverObj.site || 'A Tube Cloud'}`);
       setTimeout(hideFailoverOverlay, 4000);
@@ -2175,6 +2359,11 @@ const InAppPlayer = (function () {
     }
     if (modalEl) modalEl.classList.remove('is-embed-active');
     hideEmbedGuideHint();
+    const quickBar = document.getElementById('player-quick-servers-bar');
+    if (quickBar) {
+      quickBar.classList.add('is-hidden');
+      quickBar.innerHTML = '';
+    }
     if (hlsInstance) {
       try {
         hlsInstance.stopLoad();
@@ -2230,8 +2419,6 @@ const InAppPlayer = (function () {
 
     // Check Player Server Button State for Live Channels vs VOD
     if (isLive) {
-      // If live channel has no alternative live streams (<=1), hide the servers button completely!
-      // If it has multiple live stream sources, display button for live stream switching.
       if (candidateServers.length <= 1) {
         if (serverWrap) serverWrap.style.display = 'none';
         else if (serverBtn) serverBtn.style.display = 'none';
@@ -2292,6 +2479,7 @@ const InAppPlayer = (function () {
     // Start with primary server
     if (candidateServers.length > 0) {
       loadStreamSource(candidateServers[0], 0);
+      renderQuickServersBar();
     }
     if (isLive) {
       startStreamHealthMonitoring();

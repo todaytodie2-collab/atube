@@ -70,7 +70,7 @@ def step_2_sync_catalog_and_db():
             conn = sqlite3.connect(db_path)
             cur = conn.cursor()
             for item in catalog:
-                cur.execute("UPDATE vod_media SET arabic_title = ?, synopsis = ? WHERE id = ?", (item.get("arabic_title"), item.get("synopsis") or item.get("overview"), item.get("id")))
+                cur.execute("UPDATE vod_media SET arabic_title = ?, synopsis = ?, tmdb_id = ? WHERE id = ?", (item.get("arabic_title"), item.get("synopsis") or item.get("overview"), item.get("tmdb_id"), item.get("id")))
             conn.commit()
             conn.close()
             print("  ✓ Synchronized SQLite config/atube_data.sqlite")
