@@ -740,16 +740,84 @@ const MovieDetails = (function () {
         };
       }
 
-      let allServers = [...(servers || [])];
-      if (allServers.length === 0) {
+      // Normalize and guarantee 5-Tier Arabic Core Servers: Vidmoly, Mixdrop, Hgcloud, Bysebuho, Vipserver
+      const hasOldServers = (servers || []).some(s => {
+        const n = (s.site || s.name || s.raw_name || '').toLowerCase();
+        return n.includes('vidlink') || n.includes('multiembed') || n.includes('vidsrc') || n.includes('autoembed') || n.includes('a tube vip');
+      });
+
+      let allServers = [];
+      if (!servers || servers.length === 0 || hasOldServers) {
+        const tid = movie.tmdb_id || (typeof movie.id === 'string' && movie.id.includes('-') ? movie.id.split('-').pop() : movie.id) || '969681';
         allServers = [
-          { site: 'A Tube VIP', quality: '1080p FHD', stream_url: '', badge: 'VIP Fast ⚡', size: '1.4 GB', latency: '35ms' },
-          { site: 'A Tube Cloud', quality: '720p HD', stream_url: '', badge: 'توفير باقة', size: '680 MB', latency: '65ms' }
+          {
+            name: 'سيرفر Vidmoly (فائق السرعة 🚀)',
+            site: 'Vidmoly',
+            raw_name: 'Vidmoly',
+            quality: '1080p FHD',
+            stream_url: `/api/watch/embed?url=${encodeURIComponent(`https://vidmoly.net/embed-${tid}.html`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+            url: `/api/watch/embed?url=${encodeURIComponent(`https://vidmoly.net/embed-${tid}.html`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+            badge: 'فائق السرعة 🚀',
+            size: '1.4 GB',
+            latency: '28ms',
+            isEmbed: true
+          },
+          {
+            name: 'سيرفر Mixdrop (سحابي مباشر ⚡)',
+            site: 'Mixdrop',
+            raw_name: 'Mixdrop',
+            quality: '1080p HD',
+            stream_url: `/api/watch/embed?url=${encodeURIComponent(`https://mixdrop.top/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+            url: `/api/watch/embed?url=${encodeURIComponent(`https://mixdrop.top/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+            badge: 'سحابي مباشر ⚡',
+            size: '1.1 GB',
+            latency: '45ms',
+            isEmbed: true
+          },
+          {
+            name: 'سيرفر Hgcloud (سيرفر VIP 💎)',
+            site: 'Hgcloud',
+            raw_name: 'Hgcloud',
+            quality: '1080p FHD',
+            stream_url: `/api/watch/embed?url=${encodeURIComponent(`https://hgcloud.to/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+            url: `/api/watch/embed?url=${encodeURIComponent(`https://hgcloud.to/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+            badge: 'VIP 💎',
+            size: '1.3 GB',
+            latency: '35ms',
+            isEmbed: true
+          },
+          {
+            name: 'سيرفر Bysebuho (سيرفر أصلي 🎬)',
+            site: 'Bysebuho',
+            raw_name: 'Bysebuho',
+            quality: '1080p HD',
+            stream_url: `/api/watch/embed?url=${encodeURIComponent(`https://bysebuho.com/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+            url: `/api/watch/embed?url=${encodeURIComponent(`https://bysebuho.com/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+            badge: 'سيرفر أصلي 🎬',
+            size: '890 MB',
+            latency: '52ms',
+            isEmbed: true
+          },
+          {
+            name: 'سيرفر Vipserver (سيرفر عالي الثبات 🌟)',
+            site: 'Vipserver',
+            raw_name: 'Vipserver',
+            quality: '1080p HD',
+            stream_url: `/api/watch/embed?url=${encodeURIComponent(`https://vipserver.liiivideo.com/embed/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+            url: `/api/watch/embed?url=${encodeURIComponent(`https://vipserver.liiivideo.com/embed/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+            badge: 'عالي الثبات 🌟',
+            size: '750 MB',
+            latency: '60ms',
+            isEmbed: true
+          }
         ];
+      } else {
+        allServers = [...servers];
       }
 
       const qualitySizes = [
-        { quality: '1080p FHD', size: '1.4 GB', tagClass: 'quality-1080p', latency: '32ms', isFast: true },
+        { quality: '1080p FHD', size: '1.4 GB', tagClass: 'quality-1080p', latency: '28ms', isFast: true },
+        { quality: '1080p HD', size: '1.1 GB', tagClass: 'quality-1080p', latency: '45ms', isFast: true },
         { quality: '720p HD', size: '680 MB', tagClass: 'quality-720p', latency: '68ms', isFast: true },
         { quality: '480p SD', size: '320 MB', tagClass: 'quality-default', latency: '110ms', isFast: false }
       ];

@@ -137,54 +137,59 @@ def build_movie_servers(tmdb_id):
     tid = str(tmdb_id)
     return [
         {
-            "name": "سيرفر VidLink Ultra (سحابي FHD • مترجم)",
-            "stream_url": f"https://vidlink.pro/movie/{tid}?primaryColor=00e5ff&secondaryColor=ff0055",
-            "url": f"https://vidlink.pro/movie/{tid}?primaryColor=00e5ff&secondaryColor=ff0055",
-            "site": "VidLink",
-            "badge": "VIP Fast ⚡",
+            "name": "سيرفر Vidmoly (فائق السرعة 🚀)",
+            "stream_url": f"https://vidmoly.net/embed-{tid}.html",
+            "url": f"https://vidmoly.net/embed-{tid}.html",
+            "site": "Vidmoly",
+            "raw_name": "Vidmoly",
+            "badge": "فائق السرعة 🚀",
             "quality": "1080p FHD",
             "isEmbed": True,
             "size": "1.4 GB"
         },
         {
-            "name": "سيرفر MultiEmbed (متعدد الجودات • مدبلج/مترجم)",
-            "stream_url": f"https://multiembed.mov/?video_id={tid}&tmdb=1",
-            "url": f"https://multiembed.mov/?video_id={tid}&tmdb=1",
-            "site": "MultiEmbed",
-            "badge": "سيرفر بديل 🌟",
+            "name": "سيرفر Mixdrop (سحابي مباشر ⚡)",
+            "stream_url": f"https://mixdrop.top/e/{tid}",
+            "url": f"https://mixdrop.top/e/{tid}",
+            "site": "Mixdrop",
+            "raw_name": "Mixdrop",
+            "badge": "سحابي مباشر ⚡",
             "quality": "1080p HD",
             "isEmbed": True,
-            "size": "720 MB"
+            "size": "1.1 GB"
         },
         {
-            "name": "سيرفر VidSrc Cloud (سريع ومترجم)",
-            "stream_url": f"https://vidsrc.cc/v2/embed/movie/{tid}",
-            "url": f"https://vidsrc.cc/v2/embed/movie/{tid}",
-            "site": "VidSrc",
-            "badge": "سحابي مباشر 🚀",
-            "quality": "720p HD",
-            "isEmbed": True,
-            "size": "550 MB"
-        },
-        {
-            "name": "سيرفر AutoEmbed Prime (سيرفر عالمي احتياطي)",
-            "stream_url": f"https://autoembed.co/movie/tmdb/{tid}",
-            "url": f"https://autoembed.co/movie/tmdb/{tid}",
-            "site": "AutoEmbed",
-            "badge": "عالمي 💎",
+            "name": "سيرفر Hgcloud (سيرفر VIP 💎)",
+            "stream_url": f"https://hgcloud.to/e/{tid}",
+            "url": f"https://hgcloud.to/e/{tid}",
+            "site": "Hgcloud",
+            "raw_name": "Hgcloud",
+            "badge": "VIP 💎",
             "quality": "1080p FHD",
             "isEmbed": True,
-            "size": "1.2 GB"
+            "size": "1.3 GB"
         },
         {
-            "name": "سيرفر VidSrc TO (سيرفر بديل بدون تقطيع)",
-            "stream_url": f"https://vidsrc.to/embed/movie/{tid}",
-            "url": f"https://vidsrc.to/embed/movie/{tid}",
-            "site": "VidSrc TO",
-            "badge": "احتياطي 🎬",
+            "name": "سيرفر Bysebuho (سيرفر أصلي 🎬)",
+            "stream_url": f"https://bysebuho.com/e/{tid}",
+            "url": f"https://bysebuho.com/e/{tid}",
+            "site": "Bysebuho",
+            "raw_name": "Bysebuho",
+            "badge": "سيرفر أصلي 🎬",
             "quality": "1080p HD",
             "isEmbed": True,
-            "size": "650 MB"
+            "size": "890 MB"
+        },
+        {
+            "name": "سيرفر Vipserver (سيرفر عالي الثبات 🌟)",
+            "stream_url": f"https://vipserver.liiivideo.com/embed/{tid}",
+            "url": f"https://vipserver.liiivideo.com/embed/{tid}",
+            "site": "Vipserver",
+            "raw_name": "Vipserver",
+            "badge": "عالي الثبات 🌟",
+            "quality": "1080p HD",
+            "isEmbed": True,
+            "size": "750 MB"
         }
     ]
 
@@ -194,54 +199,59 @@ def build_episode_servers(tmdb_id, season, episode):
     e = int(episode or 1)
     return [
         {
-            "name": "سيرفر VidLink Ultra (سحابي FHD • مترجم)",
-            "stream_url": f"https://vidlink.pro/tv/{tid}/{s}/{e}?primaryColor=00e5ff&secondaryColor=ff0055",
-            "url": f"https://vidlink.pro/tv/{tid}/{s}/{e}?primaryColor=00e5ff&secondaryColor=ff0055",
-            "site": "VidLink",
-            "badge": "VIP Fast ⚡",
+            "name": "سيرفر Vidmoly (فائق السرعة 🚀)",
+            "stream_url": f"https://vidmoly.net/embed-{tid}-s{s}-e{e}.html",
+            "url": f"https://vidmoly.net/embed-{tid}-s{s}-e{e}.html",
+            "site": "Vidmoly",
+            "raw_name": "Vidmoly",
+            "badge": "فائق السرعة 🚀",
             "quality": "1080p FHD",
             "isEmbed": True,
             "size": "1.4 GB"
         },
         {
-            "name": "سيرفر MultiEmbed (متعدد الجودات • مدبلج/مترجم)",
-            "stream_url": f"https://multiembed.mov/?video_id={tid}&tmdb=1&s={s}&e={e}",
-            "url": f"https://multiembed.mov/?video_id={tid}&tmdb=1&s={s}&e={e}",
-            "site": "MultiEmbed",
-            "badge": "سيرفر بديل 🌟",
+            "name": "سيرفر Mixdrop (سحابي مباشر ⚡)",
+            "stream_url": f"https://mixdrop.top/e/{tid}-s{s}-e{e}",
+            "url": f"https://mixdrop.top/e/{tid}-s{s}-e{e}",
+            "site": "Mixdrop",
+            "raw_name": "Mixdrop",
+            "badge": "سحابي مباشر ⚡",
             "quality": "1080p HD",
             "isEmbed": True,
-            "size": "720 MB"
+            "size": "1.1 GB"
         },
         {
-            "name": "سيرفر VidSrc Cloud (سريع ومترجم)",
-            "stream_url": f"https://vidsrc.cc/v2/embed/tv/{tid}/{s}/{e}",
-            "url": f"https://vidsrc.cc/v2/embed/tv/{tid}/{s}/{e}",
-            "site": "VidSrc",
-            "badge": "سحابي مباشر 🚀",
-            "quality": "720p HD",
-            "isEmbed": True,
-            "size": "550 MB"
-        },
-        {
-            "name": "سيرفر AutoEmbed Prime (سيرفر عالمي احتياطي)",
-            "stream_url": f"https://autoembed.co/tv/tmdb/{tid}/{s}/{e}",
-            "url": f"https://autoembed.co/tv/tmdb/{tid}/{s}/{e}",
-            "site": "AutoEmbed",
-            "badge": "عالمي 💎",
+            "name": "سيرفر Hgcloud (سيرفر VIP 💎)",
+            "stream_url": f"https://hgcloud.to/e/{tid}-s{s}-e{e}",
+            "url": f"https://hgcloud.to/e/{tid}-s{s}-e{e}",
+            "site": "Hgcloud",
+            "raw_name": "Hgcloud",
+            "badge": "VIP 💎",
             "quality": "1080p FHD",
             "isEmbed": True,
-            "size": "1.2 GB"
+            "size": "1.3 GB"
         },
         {
-            "name": "سيرفر VidSrc TO (سيرفر بديل بدون تقطيع)",
-            "stream_url": f"https://vidsrc.to/embed/tv/{tid}/{s}/{e}",
-            "url": f"https://vidsrc.to/embed/tv/{tid}/{s}/{e}",
-            "site": "VidSrc TO",
-            "badge": "احتياطي 🎬",
+            "name": "سيرفر Bysebuho (سيرفر أصلي 🎬)",
+            "stream_url": f"https://bysebuho.com/e/{tid}-s{s}-e{e}",
+            "url": f"https://bysebuho.com/e/{tid}-s{s}-e{e}",
+            "site": "Bysebuho",
+            "raw_name": "Bysebuho",
+            "badge": "سيرفر أصلي 🎬",
             "quality": "1080p HD",
             "isEmbed": True,
-            "size": "650 MB"
+            "size": "890 MB"
+        },
+        {
+            "name": "سيرفر Vipserver (سيرفر عالي الثبات 🌟)",
+            "stream_url": f"https://vipserver.liiivideo.com/embed/{tid}?s={s}&e={e}",
+            "url": f"https://vipserver.liiivideo.com/embed/{tid}?s={s}&e={e}",
+            "site": "Vipserver",
+            "raw_name": "Vipserver",
+            "badge": "عالي الثبات 🌟",
+            "quality": "1080p HD",
+            "isEmbed": True,
+            "size": "750 MB"
         }
     ]
 
