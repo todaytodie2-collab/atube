@@ -91,6 +91,9 @@ class RemoteConfigManager:
     def _on_remote_updated(self, new_data: dict):
         self.config_data.update(new_data)
 
+    def get_domain(self, name: str, default: str = "") -> str:
+        return self.config_data.get("domains", {}).get(name, default)
+
     def get_tmdb_api_key(self) -> str:
         env_key = os.environ.get("TMDB_API_KEY")
         if env_key:
