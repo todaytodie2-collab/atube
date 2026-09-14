@@ -302,7 +302,6 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     return
 
                 try:
-                    import subprocess, urllib.parse
                     parsed_target = urllib.parse.urlparse(target_url)
                     base_origin = f"{parsed_target.scheme}://{parsed_target.netloc}"
 
