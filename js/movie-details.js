@@ -296,13 +296,14 @@ const MovieDetails = (function () {
       };
     }
 
-    // Direct Watch Button (Scrolls to servers or plays first server)
+    // Direct Watch Button (Launches Video Player immediately without forcing manual server picking)
     const watchBtn = document.getElementById('md-watch-btn');
     if (watchBtn) {
       watchBtn.onclick = () => {
-        const serversSec = document.getElementById('md-servers-section');
-        if (serversSec) {
-          serversSec.scrollIntoView({ behavior: 'smooth' });
+        closeModal();
+        const player = window.InAppPlayer || (typeof InAppPlayer !== 'undefined' ? InAppPlayer : null);
+        if (player && typeof player.playMedia === 'function') {
+          player.playMedia(movie);
         }
       };
     }
