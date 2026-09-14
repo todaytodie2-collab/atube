@@ -91,8 +91,11 @@ class RemoteConfigManager:
     def _on_remote_updated(self, new_data: dict):
         self.config_data.update(new_data)
 
-    def get_domain(self, name: str, default: str = "") -> str:
-        return self.config_data.get("domains", {}).get(name, default)
+    def get_tmdb_api_key(self) -> str:
+        env_key = os.environ.get("TMDB_API_KEY")
+        if env_key:
+            return env_key
+        return self.config_data.get("tmdb", {}).get("api_key", "cabefb963ee5db1ecd2c5778bda9b6d0")
 
     def get_iptv_channels(self) -> List[Dict[str, Any]]:
         return self.config_data.get("iptv_channels", [])
