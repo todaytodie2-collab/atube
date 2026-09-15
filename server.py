@@ -39,14 +39,20 @@ except Exception:
     HAS_CERTIFI = False
 
 try:
-    import env_loader  # noqa: F401 - auto-loads .env on import
+    from services import env_loader  # noqa: F401 - auto-loads .env on import
 except Exception:
-    pass
+    try:
+        import env_loader  # noqa: F401
+    except Exception:
+        pass
 
 try:
-    from ssl_context import SCRAPER_CTX
+    from services.ssl_context import SCRAPER_CTX
 except Exception:
-    SCRAPER_CTX = ssl.create_default_context()
+    try:
+        from ssl_context import SCRAPER_CTX
+    except Exception:
+        SCRAPER_CTX = ssl.create_default_context()
 
 # Secure Admin Token resolution (No hardcoded static fallback)
 GLOBAL_ADMIN_TOKEN = os.environ.get("ATUBE_ADMIN_TOKEN")
@@ -147,9 +153,12 @@ except Exception as e:
     HAS_SERVICES = False
 
 try:
-    from auto_git_sync import AutoGitSync
+    from services.auto_git_sync import AutoGitSync
 except Exception:
-    AutoGitSync = None
+    try:
+        from scripts.auto_git_sync import AutoGitSync
+    except Exception:
+        AutoGitSync = None
 
 
 class ATubeHandler(SimpleHTTPRequestHandler):
