@@ -2030,7 +2030,16 @@ const InAppPlayer = (function () {
       if (!rawUrl) return '';
       let url = String(rawUrl).trim();
       if (url.startsWith('http') && !url.includes('/api/watch/embed') && !url.includes('.m3u8') && !url.includes('.mp4')) {
-        return `/api/watch/embed?url=${encodeURIComponent(url)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`;
+        let spoofedRef = 'https://mycima.buzz/';
+        const lower = url.toLowerCase();
+        if (lower.includes('bysebuho') || lower.includes('minochinos') || lower.includes('megamax') || lower.includes('egydead')) {
+          spoofedRef = 'https://egydead.live/';
+        } else if (lower.includes('vidmoly')) {
+          spoofedRef = 'https://vidmoly.to/';
+        } else if (lower.includes('mixdrop')) {
+          spoofedRef = 'https://mixdrop.ag/';
+        }
+        return `/api/watch/embed?url=${encodeURIComponent(url)}&referer=${encodeURIComponent(spoofedRef)}`;
       }
       return url;
     }
@@ -2083,62 +2092,90 @@ const InAppPlayer = (function () {
       }
     }
 
-    // 2. Guarantee 5-Tier Arabic Core Server Architecture (Vidmoly, Mixdrop, Hgcloud, Bysebuho, Vipserver)
-    const standardTiers = [
+    // 2. Fallback Streaming Gateways (TMDB Routing)
+    const tmdbFallbacks = isSeries ? [
       {
-        name: 'سيرفر Vidmoly (فائق السرعة 🚀)',
-        raw_name: 'Vidmoly',
-        url: `/api/watch/embed?url=${encodeURIComponent('https://vidmoly.net/')}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+        name: 'سيرفر VidLink Ultra (سحابي FHD • مترجم)',
+        raw_name: 'VidLink',
+        url: `https://vidlink.pro/tv/${tmdbId}/${sNum}/${eNum}?primaryColor=00e5ff`,
         quality: '1080p FHD',
         is_hls: false,
         isEmbed: true,
-        badge: 'فائق السرعة 🚀'
+        badge: 'VIP Fast ⚡'
       },
       {
-        name: 'سيرفر Mixdrop (سحابي مباشر ⚡)',
-        raw_name: 'Mixdrop',
-        url: `/api/watch/embed?url=${encodeURIComponent('https://mixdrop.top/')}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+        name: 'سيرفر MultiEmbed (متعدد الجودات • مدبلج/مترجم)',
+        raw_name: 'MultiEmbed',
+        url: `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=${sNum}&e=${eNum}`,
         quality: '1080p HD',
         is_hls: false,
         isEmbed: true,
-        badge: 'سحابي مباشر ⚡'
+        badge: 'سيرفر بديل 🌟'
       },
       {
-        name: 'سيرفر Hgcloud (سيرفر VIP 💎)',
-        raw_name: 'Hgcloud',
-        url: `/api/watch/embed?url=${encodeURIComponent('https://hgcloud.to/')}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+        name: 'سيرفر 2Embed (عالي السرعة 🚀)',
+        raw_name: '2Embed',
+        url: `https://www.2embed.cc/embedtv/${tmdbId}&s=${sNum}&e=${eNum}`,
+        quality: '1080p HD',
+        is_hls: false,
+        isEmbed: true,
+        badge: 'عالي السرعة 🚀'
+      },
+      {
+        name: 'سيرفر VidSrc Cloud (سريع ومترجم)',
+        raw_name: 'VidSrc',
+        url: `https://vidsrc.cc/v2/embed/tv/${tmdbId}/${sNum}/${eNum}`,
+        quality: '1080p HD',
+        is_hls: false,
+        isEmbed: true,
+        badge: 'سحابي مباشر 🚀'
+      }
+    ] : [
+      {
+        name: 'سيرفر VidLink Ultra (سحابي FHD • مترجم)',
+        raw_name: 'VidLink',
+        url: `https://vidlink.pro/movie/${tmdbId}?primaryColor=00e5ff`,
         quality: '1080p FHD',
         is_hls: false,
         isEmbed: true,
-        badge: 'VIP 💎'
+        badge: 'VIP Fast ⚡'
       },
       {
-        name: 'سيرفر Bysebuho (سيرفر أصلي 🎬)',
-        raw_name: 'Bysebuho',
-        url: `/api/watch/embed?url=${encodeURIComponent('https://bysebuho.com/')}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+        name: 'سيرفر MultiEmbed (متعدد الجودات • مدبلج/مترجم)',
+        raw_name: 'MultiEmbed',
+        url: `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1`,
         quality: '1080p HD',
         is_hls: false,
         isEmbed: true,
-        badge: 'سيرفر أصلي 🎬'
+        badge: 'سيرفر بديل 🌟'
       },
       {
-        name: 'سيرفر Vipserver (سيرفر عالي الثبات 🌟)',
-        raw_name: 'Vipserver',
-        url: `/api/watch/embed?url=${encodeURIComponent('https://vipserver.liiivideo.com/')}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
+        name: 'سيرفر 2Embed (عالي السرعة 🚀)',
+        raw_name: '2Embed',
+        url: `https://www.2embed.cc/embed/${tmdbId}`,
         quality: '1080p HD',
         is_hls: false,
         isEmbed: true,
-        badge: 'عالي الثبات 🌟'
+        badge: 'عالي السرعة 🚀'
+      },
+      {
+        name: 'سيرفر VidSrc Cloud (سريع ومترجم)',
+        raw_name: 'VidSrc',
+        url: `https://vidsrc.cc/v2/embed/movie/${tmdbId}`,
+        quality: '1080p HD',
+        is_hls: false,
+        isEmbed: true,
+        badge: 'سحابي مباشر 🚀'
       }
     ];
 
-    standardTiers.forEach(tier => {
+    tmdbFallbacks.forEach(fb => {
       const exists = pool.some(p => {
         const pName = (p.raw_name || p.name || '').toLowerCase();
-        return pName.includes(tier.raw_name.toLowerCase());
+        return pName.includes(fb.raw_name.toLowerCase()) || p.url === fb.url;
       });
       if (!exists) {
-        pool.push(tier);
+        pool.push(fb);
       }
     });
 
@@ -2400,13 +2437,8 @@ const InAppPlayer = (function () {
         // Check if provider is a clean trusted global gateway
         const isTrustedEmbed = /vidlink|multiembed|2embed|vidsrc|autoembed/i.test(targetUrl);
 
-        if (isTrustedEmbed) {
-          // Trusted providers need full sandbox permissions to enable DRM/fullscreen
-          iframeEl.removeAttribute('sandbox');
-        } else {
-          // Scraped/ad-heavy portals: strict sandbox suppressing popups and top navigation
-          iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
-        }
+        // Enable smooth full player execution: Ghost Trap handles popups and ad containment
+        iframeEl.removeAttribute('sandbox');
 
         iframeEl.onerror = function() {
           console.warn('[A Tube Player] Iframe error, attempting next server...');
@@ -2430,7 +2462,16 @@ const InAppPlayer = (function () {
           // Send directly to trusted gateways without breaking their API/WebSockets
           finalEmbedUrl = targetUrl;
         } else if (finalEmbedUrl.startsWith('http') && !finalEmbedUrl.includes('/api/watch/embed') && !finalEmbedUrl.includes('/api/stream/')) {
-          finalEmbedUrl = `/api/watch/embed?url=${encodeURIComponent(targetUrl)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`;
+          let spoofedRef = 'https://mycima.buzz/';
+          const lower = targetUrl.toLowerCase();
+          if (lower.includes('bysebuho') || lower.includes('minochinos') || lower.includes('megamax') || lower.includes('egydead')) {
+            spoofedRef = 'https://egydead.live/';
+          } else if (lower.includes('vidmoly')) {
+            spoofedRef = 'https://vidmoly.to/';
+          } else if (lower.includes('mixdrop')) {
+            spoofedRef = 'https://mixdrop.ag/';
+          }
+          finalEmbedUrl = `/api/watch/embed?url=${encodeURIComponent(targetUrl)}&referer=${encodeURIComponent(spoofedRef)}`;
         }
         iframeEl.src = finalEmbedUrl;
       }

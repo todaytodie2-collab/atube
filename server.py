@@ -422,23 +422,53 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     self.send_cors_json({"success": False, "error": str(ex)})
                 return
 
-            # 0.45 API: Ghost Embed Proxy & Sandbox Trap (Neutralizes Popups, Strips Clutter)
+            # 0.45 API: Ghost Embed Proxy & Transparent Stream Redirector
             if path == "/api/watch/embed":
                 target_url = query.get("url", [""])[0]
-                referer = query.get("referer", ["https://vid.mycima.cc/"])[0]
                 if not target_url:
                     self.send_error(400, "Missing target URL")
                     return
 
                 try:
+                    # 1. On-Demand Direct Stream Resolution
+                    # If target_url can be resolved to direct m3u8 or mp4 (e.g. Vipserver, Minochinos, Vidmoly, Mixdrop):
+                    # We directly redirect to the stream proxy for clean native playback!
+                    try:
+                        from stream_extractor import DirectStreamExtractor
+                        resolved = DirectStreamExtractor.resolve(target_url, use_cache=True)
+                        if resolved and resolved.get("success") and resolved.get("stream_url"):
+                            s_url = resolved["stream_url"]
+                            if any(ext in s_url.lower() for ext in [".m3u8", ".mp4", ".ts", "googlevideo", "cdn", "visitmycity", "acek-cdn", "mxcontent"]):
+                                self.send_response(302)
+                                self.send_header("Location", f"/api/stream/proxy?url={urllib.parse.quote(s_url, safe='')}")
+                                self.send_header("Access-Control-Allow-Origin", "*")
+                                self.end_headers()
+                                return
+                    except Exception:
+                        pass
+
                     parsed_target = urllib.parse.urlparse(target_url)
                     base_origin = f"{parsed_target.scheme}://{parsed_target.netloc}"
+
+                    lower_target = target_url.lower()
+                    referer = query.get("referer", [""])[0]
+                    if not referer or "vid.mycima.cc" in referer:
+                        if "vipserver" in lower_target or "liiivideo" in lower_target:
+                            referer = "https://mycima.buzz/"
+                        elif "bysebuho" in lower_target or "minochinos" in lower_target or "megamax" in lower_target:
+                            referer = "https://egydead.live/"
+                        elif "vidmoly" in lower_target:
+                            referer = "https://vidmoly.to/"
+                        elif "mixdrop" in lower_target:
+                            referer = "https://mixdrop.ag/"
+                        else:
+                            referer = f"{parsed_target.scheme}://{parsed_target.netloc}/"
 
                     embed_headers = {
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
                         "Referer": referer,
-                        "Origin": referer,
                         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                        "Accept-Language": "ar,en-US;q=0.9,en;q=0.8",
                         "Accept-Encoding": "gzip, deflate"
                     }
                     embed_req = urllib.request.Request(target_url, headers=embed_headers)
@@ -459,9 +489,18 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                         content = ""
 
                     if not content or len(content) < 50:
-                        self.send_response(302)
-                        self.send_header("Location", target_url)
+                        fallback_html = f"""<!DOCTYPE html>
+                        <html><head><meta charset="utf-8">
+                        <style>body{{margin:0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;text-align:center;}}
+                        a{{color:#00e5ff;text-decoration:none;border:1px solid #00e5ff;padding:10px 20px;border-radius:8px;display:inline-block;margin-top:15px;}}</style></head>
+                        <body><div><p style="font-size:1.2rem;">جاري تحضير البث المباشر...</p><p><a href="{target_url}" target="_blank" rel="noreferrer">فتح السيرفر في نافذة مستقلة ⚡</a></p></div></body></html>"""
+                        raw_bytes = fallback_html.encode("utf-8")
+                        self.send_response(200)
+                        self.send_header("Content-Type", "text/html; charset=utf-8")
+                        self.send_header("Content-Length", str(len(raw_bytes)))
+                        self.send_header("Access-Control-Allow-Origin", "*")
                         self.end_headers()
+                        self.wfile.write(raw_bytes)
                         return
 
                     base_tag = f'<base href="{base_origin}/">'
@@ -499,7 +538,7 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     <style>
                         body, html { width: 100vw !important; height: 100vh !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; background: #000 !important; }
                         #header, header, footer, .header, .footer, .navbar, .site-header, .top-bar, .breadcrumb, .sidebar, .comments, .related-posts, .list_servers { display: none !important; }
-                        #player, .player, video, iframe, .jwplayer, .video-js, .embedded { width: 100vw !important; height: 100vh !important; max-width: 100vw !important; max-height: 100vh !important; position: fixed !important; top: 0 !important; left: 0 !important; }
+                        #player, .player, video, iframe, .jwplayer, .video-js, .embedded, #playerjs, #vplayer, #my-video, .playerjs { width: 100vw !important; height: 100vh !important; max-width: 100vw !important; max-height: 100vh !important; position: fixed !important; top: 0 !important; left: 0 !important; z-index: 999999 !important; }
                     </style>
                     """
 

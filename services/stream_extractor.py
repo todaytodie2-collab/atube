@@ -109,25 +109,37 @@ class StreamTTLCache:
 def unpack_dean_edwards_packer(packed_js: str) -> str:
     """
     Decodes Dean Edwards JavaScript Packer:
-    eval(function(p,a,c,k,e,d){...}(p, a, c, k, e, d))
-    Used by video hosts like Mixdrop, Vidmoly, Voe, Upstream.
+    eval(function(p,a,c,k,e,d){...}(payload, radix, count, words.split('|')))
+    Used by Vipserver, Mixdrop, Vidmoly, Minochinos, Voe, Upstream.
     """
-    if not packed_js or "eval(function(p,a,c,k,e,d)" not in packed_js:
+    if not packed_js:
         return ""
 
-    pattern = r"\}\s*\(\s*['\"](.*?)['\"]\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*['\"](.*?)['\"]\s*\.split\(\s*['\"]\|['\"]\s*\)"
-    match = re.search(pattern, packed_js, re.DOTALL)
-    if not match:
+    # Search for parameters: radix, count, words
+    end_match = re.search(r",\s*(\d+)\s*,\s*(\d+)\s*,\s*['\"]([^'\"]*)['\"]\s*\.split\(\s*['\"]\|['\"]\s*\)", packed_js)
+    if not end_match:
         return ""
 
-    payload, radix_s, count_s, symtab_s = match.groups()
     try:
-        radix = int(radix_s)
-        count = int(count_s)
-    except ValueError:
+        radix = int(end_match.group(1))
+        count = int(end_match.group(2))
+        symtab = end_match.group(3).split('|')
+    except (ValueError, IndexError):
         return ""
 
-    symtab = symtab_s.split('|')
+    # Find the payload: starts after "return p}('" or 'return p}("'
+    func_end = re.search(r'return\s+p\s*\}\s*\(\s*[\'"]', packed_js)
+    if func_end:
+        payload = packed_js[func_end.end() : end_match.start()]
+    else:
+        paren_idx = packed_js.rfind("}(", 0, end_match.start())
+        if paren_idx != -1:
+            payload = packed_js[paren_idx + 2 : end_match.start()].strip("'\" \t\r\n")
+        else:
+            return ""
+
+    if payload.endswith("'") or payload.endswith('"'):
+        payload = payload[:-1]
 
     def base_n(num: int, b: int) -> str:
         digits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -145,19 +157,14 @@ def unpack_dean_edwards_packer(packed_js: str) -> str:
         val = symtab[i] if (i < len(symtab) and symtab[i]) else k
         lookup[k] = val
 
-    def replace_word(m: re.Match) -> str:
-        word = m.group(0)
-        return lookup.get(word, word)
-
-    unpacked = re.sub(r'\b[0-9a-zA-Z]+\b', replace_word, payload)
-    return unpacked
+    return re.sub(r'\b[0-9a-zA-Z]+\b', lambda m: lookup.get(m.group(0), m.group(0)), payload)
 
 
 def unpack_all_packers(html: str) -> str:
     """Finds all packed JavaScript blocks in HTML and un-packs them."""
     if not html:
         return ""
-    packer_matches = re.findall(r'(eval\(function\(p,a,c,k,e,d\).+?\.split\([\'"]\|[\'"]\)\)\))', html, re.DOTALL)
+    packer_matches = re.findall(r'(eval\(function\(p,a,c,k,e,d\).+?\.split\([\'"]\|[\'"]\).*?\)\)+)', html, re.DOTALL)
     unpacked_blocks = []
     for block in packer_matches:
         decoded = unpack_dean_edwards_packer(block)
@@ -177,6 +184,10 @@ class DirectStreamExtractor:
 
     # Domain to optimal Spoofed Referer / Origin mapping
     HOST_SPOOF_MAP = {
+        "vipserver": ("https://mycima.buzz/", "https://mycima.buzz"),
+        "liiivideo": ("https://mycima.buzz/", "https://mycima.buzz"),
+        "bysebuho": ("https://egydead.live/", "https://egydead.live"),
+        "minochinos": ("https://egydead.live/", "https://egydead.live"),
         "megamax": ("https://egydead.live/", "https://egydead.live"),
         "vidmoly": ("https://vidmoly.to/", "https://vidmoly.to"),
         "mixdrop": ("https://mixdrop.ag/", "https://mixdrop.ag"),
@@ -253,8 +264,20 @@ class DirectStreamExtractor:
 
     @classmethod
     def _fetch_html(cls, url: str, referer: Optional[str] = None, timeout: float = 6.0) -> str:
-        headers = cls.get_spoofed_headers(url, custom_referer=referer)
-        headers["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+        headers = {
+            "User-Agent": cls.USER_AGENT,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "ar,en-US;q=0.9,en;q=0.8"
+        }
+        if referer:
+            headers["Referer"] = referer
+        elif referer is None:
+            lower_u = url.lower()
+            for k, (ref, _) in cls.HOST_SPOOF_MAP.items():
+                if k in lower_u:
+                    headers["Referer"] = ref
+                    break
+
         req = urllib.request.Request(url, headers=headers)
         try:
             ctx = cls._create_ssl_context(insecure_fallback=False)
@@ -311,7 +334,13 @@ class DirectStreamExtractor:
             resolved_dict: Optional[Dict[str, Any]] = None
 
             # 3. Host-specific fast extractors
-            if "vidmoly" in lower_url:
+            if "vipserver" in lower_url or "liiivideo" in lower_url:
+                resolved_dict = cls._extract_vipserver(stream_url)
+            elif "minochinos" in lower_url:
+                resolved_dict = cls._extract_minochinos(stream_url)
+            elif "bysebuho" in lower_url:
+                resolved_dict = cls._extract_bysebuho(stream_url)
+            elif "vidmoly" in lower_url:
                 resolved_dict = cls._extract_vidmoly(stream_url)
             elif "mixdrop" in lower_url:
                 resolved_dict = cls._extract_mixdrop(stream_url)
@@ -424,6 +453,60 @@ class DirectStreamExtractor:
     # ==========================================================================
     # Specialized Host Extractors
     # ==========================================================================
+    @classmethod
+    def _extract_vipserver(cls, url: str) -> Dict[str, Any]:
+        """Extracts direct m3u8 stream from Vipserver / liiivideo."""
+        html = cls._fetch_html(url, referer="")
+        unpacked = unpack_all_packers(html)
+        m3u8_match = re.search(r'https?://[^\s"\'<>]+\.m3u8[^\s"\'<>]*', unpacked)
+        if m3u8_match:
+            stream_u = m3u8_match.group(0)
+            return {
+                "success": True,
+                "stream_url": stream_u,
+                "is_hls": True,
+                "format": "hls",
+                "headers": {"User-Agent": cls.USER_AGENT, "Referer": "https://vipserver.liiivideo.com/"},
+                "server_name": "سيرفر Vipserver Direct FHD ⚡"
+            }
+        return {"success": False, "error": "Vipserver m3u8 not found"}
+
+    @classmethod
+    def _extract_minochinos(cls, url: str) -> Dict[str, Any]:
+        """Extracts direct m3u8 stream from Minochinos."""
+        html = cls._fetch_html(url, referer="https://egydead.live/")
+        unpacked = unpack_all_packers(html)
+        m3u8_match = re.search(r'https?://[^\s"\'<>]+\.m3u8[^\s"\'<>]*', unpacked)
+        if m3u8_match:
+            stream_u = m3u8_match.group(0)
+            return {
+                "success": True,
+                "stream_url": stream_u,
+                "is_hls": True,
+                "format": "hls",
+                "headers": {"User-Agent": cls.USER_AGENT, "Referer": "https://minochinos.com/"},
+                "server_name": "سيرفر Minochinos Direct FHD ⚡"
+            }
+        return {"success": False, "error": "Minochinos m3u8 not found"}
+
+    @classmethod
+    def _extract_bysebuho(cls, url: str) -> Dict[str, Any]:
+        """Extracts direct stream from Bysebuho."""
+        html = cls._fetch_html(url, referer="https://egydead.live/")
+        unpacked = unpack_all_packers(html)
+        m3u8_match = re.search(r'https?://[^\s"\'<>]+\.m3u8[^\s"\'<>]*', unpacked)
+        if m3u8_match:
+            stream_u = m3u8_match.group(0)
+            return {
+                "success": True,
+                "stream_url": stream_u,
+                "is_hls": True,
+                "format": "hls",
+                "headers": {"User-Agent": cls.USER_AGENT, "Referer": "https://bysebuho.com/"},
+                "server_name": "سيرفر Bysebuho Direct FHD ⚡"
+            }
+        return cls._extract_resilient_semantic(url)
+
     @classmethod
     def _extract_vidmoly(cls, url: str) -> Dict[str, Any]:
         embed_url = url.replace("/w/", "/embed-").replace("/d/", "/embed-")
@@ -605,6 +688,9 @@ class DirectStreamExtractor:
                 info = ydl.extract_info(url, download=False)
                 if info and info.get('url'):
                     direct_url = info['url']
+                    # Guard: yt-dlp generic extractor returns the input webpage itself if no stream found
+                    if direct_url == url or not any(ext in direct_url.lower() for ext in ['.m3u8', '.mp4', '.mkv', '.webm', '.ts', 'googlevideo', 'cdn']):
+                        return {"success": False, "stream_url": url}
                     is_hls = ".m3u8" in direct_url or info.get('protocol') == 'm3u8_native'
                     return {
                         "success": True,
