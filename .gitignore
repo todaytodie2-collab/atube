@@ -37,3 +37,5 @@ config/dork_cache/
 # Android signing keystore & local release folder
 *.keystore
 releases/
+.pytest_cache/
+*_Report.md
