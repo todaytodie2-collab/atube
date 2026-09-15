@@ -2381,16 +2381,43 @@ const InAppPlayer = (function () {
 
       if (iframeEl) {
         iframeEl.style.display = 'block';
+        iframeEl.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen');
+        iframeEl.setAttribute('allowfullscreen', 'true');
+        iframeEl.setAttribute('referrerpolicy', 'no-referrer');
+
+        // Check if provider is a clean trusted global gateway
+        const isTrustedEmbed = /vidlink|multiembed|2embed|vidsrc|autoembed/i.test(targetUrl);
+
+        if (isTrustedEmbed) {
+          // Trusted providers need full sandbox permissions to enable DRM/fullscreen
+          iframeEl.removeAttribute('sandbox');
+        } else {
+          // Scraped/ad-heavy portals: strict sandbox suppressing popups and top navigation
+          iframeEl.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation');
+        }
+
         iframeEl.onerror = function() {
           console.warn('[A Tube Player] Iframe error, attempting next server...');
           triggerStatelessFailover('خطأ في تحميل السيرفر');
         };
+
+        // Watchdog: If an embed doesn't fire onload within 8 seconds, offer quick switch
+        if (window._embedWatchdog) clearTimeout(window._embedWatchdog);
+        window._embedWatchdog = setTimeout(() => {
+          showFailoverHUD(`💡 هل السيرفر بطيء؟ اضغط على سيرفر آخر في القائمة بالأسفل للتبديل الفوري`);
+        }, 8000);
+
         iframeEl.onload = function() {
+          if (window._embedWatchdog) clearTimeout(window._embedWatchdog);
           setTimeout(hideFailoverOverlay, 1500);
           showEmbedGuideHint();
         };
+
         let finalEmbedUrl = targetUrl;
-        if (finalEmbedUrl.startsWith('http') && !finalEmbedUrl.includes('/api/watch/embed') && !finalEmbedUrl.includes('/api/stream/')) {
+        if (isTrustedEmbed) {
+          // Send directly to trusted gateways without breaking their API/WebSockets
+          finalEmbedUrl = targetUrl;
+        } else if (finalEmbedUrl.startsWith('http') && !finalEmbedUrl.includes('/api/watch/embed') && !finalEmbedUrl.includes('/api/stream/')) {
           finalEmbedUrl = `/api/watch/embed?url=${encodeURIComponent(targetUrl)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`;
         }
         iframeEl.src = finalEmbedUrl;
