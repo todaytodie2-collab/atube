@@ -1978,24 +1978,25 @@ const InAppPlayer = (function () {
       if (Array.isArray(item.servers) && item.servers.length > 0) {
         item.servers.forEach(s => {
           const sUrl = s.url || s.streamUrl || s.stream_url;
-          if (sUrl && !s.isEmbed && !sUrl.includes('vidlink') && !sUrl.includes('multiembed') && !sUrl.includes('vidsrc')) {
+          if (sUrl && !sUrl.includes('vidlink') && !sUrl.includes('multiembed') && !sUrl.includes('vidsrc')) {
             pool.push({
               name: s.name || 'سيرفر بث حي',
               url: sUrl,
               quality: s.quality || 'بث مباشر HD',
               is_hls: s.is_hls ?? sUrl.includes('.m3u8'),
-              isEmbed: false
+              isEmbed: !!s.isEmbed
             });
           }
         });
       }
       if (selectedUrl && !pool.some(s => s.url === selectedUrl)) {
+        const isEmbedChannel = !!item.isEmbed || (!selectedUrl.includes('.m3u8') && (selectedUrl.includes('embed') || selectedUrl.includes('player') || selectedUrl.includes('/p/')));
         pool.unshift({
           name: item.name || 'بث القناة المباشر',
           url: selectedUrl,
           quality: 'بث حي HD',
           is_hls: selectedUrl.includes('.m3u8'),
-          isEmbed: false
+          isEmbed: isEmbedChannel
         });
       }
       return pool;
@@ -2048,14 +2049,16 @@ const InAppPlayer = (function () {
     if (Array.isArray(item.servers) && item.servers.length > 0) {
       item.servers.forEach(s => {
         let sUrl = s.url || s.streamUrl || s.stream_url;
+        let sRaw = s.raw_url || s.stream_url || s.url || s.streamUrl;
         if (sUrl) {
           sUrl = sanitizeEmbedUrl(sUrl);
-          const sIsHls = sUrl.includes('.m3u8');
-          if (!pool.some(p => p.url === sUrl)) {
+          const sIsHls = sUrl.includes('.m3u8') || (sRaw && sRaw.includes('.m3u8'));
+          if (!pool.some(p => p.url === sUrl || (sRaw && p.raw_url === sRaw))) {
             pool.push({
               name: s.name || 'سيرفر تشغيل سحابي',
               raw_name: s.raw_name || s.name || '',
               url: sUrl,
+              raw_url: sRaw,
               quality: s.quality || '1080p FHD',
               is_hls: s.is_hls ?? sIsHls,
               isEmbed: !sIsHls
@@ -2073,14 +2076,16 @@ const InAppPlayer = (function () {
         if (activeEp && Array.isArray(activeEp.servers) && activeEp.servers.length > 0) {
           activeEp.servers.forEach(s => {
             let sUrl = s.url || s.stream_url || s.streamUrl;
+            let sRaw = s.raw_url || s.stream_url || s.url || s.streamUrl;
             if (sUrl) {
               sUrl = sanitizeEmbedUrl(sUrl);
-              const sIsHls = sUrl.includes('.m3u8');
-              if (!pool.some(p => p.url === sUrl)) {
+              const sIsHls = sUrl.includes('.m3u8') || (sRaw && sRaw.includes('.m3u8'));
+              if (!pool.some(p => p.url === sUrl || (sRaw && p.raw_url === sRaw))) {
                 pool.push({
                   name: s.name || `سيرفر ${activeEp.title || 'الحلقة ' + eNum}`,
                   raw_name: s.raw_name || s.name || '',
                   url: sUrl,
+                  raw_url: sRaw,
                   quality: s.quality || '1080p FHD',
                   is_hls: sIsHls,
                   isEmbed: !sIsHls
@@ -2182,15 +2187,20 @@ const InAppPlayer = (function () {
     // 3. User Selected URL Priority
     if (selectedUrl) {
       const sanitizedSelected = sanitizeEmbedUrl(selectedUrl);
-      const matchIdx = pool.findIndex(s => s.url === sanitizedSelected || s.url === selectedUrl);
+      const selRaw = item.raw_url || item.rawStreamUrl || selectedUrl;
+      const matchIdx = pool.findIndex(s => s.url === sanitizedSelected || s.url === selectedUrl || (s.raw_url && s.raw_url === selRaw));
       if (matchIdx > 0) {
         const [chosen] = pool.splice(matchIdx, 1);
+        if (!chosen.raw_url) chosen.raw_url = selRaw;
         pool.unshift(chosen);
+      } else if (matchIdx === 0) {
+        if (!pool[0].raw_url) pool[0].raw_url = selRaw;
       } else if (matchIdx === -1) {
-        const selIsHls = sanitizedSelected.includes('.m3u8');
+        const selIsHls = sanitizedSelected.includes('.m3u8') || selRaw.includes('.m3u8');
         pool.unshift({
           name: item.name || 'السيرفر المختار',
           url: sanitizedSelected,
+          raw_url: selRaw,
           quality: '1080p FHD',
           is_hls: selIsHls,
           isEmbed: !selIsHls
@@ -2279,18 +2289,35 @@ const InAppPlayer = (function () {
   async function loadStreamSource(serverObj, startTime = 0) {
     if (!videoEl) return;
     let targetUrl = serverObj.stream_url || serverObj.url || '';
+    let rawUrl = serverObj.raw_url || targetUrl;
+
+    // Helper to unwrap /api/watch/embed?url=...
+    function unwrapEmbedUrl(u) {
+      if (!u || typeof u !== 'string') return '';
+      if (u.includes('/api/watch/embed')) {
+        try {
+          const parsed = new URL(u, window.location.origin);
+          const nested = parsed.searchParams.get('url');
+          if (nested) return nested;
+        } catch (_) {}
+      }
+      return u;
+    }
+
+    rawUrl = unwrapEmbedUrl(rawUrl);
+    const candidateToResolve = unwrapEmbedUrl(targetUrl) || rawUrl;
 
     showFailoverHUD('⚡ جاري تجهيز واستخراج البث المباشر الصافي...');
 
     // Resolve direct stream from backend if not already direct .m3u8 or .mp4
-    let isDirectMedia = targetUrl.includes('.m3u8') || targetUrl.endsWith('.mp4') || targetUrl.endsWith('.mkv') || targetUrl.includes('/stream/') || targetUrl.includes('.webm');
+    let isDirectMedia = candidateToResolve.includes('.m3u8') || candidateToResolve.endsWith('.mp4') || candidateToResolve.endsWith('.mkv') || candidateToResolve.includes('/stream/') || candidateToResolve.includes('.webm');
     let resolvedData = null;
 
-    if (targetUrl && !isDirectMedia) {
+    if (candidateToResolve && !isDirectMedia) {
       try {
         const controller = new AbortController();
-        const tId = setTimeout(() => controller.abort(), 3500);
-        const resp = await fetch(`/api/resolve-stream?url=${encodeURIComponent(targetUrl)}`, {
+        const tId = setTimeout(() => controller.abort(), 6000);
+        const resp = await fetch(`/api/resolve-stream?url=${encodeURIComponent(candidateToResolve)}`, {
           signal: controller.signal
         });
         clearTimeout(tId);
@@ -2327,7 +2354,8 @@ const InAppPlayer = (function () {
       // Route through local internal proxy to eliminate CORS and referer blocking
       let playUrl = targetUrl;
       if (window.location.protocol !== 'file:' && !targetUrl.includes('/api/stream/proxy')) {
-        playUrl = `/api/stream/proxy?url=${encodeURIComponent(targetUrl)}&referer=${encodeURIComponent(serverObj.url || targetUrl)}`;
+        const refParam = candidateToResolve || rawUrl || serverObj.url || targetUrl;
+        playUrl = `/api/stream/proxy?url=${encodeURIComponent(targetUrl)}&referer=${encodeURIComponent(refParam)}`;
       }
 
       if (isHls && window.Hls && window.Hls.isSupported()) {

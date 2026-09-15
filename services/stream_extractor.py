@@ -184,6 +184,7 @@ class DirectStreamExtractor:
 
     # Domain to optimal Spoofed Referer / Origin mapping
     HOST_SPOOF_MAP = {
+        # Video Hosts
         "vipserver": ("https://mycima.buzz/", "https://mycima.buzz"),
         "liiivideo": ("https://mycima.buzz/", "https://mycima.buzz"),
         "bysebuho": ("https://egydead.live/", "https://egydead.live"),
@@ -195,16 +196,24 @@ class DirectStreamExtractor:
         "streamtape": ("https://streamtape.com/", "https://streamtape.com"),
         "dood": ("https://dood.to/", "https://dood.to"),
         "ds2play": ("https://dood.to/", "https://dood.to"),
-        "akwam": ("https://akwam.to/", "https://akwam.to"),
-        "mycima": ("https://vid.mycima.cc/", "https://vid.mycima.cc"),
-        "wecima": ("https://vid.mycima.cc/", "https://vid.mycima.cc"),
-        "fasel": ("https://www.fasel-hd.co/", "https://www.fasel-hd.co"),
-        "arabseed": ("https://m.arabseed.site/", "https://m.arabseed.site"),
-        "byse": ("https://egydead.live/", "https://egydead.live"),
-        "vidsrc": ("https://vidsrc.pm/", "https://vidsrc.pm"),
+        "upstream": ("https://upstream.to/", "https://upstream.to"),
         "hgcloud": ("https://vidsrc.pm/", "https://vidsrc.pm"),
+        # Arab Portals
+        "akwam": ("https://akwam.to/", "https://akwam.to"),
+        "mycima": ("https://mycima.buzz/", "https://mycima.buzz"),
+        "wecima": ("https://wecima.show/", "https://wecima.show"),
+        "fasel": ("https://faselhd.club/", "https://faselhd.club"),
+        "faselhd": ("https://faselhd.club/", "https://faselhd.club"),
+        "arabseed": ("https://m.arabseed.site/", "https://m.arabseed.site"),
+        "cima4u": ("https://cima4u.tv/", "https://cima4u.tv"),
+        "topcinema": ("https://topcinema.cam/", "https://topcinema.cam"),
+        "egydead": ("https://egydead.live/", "https://egydead.live"),
+        "byse": ("https://egydead.live/", "https://egydead.live"),
+        # Global TMDB & Video Mirrors
+        "vidsrc": ("https://vidsrc.pm/", "https://vidsrc.pm"),
         "vidlink": ("https://vidlink.pro/", "https://vidlink.pro"),
         "multiembed": ("https://multiembed.mov/", "https://multiembed.mov"),
+        "2embed": ("https://www.2embed.cc/", "https://www.2embed.cc"),
     }
 
     @classmethod

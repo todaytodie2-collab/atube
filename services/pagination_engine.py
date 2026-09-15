@@ -54,7 +54,10 @@ class PaginationEngine:
                 }
             }
         """
-        from vod_db import VODDatabase
+        try:
+            from services.vod_db import VODDatabase
+        except ImportError:
+            from vod_db import VODDatabase
 
         # Validate inputs
         page = max(cls.MIN_PAGE, page)

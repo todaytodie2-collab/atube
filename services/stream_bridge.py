@@ -48,38 +48,116 @@ class InvisibleStreamBridge:
                     SELECT server_name, stream_url, quality, badge 
                     FROM vod_servers 
                     WHERE media_id = ? AND season_number = ? AND episode_number = ?
-                    ORDER BY id ASC LIMIT 5
+                    ORDER BY id ASC
                 """, (media_id, season, episode))
             else:
                 cur.execute("""
                     SELECT server_name, stream_url, quality, badge 
                     FROM vod_servers 
                     WHERE media_id = ? AND (season_number IS NULL OR season_number = 1)
-                    ORDER BY id ASC LIMIT 5
+                    ORDER BY id ASC
                 """, (media_id,))
             rows = cur.fetchall()
+
+            # Also retrieve TMDB ID if available
+            cur.execute("SELECT tmdb_id, content_type FROM vod_media WHERE id = ?", (media_id,))
+            m_row = cur.fetchone()
+            tmdb_id = m_row[0] if m_row else None
+            c_type = m_row[1] if m_row else "movie"
             conn.close()
+
+            if not rows:
+                return None
+
+            servers_matrix = []
+            direct_match = None
 
             for row in rows:
                 name, url, quality, badge = row
                 if not url:
                     continue
+
+                is_trusted = any(h in url.lower() for h in ["vidlink", "multiembed", "2embed", "vidsrc", "streamingnow", "autoembed", "hgcloud"])
+                if is_trusted:
+                    servers_matrix.append({
+                        "name": name or "سيرفر عالمي سحابي",
+                        "url": url,
+                        "stream_url": url,
+                        "raw_url": url,
+                        "quality": quality or "1080p FHD",
+                        "is_direct": False,
+                        "is_hls": False,
+                        "isEmbed": True,
+                        "tier": 3,
+                        "badge": "عالمي ⭐"
+                    })
+                    continue
+
                 # On-demand resolution with TTL RAM caching
                 resolved = DirectStreamExtractor.resolve(url)
                 if resolved.get("success") and resolved.get("stream_url"):
-                    return {
-                        "success": True,
+                    item_entry = {
+                        "name": f"{name or 'سيرفر فائق السرعة'} (مباشر ⚡)",
+                        "url": resolved["stream_url"],
                         "stream_url": resolved["stream_url"],
-                        "server_name": name or resolved.get("server_name", "سيرفر البث المباشر"),
+                        "raw_url": url,
                         "quality": quality or "1080p FHD",
-                        "is_direct": resolved.get("is_direct", True),
+                        "is_direct": True,
                         "is_hls": resolved.get("is_hls", False),
-                        "badge": badge or "سريع ⚡",
-                        "source": "db_ondemand_cache",
-                        "cached": resolved.get("cached", False)
+                        "isEmbed": False,
+                        "tier": 1,
+                        "badge": "سريع ⚡"
                     }
-        except Exception:
-            pass
+                    servers_matrix.append(item_entry)
+                    if not direct_match:
+                        direct_match = item_entry
+                else:
+                    final_u = f"/api/watch/embed?url={urllib.parse.quote(url)}"
+                    servers_matrix.append({
+                        "name": name or "سيرفر سحابي",
+                        "url": final_u,
+                        "stream_url": final_u,
+                        "raw_url": url,
+                        "quality": quality or "1080p FHD",
+                        "is_direct": False,
+                        "is_hls": False,
+                        "isEmbed": True,
+                        "tier": 2,
+                        "badge": "درع خفي 🛡️"
+                    })
+
+            # Sort matrix so direct streams (tier 1) come first
+            servers_matrix.sort(key=lambda x: x.get("tier", 99))
+
+            if direct_match:
+                return {
+                    "success": True,
+                    "stream_url": direct_match["stream_url"],
+                    "raw_url": direct_match.get("raw_url", ""),
+                    "server_name": direct_match["name"],
+                    "quality": direct_match["quality"],
+                    "is_direct": True,
+                    "is_hls": direct_match["is_hls"],
+                    "badge": direct_match["badge"],
+                    "source": "db_direct_resolved",
+                    "servers_matrix": servers_matrix
+                }
+            elif servers_matrix:
+                first = servers_matrix[0]
+                return {
+                    "success": True,
+                    "stream_url": first["stream_url"],
+                    "server_name": first["name"],
+                    "quality": first["quality"],
+                    "is_direct": False,
+                    "is_hls": False,
+                    "isEmbed": True,
+                    "badge": first["badge"],
+                    "source": "db_embed_fallback",
+                    "servers_matrix": servers_matrix
+                }
+        except Exception as ex:
+            print(f"[StreamBridge] DB cached stream error: {ex}")
         return None
 
     @classmethod

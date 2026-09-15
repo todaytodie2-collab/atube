@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8">
+  <title>A TuBe Frame Capture - Kurtulus 2026 (01:22)</title>
+  <style>
+    body { background: #04090e; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+    #status { margin: 15px; font-size: 18px; color: #00e5ff; }
+    video { max-width: 90vw; max-height: 70vh; border: 2px solid #00e5ff; border-radius: 8px; }
+    canvas { max-width: 90vw; max-height: 70vh; border: 2px solid #ff2a44; border-radius: 8px; margin-top: 10px; display: none; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.8/dist/hls.min.js"></script>
+</head>
+<body>
+  <h1>A TuBe Ultra HD - لقطة من فيلم Kurtulus 2026 في الدقيقة 01:22</h1>
+  <div id="status">جاري الاتصال بالسيرفر وتحميل التدفق...</div>
+  <video id="video" controls playsinline></video>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const statusEl = document.getElementById('status');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+
+    async function init() {
+      try {
+        statusEl.textContent = '1. استخراج رابط البث من السيرفر...';
+        const res = await fetch('/api/resolve-stream?url=' + encodeURIComponent('https://vipserver.liiivideo.com/embed-7x57yl6sps70.html'));
+        const data = await res.json();
+        if (!data || !data.success || !data.stream_url) {
+          statusEl.textContent = 'فشل استخراج الرابط: ' + (data && data.error);
+          return;
+        }
+
+        const streamUrl = '/api/stream/proxy?url=' + encodeURIComponent(data.stream_url) + '&referer=' + encodeURIComponent('https://vipserver.liiivideo.com/embed-7x57yl6sps70.html');
+        statusEl.textContent = '2. جاري تحميل مشغل HLS عند الدقيقة 01:22 (82 ثانية)...';
+
+        if (Hls.isSupported()) {
+          const hls = new Hls({ enableWorker: true });
+          hls.loadSource(streamUrl);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            statusEl.textContent = '3. تم فك التجزئة، جاري الانتقال إلى 01:22 (82s)...';
+            video.currentTime = 82;
+            video.play().then(() => {
+              setTimeout(() => {
+                video.pause();
+                capture();
+              }, 1200);
+            }).catch(e => {
+              video.currentTime = 82;
+            });
+          });
+        } else {
+          video.src = streamUrl;
+          video.currentTime = 82;
+        }
+
+        video.addEventListener('seeked', () => {
+          setTimeout(capture, 500);
+        });
+
+        function capture() {
+          if (video.videoWidth > 0 && video.videoHeight > 0) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            canvas.style.display = 'block';
+            statusEl.textContent = '✅ تم التقاط اللقطة بنجاح عند ' + video.currentTime.toFixed(1) + ' ثانية (' + canvas.width + 'x' + canvas.height + ')!';
+            
+            // Send screenshot to server to save as artifact
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+            fetch('/api/scratch/save-screenshot', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ image: dataUrl, time: video.currentTime })
+            }).catch(() => {});
+          }
+        }
+      } catch (err) {
+        statusEl.textContent = 'خطأ: ' + err.message;
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

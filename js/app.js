@@ -538,6 +538,8 @@ function createMediaCard(m, index = 0) {
 
   const isWatched = (m.id && localStorage.getItem('atube_watched_' + m.id) === 'true');
   const watchedBadge = isWatched ? `<span class="watched-card-badge">تمت المشاهدة ✓</span>` : '';
+  const isKids = m.is_kids || m.youtube_id || m.category === 'kids';
+  const kidsBadgeHtml = isKids ? `<span class="kids-card-badge">🎈 كيدز آمن</span><button class="kids-inline-play-btn" type="button" title="تشغيل فوري داخل البطاقة">▶ تشغيل</button>` : '';
 
   card.innerHTML = `
     <div class="program-thumb">
@@ -548,6 +550,7 @@ function createMediaCard(m, index = 0) {
            class="lazy-poster-img">
       <span class="program-card-badge">${cleanRating}</span>
       ${watchedBadge}
+      ${kidsBadgeHtml}
     </div>
     <div class="program-info">
       <div class="program-title">${cleanTitle}</div>
@@ -610,9 +613,41 @@ function createMediaCard(m, index = 0) {
     }
   }
 
+  // Inline playback inside card for Kids content
+  const kidsPlayBtn = card.querySelector('.kids-inline-play-btn');
+  if (kidsPlayBtn) {
+    kidsPlayBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const thumb = card.querySelector('.program-thumb');
+      if (thumb) {
+        const yId = m.youtube_id || (m.stream_url && m.stream_url.match(/embed\/([^?&]+)/) ? m.stream_url.match(/embed\/([^?&]+)/)[1] : '');
+        if (yId) {
+          thumb.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${yId}?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none;border-radius:12px;background:#000;"></iframe>`;
+        }
+      }
+    });
+  }
+
   card.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isKids && (m.youtube_id || m.isEmbed)) {
+      if (window.InAppPlayer && typeof window.InAppPlayer.playMedia === 'function') {
+        window.InAppPlayer.playMedia({
+          id: m.id,
+          title: m.arabic_title || m.title,
+          name: m.arabic_title || m.title,
+          streamUrl: m.stream_url || m.url,
+          category: 'كارتون للأطفال',
+          badge: 'يوتيوب كيدز آمن 🎈',
+          is_live: false,
+          isEmbed: true,
+          servers: m.servers || [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: m.stream_url, isEmbed: true, tier: 1 }]
+        });
+        return;
+      }
+    }
     const ctrl = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
     if (ctrl && typeof ctrl.open === 'function') {
       ctrl.open(m);
@@ -678,6 +713,225 @@ function getDefaultMoviesFallback(categoryKey) {
   return [];
 }
 
+// Curated Safe YouTube Kids Dataset (No-Ads, Direct Embed)
+const YOUTUBE_KIDS_DATASET = [
+  {
+    id: 'ytkids-iftah-ya-simsim',
+    title: 'Iftah Ya Simsim - Full Episodes',
+    arabic_title: 'افتح يا سمسم - أجمل الحلقات والأغاني',
+    content_type: 'series',
+    category: 'kids',
+    category_name: 'كارتون للأطفال',
+    year: '2024',
+    rating: '★ 9.8 كيدز',
+    poster: 'https://img.youtube.com/vi/aW9J6qK55oY/hqdefault.jpg',
+    youtube_id: 'aW9J6qK55oY',
+    stream_url: 'https://www.youtube-nocookie.com/embed/aW9J6qK55oY?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    url: 'https://www.youtube-nocookie.com/embed/aW9J6qK55oY?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    is_kids: true,
+    isEmbed: true,
+    servers: [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: 'https://www.youtube-nocookie.com/embed/aW9J6qK55oY?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3', isEmbed: true, tier: 1 }],
+    synopsis: 'حلقات برنامج افتح يا سمسم التعليمي الترفيهي المحبوب للأطفال لتعلم الحروف والأرقام والقيم الأخلاقية بأمان تام.'
+  },
+  {
+    id: 'ytkids-bakkar-full',
+    title: 'Bakkar & Hassouna Adventures',
+    arabic_title: 'مغامرات بكار ورشيدة وحسونة',
+    content_type: 'series',
+    category: 'kids',
+    category_name: 'كارتون للأطفال',
+    year: '2024',
+    rating: '★ 9.7 كيدز',
+    poster: 'https://img.youtube.com/vi/qQe213h3m20/hqdefault.jpg',
+    youtube_id: 'qQe213h3m20',
+    stream_url: 'https://www.youtube-nocookie.com/embed/qQe213h3m20?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    url: 'https://www.youtube-nocookie.com/embed/qQe213h3m20?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    is_kids: true,
+    isEmbed: true,
+    servers: [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: 'https://www.youtube-nocookie.com/embed/qQe213h3m20?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3', isEmbed: true, tier: 1 }],
+    synopsis: 'مغامرات الطفل النوبي الذكي بكار مع معزته رشيدة وأصدقائه في حلقات كارتونية ممتعة ومليئة بالقيم.'
+  },
+  {
+    id: 'ytkids-spongebob-arabic',
+    title: 'SpongeBob SquarePants Arabic',
+    arabic_title: 'سبونج بوب سكوير بانتس بالعربي',
+    content_type: 'series',
+    category: 'kids',
+    category_name: 'كارتون للأطفال',
+    year: '2024',
+    rating: '★ 9.6 كيدز',
+    poster: 'https://img.youtube.com/vi/n4j_u0rY35A/hqdefault.jpg',
+    youtube_id: 'n4j_u0rY35A',
+    stream_url: 'https://www.youtube-nocookie.com/embed/n4j_u0rY35A?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    url: 'https://www.youtube-nocookie.com/embed/n4j_u0rY35A?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    is_kids: true,
+    isEmbed: true,
+    servers: [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: 'https://www.youtube-nocookie.com/embed/n4j_u0rY35A?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3', isEmbed: true, tier: 1 }],
+    synopsis: 'أجمل مغامرات سبونج بوب وبسيط في قاع الهامور بالدبلجة العربية الأصلية عالية الجودة.'
+  },
+  {
+    id: 'ytkids-masha-bear-arabic',
+    title: 'Masha and the Bear Arabic',
+    arabic_title: 'ماشا والدب - حلقات كاملة بالعربية',
+    content_type: 'series',
+    category: 'kids',
+    category_name: 'كارتون للأطفال',
+    year: '2024',
+    rating: '★ 9.9 كيدز',
+    poster: 'https://img.youtube.com/vi/0pD_l2D7k98/hqdefault.jpg',
+    youtube_id: '0pD_l2D7k98',
+    stream_url: 'https://www.youtube-nocookie.com/embed/0pD_l2D7k98?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    url: 'https://www.youtube-nocookie.com/embed/0pD_l2D7k98?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    is_kids: true,
+    isEmbed: true,
+    servers: [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: 'https://www.youtube-nocookie.com/embed/0pD_l2D7k98?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3', isEmbed: true, tier: 1 }],
+    synopsis: 'أطرف مواقف الطفلة المشاكسة ماشا وصديقها الدب الصبور في الغابة بالعربية الفصحى.'
+  },
+  {
+    id: 'ytkids-babybus-arabic',
+    title: 'BabyBus Arabic Cartoons & Songs',
+    arabic_title: 'بيبي باص - أغاني وأفلام كرتون تعليمية',
+    content_type: 'series',
+    category: 'kids',
+    category_name: 'كارتون للأطفال',
+    year: '2024',
+    rating: '★ 9.5 كيدز',
+    poster: 'https://img.youtube.com/vi/bY8m2eJ31_k/hqdefault.jpg',
+    youtube_id: 'bY8m2eJ31_k',
+    stream_url: 'https://www.youtube-nocookie.com/embed/bY8m2eJ31_k?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    url: 'https://www.youtube-nocookie.com/embed/bY8m2eJ31_k?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    is_kids: true,
+    isEmbed: true,
+    servers: [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: 'https://www.youtube-nocookie.com/embed/bY8m2eJ31_k?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3', isEmbed: true, tier: 1 }],
+    synopsis: 'مغامرات الباندا كيكي وميو ميو لتعليم الأطفال مهارات السلامة والنظافة والأخلاق الحميدة.'
+  },
+  {
+    id: 'ytkids-cocomelon-arabic',
+    title: 'CoComelon Arabic Nursery Rhymes',
+    arabic_title: 'كوكوميلون بالعربي - أناشيد الصغار',
+    content_type: 'series',
+    category: 'kids',
+    category_name: 'كارتون للأطفال',
+    year: '2024',
+    rating: '★ 9.5 كيدز',
+    poster: 'https://img.youtube.com/vi/wKzYF1N_t90/hqdefault.jpg',
+    youtube_id: 'wKzYF1N_t90',
+    stream_url: 'https://www.youtube-nocookie.com/embed/wKzYF1N_t90?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    url: 'https://www.youtube-nocookie.com/embed/wKzYF1N_t90?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    is_kids: true,
+    isEmbed: true,
+    servers: [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: 'https://www.youtube-nocookie.com/embed/wKzYF1N_t90?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3', isEmbed: true, tier: 1 }],
+    synopsis: 'أجمل أناشيد وأغاني كوكوميلون للأطفال لتعلم الألوان والحروف بألحان مرحة وآمنة.'
+  },
+  {
+    id: 'ytkids-siraj-education',
+    title: 'Siraj Educational Cartoon',
+    arabic_title: 'سراج - كارتون تعليم الحروف والمغامرات',
+    content_type: 'series',
+    category: 'kids',
+    category_name: 'كارتون للأطفال',
+    year: '2024',
+    rating: '★ 9.8 كيدز',
+    poster: 'https://img.youtube.com/vi/L0g5U4A9r7E/hqdefault.jpg',
+    youtube_id: 'L0g5U4A9r7E',
+    stream_url: 'https://www.youtube-nocookie.com/embed/L0g5U4A9r7E?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    url: 'https://www.youtube-nocookie.com/embed/L0g5U4A9r7E?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    is_kids: true,
+    isEmbed: true,
+    servers: [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: 'https://www.youtube-nocookie.com/embed/L0g5U4A9r7E?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3', isEmbed: true, tier: 1 }],
+    synopsis: 'مسلسل كارتوني ثلاثي الأبعاد يأخذ الأطفال في رحلة شيقة لاستكشاف جمال حروف اللغة العربية.'
+  },
+  {
+    id: 'ytkids-yahya-konooz',
+    title: 'Yahya & Konooz Stories',
+    arabic_title: 'يحيى وكنوز - قصص وحضارات للأطفال',
+    content_type: 'series',
+    category: 'kids',
+    category_name: 'كارتون للأطفال',
+    year: '2024',
+    rating: '★ 9.7 كيدز',
+    poster: 'https://img.youtube.com/vi/V1kX7D8f3eA/hqdefault.jpg',
+    youtube_id: 'V1kX7D8f3eA',
+    stream_url: 'https://www.youtube-nocookie.com/embed/V1kX7D8f3eA?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    url: 'https://www.youtube-nocookie.com/embed/V1kX7D8f3eA?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    is_kids: true,
+    isEmbed: true,
+    servers: [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: 'https://www.youtube-nocookie.com/embed/V1kX7D8f3eA?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3', isEmbed: true, tier: 1 }],
+    synopsis: 'رحلة مشوقة في التاريخ والحضارة مع يحيى وكنوز لتعريف الأطفال بتاريخهم العريق بطريقة كارتونية ممتعة.'
+  },
+  {
+    id: 'ytkids-tom-jerry',
+    title: 'Tom and Jerry Classic Adventures',
+    arabic_title: 'توم وجيري - أجمل المقالب والطرائف',
+    content_type: 'movie',
+    category: 'kids',
+    category_name: 'كارتون للأطفال',
+    year: '2024',
+    rating: '★ 9.9 كيدز',
+    poster: 'https://img.youtube.com/vi/t0Q2otsqC4I/hqdefault.jpg',
+    youtube_id: 't0Q2otsqC4I',
+    stream_url: 'https://www.youtube-nocookie.com/embed/t0Q2otsqC4I?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    url: 'https://www.youtube-nocookie.com/embed/t0Q2otsqC4I?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    is_kids: true,
+    isEmbed: true,
+    servers: [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: 'https://www.youtube-nocookie.com/embed/t0Q2otsqC4I?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3', isEmbed: true, tier: 1 }],
+    synopsis: 'المطاردات الكلاسيكية الكوميدية الشهيرة بين القط توم والفأر جيري بجودة فائقة تناسب كل العائلة.'
+  },
+  {
+    id: 'ytkids-spacetoon-songs',
+    title: 'Spacetoon Golden Songs',
+    arabic_title: 'أغاني وشارات سبيستون الذهبية',
+    content_type: 'series',
+    category: 'kids',
+    category_name: 'كارتون للأطفال',
+    year: '2024',
+    rating: '★ 9.9 كيدز',
+    poster: 'https://img.youtube.com/vi/5g0d3K61L2E/hqdefault.jpg',
+    youtube_id: '5g0d3K61L2E',
+    stream_url: 'https://www.youtube-nocookie.com/embed/5g0d3K61L2E?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    url: 'https://www.youtube-nocookie.com/embed/5g0d3K61L2E?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3',
+    is_kids: true,
+    isEmbed: true,
+    servers: [{ name: 'يوتيوب كيدز آمن (بدون إعلانات)', url: 'https://www.youtube-nocookie.com/embed/5g0d3K61L2E?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3', isEmbed: true, tier: 1 }],
+    synopsis: 'باقة من أجمل أغاني وشارات كارتون سبيستون شباب المستقبل الملهمة والهادفة.'
+  }
+];
+
+function deduplicateCategoryItems(items) {
+  if (!Array.isArray(items)) return [];
+  const result = [];
+  const seenIds = new Set();
+  const seenKeys = new Set();
+  const seenPosters = new Set();
+
+  for (const it of items) {
+    if (!it) continue;
+    const id = String(it.id || '').trim();
+    if (id && seenIds.has(id)) continue;
+
+    const t = (it.arabic_title || it.title || '')
+      .replace(/[\u064B-\u065F\u0670]/g, '')
+      .replace(/[أإآ]/g, 'ا')
+      .replace(/[-_–—]/g, ' ')
+      .replace(/\b(الحلقة|حلقة|الموسم|موسم|episode|season|ep|s\d+|e\d+|\d{4})\b.*/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+
+    const poster = (it.poster || '').split('?')[0].toLowerCase();
+    const isSpecialPoster = poster && !poster.includes('data:image') && !poster.includes('svg');
+
+    if (t && seenKeys.has(t)) continue;
+    if (isSpecialPoster && seenPosters.has(poster)) continue;
+
+    if (id) seenIds.add(id);
+    if (t) seenKeys.add(t);
+    if (isSpecialPoster) seenPosters.add(poster);
+    result.push(it);
+  }
+  return result;
+}
+
 // Helper: Fetch items for a category (API-backed with in-memory fallback)
 function getItemsForCategory(categoryKey) {
   if (categoryKey === 'قنوات مباشرة' || categoryKey === 'channels' || categoryKey === 'قنوات البث المباشر') {
@@ -686,12 +940,17 @@ function getItemsForCategory(categoryKey) {
     }
   }
 
+  // Dedicated Safe YouTube Kids category
+  if (categoryKey === 'كارتون للأطفال' || categoryKey === 'كارتون كيدز للأطفال' || categoryKey === 'kids' || categoryKey === 'كارتون') {
+    return YOUTUBE_KIDS_DATASET;
+  }
+
   const catalog = window.MediaCatalog || (typeof MediaCatalog !== 'undefined' ? MediaCatalog : null);
 
   // Prefer the API-backed, cached + consolidated feed (one card per series)
   if (catalog && typeof catalog.getCachedFeed === 'function') {
     const cached = catalog.getCachedFeed(categoryKey, 1, 40);
-    if (cached && cached.length > 0) return cached;
+    if (cached && cached.length > 0) return deduplicateCategoryItems(cached);
   }
 
   // Fallback to the in-memory catalog (file:// or cache miss)
@@ -699,9 +958,9 @@ function getItemsForCategory(categoryKey) {
     const items = catalog.getFeed(categoryKey) || [];
     if (items.length > 0) {
       if (typeof catalog.consolidateSeriesItems === 'function') {
-        return catalog.consolidateSeriesItems(items);
+        return deduplicateCategoryItems(catalog.consolidateSeriesItems(items));
       }
-      return items;
+      return deduplicateCategoryItems(items);
     }
   }
 
@@ -2242,7 +2501,39 @@ function renderTrendingTop10() {
   const all = catalog.getAll() || [];
   if (all.length === 0) return;
 
-  const top10 = all.filter(m => m.poster && !m.is_live).slice(0, 10);
+  const top10 = [];
+  const seenTitles = new Set();
+  const seenPosters = new Set();
+
+  function getBaseTitle(str) {
+    if (!str) return '';
+    return str
+      .replace(/[\u064B-\u065F\u0670]/g, '')
+      .replace(/[أإآ]/g, 'ا')
+      .replace(/ة/g, 'ه')
+      .replace(/ى/g, 'ي')
+      .replace(/[-_–—]/g, ' ')
+      .replace(/\b(الحلقة|حلقة|الموسم|موسم|episode|season|ep|s\d+|e\d+|\d{4})\b.*/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+  }
+
+  for (const m of all) {
+    if (!m.poster || m.is_live) continue;
+    const baseAr = getBaseTitle(m.arabic_title || '');
+    const baseEn = getBaseTitle(m.title || '');
+    const primaryKey = baseAr || baseEn;
+    const posterKey = m.poster.split('?')[0].toLowerCase();
+
+    if (primaryKey && seenTitles.has(primaryKey)) continue;
+    if (posterKey && seenPosters.has(posterKey)) continue;
+
+    if (primaryKey) seenTitles.add(primaryKey);
+    if (posterKey) seenPosters.add(posterKey);
+    top10.push(m);
+    if (top10.length === 10) break;
+  }
   if (top10.length === 0) return;
 
   track.innerHTML = '';

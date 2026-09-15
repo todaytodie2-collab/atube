@@ -130,7 +130,9 @@ class APIController:
                 limit = 24
 
             # Resolve Arabic category/type names to canonical slugs
+            raw_c_type, raw_cat = content_type, category
             content_type, category = cls.resolve_feed_params(content_type, category)
+            print(f"[DEBUG FEED] raw: ({raw_c_type}, {raw_cat}) -> resolved: ({content_type}, {category})", flush=True)
 
             # Use the pagination engine
             result = PaginationEngine.get_paginated_feed(
@@ -169,11 +171,15 @@ class APIController:
         "مسلسلات هندي": ("series", "indian_series"),
         "مسلسلات كوري": ("series", "korean_series"),
         "مسلسلات كورية": ("series", "korean_series"),
-        "افلام انمي": ("anime", "all"),
-        "مسلسلات انمي": ("anime", "all"),
-        "انمي": ("anime", "all"),
-        "كرتون": ("anime", "all"),
-        "كارتون": ("anime", "all"),
+        "افلام انمي": ("movie", "anime"),
+        "مسلسلات انمي": ("series", "anime"),
+        "انمي": ("all", "anime"),
+        "كرتون": ("kids", "cartoon"),
+        "كارتون": ("kids", "cartoon"),
+        "كارتون للاطفال": ("kids", "cartoon"),
+        "كرتون للاطفال": ("kids", "cartoon"),
+        "كارتون كيدز للاطفال": ("kids", "cartoon"),
+        "اطفال": ("kids", "cartoon"),
         "مسرحيات": ("movie", "plays"),
         "مصارعة": ("all", "wrestling"),
         "مصارعة حرة": ("all", "wrestling"),

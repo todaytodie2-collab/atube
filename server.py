@@ -347,6 +347,58 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
                     with remote_resp:
                         status_code = remote_resp.status
+                        resp_content_type = remote_resp.headers.get("Content-Type", "").lower()
+                        is_hls = (
+                            "mpegurl" in resp_content_type or 
+                            ".m3u8" in target_url.lower() or 
+                            "application/x-mpegurl" in resp_content_type or
+                            "application/vnd.apple.mpegurl" in resp_content_type
+                        )
+
+                        if status_code == 200 and is_hls:
+                            try:
+                                body_bytes = remote_resp.read()
+                                if b"#EXTM3U" in body_bytes or is_hls:
+                                    body_text = body_bytes.decode("utf-8", errors="replace")
+                                    rewritten_lines = []
+                                    for line in body_text.splitlines():
+                                        s_line = line.strip()
+                                        if not s_line:
+                                            rewritten_lines.append(line)
+                                            continue
+                                        if s_line.startswith("#") and 'URI="' in s_line:
+                                            def _rep_uri(m):
+                                                sub_uri = m.group(1)
+                                                joined = urllib.parse.urljoin(target_url, sub_uri)
+                                                proxy_sub = f"/api/stream/proxy?url={urllib.parse.quote(joined, safe='')}"
+                                                if req_referer:
+                                                    proxy_sub += f"&referer={urllib.parse.quote(req_referer, safe='')}"
+                                                return f'URI="{proxy_sub}"'
+                                            s_line = re.sub(r'URI="([^"]+)"', _rep_uri, s_line)
+                                            rewritten_lines.append(s_line)
+                                        elif not s_line.startswith("#"):
+                                            joined = urllib.parse.urljoin(target_url, s_line)
+                                            proxy_segment = f"/api/stream/proxy?url={urllib.parse.quote(joined, safe='')}"
+                                            if req_referer:
+                                                proxy_segment += f"&referer={urllib.parse.quote(req_referer, safe='')}"
+                                            rewritten_lines.append(proxy_segment)
+                                        else:
+                                            rewritten_lines.append(line)
+                                    rewritten_body = "\n".join(rewritten_lines).encode("utf-8")
+                                    self.send_response(200)
+                                    self.send_header("Content-Type", "application/vnd.apple.mpegurl")
+                                    self.send_header("Content-Length", str(len(rewritten_body)))
+                                    self.send_header("Access-Control-Allow-Origin", self.get_cors_origin())
+                                    self.send_header("Access-Control-Allow-Headers", "Range, Authorization, *")
+                                    self.send_header("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS")
+                                    self.send_header("Cache-Control", "no-cache")
+                                    self.send_header("X-Content-Type-Options", "nosniff")
+                                    self.end_headers()
+                                    self.wfile.write(rewritten_body)
+                                    return
+                            except Exception:
+                                pass
+
                         self.send_response(status_code)
                         for h_key, h_val in remote_resp.headers.items():
                             if h_key.lower() in ["content-type", "content-length", "content-range", "accept-ranges", "last-modified", "etag"]:
@@ -418,8 +470,13 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                         self.send_cors_json(res)
                     else:
                         self.send_cors_json({"success": False, "error": "Stream Bridge service unavailable"})
+                except (ConnectionAbortedError, ConnectionResetError, BrokenPipeError):
+                    pass
                 except Exception as ex:
-                    self.send_cors_json({"success": False, "error": str(ex)})
+                    try:
+                        self.send_cors_json({"success": False, "error": str(ex)})
+                    except Exception:
+                        pass
                 return
 
             # 0.45 API: Ghost Embed Proxy & Transparent Stream Redirector
@@ -432,17 +489,71 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 try:
                     # 1. On-Demand Direct Stream Resolution
                     # If target_url can be resolved to direct m3u8 or mp4 (e.g. Vipserver, Minochinos, Vidmoly, Mixdrop):
-                    # We directly redirect to the stream proxy for clean native playback!
+                    # We directly render a pure, ad-free HTML5 / Hls.js player inside the iframe!
                     try:
-                        from stream_extractor import DirectStreamExtractor
                         resolved = DirectStreamExtractor.resolve(target_url, use_cache=True)
                         if resolved and resolved.get("success") and resolved.get("stream_url"):
                             s_url = resolved["stream_url"]
                             if any(ext in s_url.lower() for ext in [".m3u8", ".mp4", ".ts", "googlevideo", "cdn", "visitmycity", "acek-cdn", "mxcontent"]):
-                                self.send_response(302)
-                                self.send_header("Location", f"/api/stream/proxy?url={urllib.parse.quote(s_url, safe='')}")
+                                is_hls_stream = resolved.get("is_hls", False) or ".m3u8" in s_url.lower()
+                                player_html = f"""<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A TuBe Stream</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        html, body {{ width: 100vw; height: 100vh; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; }}
+        video {{ width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; object-fit: contain; background: #000; }}
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.8/dist/hls.min.js"></script>
+</head>
+<body>
+    <video id="atube-player" controls autoplay playsinline></video>
+    <script>
+        (function() {{
+            var v = document.getElementById('atube-player');
+            var stream = "/api/stream/proxy?url={urllib.parse.quote(s_url, safe='')}&referer={urllib.parse.quote(target_url, safe='')}";
+            var isHls = {'true' if is_hls_stream else 'false'};
+            if (isHls && window.Hls && window.Hls.isSupported()) {{
+                var hls = new window.Hls({{ enableWorker: true, lowLatencyMode: false }});
+                hls.loadSource(stream);
+                hls.attachMedia(v);
+                hls.on(window.Hls.Events.MANIFEST_PARSED, function() {{
+                    v.play().catch(function() {{}});
+                }});
+                hls.on(window.Hls.Events.ERROR, function(e, d) {{
+                    if (d.fatal) {{
+                        switch(d.type) {{
+                            case window.Hls.ErrorTypes.NETWORK_ERROR:
+                                hls.startLoad();
+                                break;
+                            case window.Hls.ErrorTypes.MEDIA_ERROR:
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                hls.destroy();
+                                break;
+                        }}
+                    }}
+                }});
+            }} else {{
+                v.src = stream;
+                v.play().catch(function() {{}});
+            }}
+        }})();
+    </script>
+</body>
+</html>"""
+                                raw_bytes = player_html.encode("utf-8")
+                                self.send_response(200)
+                                self.send_header("Content-Type", "text/html; charset=utf-8")
+                                self.send_header("Content-Length", str(len(raw_bytes)))
                                 self.send_header("Access-Control-Allow-Origin", "*")
+                                self.send_header("Cache-Control", "no-cache, no-store")
                                 self.end_headers()
+                                self.wfile.write(raw_bytes)
                                 return
                     except Exception:
                         pass
@@ -598,26 +709,42 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 # Handle Arabic category query mappings (e.g. category="مسلسلات تركي" or category="turkish")
                 category_map = {
                     "أفلام أجنبي": ("movie", "foreign"),
+                    "افلام اجنبي": ("movie", "foreign"),
                     "أفلام عربي": ("movie", "arabic"),
+                    "افلام عربي": ("movie", "arabic"),
                     "أفلام تركي": ("movie", "turkish"),
+                    "افلام تركي": ("movie", "turkish"),
                     "أفلام هندي": ("movie", "indian"),
+                    "افلام هندي": ("movie", "indian"),
                     "أفلام آسيوي": ("movie", "asian"),
                     "أفلام اسيوي": ("movie", "asian"),
+                    "افلام اسيوي": ("movie", "asian"),
                     "أفلام وثائقية": ("movie", "documentary"),
+                    "افلام وثائقية": ("movie", "documentary"),
                     "مسلسلات أجنبي": ("series", "foreign"),
+                    "مسلسلات اجنبي": ("series", "foreign"),
                     "مسلسلات تركي": ("series", "turkish"),
                     "مسلسلات عربي": ("series", "arabic"),
                     "مسلسلات هندي": ("series", "indian_series"),
                     "مسلسلات كورية": ("series", "korean_series"),
                     "مسلسلات كورية وآسيوية": ("series", "korean_series"),
+                    "مسلسلات كورية واسيوية": ("series", "korean_series"),
                     "مسلسلات آسيوي": ("series", "asian"),
                     "مسلسلات اسيوي": ("series", "asian"),
                     "مسلسلات وثائقية": ("series", "documentary"),
                     "أنمي": ("all", "anime"),
                     "انمي": ("all", "anime"),
                     "أفلام أنمي": ("movie", "anime"),
+                    "افلام انمي": ("movie", "anime"),
                     "مسلسلات أنمي": ("series", "anime"),
-                    "كارتون": ("all", "anime"),
+                    "مسلسلات انمي": ("series", "anime"),
+                    "كارتون": ("kids", "cartoon"),
+                    "كارتون للأطفال": ("kids", "cartoon"),
+                    "كارتون للاطفال": ("kids", "cartoon"),
+                    "كارتون كيدز للأطفال": ("kids", "cartoon"),
+                    "كارتون كيدز للاطفال": ("kids", "cartoon"),
+                    "اطفال": ("kids", "cartoon"),
+                    "أطفال": ("kids", "cartoon"),
                     "برامج": ("tv_show", "all"),
                     "وثائقيات": ("tv_show", "documentary"),
                     "مسرحيات": ("movie", "plays"),
@@ -1331,6 +1458,27 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     "message": "تم حفظ النسخة الاحتياطية بنجاح على السيرفر",
                     "saved_at": datetime.datetime.now().isoformat()
                 })
+                return
+            elif path == "/api/scratch/save-screenshot":
+                content_len = int(self.headers.get("Content-Length", 0))
+                body = self.rfile.read(content_len).decode("utf-8")
+                try:
+                    payload = json.loads(body)
+                    img_data = payload.get("image", "")
+                    if "," in img_data:
+                        img_data = img_data.split(",", 1)[1]
+                    import base64
+                    img_bytes = base64.b64decode(img_data)
+                    out_path = os.path.join(BASE_DIR, "kurtulus_frame_1m22s.jpg")
+                    with open(out_path, "wb") as f:
+                        f.write(img_bytes)
+                    art_dir = r"C:\Users\TheRift\.gemini\antigravity-ide\brain\cf297f74-1838-4596-b081-a80c174f0b5f"
+                    if os.path.exists(art_dir):
+                        with open(os.path.join(art_dir, "kurtulus_frame_1m22s.jpg"), "wb") as f:
+                            f.write(img_bytes)
+                    self.send_cors_json({"status": "success", "path": out_path})
+                except Exception as ex:
+                    self.send_cors_json({"status": "error", "error": str(ex)}, status=500)
                 return
             else:
                 self.send_cors_json({"error": "Resource not found"}, status=404)

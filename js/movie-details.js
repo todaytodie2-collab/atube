@@ -740,79 +740,76 @@ const MovieDetails = (function () {
         };
       }
 
-      // Normalize and guarantee 5-Tier Arabic Core Servers: Vidmoly, Mixdrop, Hgcloud, Bysebuho, Vipserver
-      const hasOldServers = (servers || []).some(s => {
-        const n = (s.site || s.name || s.raw_name || '').toLowerCase();
-        return n.includes('vidlink') || n.includes('multiembed') || n.includes('vidsrc') || n.includes('autoembed') || n.includes('a tube vip');
-      });
-
+      // 1. Preserve and normalize all real servers without forging invalid TMDB hashes
       let allServers = [];
-      if (!servers || servers.length === 0 || hasOldServers) {
-        const tid = movie.tmdb_id || (typeof movie.id === 'string' && movie.id.includes('-') ? movie.id.split('-').pop() : movie.id) || '969681';
-        allServers = [
-          {
-            name: 'سيرفر Vidmoly (فائق السرعة 🚀)',
-            site: 'Vidmoly',
-            raw_name: 'Vidmoly',
-            quality: '1080p FHD',
-            stream_url: `/api/watch/embed?url=${encodeURIComponent(`https://vidmoly.net/embed-${tid}.html`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
-            url: `/api/watch/embed?url=${encodeURIComponent(`https://vidmoly.net/embed-${tid}.html`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
-            badge: 'فائق السرعة 🚀',
-            size: '1.4 GB',
-            latency: '28ms',
-            isEmbed: true
-          },
-          {
-            name: 'سيرفر Mixdrop (سحابي مباشر ⚡)',
-            site: 'Mixdrop',
-            raw_name: 'Mixdrop',
-            quality: '1080p HD',
-            stream_url: `/api/watch/embed?url=${encodeURIComponent(`https://mixdrop.top/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
-            url: `/api/watch/embed?url=${encodeURIComponent(`https://mixdrop.top/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
-            badge: 'سحابي مباشر ⚡',
-            size: '1.1 GB',
-            latency: '45ms',
-            isEmbed: true
-          },
-          {
-            name: 'سيرفر Hgcloud (سيرفر VIP 💎)',
-            site: 'Hgcloud',
-            raw_name: 'Hgcloud',
-            quality: '1080p FHD',
-            stream_url: `/api/watch/embed?url=${encodeURIComponent(`https://hgcloud.to/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
-            url: `/api/watch/embed?url=${encodeURIComponent(`https://hgcloud.to/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
-            badge: 'VIP 💎',
-            size: '1.3 GB',
-            latency: '35ms',
-            isEmbed: true
-          },
-          {
-            name: 'سيرفر Bysebuho (سيرفر أصلي 🎬)',
-            site: 'Bysebuho',
-            raw_name: 'Bysebuho',
-            quality: '1080p HD',
-            stream_url: `/api/watch/embed?url=${encodeURIComponent(`https://bysebuho.com/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
-            url: `/api/watch/embed?url=${encodeURIComponent(`https://bysebuho.com/e/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
-            badge: 'سيرفر أصلي 🎬',
-            size: '890 MB',
-            latency: '52ms',
-            isEmbed: true
-          },
-          {
-            name: 'سيرفر Vipserver (سيرفر عالي الثبات 🌟)',
-            site: 'Vipserver',
-            raw_name: 'Vipserver',
-            quality: '1080p HD',
-            stream_url: `/api/watch/embed?url=${encodeURIComponent(`https://vipserver.liiivideo.com/embed/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
-            url: `/api/watch/embed?url=${encodeURIComponent(`https://vipserver.liiivideo.com/embed/${tid}`)}&referer=${encodeURIComponent('https://vid.mycima.cc/')}`,
-            badge: 'عالي الثبات 🌟',
-            size: '750 MB',
-            latency: '60ms',
-            isEmbed: true
+      if (Array.isArray(servers) && servers.length > 0) {
+        allServers = servers.map((s, sIdx) => {
+          const rawUrl = s.url || s.stream_url || '';
+          const isDirect = (/\.(m3u8|mp4|mkv|webm)($|\?)/i).test(rawUrl);
+          const isTrusted = /vidlink|multiembed|2embed|vidsrc|autoembed/i.test(rawUrl);
+          let finalUrl = rawUrl;
+          if (!isDirect && !isTrusted && rawUrl.startsWith('http') && !rawUrl.includes('/api/watch/embed') && !rawUrl.includes('/api/stream/')) {
+            let spoofedRef = 'https://mycima.buzz/';
+            const lower = rawUrl.toLowerCase();
+            if (lower.includes('bysebuho') || lower.includes('minochinos') || lower.includes('megamax') || lower.includes('egydead')) {
+              spoofedRef = 'https://egydead.live/';
+            } else if (lower.includes('vidmoly')) {
+              spoofedRef = 'https://vidmoly.to/';
+            } else if (lower.includes('mixdrop')) {
+              spoofedRef = 'https://mixdrop.ag/';
+            }
+            finalUrl = `/api/watch/embed?url=${encodeURIComponent(rawUrl)}&referer=${encodeURIComponent(spoofedRef)}`;
           }
-        ];
+          return {
+            ...s,
+            name: s.name || s.server_name || `سيرفر المشاهدة ${sIdx + 1} ⚡`,
+            stream_url: finalUrl,
+            url: finalUrl,
+            raw_url: rawUrl,
+            quality: s.quality || '1080p FHD',
+            badge: s.badge || (isDirect ? 'مباشر ⚡' : (isTrusted ? 'عالمي ⭐' : 'درع خفي 🛡️')),
+            size: s.size || (sIdx === 0 ? '1.4 GB' : (sIdx === 1 ? '1.1 GB' : '850 MB')),
+            latency: s.latency || (sIdx === 0 ? '25ms' : '45ms'),
+            isEmbed: !isDirect
+          };
+        });
       } else {
-        allServers = [...servers];
+        // Fallback to universal TMDB mirrors only if no scraped servers exist
+        const tid = movie.tmdb_id || (typeof movie.id === 'string' && movie.id.includes('-') ? movie.id.split('-').pop() : movie.id);
+        if (tid && String(tid).match(/^\d+$/)) {
+          allServers = [
+            {
+              name: 'سيرفر VidLink Ultra (سحابي FHD • مترجم)',
+              url: `https://vidlink.pro/movie/${tid}?primaryColor=00e5ff&secondaryColor=ff0055`,
+              stream_url: `https://vidlink.pro/movie/${tid}?primaryColor=00e5ff&secondaryColor=ff0055`,
+              quality: '1080p FHD',
+              badge: 'عالمي ⭐',
+              size: '1.4 GB',
+              latency: '24ms',
+              isEmbed: true
+            },
+            {
+              name: 'سيرفر MultiEmbed (متعدد الجودات • مترجم)',
+              url: `https://multiembed.mov/?video_id=${tid}&tmdb=1`,
+              stream_url: `https://multiembed.mov/?video_id=${tid}&tmdb=1`,
+              quality: '1080p HD',
+              badge: 'احتياطي 🌐',
+              size: '1.1 GB',
+              latency: '38ms',
+              isEmbed: true
+            },
+            {
+              name: 'سيرفر 2Embed (عالي السرعة 🚀)',
+              url: `https://www.2embed.cc/embed/${tid}`,
+              stream_url: `https://www.2embed.cc/embed/${tid}`,
+              quality: '1080p HD',
+              badge: 'بديل سريع 🚀',
+              size: '950 MB',
+              latency: '45ms',
+              isEmbed: true
+            }
+          ];
+        }
       }
 
       const qualitySizes = [
@@ -908,7 +905,8 @@ const MovieDetails = (function () {
               name: `${mediaTitle} (${quality})`,
               title: mediaTitle,
               category: movie.category_name || movie.category || 'A Tube Ultra HD',
-              streamUrl: srv.url || srv.stream_url,
+              streamUrl: srv.raw_url || srv.url || srv.stream_url,
+              raw_url: srv.raw_url || srv.url || srv.stream_url,
               quality: quality,
               content_type: movie.content_type,
               servers: allServers
