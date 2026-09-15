@@ -36,11 +36,12 @@ class InvisibleStreamBridge:
 
     @classmethod
     def get_cached_direct_stream(cls, media_id: str, season: Optional[int] = None, episode: Optional[int] = None) -> Optional[Dict[str, Any]]:
-        """Checks local SQLite database for pre-extracted direct streams."""
+        """Checks local SQLite database and resolves direct streams on-demand via TTL cache."""
         if not os.path.exists(DB_PATH) or not media_id:
             return None
         try:
-            conn = sqlite3.connect(DB_PATH)
+            conn = sqlite3.connect(DB_PATH, timeout=15.0)
+            conn.execute("PRAGMA busy_timeout=15000;")
             cur = conn.cursor()
             if season is not None and episode is not None:
                 cur.execute("""
@@ -61,16 +62,21 @@ class InvisibleStreamBridge:
 
             for row in rows:
                 name, url, quality, badge = row
-                if url and any(ext in url.lower() for ext in ['.m3u8', '.mp4', 'stream', 'hls']):
+                if not url:
+                    continue
+                # On-demand resolution with TTL RAM caching
+                resolved = DirectStreamExtractor.resolve(url)
+                if resolved.get("success") and resolved.get("stream_url"):
                     return {
                         "success": True,
-                        "stream_url": url,
-                        "server_name": name or "سيرفر البث المباشر الفوري",
+                        "stream_url": resolved["stream_url"],
+                        "server_name": name or resolved.get("server_name", "سيرفر البث المباشر"),
                         "quality": quality or "1080p FHD",
-                        "is_direct": True,
-                        "is_hls": ".m3u8" in url.lower(),
+                        "is_direct": resolved.get("is_direct", True),
+                        "is_hls": resolved.get("is_hls", False),
                         "badge": badge or "سريع ⚡",
-                        "source": "cache"
+                        "source": "db_ondemand_cache",
+                        "cached": resolved.get("cached", False)
                     }
         except Exception:
             pass
@@ -178,8 +184,9 @@ class InvisibleStreamBridge:
 
                 if processed_matrix:
                     top_stream = processed_matrix[0]
-                    if media_id and top_stream.get("is_direct"):
-                        cls.save_server_to_db(media_id, top_stream["name"], top_stream["url"], top_stream["quality"], season, episode)
+                    if media_id:
+                        source_url = top_stream.get("original_url") or top_stream["url"]
+                        cls.save_server_to_db(media_id, top_stream["name"], source_url, top_stream["quality"], season, episode)
 
                     return {
                         "success": True,
@@ -291,7 +298,8 @@ class InvisibleStreamBridge:
         if not os.path.exists(DB_PATH) or not media_id or not url:
             return
         try:
-            conn = sqlite3.connect(DB_PATH)
+            conn = sqlite3.connect(DB_PATH, timeout=15.0)
+            conn.execute("PRAGMA busy_timeout=15000;")
             cur = conn.cursor()
             cur.execute("""
                 INSERT OR REPLACE INTO vod_servers (media_id, season_number, episode_number, site, quality, server_name, stream_url, badge)

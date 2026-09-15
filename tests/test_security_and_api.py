@@ -137,3 +137,42 @@ class TestCORSRestrictions:
         # Should not echo malicious origin
         assert origin != "http://malicious-attacker-site.com"
         assert "localhost" in origin
+
+
+class TestStreamResolverAndProxy:
+    def test_ttl_cache_hit_and_eviction(self):
+        from stream_extractor import DirectStreamExtractor, StreamTTLCache
+        cache = StreamTTLCache(default_ttl_seconds=3600)
+        test_url = "https://cdn.example.com/test_movie.m3u8"
+        cache.set(test_url, {"success": True, "stream_url": test_url})
+        hit = cache.get(test_url)
+        assert hit is not None
+        assert hit["cached"] is True
+        assert hit["ttl_remaining"] > 0
+
+    def test_header_spoofing_table(self):
+        from stream_extractor import DirectStreamExtractor
+        headers_megamax = DirectStreamExtractor.get_spoofed_headers("https://eg.megamax.cam/watch/abc")
+        assert headers_megamax["Referer"] == "https://egydead.live/"
+        assert headers_megamax["Origin"] == "https://egydead.live"
+
+        headers_vidmoly = DirectStreamExtractor.get_spoofed_headers("https://vidmoly.to/embed-xyz")
+        assert headers_vidmoly["Referer"] == "https://vidmoly.to/"
+
+        headers_mixdrop = DirectStreamExtractor.get_spoofed_headers("https://mixdrop.ag/e/123")
+        assert headers_mixdrop["Referer"] == "https://mixdrop.ag/"
+
+    def test_multi_tier_failover_matrix(self):
+        from stream_extractor import DirectStreamExtractor
+        servers = [
+            {"name": "Vidmoly VIP", "url": "https://vidmoly.to/w/999"},
+            {"name": "Mixdrop Cloud", "url": "https://mixdrop.ag/f/888"}
+        ]
+        matrix = DirectStreamExtractor.build_failover_matrix(servers, tmdb_id="634649")
+        assert len(matrix) >= 4
+        # Tier 1 should be the direct/harvester servers
+        assert matrix[0]["tier"] == 1
+        # Tier 3 should be VidLink / MultiEmbed
+        assert matrix[-1]["tier"] == 3
+        assert "vidlink" in matrix[-2]["url"] or "multiembed" in matrix[-1]["url"]
+

@@ -315,28 +315,16 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     return
 
                 req_referer = query.get("referer", [None])[0] or query.get("ref", [None])[0]
-                if not req_referer:
-                    if "megamax" in target_url:
-                        req_referer = "https://egydead.live/"
-                    elif "vidmoly" in target_url:
-                        req_referer = "https://vidmoly.to/"
-                    elif "fasel" in target_url:
-                        req_referer = "https://www.fasel-hd.co/"
-                    elif "mixdrop" in target_url:
-                        req_referer = "https://mixdrop.ag/"
-                    elif "akwam" in target_url:
-                        req_referer = "https://akwam.to/"
-                    else:
-                        req_referer = target_url
+                req_ua = query.get("user_agent", [None])[0] or query.get("ua", [None])[0]
+                req_origin = query.get("origin", [None])[0]
+
+                proxy_headers = DirectStreamExtractor.get_spoofed_headers(target_url, custom_referer=req_referer)
+                if req_ua:
+                    proxy_headers["User-Agent"] = req_ua
+                if req_origin:
+                    proxy_headers["Origin"] = req_origin
 
                 client_range = self.headers.get("Range")
-                proxy_headers = {
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-                    "Referer": req_referer,
-                    "Origin": (urllib.parse.urlparse(req_referer).scheme + "://" + urllib.parse.urlparse(req_referer).netloc) if req_referer else "https://egydead.live",
-                    "Accept": "*/*",
-                    "Accept-Encoding": "identity"
-                }
                 if client_range:
                     proxy_headers["Range"] = client_range
 
@@ -980,12 +968,43 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     self.send_cors_json(res)
                 except Exception as ex_resolve:
                     self.send_cors_json({
-                        "success": True,
-                        "stream_url": stream_target,
-                        "is_hls": ".m3u8" in stream_target.lower(),
-                        "format": "hls" if ".m3u8" in stream_target.lower() else "mp4",
-                        "error": str(ex_resolve)
+                        "success": False,
+                        "error": f"فشل استخراج البث: {str(ex_resolve)}",
+                        "fallback_url": stream_target,
+                        "isEmbed": True
                     })
+                return
+
+            # 5b-1. API: Stream Failover Matrix Builder
+            elif path == "/api/stream/failover-matrix":
+                media_id = query.get("media_id", [""])[0]
+                tmdb_id = query.get("tmdb_id", [None])[0]
+                c_type = query.get("type", ["movie"])[0]
+                s_str = query.get("season", [None])[0]
+                e_str = query.get("episode", [None])[0]
+                s_num = int(s_str) if s_str and s_str.isdigit() else None
+                e_num = int(e_str) if e_str and e_str.isdigit() else None
+
+                servers_list = []
+                if HAS_SERVICES and media_id:
+                    try:
+                        servers_list = VODDatabase.get_media_servers(media_id, season_number=s_num, episode_number=e_num)
+                    except Exception:
+                        servers_list = []
+
+                matrix = DirectStreamExtractor.build_failover_matrix(
+                    servers_list,
+                    tmdb_id=tmdb_id,
+                    content_type=c_type,
+                    season=s_num,
+                    episode=e_num
+                )
+                self.send_cors_json({"success": True, "count": len(matrix), "servers": matrix})
+                return
+
+            # 5b-2. API: Stream Cache Telemetry & Invalidation
+            elif path == "/api/stream/cache-stats":
+                self.send_cors_json({"success": True, "cache": DirectStreamExtractor.cache.stats()})
                 return
 
             # 5b-2. API: Video File Size Probe (Content-Length in MB/GB)
