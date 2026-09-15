@@ -8711,6 +8711,14 @@
         "badge": "FaselHD ⭐",
         "quality": "1080p FHD",
         "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=N0ZYb0VkMXIvN0Yrd2hsOU1TTFMzNnpkd0ErTmFjbUxiZEhTbzZVUFhsOEZmMWx5Mzg5R2s4UVphR3orWDBQQzhjK05kMGw3N0VtSy9Lc2lPVkQ0K0ZEQ1UrVExWblRXeUNYNStPejRIZFgySWc0NnRjTUdSbnc1T2JEMFdmOFVLQWxhUHRGZWpJQmwxMnVHS2xKWFVKeXRnM3NOVWp2eWUzY1FiaDN1eStLaVlkdWNVaXZWU2Fhd3NCOUVjQ1ZIMHJCMTlUdG9iVXdEVTFJYWxoV2R4R1B5SzJ1aG4vcXk4dXIxMk1ibnA1bz06Or4edgi062QR20BkESsFnRA%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ],
     "stills": [
@@ -8866,6 +8874,14 @@
       {
         "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
         "stream_url": "https://www.fasel-hd.co/video_player?player_token=QWFPTWpIZVFFTnIyMVNNRjRjR3Y5cll5bkpWMy9NTmtrV2V5dnN5TnRUZ3NYSWMvMFhHbVVwd2tBamRNUGt5MU5VclpkWGRkYklFbXB1OG5TRnRWUlR0TGlaTVlqdVhRWWhBd1A5RFRVVE9PbjVOUEk3ckxwbDhiWitpWHVrYkd6ZVdnbzVuWUVENmdyVmg4S08wWU9kd3BuY21FOEUxL2dDTFpXSzJDelNIQmVncnI4U1NFS0lPS0NJa3BGN0hXdHBPczZoOTRMakZ2TGZjaEt6S2VUTk1nWWRnVFgyZyt4eGNxckE1QjR3TT06OshIAZ1ACEZ4dxRCHNuWtHU%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=MmNqZkJYeG56Uk1DN2NSN2dpTVc2N3IvcmxsUnB5WHpyUFJUdEVtQ2EwRTNOcWU3ZzIzY0U2UTkzTGU1TU5iazBSMDBSSUxQWkRiS1RKZXdqa21xRTRnRTVNclozY2FQa0s1Skt2dlp2U0I1c3U4VnRIVUZ3WFBOcTRvUm11OWtkbGNjc2xKeStjSFZ5TzBlaWZVTnpYeHd4NW95aU5Zb1VLdndmOTFvTHJvajY2WlhWU0s3YnQ5Y1JlckVWRU5VWnhaT0h1anI0M0F2aXN1MUFHaWowdkd6UGZ0YlUwT056bkNuc3Z1OFJrYz06Oil1ZxpudfpZiaY35IaQLCQ%3D",
         "site": "FaselHD",
         "badge": "FaselHD ⭐",
         "quality": "1080p FHD",
@@ -52466,15 +52482,15 @@
       }
     ],
     "stills": [
-      "https://image.tmdb.org/t/p/w500/qFNoS2RJRFVOpwSx7YuCGTX1gqo.jpg",
       "https://image.tmdb.org/t/p/w500/A8cbD8HTMUHAzLaGTJgQqb3X95S.jpg",
-      "https://image.tmdb.org/t/p/w500/2BWg9JG79v1eNf0Pvx6u3MlrWRp.jpg",
+      "https://image.tmdb.org/t/p/w500/rMfDaKeyNiHXkszNxB065dKagV6.jpg",
       "https://image.tmdb.org/t/p/w500/sPy3TApYwRN56wOfPsUPaOhEtTX.jpg",
-      "https://image.tmdb.org/t/p/w500/6TSxLmwT7j1ugtKi8NyMmdzWAGj.jpg",
       "https://image.tmdb.org/t/p/w500/dSAGnA3OZs0cC3JQ0GLqQVndZON.jpg",
       "https://image.tmdb.org/t/p/w500/sgIZiW15kFifR2y1SwAr6DyOZ8s.jpg",
-      "https://image.tmdb.org/t/p/w500/rMfDaKeyNiHXkszNxB065dKagV6.jpg",
-      "https://image.tmdb.org/t/p/w500/sSKamRdD04b2LaTfLf8UQ5iA4lP.jpg"
+      "https://image.tmdb.org/t/p/w500/6TSxLmwT7j1ugtKi8NyMmdzWAGj.jpg",
+      "https://image.tmdb.org/t/p/w500/sSKamRdD04b2LaTfLf8UQ5iA4lP.jpg",
+      "https://image.tmdb.org/t/p/w500/qFNoS2RJRFVOpwSx7YuCGTX1gqo.jpg",
+      "https://image.tmdb.org/t/p/w500/2BWg9JG79v1eNf0Pvx6u3MlrWRp.jpg"
     ]
   },
   {
@@ -279638,6 +279654,14 @@
         "badge": "FaselHD ⭐",
         "quality": "1080p FHD",
         "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=UHAycGVUL0NJd0M1eGx0VDQwUTZJbFM5SGxkL3BQQ3BzZ3duVlZ6Y3ROaUswRVowcXdyVXpMR1dZeHk1Yy8waXhMbUdpUk1DYVdUUTF3K2ZNbW83bEJCZ2UrVGkxakhNbUw0b2ljeHU5ZmZnZXAzYXlhWU5KV3ZGREZmUmpMV3VKbzFDZDVyMUlGVkZNcGkyTmpRK1plcWdrOUFBTE9yRFdSVnAyb3l2UVZVWndTaHplWEtmTEhvVldIRjBiQXdjWUJyMjdLUi9YQ2Z0djZjc0NJZVJ0OWJFN25FMkl2aFBTRkh3RktvTUVPVT06Oo7FZ3fy%2B7C9wLipwLu4OCg%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ],
     "tmdb_id": 550988,
@@ -280651,5 +280675,183 @@
       "https://image.tmdb.org/t/p/w500/eeta4WBMLIKkAdNfoy4csIDzUgE.jpg"
     ],
     "tmdb_id": 243959
+  },
+  {
+    "id": "حب-ع-ورق-الحلقة-68-الثامنة-والستون-2026-96ee1807a",
+    "title": "حب ع ورق الحلقة 68 الثامنة والستون",
+    "arabic_title": "حب ع ورق الحلقة 68 الثامنة والستون",
+    "content_type": "series",
+    "category": "foreign",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/96ee1807a-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/96ee1807a-1.jpg",
+    "synopsis": "مشاهدة وتحميل الحلقة 68 الثامنة والستون من مسلسل &quot;حب ع ورق Hob Ala Waraq&quot; بطولة أنس طيارة اون لاين HD يوتيوب ايجي بست، شاهد جميع حلقات مسلسل...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 0,
+    "servers": [
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-vnjhif3by9wv.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/nl07g8e4i77erk",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/8ju0rcg9d1j6",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/gxeuqyt6e2p7",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-q0lqf9kiywox.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      }
+    ]
+  },
+  {
+    "id": "stuart-fails-to-save-the-universe-الحلقة-9-التاسعة-2026-6d0b7b8f8",
+    "title": "Stuart Fails to Save the Universe الحلقة 9 التاسعة",
+    "arabic_title": "Stuart Fails to Save the Universe الحلقة 9 التاسعة",
+    "content_type": "series",
+    "category": "foreign",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/6d0b7b8f8-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/6d0b7b8f8-1.jpg",
+    "synopsis": "مشاهدة وتحميل الحلقة 9 التاسعة من مسلسل &quot; Stuart Fails to Save the Universe الموسم الاول&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 0,
+    "servers": [
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-ufwrbzqqq9zr.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/r6w84j8dt3zzop",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/uvqvhwr2ibwi",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/ogzr3xfqukhs",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-b5dkabhb01qw.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      }
+    ]
   }
 ]

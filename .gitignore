@@ -39,3 +39,6 @@ config/dork_cache/
 releases/
 .pytest_cache/
 *_Report.md
+.vscode/
+.idea/
+
