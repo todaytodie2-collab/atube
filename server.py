@@ -574,11 +574,11 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     "مسلسلات آسيوي": ("series", "asian"),
                     "مسلسلات اسيوي": ("series", "asian"),
                     "مسلسلات وثائقية": ("series", "documentary"),
-                    "أنمي": ("anime", "all"),
-                    "انمي": ("anime", "all"),
-                    "أفلام أنمي": ("anime", "all"),
-                    "مسلسلات أنمي": ("anime", "all"),
-                    "كارتون": ("anime", "all"),
+                    "أنمي": ("all", "anime"),
+                    "انمي": ("all", "anime"),
+                    "أفلام أنمي": ("movie", "anime"),
+                    "مسلسلات أنمي": ("series", "anime"),
+                    "كارتون": ("all", "anime"),
                     "برامج": ("tv_show", "all"),
                     "وثائقيات": ("tv_show", "documentary"),
                     "مسرحيات": ("movie", "plays"),
@@ -611,7 +611,12 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     elif "اسيوي" in norm_cat or "آسيوي" in norm_cat:
                         c_type, category = ("movie" if "فيلم" in norm_cat else "series"), "asian"
                     elif "انمي" in norm_cat or "anime" in norm_cat:
-                        c_type, category = "all", "anime"
+                        if "فيلم" in norm_cat or "افلام" in norm_cat:
+                            c_type, category = "movie", "anime"
+                        elif "مسلسل" in norm_cat or "حلقات" in norm_cat:
+                            c_type, category = "series", "anime"
+                        else:
+                            c_type, category = "all", "anime"
                     elif "وثائق" in norm_cat or "برامج" in norm_cat:
                         c_type, category = "tv_show", "documentary"
 
