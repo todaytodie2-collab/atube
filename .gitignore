@@ -1,6 +1,9 @@
 __pycache__/
 *.pyc
 *.log
+.env
+.env.*
+!.env.example
 scratch/
 .system_generated/
 catalog.backup.*.json

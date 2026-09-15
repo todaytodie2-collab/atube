@@ -11,7 +11,6 @@ import sys
 import re
 import json
 import time
-import ssl
 import sqlite3
 import urllib.request
 import urllib.parse
@@ -78,16 +77,57 @@ class InvisibleStreamBridge:
         return None
 
     @classmethod
-    def resolve_clean_stream(cls, title: str, year: str = "", content_type: str = "movie", 
-                             season: Optional[int] = None, episode: Optional[int] = None, 
+    def _sanitize_input(cls, value: str, max_len: int = 200, allow_digits_only: bool = False) -> str:
+        """Strict input sanitizer: strips control characters, enforces max length, prevents injection."""
+        if not value or not isinstance(value, str):
+            return ""
+        # Remove control characters and null bytes
+        sanitized = re.sub(r'[\x00-\x1f\x7f]', '', value)
+        # Remove potentially dangerous shell/SQL/path injection patterns
+        sanitized = re.sub(r'[;|&`$(){}]', '', sanitized)
+        # Strip leading/trailing whitespace
+        sanitized = sanitized.strip()
+        # Enforce max length
+        return sanitized[:max_len]
+
+    @classmethod
+    def resolve_clean_stream(cls, title: str, year: str = "", content_type: str = "movie",
+                             season: Optional[int] = None, episode: Optional[int] = None,
                              media_id: Optional[str] = None) -> Dict[str, Any]:
         """
         Main Bridge Resolver:
-        1. Checks database cache.
-        2. Queries Arabic web portals (Akwam, ArabSeed, FaselHD, EgyDead).
-        3. Extracts and tests direct streams.
-        4. Returns the fastest verified stream with zero ads.
+        1. Validates and sanitizes all inputs.
+        2. Checks database cache.
+        3. Queries Arabic web portals (Akwam, ArabSeed, FaselHD, EgyDead).
+        4. Extracts and tests direct streams.
+        5. Returns the fastest verified stream with zero ads.
         """
+        # ── Input Validation & Sanitization ─────────────────────────────────
+        title = cls._sanitize_input(title, max_len=200)
+        year = cls._sanitize_input(year, max_len=4)
+        media_id = cls._sanitize_input(str(media_id or ""), max_len=100)
+        content_type = cls._sanitize_input(content_type, max_len=30)
+
+        # Validate year is a real numeric year
+        if year and (not year.isdigit() or not (1900 <= int(year) <= 2100)):
+            year = ""
+
+        # Validate season/episode are safe integers
+        if season is not None:
+            try:
+                season = max(1, min(int(season), 50))
+            except (ValueError, TypeError):
+                season = None
+        if episode is not None:
+            try:
+                episode = max(1, min(int(episode), 500))
+            except (ValueError, TypeError):
+                episode = None
+
+        if not title and not media_id:
+            return {"success": False, "error": "العنوان أو معرف المحتوى مطلوب"}
+        # ─────────────────────────────────────────────────────────────────────
+
         start_time = time.time()
 
         # 1. Check local cache

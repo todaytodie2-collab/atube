@@ -5,12 +5,14 @@
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "any",
   "background_color": "#04090e",
   "theme_color": "#04090e",
   "dir": "rtl",
   "lang": "ar",
   "categories": ["entertainment", "video", "multimedia"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "assets/aljazeera.svg",
@@ -22,13 +24,28 @@
   "shortcuts": [
     {
       "name": "الرئيسية",
+      "short_name": "الرئيسية",
       "url": "./index.html",
       "description": "الصفحة الرئيسية لـ A TuBe"
     },
     {
       "name": "البث المباشر",
+      "short_name": "قنوات",
       "url": "./index.html#channels",
       "description": "قنوات البث المباشر الفضائية"
+    },
+    {
+      "name": "الأفلام",
+      "short_name": "أفلام",
+      "url": "./index.html#movies",
+      "description": "مكتبة الأفلام بجودة HD"
+    },
+    {
+      "name": "المسلسلات",
+      "short_name": "مسلسلات",
+      "url": "./index.html#series",
+      "description": "أحدث المسلسلات العربية والعالمية"
     }
   ]
 }
+

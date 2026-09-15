@@ -43,6 +43,8 @@ except ImportError:
     ContentRegistry = None  # type: ignore
     _HAS_REGISTRY = False
 
+from ssl_context import SCRAPER_CTX
+
 class ContentIngestEngine:
     HEADERS = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
@@ -50,10 +52,8 @@ class ContentIngestEngine:
         'Accept-Language': 'ar,en;q=0.9'
     }
 
-    # SSL Context allowing HTTPS scraping
-    SSL_CTX = ssl.create_default_context()
-    SSL_CTX.check_hostname = False
-    SSL_CTX.verify_mode = ssl.CERT_NONE
+    # SSL Context — uses centralized scraper context (verified by default, fallback for legacy hosts)
+    SSL_CTX = SCRAPER_CTX
 
     @classmethod
     def fetch_html(cls, url: str, referer: Optional[str] = None, timeout: float = 10.0) -> str:

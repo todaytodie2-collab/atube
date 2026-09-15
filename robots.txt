@@ -1,0 +1,18 @@
+# robots.txt for A TuBe Ultra HD Media Experience
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /css/
+Allow: /js/
+Allow: /assets/
+
+# Disallow administrative and proxy endpoints from crawler indexing
+Disallow: /api/admin/
+Disallow: /api/crawler/
+Disallow: /api/stream/proxy
+Disallow: /api/tmdb/proxy
+Disallow: /api/sync/
+Disallow: /config/
+
+# Sitemap location
+Sitemap: http://localhost:8085/sitemap.xml

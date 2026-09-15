@@ -97,8 +97,8 @@ class RemoteConfigManager:
     def get_tmdb_api_key(self) -> str:
         env_key = os.environ.get("TMDB_API_KEY")
         if env_key:
-            return env_key
-        return self.config_data.get("tmdb", {}).get("api_key", "cabefb963ee5db1ecd2c5778bda9b6d0")
+            return env_key.strip()
+        return self.config_data.get("tmdb", {}).get("api_key", "").strip()
 
     def get_iptv_channels(self) -> List[Dict[str, Any]]:
         return self.config_data.get("iptv_channels", [])
@@ -110,7 +110,7 @@ class RemoteConfigManager:
         """
         defaults = {
             "base_url": "https://api.oscar-tv.net/api/v1",
-            "token": "bearer_oscar_vod_token_live_2026",
+            "token": os.environ.get("OSCAR_VOD_TOKEN", ""),
             "user_agent": "OscarTV-VOD/3.4.0 (Linux; Android 12; Build/SQ1D.220205.004)",
             "app_id": "com.oscartv.app",
             "endpoints": {

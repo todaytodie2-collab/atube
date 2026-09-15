@@ -23,11 +23,26 @@ except Exception:
     m3u8 = None
     HAS_M3U8 = False
 
+try:
+    import certifi
+    HAS_CERTIFI = True
+except Exception:
+    certifi = None
+    HAS_CERTIFI = False
+
 class DirectStreamExtractor:
     USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
     @classmethod
-    def _create_ssl_context(cls):
+    def _create_ssl_context(cls, insecure_fallback: bool = False):
+        if not insecure_fallback:
+            try:
+                if HAS_CERTIFI and certifi:
+                    return ssl.create_default_context(cafile=certifi.where())
+                return ssl.create_default_context()
+            except Exception:
+                pass
+        # Controlled fallback for legacy/regional CDN domains without CA root
         ctx = ssl.create_default_context()
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE
@@ -44,9 +59,17 @@ class DirectStreamExtractor:
             headers["Referer"] = referer
         
         req = urllib.request.Request(url, headers=headers)
-        ctx = cls._create_ssl_context()
-        with urllib.request.urlopen(req, context=ctx, timeout=timeout) as resp:
-            return resp.read().decode('utf-8', errors='ignore')
+        try:
+            ctx = cls._create_ssl_context(insecure_fallback=False)
+            with urllib.request.urlopen(req, context=ctx, timeout=timeout) as resp:
+                return resp.read().decode('utf-8', errors='ignore')
+        except ssl.SSLError as ssl_err:
+            if os.environ.get("ATUBE_STRICT_TLS", "0") == "1":
+                raise ssl_err
+            # Safe logged fallback for non-strict mode
+            ctx_fallback = cls._create_ssl_context(insecure_fallback=True)
+            with urllib.request.urlopen(req, context=ctx_fallback, timeout=timeout) as resp:
+                return resp.read().decode('utf-8', errors='ignore')
 
     @classmethod
     def resolve(cls, stream_url: str) -> Dict[str, Any]:

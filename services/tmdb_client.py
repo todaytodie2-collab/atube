@@ -27,7 +27,12 @@ CATALOG_JSON = os.path.join(PROJECT_ROOT, "catalog.json")
 BUNDLED_JS = os.path.join(PROJECT_ROOT, "js", "bundled-data.js")
 DB_PATH = os.path.join(PROJECT_ROOT, "config", "atube_data.sqlite")
 
-DEFAULT_TMDB_API_KEY = "cabefb963ee5db1ecd2c5778bda9b6d0"
+try:
+    import env_loader
+except ImportError:
+    pass
+
+DEFAULT_TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "")
 IMG_BASE_W500 = "https://image.tmdb.org/t/p/w500"
 IMG_BASE_ORIGINAL = "https://image.tmdb.org/t/p/original"
 

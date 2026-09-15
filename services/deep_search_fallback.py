@@ -23,6 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, "services"))
 
 from stream_extractor import DirectStreamExtractor
+from ssl_context import SCRAPER_CTX
 
 
 class DeepSearchFallbackEngine:
@@ -32,9 +33,7 @@ class DeepSearchFallbackEngine:
         'Accept-Language': 'ar,en-US;q=0.9,en;q=0.8'
     }
 
-    SSL_CTX = ssl.create_default_context()
-    SSL_CTX.check_hostname = False
-    SSL_CTX.verify_mode = ssl.CERT_NONE
+    SSL_CTX = SCRAPER_CTX
 
     # Known video stream provider patterns
     STREAM_HOST_PATTERNS = [

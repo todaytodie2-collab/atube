@@ -17,10 +17,15 @@ from typing import Dict, Any, Optional
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
+try:
+    from ssl_context import SCRAPER_CTX as _SCRAPER_CTX
+except ImportError:
+    _SCRAPER_CTX = ssl.create_default_context()
+    _SCRAPER_CTX.check_hostname = False
+    _SCRAPER_CTX.verify_mode = ssl.CERT_NONE
+
 class StreamHealthValidator:
-    SSL_CTX = ssl.create_default_context()
-    SSL_CTX.check_hostname = False
-    SSL_CTX.verify_mode = ssl.CERT_NONE
+    SSL_CTX = _SCRAPER_CTX
 
     HEADERS = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',

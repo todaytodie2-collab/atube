@@ -47,6 +47,7 @@ except Exception:
     HAS_HTTPX = False
 
 from stream_extractor import DirectStreamExtractor
+from ssl_context import SCRAPER_CTX
 
 
 class GoogleDorkScraper:
@@ -56,9 +57,7 @@ class GoogleDorkScraper:
         'Accept-Language': 'ar,en-US;q=0.9,en;q=0.8'
     }
 
-    SSL_CTX = ssl.create_default_context()
-    SSL_CTX.check_hostname = False
-    SSL_CTX.verify_mode = ssl.CERT_NONE
+    SSL_CTX = SCRAPER_CTX
 
     STREAM_HOST_PATTERNS = [
         (r'megamax', 'MegaMax', 'MegaMax 1080p ⚡'),

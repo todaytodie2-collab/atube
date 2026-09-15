@@ -32,9 +32,13 @@ if hasattr(sys.stdout, "reconfigure"):
 _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _CONFIG = os.path.join(_BASE_DIR, "config", "remote_config.json")
 
-_SSL_CTX = ssl.create_default_context()
-_SSL_CTX.check_hostname = False
-_SSL_CTX.verify_mode = ssl.CERT_NONE
+try:
+    sys.path.insert(0, os.path.join(_BASE_DIR, "services"))
+    from ssl_context import SCRAPER_CTX as _SSL_CTX
+except ImportError:
+    _SSL_CTX = ssl.create_default_context()
+    _SSL_CTX.check_hostname = False
+    _SSL_CTX.verify_mode = ssl.CERT_NONE
 
 _HEADERS = {
     "User-Agent": (

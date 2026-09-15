@@ -204,10 +204,14 @@ class LiveTVManager:
     @classmethod
     def _get_ssl_context(cls) -> ssl.SSLContext:
         if cls._ssl_ctx is None:
-            ctx = ssl.create_default_context()
-            ctx.check_hostname = False
-            ctx.verify_mode = ssl.CERT_NONE
-            cls._ssl_ctx = ctx
+            try:
+                from ssl_context import SCRAPER_CTX
+                cls._ssl_ctx = SCRAPER_CTX
+            except ImportError:
+                ctx = ssl.create_default_context()
+                ctx.check_hostname = False
+                ctx.verify_mode = ssl.CERT_NONE
+                cls._ssl_ctx = ctx
         return cls._ssl_ctx
 
     @classmethod

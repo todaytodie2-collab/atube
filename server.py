@@ -16,7 +16,6 @@ import urllib.parse
 import urllib.request
 import datetime
 import time
-import subprocess
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 
 # Force UTF-8 for stdout and stderr on Windows
@@ -30,6 +29,46 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE_DIR)
 sys.path.insert(0, os.path.join(BASE_DIR, "services"))
 sys.path.insert(0, os.path.join(BASE_DIR, "scripts"))
+
+import secrets
+try:
+    import certifi
+    HAS_CERTIFI = True
+except Exception:
+    certifi = None
+    HAS_CERTIFI = False
+
+try:
+    import env_loader  # noqa: F401 - auto-loads .env on import
+except Exception:
+    pass
+
+# Secure Admin Token resolution (No hardcoded static fallback)
+GLOBAL_ADMIN_TOKEN = os.environ.get("ATUBE_ADMIN_TOKEN")
+if not GLOBAL_ADMIN_TOKEN:
+    GLOBAL_ADMIN_TOKEN = secrets.token_urlsafe(32)
+    os.environ["ATUBE_ADMIN_TOKEN"] = GLOBAL_ADMIN_TOKEN
+
+class InMemoryRateLimiter:
+    """Thread-safe sliding-window rate limiter per client IP."""
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._requests = {}
+
+    def is_allowed(self, ip: str, max_requests: int = 60, window_seconds: int = 60) -> bool:
+        now = time.time()
+        with self._lock:
+            timestamps = self._requests.get(ip, [])
+            cutoff = now - window_seconds
+            timestamps = [t for t in timestamps if t > cutoff]
+            if len(timestamps) >= max_requests:
+                self._requests[ip] = timestamps
+                return False
+            timestamps.append(now)
+            self._requests[ip] = timestamps
+            return True
+
+GLOBAL_RATE_LIMITER = InMemoryRateLimiter()
 
 # In-Memory Cache for EPG (prevents CPU spikes on repeated schedule requests)
 _EPG_CACHE = {"ts": 0.0, "data": {}}
@@ -112,12 +151,41 @@ class ATubeHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=BASE_DIR, **kwargs)
 
+    def get_cors_origin(self):
+        client_origin = self.headers.get("Origin") or ""
+        allowed_origins = [
+            "http://localhost:8085",
+            "http://127.0.0.1:8085",
+            "capacitor://localhost",
+            "ionic://localhost",
+        ]
+        custom = os.environ.get("ALLOWED_ORIGINS", "")
+        if custom:
+            allowed_origins.extend([o.strip() for o in custom.split(",") if o.strip()])
+        if client_origin in allowed_origins:
+            return client_origin
+        if re.match(r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$", client_origin):
+            return client_origin
+        return allowed_origins[0]
+
     def send_cors_json(self, obj, status=200):
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Origin", self.get_cors_origin())
+        self.send_header("Access-Control-Allow-Credentials", "true")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "SAMEORIGIN")
+        self.send_header("Referrer-Policy", "strict-origin-when-cross-origin")
         self.end_headers()
         self.wfile.write(json.dumps(obj, ensure_ascii=False).encode("utf-8"))
+
+    def check_rate_limit(self, is_stream: bool = False) -> bool:
+        client_ip = getattr(self, 'client_address', ['127.0.0.1'])[0]
+        try:
+            limit = int(os.environ.get("RATE_LIMIT_STREAM_PER_MIN", 180)) if is_stream else int(os.environ.get("RATE_LIMIT_API_PER_MIN", 60))
+        except (ValueError, TypeError):
+            limit = 60
+        return GLOBAL_RATE_LIMITER.is_allowed(client_ip, max_requests=limit, window_seconds=60)
 
     def translate_path(self, path):
         # Path Traversal Guard: ensure path stays strictly within BASE_DIR
@@ -144,21 +212,30 @@ class ATubeHandler(SimpleHTTPRequestHandler):
             pass
 
     def is_admin_authorized(self):
-        """Authorizes administrative endpoints: permits loopback/localhost or valid X-Admin-Token."""
-        client_ip = getattr(self, 'client_address', ['127.0.0.1'])[0]
-        if client_ip in ("127.0.0.1", "::1", "localhost"):
-            return True
+        """Authorizes administrative endpoints: strictly requires valid X-Admin-Token or query token."""
+        expected_token = os.environ.get("ATUBE_ADMIN_TOKEN") or GLOBAL_ADMIN_TOKEN
         parsed = urllib.parse.urlparse(self.path)
         query = urllib.parse.parse_qs(parsed.query)
         token = self.headers.get("X-Admin-Token") or query.get("token", [None])[0]
-        expected_token = os.environ.get("ATUBE_ADMIN_TOKEN", "atube-secure-admin-2026")
-        return bool(token and token == expected_token)
+        if not token or not expected_token:
+            return False
+        return secrets.compare_digest(str(token).strip(), str(expected_token).strip())
 
     def do_GET(self):
         try:
             parsed = urllib.parse.urlparse(self.path)
             path = parsed.path
             query = urllib.parse.parse_qs(parsed.query)
+
+            # Rate Limiter Guard on all API endpoints
+            if path.startswith("/api/"):
+                is_stream = path.startswith("/api/stream/proxy")
+                if not self.check_rate_limit(is_stream=is_stream):
+                    self.send_cors_json({
+                        "error": "Rate limit exceeded",
+                        "message": "Too many requests. Please slow down."
+                    }, status=429)
+                    return
 
             # 0. API: Health & Diagnostic Watchdog Endpoint
             if path in ["/api/health", "/api/ping"]:
@@ -197,21 +274,24 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 if not endpoint or ".." in endpoint:
                     self.send_cors_json({"error": "Invalid endpoint"}, status=400)
                     return
-                cfg_key = "cabefb963ee5db1ecd2c5778bda9b6d0"
-                if HAS_SERVICES:
+                tmdb_key = os.environ.get("TMDB_API_KEY", "").strip()
+                if not tmdb_key and HAS_SERVICES:
                     try:
-                        cfg_key = RemoteConfigManager.get_instance().get_tmdb_api_key() or cfg_key
+                        tmdb_key = RemoteConfigManager.get_instance().get_tmdb_api_key() or ""
                     except Exception:
                         pass
-                tmdb_key = os.environ.get("TMDB_API_KEY", cfg_key)
+                if not tmdb_key:
+                    self.send_cors_json({"error": "TMDB API Key is not configured in .env"}, status=503)
+                    return
                 forward_params = {k: v[0] for k, v in query.items() if k != "endpoint"}
                 forward_params["api_key"] = tmdb_key
                 if "language" not in forward_params:
                     forward_params["language"] = "ar"
                 tmdb_url = f"https://api.themoviedb.org/3/{endpoint.lstrip('/')}?{urllib.parse.urlencode(forward_params)}"
                 try:
+                    ssl_tmdb = ssl.create_default_context(cafile=certifi.where()) if (HAS_CERTIFI and certifi) else ssl.create_default_context()
                     req = urllib.request.Request(tmdb_url, headers={"User-Agent": "A-TuBe/2.5"})
-                    with urllib.request.urlopen(req, timeout=8.0) as resp:
+                    with urllib.request.urlopen(req, context=ssl_tmdb, timeout=8.0) as resp:
                         data = json.loads(resp.read().decode("utf-8"))
                     self.send_cors_json(data)
                 except Exception as ex_tmdb:
@@ -256,23 +336,35 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                     proxy_headers["Range"] = client_range
 
                 req = urllib.request.Request(target_url, headers=proxy_headers)
-                ssl_ctx = ssl.create_default_context()
-                ssl_ctx.check_hostname = False
-                ssl_ctx.verify_mode = ssl.CERT_NONE
+                
+                # TLS Verification with safe fallback for legacy video hosts
+                ssl_ctx = ssl.create_default_context(cafile=certifi.where()) if (HAS_CERTIFI and certifi) else ssl.create_default_context()
 
                 try:
-                    with urllib.request.urlopen(req, context=ssl_ctx, timeout=12.0) as remote_resp:
+                    try:
+                        remote_resp = urllib.request.urlopen(req, context=ssl_ctx, timeout=12.0)
+                    except ssl.SSLError as ssl_err:
+                        if os.environ.get("ATUBE_STRICT_TLS", "0") == "1":
+                            raise ssl_err
+                        # Controlled fallback for regional/third-party media hosts lacking modern root CA
+                        insecure_ctx = ssl.create_default_context()
+                        insecure_ctx.check_hostname = False
+                        insecure_ctx.verify_mode = ssl.CERT_NONE
+                        remote_resp = urllib.request.urlopen(req, context=insecure_ctx, timeout=12.0)
+
+                    with remote_resp:
                         status_code = remote_resp.status
                         self.send_response(status_code)
                         for h_key, h_val in remote_resp.headers.items():
                             if h_key.lower() in ["content-type", "content-length", "content-range", "accept-ranges", "last-modified", "etag"]:
                                 self.send_header(h_key, h_val)
-                        self.send_header("Access-Control-Allow-Origin", "*")
+                        self.send_header("Access-Control-Allow-Origin", self.get_cors_origin())
                         self.send_header("Access-Control-Allow-Headers", "Range, Authorization, *")
                         self.send_header("Access-Control-Expose-Headers", "Content-Range, Content-Length, Accept-Ranges")
                         self.send_header("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS")
                         self.send_header("Accept-Ranges", "bytes")
                         self.send_header("Cache-Control", "no-cache")
+                        self.send_header("X-Content-Type-Options", "nosniff")
                         self.end_headers()
 
                         while True:
@@ -282,12 +374,16 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                             self.wfile.write(chunk)
                 except urllib.error.HTTPError as he:
                     self.send_response(he.code)
-                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Access-Control-Allow-Origin", self.get_cors_origin())
+                    self.send_header("X-Content-Type-Options", "nosniff")
                     self.end_headers()
                     try:
                         self.wfile.write(he.read())
                     except Exception:
                         pass
+                except (ConnectionResetError, BrokenPipeError):
+                    # Client closed player cleanly
+                    pass
                 except Exception as ex:
                     self.send_error(502, f"Proxy stream error: {str(ex)}")
                 return
@@ -1053,17 +1149,26 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                 try:
                     headers = StreamSanitizer.get_spoofed_headers(target_url)
                     req = urllib.request.Request(target_url, headers=headers)
-                    ssl_ctx = ssl.create_default_context()
-                    ssl_ctx.check_hostname = False
-                    ssl_ctx.verify_mode = ssl.CERT_NONE
-                    with urllib.request.urlopen(req, context=ssl_ctx, timeout=8.0) as resp:
+                    ssl_ctx = ssl.create_default_context(cafile=certifi.where()) if (HAS_CERTIFI and certifi) else ssl.create_default_context()
+                    try:
+                        remote_resp = urllib.request.urlopen(req, context=ssl_ctx, timeout=8.0)
+                    except ssl.SSLError as ssl_err:
+                        if os.environ.get("ATUBE_STRICT_TLS", "0") == "1":
+                            raise ssl_err
+                        insecure_ctx = ssl.create_default_context()
+                        insecure_ctx.check_hostname = False
+                        insecure_ctx.verify_mode = ssl.CERT_NONE
+                        remote_resp = urllib.request.urlopen(req, context=insecure_ctx, timeout=8.0)
+
+                    with remote_resp as resp:
                         content_bytes = resp.read()
                         raw_text = content_bytes.decode("utf-8", errors="replace")
                         clean_manifest = StreamSanitizer.sanitize_m3u8(raw_text, base_url=target_url)
                         self.send_response(200)
                         self.send_header("Content-Type", "application/vnd.apple.mpegurl")
-                        self.send_header("Access-Control-Allow-Origin", "*")
+                        self.send_header("Access-Control-Allow-Origin", self.get_cors_origin())
                         self.send_header("Cache-Control", "no-cache, no-store")
+                        self.send_header("X-Content-Type-Options", "nosniff")
                         self.end_headers()
                         self.wfile.write(clean_manifest.encode("utf-8"))
                 except urllib.error.HTTPError as he:
@@ -1115,15 +1220,26 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
     def do_OPTIONS(self):
         self.send_response(200)
-        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Origin", self.get_cors_origin())
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, X-Admin-Token, Range")
+        self.send_header("Access-Control-Allow-Credentials", "true")
+        self.send_header("X-Content-Type-Options", "nosniff")
         self.end_headers()
 
     def do_POST(self):
         try:
             parsed = urllib.parse.urlparse(self.path)
             path = parsed.path
+
+            # Rate Limiting check on POST endpoints
+            if path.startswith("/api/"):
+                if not self.check_rate_limit(is_stream=False):
+                    self.send_cors_json({
+                        "error": "Rate limit exceeded",
+                        "message": "Too many requests. Please slow down."
+                    }, status=429)
+                    return
             if path == "/api/user/backup":
                 content_len = int(self.headers.get("Content-Length", 0))
                 if content_len > 5 * 1024 * 1024:
@@ -1262,6 +1378,17 @@ class ATubeHandler(SimpleHTTPRequestHandler):
 
 
 def run(port=8085):
+    # ── Secure Startup Banner ────────────────────────────────────────────────
+    admin_tok = os.environ.get("ATUBE_ADMIN_TOKEN") or GLOBAL_ADMIN_TOKEN
+    print("=" * 60)
+    print("  A TuBe Ultra HD Media Server - Secure Production Mode")
+    print("=" * 60)
+    print(f"  🌐  URL      : http://localhost:{port}/index.html")
+    print(f"  🔑  Admin Token : {admin_tok[:8]}...{admin_tok[-4:]} (set in .env)")
+    print(f"  🔒  TLS Strict : {'ON' if os.environ.get('ATUBE_STRICT_TLS') == '1' else 'OFF (fallback enabled)'}")
+    print(f"  🚦  Rate Limit : API={os.environ.get('RATE_LIMIT_API_PER_MIN','60')}/min | Stream={os.environ.get('RATE_LIMIT_STREAM_PER_MIN','180')}/min")
+    print("=" * 60)
+
     # Initialize and seed database if empty
     if HAS_SERVICES:
         try:
@@ -1313,11 +1440,8 @@ def run(port=8085):
 
     server_address = ("", port)
     httpd = ThreadingHTTPServer(server_address, ATubeHandler)
-    print(f"=====================================================")
-    print(f"  A Tube Production Server running on http://localhost:{port}")
-    print(f"  Zero-latency SQLite WAL Database & Crawler Connected")
-    print(f"  Continuous 60s Multi-Portal Harvester & Completer Running")
-    print(f"=====================================================")
+    httpd.socket.setsockopt(0x6, 0x1, 1)  # TCP_NODELAY for lower latency
+    print(f"[Server] Listening on http://0.0.0.0:{port} ...")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
