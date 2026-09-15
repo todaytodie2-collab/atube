@@ -11056,13 +11056,78 @@
         "site": "VidSrc TO",
         "badge": "احتياطي 🎬",
         "quality": "1080p HD",
-        "isEmbed": true
+        "isEmbed": true,
+        "size": "650 MB"
+      },
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-90rchr1zckmy.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/rir271swrbtz",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-dptlddh9fj46.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/36njme94bmz6qn9",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/hkd81jfw7tn5",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ],
     "stills": [
+      "https://image.tmdb.org/t/p/w500/inmjwzW5BWXwWxN24yU3Av21OwD.jpg",
       "https://image.tmdb.org/t/p/w500/cQijkqnB0TbrNILztYwrTxlLq5h.jpg",
       "https://image.tmdb.org/t/p/w500/tC7nm23wJzzQjZJCwKeaVJ4vpCc.jpg",
-      "https://image.tmdb.org/t/p/w500/inmjwzW5BWXwWxN24yU3Av21OwD.jpg"
+      "https://image.tmdb.org/t/p/w500/w0CTP9xwTrniHWoPCYvHcZWndHW.jpg",
+      "https://image.tmdb.org/t/p/w500/bpll0oy6gHwLvypfFNfT2QI4VkT.jpg",
+      "https://image.tmdb.org/t/p/w500/yWeFWQDuNCW24yoEonPmoxAsWlX.jpg",
+      "https://image.tmdb.org/t/p/w500/mfgNUnFB25BNIwe9iPJ17cUN64S.jpg"
     ],
     "tmdb_id": 1433367,
     "cast": [
@@ -14128,15 +14193,76 @@
         "site": "VidSrc TO",
         "badge": "احتياطي 🎬",
         "quality": "1080p HD",
-        "isEmbed": true
+        "isEmbed": true,
+        "size": "650 MB"
+      },
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-aobo8slhtnlv.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/9vsmfzsqwpu9",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-2p7lgsqircjb.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/k0nqve64i31lpdn",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/b7zgl0agblsc",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ],
     "stills": [
-      "https://image.tmdb.org/t/p/w500/lJYniNRM2i9wXnfWVHOB4PxygFZ.jpg",
-      "https://image.tmdb.org/t/p/w500/3jbTQfPCu1ntQpy2VD8EV5CBcf8.jpg",
       "https://image.tmdb.org/t/p/w500/lxkNZmkOb5q2NWcTRIvO65acSGi.jpg",
-      "https://image.tmdb.org/t/p/w500/w8XGRzcSMX0F6VCxu81JK7SV6Hb.jpg",
-      "https://image.tmdb.org/t/p/w500/kDhdAhcYAARP7Ia5Ngq8UstjJMg.jpg"
+      "https://image.tmdb.org/t/p/w500/3jbTQfPCu1ntQpy2VD8EV5CBcf8.jpg",
+      "https://image.tmdb.org/t/p/w500/lJYniNRM2i9wXnfWVHOB4PxygFZ.jpg",
+      "https://image.tmdb.org/t/p/w500/kDhdAhcYAARP7Ia5Ngq8UstjJMg.jpg",
+      "https://image.tmdb.org/t/p/w500/w8XGRzcSMX0F6VCxu81JK7SV6Hb.jpg"
     ],
     "tmdb_id": 1522689,
     "cast": [
@@ -281219,5 +281345,196 @@
         "isEmbed": true
       }
     ]
+  },
+  {
+    "id": "knightfall-2026-2026-4c47f396c",
+    "title": "Knightfall 2026",
+    "arabic_title": "Knightfall 2026",
+    "content_type": "movie",
+    "category": "foreign",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://image.tmdb.org/t/p/w500/wEXaqQXOBPClwqEufiFqgfHVXTk.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/original/zxI3jUzMjvzSuFOyfNiiLXpGUSn.jpg",
+    "synopsis": "مشاهد وتحميل فيلم &quot;Knightfall 2026 سقوط الفارس&quot; مترجم Egybest اون لاين بجودة عالية HD DVD BluRay فيلم الاكشن والاثارة &quot;Knightfall 2026&...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 0,
+    "servers": [
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-jjce6ki4ft8a.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/zsw8cowl6lg6",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-9s41q8l0jhh8.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/pjklz96pago3gx",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/itvcz6nhvfwh",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      }
+    ],
+    "stills": [
+      "https://image.tmdb.org/t/p/w500/zxI3jUzMjvzSuFOyfNiiLXpGUSn.jpg",
+      "https://image.tmdb.org/t/p/w500/fiDV5W1DwaaNkpECrym91vnFuCo.jpg",
+      "https://image.tmdb.org/t/p/w500/uIcH3rrNkJJCznGFgrC6qxaGKCp.jpg",
+      "https://image.tmdb.org/t/p/w500/58vjb97zAa2ue9zlplHfKhNXa5S.jpg",
+      "https://image.tmdb.org/t/p/w500/qY8CzrjkFPCD1SFsUoyJX97MqPV.jpg"
+    ],
+    "tmdb_id": 1377900
+  },
+  {
+    "id": "drive-through-fire-2026-2026-1d2475b2b",
+    "title": "Drive Through Fire 2026",
+    "arabic_title": "Drive Through Fire 2026",
+    "content_type": "movie",
+    "category": "foreign",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://image.tmdb.org/t/p/w500/lmQKEJ4Te7CQ5mhnXwr3zCLnOvc.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/original/cQjiLpk1zHNJLEQ4BZmEVFbheJr.jpg",
+    "synopsis": "مشاهد وتحميل فيلم &quot;Drive Through Fire 2026 القيادة عبر النار&quot; مترجم Egybest اون لاين بجودة عالية HD DVD BluRay فيلم الاكشن والجريمة والاثارة...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 0,
+    "servers": [
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-5eruu0eazexq.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/1y1rl78mt401",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-yex26a63qwvz.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/vknm6zz8sddz0w",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/i5wtqfr3a06k",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      }
+    ],
+    "stills": [
+      "https://image.tmdb.org/t/p/w500/cQjiLpk1zHNJLEQ4BZmEVFbheJr.jpg",
+      "https://image.tmdb.org/t/p/w500/8Tw90S4hVrvUoqmQWDoO6U4toZT.jpg"
+    ],
+    "tmdb_id": 1378742
   }
 ]
