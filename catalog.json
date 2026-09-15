@@ -315416,5 +315416,94 @@
     ],
     "servers": [],
     "cast": []
+  },
+  {
+    "id": "the-walking-dead-dead-city-الموسم-الثالث-الحلقة-8-الثامنة-والاخيرة-2026-681c535a8",
+    "title": "The Walking Dead Dead City الموسم الثالث الحلقة 8 الثامنة والاخيرة",
+    "arabic_title": "The Walking Dead Dead City الموسم الثالث الحلقة 8 الثامنة والاخيرة",
+    "content_type": "series",
+    "category": "foreign_series",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/681c535a8-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/681c535a8-1.jpg",
+    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل &quot; The Walking Dead: Dead City الموسم الثالث&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع ح...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 0,
+    "servers": [
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-4o2corj736tl.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/pjkl36n8a4mp38",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/dji8dsl6am5e",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/ugmcso4zei22",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-zh4kkreqcfwq.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      }
+    ]
   }
 ]
