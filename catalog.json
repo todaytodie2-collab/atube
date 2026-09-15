@@ -8695,6 +8695,14 @@
         "badge": "عالي الثبات 🌟",
         "quality": "1080p HD",
         "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=MGJKSmFVR3pONDdvcWJQQnBTRmJkS1ZpQk9oTjBpWitNOVYzcEZHOWZKOEJoSEIvU1lXNUcvdkszYmVvQVpVWUhiZlpBTUxVSjgreTBNR0NPTXVwSnVISERZMWF0Q2RFNXhKcFUwczQxK2t2bGJrWXo2MlVtNTQ5bUNsTFNNZ1VwL1BoVmUwczBDL0lweXJwZWVLRHRWd2hWLy9PU0dzUmFxL3hBYm8wdG9sVUVDa0t5UUNUZmV0U3BheWEzMXoxVW9HbWpFeUxGY1gxb2trcXdzM1N2M1VnSmlwbDEwc2ZDRWJMd2Z0STA0bz06OurWCOLYnsu2yrVGAboHs6c%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ],
     "stills": [
@@ -8837,6 +8845,14 @@
         "site": "Vipserver",
         "badge": "عالي الثبات 🌟",
         "quality": "1080p HD",
+        "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=amlkNCt6bzhMTU42dW1saHJIN2Z3eWJYL0pHZ0IzM0pmOGt1NTNkTm93RzYzKzBpS0FJM3p5dHNHRzBiOWJFVEhpenRyQ2lOMU4wMzlLZkI2T2wwWjVMNVRpTnFGeUd3LzZ3Tm9POXdSSmN5QnlhQjBPQmRaUGYrbzNtaS9CMHBMYzZQNmFJTWFPZXRwWkVzdXRKTERDYjVyZklIeDd1Vjhlb3ppYjBJdTJCOG43WWZjTElIS21HbUhWRUVtQmRkVGVub1p4MzBjUG5tVEVTMnVCRlhjcXVMa1FYUE9RQ3lDV1ovQnpPMUlwST06Oi3RBh4KikhE2YnoUUT36fI%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
         "isEmbed": true
       }
     ],
@@ -52325,6 +52341,66 @@
         "badge": "عالي الثبات 🌟",
         "quality": "1080p HD",
         "isEmbed": true
+      },
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-2ej8r2bsmwod.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/to8ibu7hnwwb",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-vu1nhsb2wdyh.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/xwo4e3qetpopxj",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/58m6uz6eyl78",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ],
     "cast": [
@@ -52392,6 +52468,13 @@
         "role": "actor",
         "photo": "https://image.tmdb.org/t/p/w200/9f2p2T61K4pIvKQMLRlow8znkXU.jpg"
       }
+    ],
+    "stills": [
+      "https://image.tmdb.org/t/p/w500/sPy3TApYwRN56wOfPsUPaOhEtTX.jpg",
+      "https://image.tmdb.org/t/p/w500/6TSxLmwT7j1ugtKi8NyMmdzWAGj.jpg",
+      "https://image.tmdb.org/t/p/w500/qFNoS2RJRFVOpwSx7YuCGTX1gqo.jpg",
+      "https://image.tmdb.org/t/p/w500/A8cbD8HTMUHAzLaGTJgQqb3X95S.jpg",
+      "https://image.tmdb.org/t/p/w500/2BWg9JG79v1eNf0Pvx6u3MlrWRp.jpg"
     ]
   },
   {
@@ -279539,6 +279622,14 @@
         "badge": "عالي الثبات 🌟",
         "quality": "1080p HD",
         "isEmbed": true
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=RmswSXhmNUd5L1pJck5jaUU4NmFTenludkc5WFo3UEFoNG5PcFpISXhEWmJycHhsSWhYdnQyYXlEcFVLU2MyM1pRdlNZbFFSd0F2dlpSdGU1YWZsdHlnQWZrSzlBM1lFNWxnRjNkUFZhQ1pqcTNpTzIxY0ZGbWpRWXdTY2JZU2h2eUhuZkt5SXdWeEkvVDlFSU94dThESkV6MTMxYjRkT2M1UWNmT1M0QkgvZ3NLV3Q0Yk5CdW5Nc0FRUGVUOEtSdWpsSWVFYWFkOXJwbDJSaXpEY3JjdE1BNGo5V1ZJekhDWGNBMDhIYUpuaz06Opww6BL1dQsZXPW6LcUcKdY%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ],
     "tmdb_id": 550988,
@@ -279789,9 +279880,9 @@
     "tmdb_id": 1767069
   },
   {
-    "id": "stuart-fails-to-save-the-universe-الحلقة-8-الثامنة-2026-8a6849908",
-    "title": "Stuart Fails to Save the Universe الحلقة 8 الثامنة",
-    "arabic_title": "Stuart Fails to Save the Universe الحلقة 8 الثامنة",
+    "id": "stuart-fails-to-save-the-universe-2026",
+    "title": "Stuart Fails to Save the Universe",
+    "arabic_title": "Stuart Fails to Save the Universe",
     "content_type": "series",
     "category": "foreign",
     "sub_category": "subbed",
@@ -279810,206 +279901,207 @@
     ],
     "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/8a6849908-1.jpg",
     "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/8a6849908-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة من مسلسل &quot; Stuart Fails to Save the Universe الموسم الاول&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات...",
+    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة من مسلسل \" Stuart Fails to Save the Universe الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
+    "total_seasons": 1,
+    "seasons": [
       {
-        "name": "سيرفر Vidmoly (فائق السرعة 🚀)",
-        "stream_url": "https://vidmoly.net/embed-969681-s1-e1.html",
-        "site": "Vidmoly",
-        "badge": "فائق السرعة 🚀",
-        "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي مباشر ⚡)",
-        "stream_url": "https://mixdrop.top/e/969681-s1-e1",
-        "site": "Mixdrop",
-        "badge": "سحابي مباشر ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سيرفر VIP 💎)",
-        "stream_url": "https://hgcloud.to/e/969681-s1-e1",
-        "site": "Hgcloud",
-        "badge": "VIP 💎",
-        "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Bysebuho (سيرفر أصلي 🎬)",
-        "stream_url": "https://bysebuho.com/e/969681-s1-e1",
-        "site": "Bysebuho",
-        "badge": "سيرفر أصلي 🎬",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vipserver (سيرفر عالي الثبات 🌟)",
-        "stream_url": "https://vipserver.liiivideo.com/embed/969681?s=1&e=1",
-        "site": "Vipserver",
-        "badge": "عالي الثبات 🌟",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-ufwrbzqqq9zr.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/r6w84j8dt3zzop",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/uvqvhwr2ibwi",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/ogzr3xfqukhs",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-b5dkabhb01qw.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true
+        "season_number": 1,
+        "title": "الموسم الأول",
+        "episodes": [
+          {
+            "id": "stuart-fails-to-save-the-universe-الحلقة-8-الثامنة-2026-8a6849908",
+            "episode_number": 8,
+            "title": "Stuart Fails to Save the Universe الحلقة 8 الثامنة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/8a6849908-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة من مسلسل \" Stuart Fails to Save the Universe الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات...",
+            "servers": [
+              {
+                "name": "سيرفر Vidmoly (فائق السرعة 🚀)",
+                "stream_url": "https://vidmoly.net/embed-969681-s1-e1.html",
+                "site": "Vidmoly",
+                "badge": "فائق السرعة 🚀",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي مباشر ⚡)",
+                "stream_url": "https://mixdrop.top/e/969681-s1-e1",
+                "site": "Mixdrop",
+                "badge": "سحابي مباشر ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سيرفر VIP 💎)",
+                "stream_url": "https://hgcloud.to/e/969681-s1-e1",
+                "site": "Hgcloud",
+                "badge": "VIP 💎",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Bysebuho (سيرفر أصلي 🎬)",
+                "stream_url": "https://bysebuho.com/e/969681-s1-e1",
+                "site": "Bysebuho",
+                "badge": "سيرفر أصلي 🎬",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vipserver (سيرفر عالي الثبات 🌟)",
+                "stream_url": "https://vipserver.liiivideo.com/embed/969681?s=1&e=1",
+                "site": "Vipserver",
+                "badge": "عالي الثبات 🌟",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-ufwrbzqqq9zr.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/r6w84j8dt3zzop",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/uvqvhwr2ibwi",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/ogzr3xfqukhs",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-b5dkabhb01qw.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/8a6849908-1.jpg"
+          },
+          {
+            "id": "stuart-fails-to-save-the-universe-الحلقة-9-التاسعة-2026-6d0b7b8f8",
+            "episode_number": 9,
+            "title": "Stuart Fails to Save the Universe الحلقة 9 التاسعة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/6d0b7b8f8-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 9 التاسعة من مسلسل \" Stuart Fails to Save the Universe الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات...",
+            "servers": [
+              {
+                "name": "سيرفر Vidmoly (فائق السرعة 🚀)",
+                "stream_url": "https://vidmoly.net/embed-969681-s1-e1.html",
+                "site": "Vidmoly",
+                "badge": "فائق السرعة 🚀",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي مباشر ⚡)",
+                "stream_url": "https://mixdrop.top/e/969681-s1-e1",
+                "site": "Mixdrop",
+                "badge": "سحابي مباشر ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سيرفر VIP 💎)",
+                "stream_url": "https://hgcloud.to/e/969681-s1-e1",
+                "site": "Hgcloud",
+                "badge": "VIP 💎",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Bysebuho (سيرفر أصلي 🎬)",
+                "stream_url": "https://bysebuho.com/e/969681-s1-e1",
+                "site": "Bysebuho",
+                "badge": "سيرفر أصلي 🎬",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vipserver (سيرفر عالي الثبات 🌟)",
+                "stream_url": "https://vipserver.liiivideo.com/embed/969681?s=1&e=1",
+                "site": "Vipserver",
+                "badge": "عالي الثبات 🌟",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-ufwrbzqqq9zr.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/r6w84j8dt3zzop",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/uvqvhwr2ibwi",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/ogzr3xfqukhs",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-b5dkabhb01qw.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/6d0b7b8f8-1.jpg"
+          }
+        ]
       }
-    ]
-  },
-  {
-    "id": "stuart-fails-to-save-the-universe-الحلقة-9-التاسعة-2026-6d0b7b8f8",
-    "title": "Stuart Fails to Save the Universe الحلقة 9 التاسعة",
-    "arabic_title": "Stuart Fails to Save the Universe الحلقة 9 التاسعة",
-    "content_type": "series",
-    "category": "foreign",
-    "sub_category": "subbed",
-    "year": "2026",
-    "rating": "★ 8.8 IMDb",
-    "duration": "45 دقيقة",
-    "quality": "WEB-DL 1080p FHD",
-    "language": "الإنجليزية",
-    "translation": "مترجم للعربية",
-    "production": "إنتاج حقيقي حصري",
-    "country": "الولايات المتحدة",
-    "genres": [
-      "أكشن",
-      "دراما",
-      "إثارة"
     ],
-    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/6d0b7b8f8-1.jpg",
-    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/6d0b7b8f8-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 9 التاسعة من مسلسل &quot; Stuart Fails to Save the Universe الموسم الاول&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات...",
-    "trailer_youtube_id": "",
-    "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
-      {
-        "name": "سيرفر Vidmoly (فائق السرعة 🚀)",
-        "stream_url": "https://vidmoly.net/embed-969681-s1-e1.html",
-        "site": "Vidmoly",
-        "badge": "فائق السرعة 🚀",
-        "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي مباشر ⚡)",
-        "stream_url": "https://mixdrop.top/e/969681-s1-e1",
-        "site": "Mixdrop",
-        "badge": "سحابي مباشر ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سيرفر VIP 💎)",
-        "stream_url": "https://hgcloud.to/e/969681-s1-e1",
-        "site": "Hgcloud",
-        "badge": "VIP 💎",
-        "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Bysebuho (سيرفر أصلي 🎬)",
-        "stream_url": "https://bysebuho.com/e/969681-s1-e1",
-        "site": "Bysebuho",
-        "badge": "سيرفر أصلي 🎬",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vipserver (سيرفر عالي الثبات 🌟)",
-        "stream_url": "https://vipserver.liiivideo.com/embed/969681?s=1&e=1",
-        "site": "Vipserver",
-        "badge": "عالي الثبات 🌟",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-ufwrbzqqq9zr.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/r6w84j8dt3zzop",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/uvqvhwr2ibwi",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/ogzr3xfqukhs",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-b5dkabhb01qw.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true
-      }
-    ]
+    "servers": [],
+    "cast": []
   },
   {
-    "id": "حب-ع-ورق-الحلقة-68-الثامنة-والستون-2026-96ee1807a",
-    "title": "حب ع ورق الحلقة 68 الثامنة والستون",
-    "arabic_title": "حب ع ورق الحلقة 68 الثامنة والستون",
+    "id": "حب-ع-ورق-2026",
+    "title": "حب ع ورق",
+    "arabic_title": "حب ع ورق",
     "content_type": "series",
     "category": "foreign",
     "sub_category": "subbed",
@@ -280028,97 +280120,116 @@
     ],
     "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/96ee1807a-1.jpg",
     "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/96ee1807a-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 68 الثامنة والستون من مسلسل &quot;حب ع ورق Hob Ala Waraq&quot; بطولة أنس طيارة اون لاين HD يوتيوب ايجي بست، شاهد جميع حلقات مسلسل...",
+    "synopsis": "مشاهدة وتحميل الحلقة 68 الثامنة والستون من مسلسل \"حب ع ورق Hob Ala Waraq\" بطولة أنس طيارة اون لاين HD يوتيوب ايجي بست، شاهد جميع حلقات مسلسل...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
+    "total_seasons": 1,
+    "seasons": [
       {
-        "name": "سيرفر Vidmoly (فائق السرعة 🚀)",
-        "stream_url": "https://vidmoly.net/embed-969681-s1-e1.html",
-        "site": "Vidmoly",
-        "badge": "فائق السرعة 🚀",
-        "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي مباشر ⚡)",
-        "stream_url": "https://mixdrop.top/e/969681-s1-e1",
-        "site": "Mixdrop",
-        "badge": "سحابي مباشر ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سيرفر VIP 💎)",
-        "stream_url": "https://hgcloud.to/e/969681-s1-e1",
-        "site": "Hgcloud",
-        "badge": "VIP 💎",
-        "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Bysebuho (سيرفر أصلي 🎬)",
-        "stream_url": "https://bysebuho.com/e/969681-s1-e1",
-        "site": "Bysebuho",
-        "badge": "سيرفر أصلي 🎬",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vipserver (سيرفر عالي الثبات 🌟)",
-        "stream_url": "https://vipserver.liiivideo.com/embed/969681?s=1&e=1",
-        "site": "Vipserver",
-        "badge": "عالي الثبات 🌟",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-vnjhif3by9wv.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/nl07g8e4i77erk",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/8ju0rcg9d1j6",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/gxeuqyt6e2p7",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-q0lqf9kiywox.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true
+        "season_number": 1,
+        "title": "الموسم الأول",
+        "episodes": [
+          {
+            "id": "حب-ع-ورق-الحلقة-68-الثامنة-والستون-2026-96ee1807a",
+            "episode_number": 68,
+            "title": "حب ع ورق الحلقة 68 الثامنة والستون",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/96ee1807a-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 68 الثامنة والستون من مسلسل \"حب ع ورق Hob Ala Waraq\" بطولة أنس طيارة اون لاين HD يوتيوب ايجي بست، شاهد جميع حلقات مسلسل...",
+            "servers": [
+              {
+                "name": "سيرفر Vidmoly (فائق السرعة 🚀)",
+                "stream_url": "https://vidmoly.net/embed-969681-s1-e1.html",
+                "site": "Vidmoly",
+                "badge": "فائق السرعة 🚀",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي مباشر ⚡)",
+                "stream_url": "https://mixdrop.top/e/969681-s1-e1",
+                "site": "Mixdrop",
+                "badge": "سحابي مباشر ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سيرفر VIP 💎)",
+                "stream_url": "https://hgcloud.to/e/969681-s1-e1",
+                "site": "Hgcloud",
+                "badge": "VIP 💎",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Bysebuho (سيرفر أصلي 🎬)",
+                "stream_url": "https://bysebuho.com/e/969681-s1-e1",
+                "site": "Bysebuho",
+                "badge": "سيرفر أصلي 🎬",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vipserver (سيرفر عالي الثبات 🌟)",
+                "stream_url": "https://vipserver.liiivideo.com/embed/969681?s=1&e=1",
+                "site": "Vipserver",
+                "badge": "عالي الثبات 🌟",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-vnjhif3by9wv.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/nl07g8e4i77erk",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/8ju0rcg9d1j6",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/gxeuqyt6e2p7",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-q0lqf9kiywox.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/96ee1807a-1.jpg"
+          }
+        ]
       }
-    ]
+    ],
+    "servers": [],
+    "cast": []
   },
   {
-    "id": "the-walking-dead-dead-city-الموسم-الثالث-الحلقة-8-الثامنة-والاخيرة-2026-0d951b8e5",
-    "title": "The Walking Dead Dead City الموسم الثالث الحلقة 8 الثامنة والاخيرة",
-    "arabic_title": "The Walking Dead Dead City الموسم الثالث الحلقة 8 الثامنة والاخيرة",
+    "id": "the-walking-dead-dead-city-2026",
+    "title": "The Walking Dead Dead City",
+    "arabic_title": "The Walking Dead Dead City",
     "content_type": "series",
     "category": "foreign_series",
     "sub_category": "subbed",
@@ -280137,57 +280248,76 @@
     ],
     "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/0d951b8e5-1.jpg",
     "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/0d951b8e5-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل &quot; The Walking Dead: Dead City الموسم الثالث&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع ح...",
+    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" The Walking Dead: Dead City الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع ح...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
+    "total_seasons": 1,
+    "seasons": [
       {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-m9hoepva54yc.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/03vxpjzmcklo804",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/umnupfykjztv",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/m4jdczkinqqd",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-y8n13bvar4cb.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true
+        "season_number": 3,
+        "title": "الموسم 3",
+        "episodes": [
+          {
+            "id": "the-walking-dead-dead-city-الموسم-الثالث-الحلقة-8-الثامنة-والاخيرة-2026-0d951b8e5",
+            "episode_number": 8,
+            "title": "The Walking Dead Dead City الموسم الثالث الحلقة 8 الثامنة والاخيرة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/0d951b8e5-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" The Walking Dead: Dead City الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع ح...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-m9hoepva54yc.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/03vxpjzmcklo804",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/umnupfykjztv",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/m4jdczkinqqd",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-y8n13bvar4cb.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/0d951b8e5-1.jpg"
+          }
+        ]
       }
-    ]
+    ],
+    "servers": [],
+    "cast": []
   },
   {
-    "id": "lioness-الموسم-الثالث-الحلقة-8-الثامنة-والاخيرة-2026-002668413",
-    "title": "Lioness الموسم الثالث الحلقة 8 الثامنة والاخيرة",
-    "arabic_title": "Lioness الموسم الثالث الحلقة 8 الثامنة والاخيرة",
+    "id": "lioness-2026",
+    "title": "Lioness",
+    "arabic_title": "Lioness",
     "content_type": "series",
     "category": "foreign_series",
     "sub_category": "subbed",
@@ -280206,59 +280336,219 @@
     ],
     "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/002668413-1.jpg",
     "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/002668413-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل &quot; Lioness الموسم الثالث&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل &quot;الع...",
+    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" Lioness الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"الع...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 1,
+    "seasons": [
+      {
+        "season_number": 3,
+        "title": "الموسم 3",
+        "episodes": [
+          {
+            "id": "lioness-الموسم-الثالث-الحلقة-7-السابعة-2026-3073affc4",
+            "episode_number": 7,
+            "title": "Lioness الموسم الثالث الحلقة 7 السابعة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/3073affc4-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 7 السابعة من مسلسل \" Lioness الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"العمليات الخ...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-4xnuqr6brrmd.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/vknm6zqwtnd9rd",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/bqzia1hjnbsx",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/p7fecaqt0ww3",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-tq2ba1ua1sa8.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/3073affc4-1.jpg"
+          },
+          {
+            "id": "lioness-الموسم-الثالث-الحلقة-8-الثامنة-والاخيرة-2026-002668413",
+            "episode_number": 8,
+            "title": "Lioness الموسم الثالث الحلقة 8 الثامنة والاخيرة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/002668413-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" Lioness الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"الع...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-4xnuqr6brrmd.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/vknm6zqwtnd9rd",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/bqzia1hjnbsx",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/p7fecaqt0ww3",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-tq2ba1ua1sa8.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/002668413-1.jpg"
+          }
+        ]
+      }
+    ],
+    "servers": [],
+    "cast": []
+  },
+  {
+    "id": "somebody-2024-2024-dba182789",
+    "title": "Somebody 2024",
+    "arabic_title": "Somebody 2024",
+    "content_type": "movie",
+    "category": "foreign",
+    "sub_category": "subbed",
+    "year": "2024",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/dba182789-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/dba182789-1.jpg",
+    "synopsis": "مشاهد وتحميل فيلم \"Somebody 2024 شخص ما\" مترجم Egybest اون لاين بجودة عالية HD DVD BluRay فيلم الغموض والاثارة الكوري \"Somebody 2024&qu...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
     "total_seasons": 0,
     "servers": [
       {
         "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-4xnuqr6brrmd.html",
+        "stream_url": "https://vipserver.liiivideo.com/embed-fek50c86gx5h.html",
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/vknm6zqwtnd9rd",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/bqzia1hjnbsx",
+        "stream_url": "https://hgcloud.to/e/xs5uxbk80182",
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/p7fecaqt0ww3",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-tq2ba1ua1sa8.html",
+        "stream_url": "https://vidmoly.net/embed-27odo5wi9s44.html",
         "site": "Vidmoly",
         "badge": "Vidmoly",
         "quality": "1080p HD",
-        "isEmbed": true
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/03vdn87puko0mwr",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/1u8yjtfs6oc2",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
-    ]
+    ],
+    "tmdb_id": 1593517
   },
   {
-    "id": "lioness-الموسم-الثالث-الحلقة-7-السابعة-2026-3073affc4",
-    "title": "Lioness الموسم الثالث الحلقة 7 السابعة",
-    "arabic_title": "Lioness الموسم الثالث الحلقة 7 السابعة",
-    "content_type": "series",
-    "category": "foreign_series",
+    "id": "ongoru-2026-2026-416f067e0",
+    "title": "Ongoru 2026",
+    "arabic_title": "Ongoru 2026",
+    "content_type": "movie",
+    "category": "foreign",
     "sub_category": "subbed",
     "year": "2026",
     "rating": "★ 8.8 IMDb",
@@ -280273,53 +280563,143 @@
       "دراما",
       "إثارة"
     ],
-    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/3073affc4-1.jpg",
-    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/3073affc4-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 7 السابعة من مسلسل &quot; Lioness الموسم الثالث&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل &quot;العمليات الخ...",
+    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/416f067e0-1.jpg",
+    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/416f067e0-1.jpg",
+    "synopsis": "مشاهد وتحميل فيلم \"Ongoru 2026 التنبؤ\" مترجم Egybest اون لاين بجودة عالية HD DVD BluRay فيلم الدراما والرومانسية التركي \"Ongoru 2026&qu...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
     "total_seasons": 0,
     "servers": [
       {
         "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-4xnuqr6brrmd.html",
+        "stream_url": "https://vipserver.liiivideo.com/embed-vfryxglzyje2.html",
         "site": "Vipserver",
         "badge": "VIP ⭐",
         "quality": "1080p FHD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/vknm6zqwtnd9rd",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/bqzia1hjnbsx",
+        "stream_url": "https://hgcloud.to/e/b7dfvk12l9x0",
         "site": "Hgcloud",
         "badge": "Hgcloud ⚡",
         "quality": "1080p HD",
-        "isEmbed": true
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/36nxv3okcmw9jlj",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/p7fecaqt0ww3",
+        "stream_url": "https://minochinos.com/embed/x562sqr99x95",
         "site": "Minochinos",
         "badge": "Minochinos",
         "quality": "1080p HD",
-        "isEmbed": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-tq2ba1ua1sa8.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ]
+  },
+  {
+    "id": "kurtulus-2026-2026-fd6469733",
+    "title": "Kurtulus 2026",
+    "arabic_title": "Kurtulus 2026",
+    "content_type": "movie",
+    "category": "foreign",
+    "sub_category": "subbed",
+    "year": "2026",
+    "rating": "★ 8.8 IMDb",
+    "duration": "45 دقيقة",
+    "quality": "WEB-DL 1080p FHD",
+    "language": "الإنجليزية",
+    "translation": "مترجم للعربية",
+    "production": "إنتاج حقيقي حصري",
+    "country": "الولايات المتحدة",
+    "genres": [
+      "أكشن",
+      "دراما",
+      "إثارة"
+    ],
+    "poster": "https://image.tmdb.org/t/p/w500/mYEYM9H0E3O6ruurjhOHxjGHiSW.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/original/3Ki3reV7v0tAgU4j6eqqjAHknHk.jpg",
+    "synopsis": "مشاهد وتحميل فيلم \"Kurtulus 2026 الخلاص\" مترجم Egybest اون لاين بجودة عالية HD DVD BluRay فيلم الدراما والغموض التركي \"Kurtulus 2026&qu...",
+    "trailer_youtube_id": "",
+    "director": "Cinema Production",
+    "total_seasons": 0,
+    "servers": [
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-7x57yl6sps70.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/fcptt8nn7kif",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/l76r1qvns3366k",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/81bdnvf37t06",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      }
+    ],
+    "stills": [
+      "https://image.tmdb.org/t/p/w500/eeta4WBMLIKkAdNfoy4csIDzUgE.jpg",
+      "https://image.tmdb.org/t/p/w500/3Ki3reV7v0tAgU4j6eqqjAHknHk.jpg"
+    ],
+    "tmdb_id": 243959
   }
 ]
