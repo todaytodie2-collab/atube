@@ -9111,6 +9111,14 @@
         "quality": "720p HD",
         "isEmbed": true,
         "size": "950 MB"
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=T3dIOFpKWmlycWxkQTE0TnJwZjBPRTZTWWYwalFhZXZaMmdudG5zWFh3SEtwbGNIV3E1QXBabFViTzg0SEZXSG1RN1o1b1lpMVoveXFuSWRLOG9VaXpxaWR1VEFUeFY0SlhHNnQ5dGlzTjVOQ2lnc2FMSVJEZGRTTnp4QlNOU3AxZnl0SktSUmJvVG1uN3B1bGVTYlhWVlJSQ2VCNlh2NlNwZEtVM3grUXVVcXl6NTVGVDFlbm1kTkVPZGM5RnljaXhPM2hFamtYUTU3T05Vd1cyWjR5SEU0cFV4ZEoxZGptK0h4bFhYVTNURT06OtFHyBcjt3zENcgRsovH%2B28%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ],
     "stills": [
@@ -9290,6 +9298,14 @@
         "quality": "720p HD",
         "isEmbed": true,
         "size": "950 MB"
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=NzRHbHhzbUtpRmpzS3hTMmhmYTI4djZjelNjNTNjcHZQMC96cjZzcFdXTGw2SjgyaWZYNVlZRjlURUM4VVNWOEVBMU92bE1QSjg4b1FnelpVVkFmcjhEWHhFUU9FSnlGdktiUGFRYjhvYTZkTGE1Rm1IZ3Y1WjJrVTI1ck5qN3lLZHZZSjlMZHJWakZPbkRMcVdHUHlPZmhmV3g2TlM2bkVmWWNwZ1VsUkxjd3JNZ29SaDhQbDl2WnJSa0F0TjVCRWJvWms2bW9ISFFvYzdpa0VXc2FGc3hqVWJXUitZVFJhUmU0WExuR2ltUT06OhXqIDGMpmrUNLcpIJe8qUc%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ],
     "stills": [
@@ -292097,6 +292113,14 @@
         "quality": "720p HD",
         "isEmbed": true,
         "size": "950 MB"
+      },
+      {
+        "name": "سيرفر فاصل إعلاني (سحابي مباشر)",
+        "stream_url": "https://www.fasel-hd.co/video_player?player_token=MmdoMitGaHVhc0o5bFgvdkpKbm93K2UySENiYld6Nkd4bUpEaTByUUhMNTBWUFk0L3ZJbzJudi85d3Voc25UTVJSRnBSWUkxVEdvOTNLZGEwT01GZVphSUg4OEdZSG0yYUhCQ29paGswWUMrR3JjR3orQUd1N0szakxGbG1kam9KSnk5MlRJbDNFYTZCUW5WNFRRTXVtTnRRZFYwSk5xRGd3ZFNDOHovMmxwV2ZYZVZGcHZabjNZeXVPQk9mazdLeHl3SDQ2YU5MaDJ4bEppNk9xL2JiWFcxeFNEekNOQnlXc0tVODAzS3lrTT06OnPk0%2BLO5yt2xw9U77BuZIY%3D",
+        "site": "FaselHD",
+        "badge": "FaselHD ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true
       }
     ],
     "tmdb_id": 550988,
@@ -293084,6 +293108,66 @@
         "quality": "720p HD",
         "isEmbed": true,
         "size": "950 MB"
+      },
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-fek50c86gx5h.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/xs5uxbk80182",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-27odo5wi9s44.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/03vdn87puko0mwr",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/1u8yjtfs6oc2",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ],
     "tmdb_id": 1593517
@@ -293158,6 +293242,54 @@
         "quality": "720p HD",
         "isEmbed": true,
         "size": "950 MB"
+      },
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-vfryxglzyje2.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/b7dfvk12l9x0",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/36nxv3okcmw9jlj",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/x562sqr99x95",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ],
     "tmdb_id": 1550338
@@ -293232,11 +293364,59 @@
         "quality": "720p HD",
         "isEmbed": true,
         "size": "950 MB"
+      },
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-7x57yl6sps70.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/fcptt8nn7kif",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/l76r1qvns3366k",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/81bdnvf37t06",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ],
     "stills": [
-      "https://image.tmdb.org/t/p/w500/eeta4WBMLIKkAdNfoy4csIDzUgE.jpg",
-      "https://image.tmdb.org/t/p/w500/3Ki3reV7v0tAgU4j6eqqjAHknHk.jpg"
+      "https://image.tmdb.org/t/p/w500/3Ki3reV7v0tAgU4j6eqqjAHknHk.jpg",
+      "https://image.tmdb.org/t/p/w500/eeta4WBMLIKkAdNfoy4csIDzUgE.jpg"
     ],
     "tmdb_id": 243959
   },
@@ -293456,6 +293636,66 @@
         "quality": "720p HD",
         "isEmbed": true,
         "size": "650 MB"
+      },
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-paa2t9a2va2k.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/8l46xkwes947or",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/2n78shmq1o7k",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/ztfw4z9n8af5",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-vyzm6gqltbq7.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ]
   },
@@ -293529,6 +293769,66 @@
         "quality": "720p HD",
         "isEmbed": true,
         "size": "650 MB"
+      },
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-paa2t9a2va2k.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/8l46xkwes947or",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/2n78shmq1o7k",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/ztfw4z9n8af5",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-vyzm6gqltbq7.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ]
   },
@@ -293602,6 +293902,66 @@
         "quality": "720p HD",
         "isEmbed": true,
         "size": "650 MB"
+      },
+      {
+        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+        "stream_url": "https://vipserver.liiivideo.com/embed-vnjhif3by9wv.html",
+        "site": "Vipserver",
+        "badge": "VIP ⭐",
+        "quality": "1080p FHD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Mixdrop (سحابي سريع)",
+        "stream_url": "https://mixdrop.top/e/nl07g8e4i77erk",
+        "site": "Mixdrop",
+        "badge": "Mixdrop",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Hgcloud (سحابي مباشر)",
+        "stream_url": "https://hgcloud.to/e/8ju0rcg9d1j6",
+        "site": "Hgcloud",
+        "badge": "Hgcloud ⚡",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Minochinos (بديل فائق)",
+        "stream_url": "https://minochinos.com/embed/gxeuqyt6e2p7",
+        "site": "Minochinos",
+        "badge": "Minochinos",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
+      },
+      {
+        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+        "stream_url": "https://vidmoly.net/embed-q0lqf9kiywox.html",
+        "site": "Vidmoly",
+        "badge": "Vidmoly",
+        "quality": "1080p HD",
+        "isEmbed": true,
+        "is_hls": false,
+        "duration_minutes": 120,
+        "start_verified": true,
+        "end_verified": true
       }
     ]
   }

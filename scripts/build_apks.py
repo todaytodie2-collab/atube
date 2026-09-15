@@ -19,10 +19,15 @@ import subprocess
 import zipfile
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SDK_DIR = r"C:\Android\Sdk"
+SDK_DIR = os.environ.get("ANDROID_HOME") or os.environ.get("ANDROID_SDK_ROOT") or r"C:\Android\Sdk"
 BUILD_TOOLS_DIR = os.path.join(SDK_DIR, "build-tools", "35.0.0")
 PLATFORM_JAR = os.path.join(SDK_DIR, "platforms", "android-35", "android.jar")
-JDK_BIN = r"C:\Program Files\Microsoft\jdk-21.0.12.101-hotspot\bin"
+
+java_home = os.environ.get("JAVA_HOME")
+if java_home and os.path.exists(os.path.join(java_home, "bin")):
+    JDK_BIN = os.path.join(java_home, "bin")
+else:
+    JDK_BIN = r"C:\Program Files\Microsoft\jdk-21.0.12.101-hotspot\bin"
 
 AAPT2 = os.path.join(BUILD_TOOLS_DIR, "aapt2.exe")
 D8 = os.path.join(BUILD_TOOLS_DIR, "d8.bat")

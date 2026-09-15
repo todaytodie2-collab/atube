@@ -290,10 +290,10 @@ class DirectStreamExtractor:
             pass
 
         return {
-            "success": True,
+            "success": False,
+            "error": "MegaMax direct m3u8 stream not found",
             "stream_url": clean_url,
             "is_hls": False,
-            "format": "mp4",
             "isEmbed": True,
             "headers": {"User-Agent": cls.USER_AGENT, "Referer": "https://egydead.live/"},
             "server_name": "MegaMax Cloud"

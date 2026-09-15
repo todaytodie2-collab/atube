@@ -2323,26 +2323,42 @@ const InAppPlayer = (function () {
           }
         });
 
+        let hlsNetworkRetries = 0;
         hlsInstance.on(window.Hls.Events.ERROR, (event, data) => {
-          if (data.fatal) {
-            switch (data.type) {
-              case window.Hls.ErrorTypes.NETWORK_ERROR:
-                console.warn('[A Tube Player] HLS Network error, attempting direct URL fallback...');
-                // Fallback to direct playUrl without proxy
-                if (playUrl.includes('/api/stream/proxy')) {
-                  hlsInstance.loadSource(targetUrl);
-                  hlsInstance.startLoad();
-                } else {
-                  triggerStatelessFailover('خطأ شبكة في سيرفر البث');
-                }
-                break;
-              case window.Hls.ErrorTypes.MEDIA_ERROR:
-                hlsInstance.recoverMediaError();
-                break;
-              default:
-                triggerStatelessFailover('خطأ في حزمة البث المباشر');
-                break;
+          if (!data.fatal) {
+            if (data.details === 'bufferStalledError') {
+              console.warn('[A Tube Player] HLS buffer stalled, nudging startLoad...');
+              if (hlsInstance) hlsInstance.startLoad();
             }
+            return;
+          }
+
+          switch (data.type) {
+            case window.Hls.ErrorTypes.NETWORK_ERROR:
+              console.warn(`[A Tube Player] HLS Network error (fatal), attempt ${hlsNetworkRetries + 1}/3...`);
+              if (hlsNetworkRetries < 2) {
+                hlsNetworkRetries++;
+                setTimeout(() => {
+                  if (hlsInstance) hlsInstance.startLoad();
+                }, 1200);
+              } else if (playUrl.includes('/api/stream/proxy')) {
+                hlsNetworkRetries++;
+                console.warn('[A Tube Player] Proxy network error, attempting direct target URL fallback...');
+                hlsInstance.loadSource(targetUrl);
+                hlsInstance.startLoad();
+              } else {
+                triggerStatelessFailover('خطأ شبكة في سيرفر البث');
+              }
+              break;
+            case window.Hls.ErrorTypes.MEDIA_ERROR:
+              console.warn('[A Tube Player] HLS Media error (fatal), attempting recoverMediaError...');
+              hlsInstance.recoverMediaError();
+              break;
+            default:
+              console.error('[A Tube Player] Unrecoverable HLS error:', data);
+              try { hlsInstance.destroy(); } catch (e) {}
+              triggerStatelessFailover('خطأ في حزمة البث المباشر');
+              break;
           }
         });
       } else {

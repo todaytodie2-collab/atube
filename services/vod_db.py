@@ -198,6 +198,8 @@ class VODDatabase:
         cur.execute("CREATE INDEX IF NOT EXISTS idx_vod_episodes_lookup ON vod_episodes(media_id, season_number);")
         cur.execute("CREATE INDEX IF NOT EXISTS idx_vod_servers_lookup ON vod_servers(media_id, season_number, episode_number);")
         cur.execute("CREATE INDEX IF NOT EXISTS idx_vod_media_tmdb ON vod_media(tmdb_id);")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_vod_media_year ON vod_media(year);")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_vod_media_year_title ON vod_media(year, title);")
 
         conn.commit()
         conn.close()

@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, "services"))
 
 from stream_bridge import InvisibleStreamBridge
 
-CATALOG_PATH = os.path.join(BASE_DIR, "data", "catalog.json")
+CATALOG_PATH = os.path.join(BASE_DIR, "catalog.json")
 DB_PATH = os.path.join(BASE_DIR, "config", "atube_data.sqlite")
 
 

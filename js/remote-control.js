@@ -10,6 +10,21 @@ const RemoteControl = (function () {
   let indicatorEl = null;
   let exitToastEl = null;
   let lastBackPressTime = 0;
+  let previousFocusedElement = null;
+
+  function restoreFocus() {
+    refreshFocusableElements();
+    if (previousFocusedElement && document.body.contains(previousFocusedElement) && previousFocusedElement.offsetParent !== null) {
+      const idx = focusableElements.indexOf(previousFocusedElement);
+      if (idx !== -1) {
+        setFocus(idx);
+        return;
+      }
+    }
+    if (focusableElements.length > 0) {
+      setFocus(0);
+    }
+  }
 
   function init() {
     createRemoteToast();
@@ -224,8 +239,8 @@ const RemoteControl = (function () {
     if (actorModal && (actorModal.classList.contains('active') || actorModal.style.display === 'flex' || actorModal.style.display === 'block')) {
       actorModal.classList.remove('active');
       actorModal.style.display = 'none';
-      refreshFocusableElements();
-      setTimeout(() => refreshFocusableElements(), 150);
+      restoreFocus();
+      setTimeout(restoreFocus, 150);
       return;
     }
 
@@ -233,8 +248,8 @@ const RemoteControl = (function () {
     const movieDet = window.MovieDetails || (typeof MovieDetails !== 'undefined' ? MovieDetails : null);
     if (movieDet && typeof movieDet.isOpen === 'function' && movieDet.isOpen()) {
       movieDet.close();
-      refreshFocusableElements();
-      setTimeout(() => refreshFocusableElements(), 150);
+      restoreFocus();
+      setTimeout(restoreFocus, 150);
       return;
     }
 
@@ -243,7 +258,8 @@ const RemoteControl = (function () {
     if (modal) {
       modal.classList.remove('active');
       if (modal.classList.contains('modal-backdrop')) modal.style.display = 'none';
-      setTimeout(() => refreshFocusableElements(), 150);
+      restoreFocus();
+      setTimeout(restoreFocus, 150);
       return;
     }
 
@@ -262,7 +278,8 @@ const RemoteControl = (function () {
         }
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => refreshFocusableElements(), 150);
+      restoreFocus();
+      setTimeout(restoreFocus, 150);
       return;
     }
 
@@ -303,6 +320,7 @@ const RemoteControl = (function () {
     } else if (key === 'Enter' || code === 13 || code === 23 || code === 66) {
       e.preventDefault();
       if (currentFocusedIndex !== -1 && focusableElements[currentFocusedIndex]) {
+        previousFocusedElement = focusableElements[currentFocusedIndex];
         focusableElements[currentFocusedIndex].click();
       }
     } else if (key === 'Escape' || key === 'Backspace' || code === 27 || code === 4 || code === 8) {
