@@ -43,6 +43,11 @@ try:
 except Exception:
     pass
 
+try:
+    from ssl_context import SCRAPER_CTX
+except Exception:
+    SCRAPER_CTX = ssl.create_default_context()
+
 # Secure Admin Token resolution (No hardcoded static fallback)
 GLOBAL_ADMIN_TOKEN = os.environ.get("ATUBE_ADMIN_TOKEN")
 if not GLOBAL_ADMIN_TOKEN:
@@ -449,9 +454,7 @@ class ATubeHandler(SimpleHTTPRequestHandler):
                         "Accept-Encoding": "gzip, deflate"
                     }
                     embed_req = urllib.request.Request(target_url, headers=embed_headers)
-                    embed_ctx = ssl.create_default_context()
-                    embed_ctx.check_hostname = False
-                    embed_ctx.verify_mode = ssl.CERT_NONE
+                    embed_ctx = SCRAPER_CTX
                     content = ""
                     try:
                         with urllib.request.urlopen(embed_req, context=embed_ctx, timeout=10.0) as fetch_res:

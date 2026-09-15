@@ -1074,11 +1074,7 @@ const InAppPlayer = (function () {
     });
   }
 
-  // 10-Band EQ State and Web Audio Context
-  const EQ_FREQUENCIES = [32, 64, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
-  let audioCtx = null;
-  let audioSourceNode = null;
-  let eqFilters = [];
+
 
   function initWebAudio() {
     if (audioCtx && eqFilters.length === 10) return;
