@@ -12110,13 +12110,13 @@
       }
     ],
     "stills": [
-      "https://image.tmdb.org/t/p/w500/inmjwzW5BWXwWxN24yU3Av21OwD.jpg",
-      "https://image.tmdb.org/t/p/w500/cQijkqnB0TbrNILztYwrTxlLq5h.jpg",
-      "https://image.tmdb.org/t/p/w500/tC7nm23wJzzQjZJCwKeaVJ4vpCc.jpg",
       "https://image.tmdb.org/t/p/w500/w0CTP9xwTrniHWoPCYvHcZWndHW.jpg",
-      "https://image.tmdb.org/t/p/w500/bpll0oy6gHwLvypfFNfT2QI4VkT.jpg",
       "https://image.tmdb.org/t/p/w500/yWeFWQDuNCW24yoEonPmoxAsWlX.jpg",
-      "https://image.tmdb.org/t/p/w500/mfgNUnFB25BNIwe9iPJ17cUN64S.jpg"
+      "https://image.tmdb.org/t/p/w500/bpll0oy6gHwLvypfFNfT2QI4VkT.jpg",
+      "https://image.tmdb.org/t/p/w500/cQijkqnB0TbrNILztYwrTxlLq5h.jpg",
+      "https://image.tmdb.org/t/p/w500/mfgNUnFB25BNIwe9iPJ17cUN64S.jpg",
+      "https://image.tmdb.org/t/p/w500/tC7nm23wJzzQjZJCwKeaVJ4vpCc.jpg",
+      "https://image.tmdb.org/t/p/w500/inmjwzW5BWXwWxN24yU3Av21OwD.jpg"
     ],
     "tmdb_id": 1433367,
     "cast": [
@@ -15596,11 +15596,11 @@
       }
     ],
     "stills": [
-      "https://image.tmdb.org/t/p/w500/lxkNZmkOb5q2NWcTRIvO65acSGi.jpg",
-      "https://image.tmdb.org/t/p/w500/3jbTQfPCu1ntQpy2VD8EV5CBcf8.jpg",
-      "https://image.tmdb.org/t/p/w500/lJYniNRM2i9wXnfWVHOB4PxygFZ.jpg",
+      "https://image.tmdb.org/t/p/w500/w8XGRzcSMX0F6VCxu81JK7SV6Hb.jpg",
       "https://image.tmdb.org/t/p/w500/kDhdAhcYAARP7Ia5Ngq8UstjJMg.jpg",
-      "https://image.tmdb.org/t/p/w500/w8XGRzcSMX0F6VCxu81JK7SV6Hb.jpg"
+      "https://image.tmdb.org/t/p/w500/3jbTQfPCu1ntQpy2VD8EV5CBcf8.jpg",
+      "https://image.tmdb.org/t/p/w500/lxkNZmkOb5q2NWcTRIvO65acSGi.jpg",
+      "https://image.tmdb.org/t/p/w500/lJYniNRM2i9wXnfWVHOB4PxygFZ.jpg"
     ],
     "tmdb_id": 1522689,
     "cast": [
@@ -313187,7 +313187,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -313199,7 +313200,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -313211,7 +313213,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -313223,7 +313226,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -313235,7 +313239,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
@@ -313247,7 +313252,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -313259,7 +313265,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -313271,7 +313278,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -313283,7 +313291,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -313295,7 +313304,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       }
     ],
     "servers": [],
@@ -315151,9 +315161,9 @@
     "cast": []
   },
   {
-    "id": "حب-ع-ورق-الحلقة-69-التاسعة-والستون-2026-230aca5c7",
-    "title": "حب ع ورق الحلقة 69 التاسعة والستون",
-    "arabic_title": "حب ع ورق الحلقة 69 التاسعة والستون",
+    "id": "حب-ع-ورق-2026",
+    "title": "حب ع ورق",
+    "arabic_title": "حب ع ورق",
     "content_type": "series",
     "category": "foreign",
     "sub_category": "subbed",
@@ -315172,137 +315182,156 @@
     ],
     "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/230aca5c7-1.jpg",
     "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/230aca5c7-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 69 التاسعة والستون من مسلسل &quot;حب ع ورق Hob Ala Waraq&quot; بطولة أنس طيارة اون لاين HD يوتيوب ايجي بست، شاهد جميع حلقات مسلسل...",
+    "synopsis": "مشاهدة وتحميل الحلقة 69 التاسعة والستون من مسلسل \"حب ع ورق Hob Ala Waraq\" بطولة أنس طيارة اون لاين HD يوتيوب ايجي بست، شاهد جميع حلقات مسلسل...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
+    "total_seasons": 1,
+    "seasons": [
       {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-vnjhif3by9wv.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/nl07g8e4i77erk",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/8ju0rcg9d1j6",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/gxeuqyt6e2p7",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-q0lqf9kiywox.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-ty65eyz7oguk.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/jd9nw0vxujj837",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/a65q7wj3ywbu",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/awapklvg22yd",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-h40ktmniz6hj.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "season_number": 1,
+        "title": "الموسم الأول",
+        "episodes": [
+          {
+            "id": "حب-ع-ورق-الحلقة-69-التاسعة-والستون-2026-230aca5c7",
+            "episode_number": 69,
+            "title": "حب ع ورق الحلقة 69 التاسعة والستون",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/230aca5c7-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 69 التاسعة والستون من مسلسل \"حب ع ورق Hob Ala Waraq\" بطولة أنس طيارة اون لاين HD يوتيوب ايجي بست، شاهد جميع حلقات مسلسل...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-vnjhif3by9wv.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/nl07g8e4i77erk",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/8ju0rcg9d1j6",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/gxeuqyt6e2p7",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-q0lqf9kiywox.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-ty65eyz7oguk.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/jd9nw0vxujj837",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/a65q7wj3ywbu",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/awapklvg22yd",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-h40ktmniz6hj.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/230aca5c7-1.jpg"
+          }
+        ]
       }
-    ]
+    ],
+    "servers": [],
+    "cast": []
   },
   {
-    "id": "fightland-الحلقة-7-السابعة-2026-5d6949f60",
-    "title": "Fightland الحلقة 7 السابعة",
-    "arabic_title": "Fightland الحلقة 7 السابعة",
+    "id": "fightland-2026",
+    "title": "Fightland",
+    "arabic_title": "Fightland",
     "content_type": "series",
     "category": "foreign",
     "sub_category": "subbed",
@@ -315327,188 +315356,155 @@
     "total_seasons": 1,
     "seasons": [
       {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-akf12ksli00h.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/xwod93v8sg31je",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/kpnd4xzn5zcs",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/8x2paz7fk7ze",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-cl3wgju8sxrf.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-hz5ik050stnu.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/jd9nmkzlu768jl3",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/52tbetikqwt2",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/6ff6be07yf4a",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-dfq2nvrm4aao.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "season_number": 1,
+        "title": "الموسم الأول",
+        "episodes": [
+          {
+            "id": "fightland-الحلقة-7-السابعة-2026-5d6949f60",
+            "episode_number": 7,
+            "title": "Fightland الحلقة 7 السابعة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/5d6949f60-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 7 السابعة من مسلسل \" Fightland الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"فايتلاند ال...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-hz5ik050stnu.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/jd9nmkzlu768jl3",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/52tbetikqwt2",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/6ff6be07yf4a",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-dfq2nvrm4aao.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/5d6949f60-1.jpg"
+          },
+          {
+            "id": "fightland-الحلقة-8-الثامنة-والاخيرة-2026-3d7db8e28",
+            "episode_number": 8,
+            "title": "Fightland الحلقة 8 الثامنة والاخيرة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/3d7db8e28-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" Fightland الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"فا...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-hz5ik050stnu.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/jd9nmkzlu768jl3",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/52tbetikqwt2",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/6ff6be07yf4a",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-dfq2nvrm4aao.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/3d7db8e28-1.jpg"
+          }
+        ]
       }
     ],
-    "servers": [
-      {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-hz5ik050stnu.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/jd9nmkzlu768jl3",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/52tbetikqwt2",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/6ff6be07yf4a",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-dfq2nvrm4aao.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      }
-    ],
+    "servers": [],
     "cast": []
   },
   {
@@ -315548,7 +315544,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -315560,7 +315557,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -315572,7 +315570,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -315584,7 +315583,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -315596,7 +315596,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
@@ -315608,7 +315609,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Mixdrop (سحابي سريع)",
@@ -315620,7 +315622,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Hgcloud (سحابي مباشر)",
@@ -315632,7 +315635,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Minochinos (بديل فائق)",
@@ -315644,7 +315648,8 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       },
       {
         "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
@@ -315656,16 +315661,17 @@
         "is_hls": false,
         "duration_minutes": 120,
         "start_verified": true,
-        "end_verified": true
+        "end_verified": true,
+        "title": ""
       }
     ],
     "servers": [],
     "cast": []
   },
   {
-    "id": "the-walking-dead-dead-city-الموسم-الثالث-الحلقة-8-الثامنة-والاخيرة-2026-681c535a8",
-    "title": "The Walking Dead Dead City الموسم الثالث الحلقة 8 الثامنة والاخيرة",
-    "arabic_title": "The Walking Dead Dead City الموسم الثالث الحلقة 8 الثامنة والاخيرة",
+    "id": "the-walking-dead-dead-city-2026",
+    "title": "The Walking Dead Dead City",
+    "arabic_title": "The Walking Dead Dead City",
     "content_type": "series",
     "category": "foreign_series",
     "sub_category": "subbed",
@@ -315684,77 +315690,96 @@
     ],
     "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/681c535a8-1.jpg",
     "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/681c535a8-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل &quot; The Walking Dead: Dead City الموسم الثالث&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع ح...",
+    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" The Walking Dead: Dead City الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع ح...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
+    "total_seasons": 1,
+    "seasons": [
       {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-4o2corj736tl.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/pjkl36n8a4mp38",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/dji8dsl6am5e",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/ugmcso4zei22",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-zh4kkreqcfwq.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "season_number": 3,
+        "title": "الموسم 3",
+        "episodes": [
+          {
+            "id": "the-walking-dead-dead-city-الموسم-الثالث-الحلقة-8-الثامنة-والاخيرة-2026-681c535a8",
+            "episode_number": 8,
+            "title": "The Walking Dead Dead City الموسم الثالث الحلقة 8 الثامنة والاخيرة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/681c535a8-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل \" The Walking Dead: Dead City الموسم الثالث\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع ح...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-4o2corj736tl.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/pjkl36n8a4mp38",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/dji8dsl6am5e",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/ugmcso4zei22",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-zh4kkreqcfwq.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/681c535a8-1.jpg"
+          }
+        ]
       }
-    ]
+    ],
+    "servers": [],
+    "cast": []
   },
   {
-    "id": "lanterns-الحلقة-6-السادسة-2026-5f9380479",
-    "title": "Lanterns الحلقة 6 السادسة",
-    "arabic_title": "Lanterns الحلقة 6 السادسة",
+    "id": "lanterns-2026",
+    "title": "Lanterns",
+    "arabic_title": "Lanterns",
     "content_type": "series",
     "category": "foreign",
     "sub_category": "subbed",
@@ -315773,250 +315798,162 @@
     ],
     "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/5f9380479-1.jpg",
     "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/5f9380479-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 6 السادسة من مسلسل &quot; Lanterns الموسم الاول&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل &quot;لانترنز المو...",
+    "synopsis": "مشاهدة وتحميل الحلقة 6 السادسة من مسلسل \" Lanterns الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"لانترنز المو...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
+    "total_seasons": 1,
+    "seasons": [
       {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-57ylasoiz2ln.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/vknm3qnlhqmm64",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/sudoy3moolkf",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/focgxxqqx2mm",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-6nccrgmzt2oz.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "season_number": 1,
+        "title": "الموسم الأول",
+        "episodes": [
+          {
+            "id": "lanterns-الحلقة-5-الخامسة-2026-75437bebd",
+            "episode_number": 5,
+            "title": "Lanterns الحلقة 5 الخامسة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/75437bebd-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 5 الخامسة من مسلسل \" Lanterns الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"لانترنز المو...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-57ylasoiz2ln.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/vknm3qnlhqmm64",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/sudoy3moolkf",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/focgxxqqx2mm",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-6nccrgmzt2oz.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/75437bebd-1.jpg"
+          },
+          {
+            "id": "lanterns-الحلقة-6-السادسة-2026-5f9380479",
+            "episode_number": 6,
+            "title": "Lanterns الحلقة 6 السادسة",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/5f9380479-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 6 السادسة من مسلسل \" Lanterns الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل \"لانترنز المو...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-57ylasoiz2ln.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/vknm3qnlhqmm64",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/sudoy3moolkf",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/focgxxqqx2mm",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-6nccrgmzt2oz.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/5f9380479-1.jpg"
+          }
+        ]
       }
-    ]
-  },
-  {
-    "id": "lanterns-الحلقة-5-الخامسة-2026-75437bebd",
-    "title": "Lanterns الحلقة 5 الخامسة",
-    "arabic_title": "Lanterns الحلقة 5 الخامسة",
-    "content_type": "series",
-    "category": "foreign",
-    "sub_category": "subbed",
-    "year": "2026",
-    "rating": "★ 8.8 IMDb",
-    "duration": "45 دقيقة",
-    "quality": "WEB-DL 1080p FHD",
-    "language": "الإنجليزية",
-    "translation": "مترجم للعربية",
-    "production": "إنتاج حقيقي حصري",
-    "country": "الولايات المتحدة",
-    "genres": [
-      "أكشن",
-      "دراما",
-      "إثارة"
     ],
-    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/75437bebd-1.jpg",
-    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/75437bebd-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 5 الخامسة من مسلسل &quot; Lanterns الموسم الاول&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل &quot;لانترنز المو...",
-    "trailer_youtube_id": "",
-    "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
-      {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-57ylasoiz2ln.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/vknm3qnlhqmm64",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/sudoy3moolkf",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/focgxxqqx2mm",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-6nccrgmzt2oz.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      }
-    ]
-  },
-  {
-    "id": "fightland-الحلقة-8-الثامنة-والاخيرة-2026-3d7db8e28",
-    "title": "Fightland الحلقة 8 الثامنة والاخيرة",
-    "arabic_title": "Fightland الحلقة 8 الثامنة والاخيرة",
-    "content_type": "series",
-    "category": "foreign",
-    "sub_category": "subbed",
-    "year": "2026",
-    "rating": "★ 8.8 IMDb",
-    "duration": "45 دقيقة",
-    "quality": "WEB-DL 1080p FHD",
-    "language": "الإنجليزية",
-    "translation": "مترجم للعربية",
-    "production": "إنتاج حقيقي حصري",
-    "country": "الولايات المتحدة",
-    "genres": [
-      "أكشن",
-      "دراما",
-      "إثارة"
-    ],
-    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/3d7db8e28-1.jpg",
-    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/3d7db8e28-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 8 الثامنة والاخيرة من مسلسل &quot; Fightland الموسم الاول&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل &quot;فا...",
-    "trailer_youtube_id": "",
-    "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
-      {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-hz5ik050stnu.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/jd9nmkzlu768jl3",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/52tbetikqwt2",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/6ff6be07yf4a",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-dfq2nvrm4aao.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      }
-    ]
+    "servers": [],
+    "cast": []
   },
   {
     "id": "knightfall-2026-2026-4c47f396c",
@@ -316040,7 +315977,7 @@
     ],
     "poster": "https://image.tmdb.org/t/p/w500/wEXaqQXOBPClwqEufiFqgfHVXTk.jpg",
     "backdrop": "https://image.tmdb.org/t/p/original/zxI3jUzMjvzSuFOyfNiiLXpGUSn.jpg",
-    "synopsis": "مشاهد وتحميل فيلم &quot;Knightfall 2026 سقوط الفارس&quot; مترجم Egybest اون لاين بجودة عالية HD DVD BluRay فيلم الاكشن والاثارة &quot;Knightfall 2026&...",
+    "synopsis": "مشاهد وتحميل فيلم \"Knightfall 2026 سقوط الفارس\" مترجم Egybest اون لاين بجودة عالية HD DVD BluRay فيلم الاكشن والاثارة \"Knightfall 2026&...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
     "total_seasons": 0,
@@ -316107,10 +316044,10 @@
       }
     ],
     "stills": [
-      "https://image.tmdb.org/t/p/w500/zxI3jUzMjvzSuFOyfNiiLXpGUSn.jpg",
       "https://image.tmdb.org/t/p/w500/fiDV5W1DwaaNkpECrym91vnFuCo.jpg",
-      "https://image.tmdb.org/t/p/w500/uIcH3rrNkJJCznGFgrC6qxaGKCp.jpg",
+      "https://image.tmdb.org/t/p/w500/zxI3jUzMjvzSuFOyfNiiLXpGUSn.jpg",
       "https://image.tmdb.org/t/p/w500/58vjb97zAa2ue9zlplHfKhNXa5S.jpg",
+      "https://image.tmdb.org/t/p/w500/uIcH3rrNkJJCznGFgrC6qxaGKCp.jpg",
       "https://image.tmdb.org/t/p/w500/qY8CzrjkFPCD1SFsUoyJX97MqPV.jpg"
     ],
     "tmdb_id": 1377900
@@ -316137,7 +316074,7 @@
     ],
     "poster": "https://image.tmdb.org/t/p/w500/lmQKEJ4Te7CQ5mhnXwr3zCLnOvc.jpg",
     "backdrop": "https://image.tmdb.org/t/p/original/cQjiLpk1zHNJLEQ4BZmEVFbheJr.jpg",
-    "synopsis": "مشاهد وتحميل فيلم &quot;Drive Through Fire 2026 القيادة عبر النار&quot; مترجم Egybest اون لاين بجودة عالية HD DVD BluRay فيلم الاكشن والجريمة والاثارة...",
+    "synopsis": "مشاهد وتحميل فيلم \"Drive Through Fire 2026 القيادة عبر النار\" مترجم Egybest اون لاين بجودة عالية HD DVD BluRay فيلم الاكشن والجريمة والاثارة...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
     "total_seasons": 0,
@@ -316204,15 +316141,15 @@
       }
     ],
     "stills": [
-      "https://image.tmdb.org/t/p/w500/cQjiLpk1zHNJLEQ4BZmEVFbheJr.jpg",
-      "https://image.tmdb.org/t/p/w500/8Tw90S4hVrvUoqmQWDoO6U4toZT.jpg"
+      "https://image.tmdb.org/t/p/w500/8Tw90S4hVrvUoqmQWDoO6U4toZT.jpg",
+      "https://image.tmdb.org/t/p/w500/cQjiLpk1zHNJLEQ4BZmEVFbheJr.jpg"
     ],
     "tmdb_id": 1378742
   },
   {
-    "id": "اخي-الحلقة-20-العشرون-2026-1bb1e84b4",
-    "title": "اخي الحلقة 20 العشرون",
-    "arabic_title": "اخي الحلقة 20 العشرون",
+    "id": "اخي-2026",
+    "title": "اخي",
+    "arabic_title": "اخي",
     "content_type": "series",
     "category": "foreign",
     "sub_category": "subbed",
@@ -316231,148 +316168,197 @@
     ],
     "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/1bb1e84b4-1.jpg",
     "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/1bb1e84b4-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 20 العشرون من مسلسل &quot;اخي الموسم الاول&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل الدراما التركي &quot;اخ...",
+    "synopsis": "مشاهدة وتحميل الحلقة 20 العشرون من مسلسل \"اخي الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل الدراما التركي \"اخ...",
     "trailer_youtube_id": "",
     "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
+    "total_seasons": 1,
+    "seasons": [
       {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-2qrijyzk33bh.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/vkn499rlun8pd4",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Hgcloud (سحابي مباشر)",
-        "stream_url": "https://hgcloud.to/e/011nywprdp8r",
-        "site": "Hgcloud",
-        "badge": "Hgcloud ⚡",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/c2oevebxfmy8",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-1j37e0mxamyj.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
+        "season_number": 1,
+        "title": "الموسم الأول",
+        "episodes": [
+          {
+            "id": "اخي-الحلقة-20-العشرون-2026-1bb1e84b4",
+            "episode_number": 20,
+            "title": "اخي الحلقة 20 العشرون",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/1bb1e84b4-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 20 العشرون من مسلسل \"اخي الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل الدراما التركي \"اخ...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-2qrijyzk33bh.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/vkn499rlun8pd4",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Hgcloud (سحابي مباشر)",
+                "stream_url": "https://hgcloud.to/e/011nywprdp8r",
+                "site": "Hgcloud",
+                "badge": "Hgcloud ⚡",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/c2oevebxfmy8",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-1j37e0mxamyj.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-rf1a8nhg4l0l.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/mkd000k8sdme40",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/q95itcpk4dtz",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-1omyaf0w55ic.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/1bb1e84b4-1.jpg"
+          },
+          {
+            "id": "اخي-الحلقة-21-الحادية-والعشرون-2026-cd79045b6",
+            "episode_number": 21,
+            "title": "اخي الحلقة 21 الحادية والعشرون",
+            "thumbnail": "https://iegybest.cimawbas.tv/uploads/thumbs/cd79045b6-1.jpg",
+            "duration": "45 دقيقة",
+            "synopsis": "مشاهدة وتحميل الحلقة 21 الحادية والعشرون من مسلسل \"اخي الموسم الاول\" مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل الدراما التركي...",
+            "servers": [
+              {
+                "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
+                "stream_url": "https://vipserver.liiivideo.com/embed-rf1a8nhg4l0l.html",
+                "site": "Vipserver",
+                "badge": "VIP ⭐",
+                "quality": "1080p FHD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Mixdrop (سحابي سريع)",
+                "stream_url": "https://mixdrop.top/e/mkd000k8sdme40",
+                "site": "Mixdrop",
+                "badge": "Mixdrop",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Minochinos (بديل فائق)",
+                "stream_url": "https://minochinos.com/embed/q95itcpk4dtz",
+                "site": "Minochinos",
+                "badge": "Minochinos",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              },
+              {
+                "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
+                "stream_url": "https://vidmoly.net/embed-1omyaf0w55ic.html",
+                "site": "Vidmoly",
+                "badge": "Vidmoly",
+                "quality": "1080p HD",
+                "isEmbed": true,
+                "is_hls": false,
+                "duration_minutes": 120,
+                "start_verified": true,
+                "end_verified": true
+              }
+            ],
+            "still": "https://iegybest.cimawbas.tv/uploads/thumbs/cd79045b6-1.jpg"
+          }
+        ]
       }
-    ]
-  },
-  {
-    "id": "اخي-الحلقة-21-الحادية-والعشرون-2026-cd79045b6",
-    "title": "اخي الحلقة 21 الحادية والعشرون",
-    "arabic_title": "اخي الحلقة 21 الحادية والعشرون",
-    "content_type": "series",
-    "category": "foreign",
-    "sub_category": "subbed",
-    "year": "2026",
-    "rating": "★ 8.8 IMDb",
-    "duration": "45 دقيقة",
-    "quality": "WEB-DL 1080p FHD",
-    "language": "الإنجليزية",
-    "translation": "مترجم للعربية",
-    "production": "إنتاج حقيقي حصري",
-    "country": "الولايات المتحدة",
-    "genres": [
-      "أكشن",
-      "دراما",
-      "إثارة"
     ],
-    "poster": "https://iegybest.cimawbas.tv/uploads/thumbs/cd79045b6-1.jpg",
-    "backdrop": "https://iegybest.cimawbas.tv/uploads/thumbs/cd79045b6-1.jpg",
-    "synopsis": "مشاهدة وتحميل الحلقة 21 الحادية والعشرون من مسلسل &quot;اخي الموسم الاول&quot; مترجم ايجي بست اون لاين HD يوتيوب، شاهد جميع حلقات مسلسل الدراما التركي...",
-    "trailer_youtube_id": "",
-    "director": "Cinema Production",
-    "total_seasons": 0,
-    "servers": [
-      {
-        "name": "سيرفر Vipserver (مباشر FHD • إيجي بست)",
-        "stream_url": "https://vipserver.liiivideo.com/embed-rf1a8nhg4l0l.html",
-        "site": "Vipserver",
-        "badge": "VIP ⭐",
-        "quality": "1080p FHD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Mixdrop (سحابي سريع)",
-        "stream_url": "https://mixdrop.top/e/mkd000k8sdme40",
-        "site": "Mixdrop",
-        "badge": "Mixdrop",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Minochinos (بديل فائق)",
-        "stream_url": "https://minochinos.com/embed/q95itcpk4dtz",
-        "site": "Minochinos",
-        "badge": "Minochinos",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      },
-      {
-        "name": "سيرفر Vidmoly (مشاهدة بدون تقطيع)",
-        "stream_url": "https://vidmoly.net/embed-1omyaf0w55ic.html",
-        "site": "Vidmoly",
-        "badge": "Vidmoly",
-        "quality": "1080p HD",
-        "isEmbed": true,
-        "is_hls": false,
-        "duration_minutes": 120,
-        "start_verified": true,
-        "end_verified": true
-      }
-    ]
+    "servers": [],
+    "cast": []
   }
 ]
