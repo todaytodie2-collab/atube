@@ -1,6 +1,6 @@
 {
   "version": "4.0.0",
-  "updated_at": "2026-09-15",
+  "updated_at": "2026-09-16",
   "tmdb": {
     "api_key": "cabefb963ee5db1ecd2c5778bda9b6d0",
     "_comment": "Register free at https://www.themoviedb.org/settings/api then paste your key here"
@@ -97,8 +97,8 @@
       "category": "قنوات إماراتية 🇦🇪",
       "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEibZF784T-s07hhXG2vhp-OZcxxMDZQWs-AJuZrGFqxsHqb4JP5TctS4LpE2SGWm3seLR66HiQRPGcuHPyOzES37cxkO_UDlEFVpk205eQRyRZk8M0s-0EsKkOU_YDY2w1ulIwgbjdjPS0vli6M-5kaPwLBpoc3Qe6Y5TuvL4qhH3BhO9ZqbwqgfuhfTi4/s800/noor-dubai.webp",
       "streams": [
-        "https://player.eishha.com/p/noor-dubai.html",
-        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8"
+        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8",
+        "https://player.eishha.com/p/noor-dubai.html"
       ],
       "embed": "https://player.eishha.com/p/noor-dubai.html"
     },
@@ -257,6 +257,7 @@
       "category": "أطفال وعائلة 🧸",
       "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi8L6RLocqJqvJcBWlClHdcq6U0-HJjx_wtkL6lJUKM7_GqBKGLEivb3Sq6XN8eGT-izDVnOYCMrBsFP8CD1ud05hbS5kO20NtLm4JmUzFbz2t9W9Zt5u9JvFAB1Dx_U2QZKdR5vHmUwVf1NkO8okR3-d8dL5XIZsHhLUtAGN9eiWNUV4DOYSoxz2HN48k/s800/mbc-3.webp",
       "streams": [
+        "https://live.france24.com/hls/live/2037222-b/F24_AR_HI_HLS/master_5000.m3u8",
         "https://player.eishha.com/p/mbc-3-ksa.html"
       ],
       "embed": "https://player.eishha.com/p/mbc-3-ksa.html"
@@ -635,6 +636,7 @@
       "category": "قنوات إماراتية 🇦🇪",
       "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhFfri_cbeZ34WWe3nObfACpFH3ualhFBkTDN6VlarlivlXhv0eqBi0_4f3gK99i5VfXooNx4gwwTD8BMWUqJA50B2sxM19CMpmNr0FIp_iHgZw-2KcspN23RnajDk0O6Hdci3jLZviBnHSTW6OhGVDXL-LI6SlkCxthz-WLT6DCHR4CtrLtEBOjHG_2z0/s800/dubai-sport-1.webp",
       "streams": [
+        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8",
         "https://player.eishha.com/p/dubai-sports-1.html"
       ],
       "embed": "https://player.eishha.com/p/dubai-sports-1.html"
@@ -942,23 +944,23 @@
     },
     {
       "id": "live_eishha_jeem",
-      "name": "جيم للاطفال",
-      "category": "أطفال وعائلة 🧸",
-      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLUoq9ZFKLEsKXikLblSFRqDOrrxgAM4ZihMfXIS59B1d0hzFCJlSyYoKqZ8cOnAxV5d6Yl-BpzWpQu8QqIGTrKXnsgs411QARJGAV_WlBOwjBri1q3v_npLvnf6J6qjjh0P4V3tx7jBG3Xkcp6mYdrgPeVJM2SAVWKRsmm0SRezS8SEStrurTSJBBMwU/s800/jeem.webp",
-      "streams": [
-        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8",
-        "https://player.eishha.com/p/jeem.html"
-      ],
-      "embed": "https://player.eishha.com/p/jeem.html"
-    },
-    {
-      "id": "live_eishha_jeem",
       "name": "براعم",
       "category": "أطفال وعائلة 🧸",
       "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaEe74Q9N1vUUiw5RoKEipLVTsft5UMO-xEydF8v95rvKpTwAr6AmmMFkmXGoPKTKgPkzZJ2fEk8CQU9PPCd3zkZ2zYCMH1zJakz-fe0ZLr0-ecOipckWnwxziYM1qLIZXRUDYg5skKd2oCEqhPGLJ1GcUo7f-vreS6Sck_CKXg1ppxjkzDBdOqaKRpg4/s800/baraem.webp",
       "streams": [
         "https://live20.bozztv.com/giatvplayout7/giatv-208314/playlist.m3u8",
         "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8"
+      ],
+      "embed": "https://player.eishha.com/p/jeem.html"
+    },
+    {
+      "id": "live_eishha_jeem",
+      "name": "جيم للاطفال",
+      "category": "أطفال وعائلة 🧸",
+      "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLUoq9ZFKLEsKXikLblSFRqDOrrxgAM4ZihMfXIS59B1d0hzFCJlSyYoKqZ8cOnAxV5d6Yl-BpzWpQu8QqIGTrKXnsgs411QARJGAV_WlBOwjBri1q3v_npLvnf6J6qjjh0P4V3tx7jBG3Xkcp6mYdrgPeVJM2SAVWKRsmm0SRezS8SEStrurTSJBBMwU/s800/jeem.webp",
+      "streams": [
+        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8",
+        "https://player.eishha.com/p/jeem.html"
       ],
       "embed": "https://player.eishha.com/p/jeem.html"
     },
@@ -1013,6 +1015,7 @@
       "category": "أطفال وعائلة 🧸",
       "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhkeIAnjYydDYHvwrX4bXz5zN9KZCG0kFqpwm8Wc8Ia37JhjDb_ukw3Y14nP9MpvHBmIuV5N_lJI9Nhl0-L9a_sB7B1J7OlmfXozflTP9r3NFNE8MXHr9ERAGroXHaM6Ix9HSpQM8C2ILzimDcGQyElSOUtZ7me_g9xP5zmwtm0EDQJNRw3LBZkob50ZOk/s800/toyor-aljanah.webp",
       "streams": [
+        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8",
         "https://player.eishha.com/p/toyor-aljanah.html"
       ],
       "embed": "https://player.eishha.com/p/toyor-aljanah.html"
@@ -1231,6 +1234,7 @@
       "category": "أفلام ومسلسلات 🎬",
       "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBwyhidVvZT0BpOeg6g6eHuRz6IHLpaddOop_GpCHY61JVPnB1ElQfXQRaEvKnLdsHa6PdjETDEr3VqrfOoSBoFXFySW6PUjWacYwYoTUocLpj6NsmwfMMpAfTCCXGmSnFR9KGxTu7BJV2rUOergZ9nPIazWgmwBrO75H3_QNCYI1866mYCjLPAe9MNX8/s800/rotana-plus.webp",
       "streams": [
+        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8",
         "https://player.eishha.com/p/rotana-plus.html"
       ],
       "embed": "https://player.eishha.com/p/rotana-plus.html"
@@ -1369,6 +1373,7 @@
       "category": "أفلام ومسلسلات 🎬",
       "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5qicboDTOdyPuAuPAL8nmowykpS9Omcgsf_8vCHC_PNnCw7hr5dvCsfpxnboaH7mmohThjKWFhTyEn6SmzbVNjty6qvW1a_9WBxrS4FcxhC7g2N4CyPRTdRCJWZZsVm8UQEhUVN63QnSiJyovee-U-BOlHS7pgWgHKaHG9x2wa4EmZ9PGlTRpJYwt3lw/s800/dmc-drama.webp",
       "streams": [
+        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8",
         "https://player.eishha.com/p/dmc-drama.html"
       ],
       "embed": "https://player.eishha.com/p/dmc-drama.html"
@@ -1390,6 +1395,7 @@
       "category": "قنوات مصرية 🇪🇬",
       "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhmqPgx7RHGh9L4fEjEkYdt6tY3vBoEOMmMlDUnvszgrreYFoAvSybkcb1Wvf7xIKMlXbLeyNoY8uj7v95BhXwjzfUrc-u0yn_5cAF4i1rKmDQZyDZ-GV0wO3uxMErrS8OnhGeFn_cS02w8GSVpF16-vobYwWF4da5dVT7sI4H9Bhwh0EKkrpHa_UE4GqE/s800/ten.webp",
       "streams": [
+        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8",
         "https://player.eishha.com/p/ten-tv-egypt.html"
       ],
       "embed": "https://player.eishha.com/p/ten-tv-egypt.html"
@@ -1478,6 +1484,7 @@
       "category": "أفلام ومسلسلات 🎬",
       "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUUhA_ZQFQ-iXRfZJSa8nJMM2iPoyCLP2nqeFBhyphenhyphenONL4htNcU2cZTYmf-zKfP7cHMqvkC4q2g7SRySEsuCzCgExS-jfSxLf5s2rvz_cEkkeCgIYyPWdPhDymTAx3Q-sgM880pkyrU3_DBd0pBdJTGYUqCqVZiWPj0ibywIgDuwh7Of0mlRs5nD54z1ZEw/s800/7-aflam.webp",
       "streams": [
+        "https://amg01117-amg01117c1-amgplt0029.playout.now3.amagi.tv/playlist/amg01117-amg01117c1-amgplt0029/playlist.m3u8",
         "https://player.eishha.com/p/morocoo-7.html"
       ],
       "embed": "https://player.eishha.com/p/morocoo-7.html"
